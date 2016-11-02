@@ -3,8 +3,9 @@ package org.extendj;
 import org.extendj.ast.CompilationUnit;
 
 public class ExtensionMain extends JavaChecker {
-
+public static Object DrAST_root_node; //Enable debugging with DrAST
   public static void main(String args[]) {
+
     int exitCode = new ExtensionMain().run(args);
     if (exitCode != 0) {
       System.exit(exitCode);

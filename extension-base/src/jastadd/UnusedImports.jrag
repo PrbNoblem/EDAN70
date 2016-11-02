@@ -1,0 +1,17 @@
+import java.util.HashSet;
+
+
+aspect UnusedImports {
+
+    syn String FieldDecl.AccessType() = getTypeAccess().nodeType();
+    syn String Access.nodeType() = "";
+    eq PrimitiveTypeAccess.nodeType() = "PrimitiveTypeAccess";
+    eq ParTypeAccess.nodeType() = "ParTypeAccess";
+
+    coll HashSet<String> CompilationUnit.usedTypes() [new HashSet<String>()] with add root CompilationUnit;
+     syn String CompilationUnit.hej() = "jaha";
+
+    FieldDecl contributes ((PrimitiveTypeAccess)getTypeAccess()).getID()
+		when getTypeAccess().nodeType().equals("PrimitiveTypeAccess")
+		to CompilationUnit.usedTypes() for compilationUnit();
+}

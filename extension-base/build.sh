@@ -183,7 +183,8 @@ ${JASTADD} --package="org.extendj.ast" \
     'extendj/java8/frontend/UnreachableStatements.jrag' \
     'extendj/java8/frontend/VariableArityParameters.jrag' \
     'extendj/java8/frontend/VariableDeclaration.jrag' \
-    'src/jastadd/ExtensionBase.jrag'
+    'src/jastadd/ExtensionBase.jrag' \
+    'src/jastadd/UnusedImports.jrag'
 echo "Compiling Java code..."
 mkdir -p build/classes/main
 javac -d build/classes/main $(find src/java -name '*.java') \
