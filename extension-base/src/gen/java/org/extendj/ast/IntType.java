@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:55
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:55
  * @production IntType : {@link IntegralType};
 
  */
 public class IntType extends IntegralType implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:133
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:399
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("int");
@@ -71,59 +72,47 @@ public class IntType extends IntegralType implements Cloneable {
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:30
+  /** @apilevel low-level 
+   * @declaredat ASTNode:28
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:36
+   * @declaredat ASTNode:34
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     boxed_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:49
+  /** @apilevel internal 
+   * @declaredat ASTNode:43
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:55
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:47
    */
   public IntType clone() throws CloneNotSupportedException {
     IntType node = (IntType) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:68
+  /** @apilevel internal 
+   * @declaredat ASTNode:52
    */
   public IntType copy() {
     try {
       IntType node = (IntType) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -137,8 +126,9 @@ public class IntType extends IntegralType implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:87
+   * @declaredat ASTNode:71
    */
+  @Deprecated
   public IntType fullCopy() {
     return treeCopyNoTransform();
   }
@@ -147,14 +137,14 @@ public class IntType extends IntegralType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:96
+   * @declaredat ASTNode:81
    */
   public IntType treeCopyNoTransform() {
     IntType tree = (IntType) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -168,18 +158,26 @@ public class IntType extends IntegralType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:116
+   * @declaredat ASTNode:101
    */
   public IntType treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    IntType tree = (IntType) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:123
+  /** @apilevel internal 
+   * @declaredat ASTNode:115
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((IntType)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((IntType) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -221,7 +219,7 @@ public class IntType extends IntegralType implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -335,11 +333,10 @@ public class IntType extends IntegralType implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -363,7 +360,6 @@ public class IntType extends IntegralType implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -374,6 +370,13 @@ public class IntType extends IntegralType implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -392,51 +395,56 @@ public class IntType extends IntegralType implements Cloneable {
   public List<BodyDecl> getBodyDeclsNoTransform() {
     return getBodyDeclListNoTransform();
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:205
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:205")
   public boolean isInt() {
-    ASTNode$State state = state();
     boolean isInt_value = true;
-
     return isInt_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean boxed_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl boxed_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void boxed_reset() {
-    boxed_computed = false;
+    boxed_computed = null;
     boxed_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle boxed_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl boxed_value;
+
+  /** Mapping between Primitive type and corresponding boxed Reference type. 
+   * @attribute syn
+   * @aspect AutoBoxing
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53")
   public TypeDecl boxed() {
-    if(boxed_computed) {
+    ASTNode$State state = state();
+    if (boxed_computed == ASTNode$State.NON_CYCLE || boxed_computed == state().cycle()) {
       return boxed_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     boxed_value = lookupType("java.lang", "Integer");
-    if (isFinal && num == state().boundariesCrossed) {
-      boxed_computed = true;
+    if (state().inCircle()) {
+      boxed_computed = state().cycle();
+    
     } else {
+      boxed_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return boxed_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

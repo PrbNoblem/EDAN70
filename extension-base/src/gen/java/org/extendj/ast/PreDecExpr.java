@@ -1,67 +1,45 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:135
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:137
  * @production PreDecExpr : {@link Unary};
 
  */
 public class PreDecExpr extends Unary implements Cloneable {
   /**
    * @aspect DefiniteAssignment
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:104
-   */
-  public void definiteAssignment() {
-    if (getOperand().isVariable()) {
-      Variable v = getOperand().varDecl();
-      if (v != null && v.isFinal()) {
-        error("++ and -- can not be applied to final variable " + v);
-      }
-    }
-  }
-  /**
-   * @aspect DA
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:537
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:619
    */
   protected boolean checkDUeverywhere(Variable v) {
     if (getOperand().isVariable() && getOperand().varDecl() == v) {
-      if (!isDAbefore(v)) {
+      if (!assignedBefore(v)) {
         return false;
       }
     }
     return super.checkDUeverywhere(v);
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:363
-   */
-  public void typeCheck() {
-    if (!getOperand().isVariable()) {
-      error("prefix decrement expression only work on variables");
-    } else if (!getOperand().type().isNumericType()) {
-      error("unary decrement only operates on numeric types");
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -85,59 +63,47 @@ public class PreDecExpr extends Unary implements Cloneable {
   public PreDecExpr(Expr p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     stmtCompatible_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public PreDecExpr clone() throws CloneNotSupportedException {
     PreDecExpr node = (PreDecExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public PreDecExpr copy() {
     try {
       PreDecExpr node = (PreDecExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -151,8 +117,9 @@ public class PreDecExpr extends Unary implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public PreDecExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -161,14 +128,14 @@ public class PreDecExpr extends Unary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public PreDecExpr treeCopyNoTransform() {
     PreDecExpr tree = (PreDecExpr) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -182,15 +149,23 @@ public class PreDecExpr extends Unary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public PreDecExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    PreDecExpr tree = (PreDecExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -221,81 +196,150 @@ public class PreDecExpr extends Unary implements Cloneable {
   public Expr getOperandNoTransform() {
     return (Expr) getChildNoTransform(0);
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282")
   public String printPreOp() {
-    ASTNode$State state = state();
     String printPreOp_value = "--";
-
     return printPreOp_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect PreciseRethrow
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145")
   public boolean modifiedInScope(Variable var) {
-    ASTNode$State state = state();
     boolean modifiedInScope_Variable_value = getOperand().isVariable(var);
-
     return modifiedInScope_Variable_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean stmtCompatible_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean stmtCompatible_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void stmtCompatible_reset() {
-    stmtCompatible_computed = false;
+    stmtCompatible_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle stmtCompatible_computed = null;
+
+  /** @apilevel internal */
+  protected boolean stmtCompatible_value;
+
+  /**
+   * @attribute syn
+   * @aspect StmtCompatible
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:121
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StmtCompatible", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:121")
   public boolean stmtCompatible() {
-    if(stmtCompatible_computed) {
+    ASTNode$State state = state();
+    if (stmtCompatible_computed == ASTNode$State.NON_CYCLE || stmtCompatible_computed == state().cycle()) {
       return stmtCompatible_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     stmtCompatible_value = true;
-    if (isFinal && num == state().boundariesCrossed) {
-      stmtCompatible_computed = true;
+    if (state().inCircle()) {
+      stmtCompatible_computed = state().cycle();
+    
     } else {
+      stmtCompatible_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return stmtCompatible_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:69
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
    * @apilevel internal
    */
-  public boolean Define_boolean_isDest(ASTNode caller, ASTNode child) {
-    if (caller == getOperandNoTransform()) {
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    if (getOperandNoTransform() != null && _callerNode == getOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:64
       return true;
     }
     else {
-      return getParent().Define_boolean_isDest(this, caller);
+      return getParent().Define_isDest(this, _callerNode);
     }
   }
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:78
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:66
    * @apilevel internal
    */
-  public boolean Define_boolean_isIncOrDec(ASTNode caller, ASTNode child) {
-    if (caller == getOperandNoTransform()) {
+  public boolean Define_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    if (getOperandNoTransform() != null && _callerNode == getOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:74
       return true;
     }
     else {
-      return getParent().Define_boolean_isIncOrDec(this, caller);
+      return getParent().Define_isIncOrDec(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:423
+    if (!getOperand().isVariable()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:428
+    if (!getOperand().type().isNumericType()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:96
+    if (getOperand().isVariable()
+              && getOperand().varDecl() != null
+              && getOperand().varDecl().isFinal()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getOperand().isVariable()) {
+      collection.add(error("prefix decrement expression only works on variables"));
+    }
+    if (!getOperand().type().isNumericType()) {
+      collection.add(error("unary decrement only operates on numeric types"));
+    }
+    if (getOperand().isVariable()
+              && getOperand().varDecl() != null
+              && getOperand().varDecl().isFinal()) {
+      collection.add(error("++ and -- can not be applied to final variable " + getOperand().varDecl().name()));
+    }
   }
 }

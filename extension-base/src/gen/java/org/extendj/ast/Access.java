@@ -1,42 +1,52 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:13
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:13
  * @production Access : {@link Expr};
 
  */
 public abstract class Access extends Expr implements Cloneable {
   /**
+   * Used by the parser to build a method access from a parsed, potentially qualified, name.
    * @aspect QualifiedNames
-   * @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:181
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:442
+   */
+  public Access buildMethodAccess(List<Expr> arguments) {
+    throw new Error("Can not build method access from access of type "
+        + getClass().getSimpleName());
+  }
+  /**
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:465
    */
   public Access addArrayDims(List list) {
     Access a = this;
     for (int i = 0; i < list.getNumChildNoTransform(); i++) {
       Dims dims = (Dims) list.getChildNoTransform(i);
-      Opt opt = dims.getExprOpt();
+      Opt<Expr> opt = dims.getExprOpt();
       if (opt.getNumChildNoTransform() == 1) {
         a = new ArrayTypeWithSizeAccess(a, (Expr) opt.getChildNoTransform(0));
       } else {
@@ -48,8 +58,10 @@ public abstract class Access extends Expr implements Cloneable {
     return a;
   }
   /**
+   * Checks that two type accesses are the same, while taking type variable
+   * substitution into account.
    * @aspect FunctionalInterface
-   * @declaredat extendj/java8/frontend/FunctionalInterface.jrag:174
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:182
    */
   public boolean sameType(Access a) {
     if (this instanceof ArrayTypeAccess && a instanceof ArrayTypeAccess) {
@@ -87,47 +99,34 @@ public abstract class Access extends Expr implements Cloneable {
    */
   public void init$Children() {
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:15
+  /** @apilevel low-level 
+   * @declaredat ASTNode:13
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:21
+   * @declaredat ASTNode:19
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:27
+  /** @apilevel internal 
+   * @declaredat ASTNode:23
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    prevExpr_reset();
-    hasPrevExpr_reset();
     type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:36
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:42
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:48
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public Access clone() throws CloneNotSupportedException {
     Access node = (Access) super.clone();
@@ -139,15 +138,16 @@ public abstract class Access extends Expr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:59
+   * @declaredat ASTNode:43
    */
+  @Deprecated
   public abstract Access fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:66
+   * @declaredat ASTNode:51
    */
   public abstract Access treeCopyNoTransform();
   /**
@@ -156,141 +156,64 @@ public abstract class Access extends Expr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:74
+   * @declaredat ASTNode:59
    */
   public abstract Access treeCopy();
-  @ASTNodeAnnotation.Attribute
-  public Expr unqualifiedScope() {
-    ASTNode$State state = state();
-    Expr unqualifiedScope_value = isQualified() ? nestedScope() : this;
-
-    return unqualifiedScope_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:156
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:156")
   public boolean isQualified() {
-    ASTNode$State state = state();
     boolean isQualified_value = hasPrevExpr();
-
     return isQualified_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:159
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:159")
   public Expr qualifier() {
-    ASTNode$State state = state();
     Expr qualifier_value = prevExpr();
-
     return qualifier_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:166
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:166")
   public Access lastAccess() {
-    ASTNode$State state = state();
     Access lastAccess_value = this;
-
     return lastAccess_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:175
    */
-  protected boolean prevExpr_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Expr prevExpr_value;
-  /**
-   * @apilevel internal
-   */
-  private void prevExpr_reset() {
-    prevExpr_computed = false;
-    prevExpr_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public Expr prevExpr() {
-    if(prevExpr_computed) {
-      return prevExpr_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    prevExpr_value = prevExpr_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      prevExpr_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return prevExpr_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private Expr prevExpr_compute() {
-      if (isLeftChildOfDot()) {
-        if (parentDot().isRightChildOfDot()) {
-          return parentDot().parentDot().leftSide();
-        }
-      } else if (isRightChildOfDot()) {
-        return parentDot().leftSide();
-      }
-      throw new Error(this + " does not have a previous expression");
-    }
-  /**
-   * @apilevel internal
-   */
-  protected boolean hasPrevExpr_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean hasPrevExpr_value;
-  /**
-   * @apilevel internal
-   */
-  private void hasPrevExpr_reset() {
-    hasPrevExpr_computed = false;
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:175")
   public boolean hasPrevExpr() {
-    if(hasPrevExpr_computed) {
-      return hasPrevExpr_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    hasPrevExpr_value = hasPrevExpr_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      hasPrevExpr_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean hasPrevExpr_value = isRightChildOfDot();
     return hasPrevExpr_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private boolean hasPrevExpr_compute() {
-      if (isLeftChildOfDot()) {
-        if (parentDot().isRightChildOfDot()) {
-          return true;
-        }
-      } else if (isRightChildOfDot()) {
-        return true;
-      }
-      return false;
-    }
   /**
    * Defines the expected kind of name for the left hand side in a qualified
    * expression.
    * @attribute syn
    * @aspect SyntacticClassification
-   * @declaredat extendj/java4/frontend/SyntacticClassification.jrag:58
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
   public NameType predNameType() {
-    ASTNode$State state = state();
-    try {
+    {
         switch (nameType()) {
           case PACKAGE_NAME:
             return NameType.PACKAGE_NAME;
@@ -305,135 +228,220 @@ public abstract class Access extends Expr implements Cloneable {
             return NameType.NOT_CLASSIFIED;
         }
       }
-    finally {
-    }
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect LookupMethod
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:40
    */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:40")
+  public Expr unqualifiedScope() {
+    Expr unqualifiedScope_value = isQualified() ? nestedScope() : this;
+    return unqualifiedScope_value;
+  }
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = unknownType();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * Creates a copy of this access where parameterized types have been erased.
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
+  public Access erasedCopy() {
+    Access erasedCopy_value = treeCopyNoTransform();
+    return erasedCopy_value;
+  }
+  /**
+   * WARNING: this attribute is not the same as TypeDecl.isWildcard,
+   * which returns true for any wildcard type (even bounded wildcard types).
+   * @return {@code true} if this is an unbounded wildcard access
+   * @attribute syn
+   * @aspect ReifiableTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106")
   public boolean isWildcard() {
-    ASTNode$State state = state();
     boolean isWildcard_value = false;
-
     return isWildcard_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Diamond
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87")
   public boolean isDiamond() {
-    ASTNode$State state = state();
     boolean isDiamond_value = false;
-
     return isDiamond_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * Builds a copy of this Access node where all occurrences
+   * of type variables in the original type parameter list have been replaced
+   * by the substitution type parameters.
+   * 
+   * @return the substituted Access node
+   * @attribute syn
+   * @aspect Diamond
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369")
   public Access substituted(Collection<TypeVariable> original, List<TypeVariable> substitution) {
-    ASTNode$State state = state();
     Access substituted_Collection_TypeVariable__List_TypeVariable__value = (Access) treeCopyNoTransform();
-
     return substituted_Collection_TypeVariable__List_TypeVariable__value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7")
   public String nodeType() {
-    ASTNode$State state = state();
     String nodeType_value = "";
-
     return nodeType_value;
   }
   /**
    * @attribute inh
    * @aspect LookupMethod
-   * @declaredat extendj/java4/frontend/LookupMethod.jrag:40
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:42
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:42")
   public Expr nestedScope() {
-    ASTNode$State state = state();
-    Expr nestedScope_value = getParent().Define_Expr_nestedScope(this, null);
-
+    Expr nestedScope_value = getParent().Define_nestedScope(this, null);
     return nestedScope_value;
   }
   /**
    * @attribute inh
-   * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:289
-   */
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl unknownType() {
-    ASTNode$State state = state();
-    TypeDecl unknownType_value = getParent().Define_TypeDecl_unknownType(this, null);
-
-    return unknownType_value;
-  }
-  /**
-   * @attribute inh
    * @aspect VariableScopePropagation
-   * @declaredat extendj/java4/frontend/LookupVariable.jrag:334
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:355
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="VariableScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:355")
   public Variable unknownField() {
-    ASTNode$State state = state();
-    Variable unknownField_value = getParent().Define_Variable_unknownField(this, null);
-
+    Variable unknownField_value = getParent().Define_unknownField(this, null);
     return unknownField_value;
   }
   /**
    * @attribute inh
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:340
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:295
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:295")
+  public TypeDecl unknownType() {
+    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
+    return unknownType_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:403
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:403")
   public boolean withinSuppressWarnings(String annot) {
-    ASTNode$State state = state();
-    boolean withinSuppressWarnings_String_value = getParent().Define_boolean_withinSuppressWarnings(this, null, annot);
-
+    boolean withinSuppressWarnings_String_value = getParent().Define_withinSuppressWarnings(this, null, annot);
     return withinSuppressWarnings_String_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:448
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:534
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:534")
   public boolean withinDeprecatedAnnotation() {
-    ASTNode$State state = state();
-    boolean withinDeprecatedAnnotation_value = getParent().Define_boolean_withinDeprecatedAnnotation(this, null);
-
+    boolean withinDeprecatedAnnotation_value = getParent().Define_withinDeprecatedAnnotation(this, null);
     return withinDeprecatedAnnotation_value;
   }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
+  public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
+   * @apilevel internal
+   */
+  public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @apilevel internal
+   */
+  public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return prevExprError();
+  }
+  protected boolean canDefine_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @apilevel internal
+   */
+  public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return nextAccessError();
+  }
+  protected boolean canDefine_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

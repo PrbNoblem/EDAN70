@@ -1,4 +1,5 @@
 /* Copyright (c) 2005-2008, Torbjorn Ekman
+ *                    2016, Jesper Öqvist <jesper.oqvist@cs.lth.se>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,82 +31,89 @@
 
 aspect GenericTypeVariables {
 
-  // The bounds of a type variable should be resolved to type names
+  // The bounds of a type variable should be resolved to type names.
   eq TypeVariable.getTypeBound().nameType() = NameType.TYPE_NAME;
 
+  // Set java.lang.Object as the type bound if a type variable has no
+  // explicit type bound.
   rewrite TypeVariable {
     when (getNumTypeBound() == 0)
     to TypeVariable {
-      addTypeBound(
-        new TypeAccess(
-          "java.lang",
-          "Object"
-        )
-      );
-      return this;
+      return new TypeVariable(
+          new Modifiers(),
+          getID(),
+          new List<BodyDecl>(),
+          new List<Access>(new TypeAccess("java.lang", "Object")));
     }
   }
 
-  public void TypeVariable.nameCheck() {
-    if (extractSingleType(lookupType(name())) != this) {
-      errorf("*** Semantic Error: type variable %s is multiply declared", name());
-    }
+  eq TypeVariable.nameProblems() {
+      if (extractSingleType(lookupType(name())) != this) {
+        return Collections.singletonList(
+            errorf("*** Semantic Error: type variable %s is multiply declared", name()));
+      }
+      return Collections.emptySet();
   }
 
   syn TypeDecl TypeVariable.lowerBound() = getTypeBound(0).type();
-
 }
 
 aspect GenericTypeVariablesMembers {
   eq TypeVariable.memberMethods(String name) {
-    Collection list = new HashSet();
+    Collection<MethodDecl> methods = new HashSet<MethodDecl>();
     for (int i = 0; i < getNumTypeBound(); i++) {
-      for (Iterator iter = getTypeBound(i).type().memberMethods(name).iterator(); iter.hasNext(); ) {
-        MethodDecl decl = (MethodDecl) iter.next();
-        list.add(decl);
+      for (MethodDecl method : getTypeBound(i).type().memberMethods(name)) {
+        methods.add(method);
       }
     }
-    return list;
+    return methods;
   }
 
   eq TypeVariable.memberFields(String name) {
-    SimpleSet set = SimpleSet.emptySet;
+    SimpleSet<Variable> fields = emptySet();
     for (int i = 0; i < getNumTypeBound(); i++) {
-      for (Iterator iter = getTypeBound(i).type().memberFields(name).iterator(); iter.hasNext(); ) {
-        FieldDeclaration decl = (FieldDeclaration) iter.next();
-        set = set.add(decl);
+      for (Variable field : getTypeBound(i).type().memberFields(name)) {
+        fields = fields.add(field);
       }
     }
-    return set;
+    return fields;
   }
 
+  eq WildcardType.memberMethods(String name) = typeObject().memberMethods(name);
+
+  eq WildcardExtendsType.memberMethods(String name) = getAccess().type().memberMethods(name);
+
+  eq WildcardExtendsType.memberFields(String name) = getAccess().type().memberFields(name);
 }
 
 aspect GenricTypeVariablesTypeAnalysis {
 
-  public void TypeVariable.typeCheck() {
+  TypeVariable contributes each typeProblems() to CompilationUnit.problems();
+
+  syn Collection<Problem> TypeVariable.typeProblems() {
+    Collection<Problem> problems = new LinkedList<Problem>();
     if (!getTypeBound(0).type().isTypeVariable() && !getTypeBound(0).type().isClassDecl()
         && !getTypeBound(0).type().isInterfaceDecl()) {
-      errorf("the first type bound must be either a type variable,"
+      problems.add(errorf("the first type bound must be either a type variable,"
           + " or a class or interface type which %s is not",
-          getTypeBound(0).type().fullName());
+          getTypeBound(0).type().fullName()));
     }
     for (int i = 1; i < getNumTypeBound(); i++) {
       if (!getTypeBound(i).type().isInterfaceDecl()) {
-        errorf("type bound %s must be an interface type which %s is not",
-            i, getTypeBound(i).type().fullName());
+        problems.add(errorf("type bound %s must be an interface type which %s is not",
+            i, getTypeBound(i).type().fullName()));
       }
     }
-    HashSet typeSet = new HashSet();
+    Collection<TypeDecl> typeSet = new HashSet<TypeDecl>();
     for (int i = 0; i < getNumTypeBound(); i++) {
       TypeDecl type = getTypeBound(i).type();
       TypeDecl erasure = type.erasure();
       if (typeSet.contains(erasure)) {
         if (type != erasure) {
-          errorf("the erasure %s of typebound %s is multiply declared in %s",
-              erasure.fullName(), getTypeBound(i).prettyPrint(), this);
+          problems.add(errorf("the erasure %s of typebound %s is multiply declared in %s",
+              erasure.fullName(), getTypeBound(i).prettyPrint(), this));
         } else {
-          errorf("%s is multiply declared", type.fullName());
+          problems.add(errorf("%s is multiply declared", type.fullName()));
         }
       }
       typeSet.add(erasure);
@@ -115,23 +123,19 @@ aspect GenricTypeVariablesTypeAnalysis {
       TypeDecl type = getTypeBound(i).type();
       for (Iterator iter = type.methodsIterator(); iter.hasNext(); ) {
         MethodDecl m = (MethodDecl) iter.next();
-        for (int j = i+1; j < getNumTypeBound(); j++) {
+        for (int j = i + 1; j < getNumTypeBound(); j++) {
           TypeDecl destType = getTypeBound(j).type();
-          for (Iterator destIter = destType.memberMethods(m.name()).iterator(); destIter.hasNext(); ) {
-            MethodDecl n = (MethodDecl) destIter.next();
+          for (MethodDecl n : destType.memberMethods(m.name())) {
             if (m.sameSignature(n) && m.type() != n.type()) {
-              errorf("the two bounds, %s and %s, in type variable %s have"
+              problems.add(errorf("the two bounds, %s and %s, in type variable %s have"
                   + " a method %s with conflicting return types %s and %s",
                   type.name(), destType.name(), name(), m.signature(),
-                  m.type().name(), n.type().name());
+                  m.type().name(), n.type().name()));
             }
           }
         }
       }
     }
-
-
+    return problems;
   }
-
-
 }

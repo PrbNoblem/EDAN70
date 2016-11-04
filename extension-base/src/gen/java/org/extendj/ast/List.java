@@ -1,24 +1,25 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -26,54 +27,15 @@ import java.io.DataInputStream;
  * @production List : {@link ASTNode};
 
  */
-public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable {
+public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable, Iterable<T> {
   /** Default list pretty printing prints all list elements. 
    * @aspect PrettyPrintUtil
-   * @declaredat extendj/java4/frontend/PrettyPrintUtil.jrag:73
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:71
    */
   public void prettyPrint(PrettyPrinter out) {
     for (int i = 0; i < getNumChild(); ++i) {
       getChild(i).prettyPrint(out);
     }
-  }
-  /**
-   * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1165
-   */
-  public List substitute(Parameterization parTypeDecl) {
-    List list = new List();
-    for (int i = 0; i < getNumChild(); i++) {
-      ASTNode node = getChild(i);
-      if (node instanceof Access) {
-        Access a = (Access) node;
-        list.add(a.type().substitute(parTypeDecl));
-      } else if (node instanceof VariableArityParameterDeclaration) {
-        VariableArityParameterDeclaration p = (VariableArityParameterDeclaration) node;
-        list.add(
-          new VariableArityParameterDeclarationSubstituted(
-            (Modifiers) p.getModifiers().treeCopyNoTransform(),
-            // use the type acces since VariableArity adds to the dimension
-            p.getTypeAccess().type().substituteParameterType(parTypeDecl),
-            p.getID(),
-            p
-          )
-        );
-      } else if (node instanceof ParameterDeclaration) {
-        ParameterDeclaration p = (ParameterDeclaration) node;
-        list.add(
-          new ParameterDeclarationSubstituted(
-            (Modifiers) p.getModifiers().treeCopyNoTransform(),
-            p.type().substituteParameterType(parTypeDecl),
-            p.getID(),
-            p
-          )
-        );
-      } else {
-        throw new Error("Can only substitute lists of access nodes but node number "
-            + i + " is of type " + node.getClass().getName());
-      }
-    }
-    return list;
   }
   /**
    * @declaredat ASTNode:1
@@ -100,18 +62,14 @@ public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable {
     }
   }
   /**
-   * @declaredat ASTNode:19
-   */
-  private boolean list$touched = true;
-  /**
-   * @declaredat ASTNode:21
+   * @declaredat ASTNode:20
    */
   public List<T> add(T node) {
     addChild(node);
     return this;
   }
   /**
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:25
    */
   public List<T> addAll(java.util.Collection<? extends T> c) {
     for (T node : c) {
@@ -120,92 +78,70 @@ public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable {
     return this;
   }
   /**
-   * @declaredat ASTNode:33
+   * @declaredat ASTNode:32
    */
   public void insertChild(ASTNode node, int i) {
-
-    list$touched = true;
-
     super.insertChild(node, i);
   }
   /**
-   * @declaredat ASTNode:40
+   * @declaredat ASTNode:36
    */
   public void addChild(T node) {
-
-    list$touched = true;
-
     super.addChild(node);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:50
+  /** @apilevel low-level 
+   * @declaredat ASTNode:41
    */
   public void removeChild(int i) {
-
-    list$touched = true;
-
     super.removeChild(i);
   }
   /**
-   * @declaredat ASTNode:57
+   * @declaredat ASTNode:45
    */
   public int getNumChild() {
-
-    if (list$touched) {
-      for (int i = 0; i < getNumChildNoTransform(); i++) {
-        getChild(i);
-      }
-      list$touched = false;
-    }
-
     return getNumChildNoTransform();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:71
+  /** @return an iterator to iterate over elements in this list node. 
+   * @declaredat ASTNode:50
    */
-  public boolean mayHaveRewrite() {
-    return true;
+  @Override
+  public java.util.Iterator<T> iterator() {
+    return astChildIterator();
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:57
+   */
+  public boolean mayHaveRewrite() {
+    return false;
+  }
+  /** @apilevel internal 
+   * @declaredat ASTNode:61
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:83
+  /** @apilevel internal 
+   * @declaredat ASTNode:65
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:89
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:95
+  /** @apilevel internal 
+   * @declaredat ASTNode:69
    */
   public List<T> clone() throws CloneNotSupportedException {
     List node = (List) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:102
+  /** @apilevel internal 
+   * @declaredat ASTNode:74
    */
   public List<T> copy() {
     try {
       List node = (List) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -219,8 +155,9 @@ public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:121
+   * @declaredat ASTNode:93
    */
+  @Deprecated
   public List<T> fullCopy() {
     return treeCopyNoTransform();
   }
@@ -229,14 +166,14 @@ public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:130
+   * @declaredat ASTNode:103
    */
   public List<T> treeCopyNoTransform() {
     List tree = (List) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -250,30 +187,33 @@ public class List<T extends ASTNode> extends ASTNode<T> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:150
+   * @declaredat ASTNode:123
    */
   public List<T> treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    List tree = (List) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:157
+  /** @apilevel internal 
+   * @declaredat ASTNode:137
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
-    if(list$touched) {
-      for(int i = 0 ; i < getNumChildNoTransform(); i++) {
-        getChild(i);
-      }
-      list$touched = false;
-      return this;
-    }
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

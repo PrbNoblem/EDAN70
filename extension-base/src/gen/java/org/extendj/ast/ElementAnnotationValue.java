@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Annotations.ast:12
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:12
  * @production ElementAnnotationValue : {@link ElementValue} ::= <span class="component">{@link Annotation}</span>;
 
  */
 public class ElementAnnotationValue extends ElementValue implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat extendj/java5/frontend/PrettyPrint.jadd:81
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:86
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getAnnotation());
@@ -57,58 +58,46 @@ public class ElementAnnotationValue extends ElementValue implements Cloneable {
   public ElementAnnotationValue(Annotation p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:43
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:49
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public ElementAnnotationValue clone() throws CloneNotSupportedException {
     ElementAnnotationValue node = (ElementAnnotationValue) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public ElementAnnotationValue copy() {
     try {
       ElementAnnotationValue node = (ElementAnnotationValue) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -122,8 +111,9 @@ public class ElementAnnotationValue extends ElementValue implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:75
+   * @declaredat ASTNode:59
    */
+  @Deprecated
   public ElementAnnotationValue fullCopy() {
     return treeCopyNoTransform();
   }
@@ -132,14 +122,14 @@ public class ElementAnnotationValue extends ElementValue implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:84
+   * @declaredat ASTNode:69
    */
   public ElementAnnotationValue treeCopyNoTransform() {
     ElementAnnotationValue tree = (ElementAnnotationValue) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -153,15 +143,23 @@ public class ElementAnnotationValue extends ElementValue implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:104
+   * @declaredat ASTNode:89
    */
   public ElementAnnotationValue treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ElementAnnotationValue tree = (ElementAnnotationValue) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:111
+  /** @apilevel internal 
+   * @declaredat ASTNode:103
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -195,64 +193,75 @@ public class ElementAnnotationValue extends ElementValue implements Cloneable {
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:558
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:665
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:665")
   public boolean commensurateWithTypeDecl(TypeDecl type) {
-    ASTNode$State state = state();
-    try {
+    {
         return type() == type;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:721
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:721")
   public TypeDecl type() {
-    ASTNode$State state = state();
     TypeDecl type_value = getAnnotation().type();
-
     return type_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:504
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:604
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:604")
   public Annotation lookupAnnotation(TypeDecl typeDecl) {
-    ASTNode$State state = state();
-    Annotation lookupAnnotation_TypeDecl_value = getParent().Define_Annotation_lookupAnnotation(this, null, typeDecl);
-
+    Annotation lookupAnnotation_TypeDecl_value = getParent().Define_lookupAnnotation(this, null, typeDecl);
     return lookupAnnotation_TypeDecl_value;
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:122
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:131
    * @apilevel internal
    */
-  public boolean Define_boolean_mayUseAnnotationTarget(ASTNode caller, ASTNode child, String name) {
-    if (caller == getAnnotationNoTransform()) {
+  public boolean Define_mayUseAnnotationTarget(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (getAnnotationNoTransform() != null && _callerNode == getAnnotation()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:167
       return true;
     }
     else {
-      return getParent().Define_boolean_mayUseAnnotationTarget(this, caller, name);
+      return getParent().Define_mayUseAnnotationTarget(this, _callerNode, name);
     }
   }
+  protected boolean canDefine_mayUseAnnotationTarget(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:508
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:604
    * @apilevel internal
    */
-  public Annotation Define_Annotation_lookupAnnotation(ASTNode caller, ASTNode child, TypeDecl typeDecl) {
-    if (caller == getAnnotationNoTransform()) {
+  public Annotation Define_lookupAnnotation(ASTNode _callerNode, ASTNode _childNode, TypeDecl typeDecl) {
+    if (getAnnotationNoTransform() != null && _callerNode == getAnnotation()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:610
       return getAnnotation().type() == typeDecl ? getAnnotation() : lookupAnnotation(typeDecl);
     }
     else {
-      return getParent().Define_Annotation_lookupAnnotation(this, caller, typeDecl);
+      return getParent().Define_lookupAnnotation(this, _callerNode, typeDecl);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_lookupAnnotation(ASTNode _callerNode, ASTNode _childNode, TypeDecl typeDecl) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

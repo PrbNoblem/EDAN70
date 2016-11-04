@@ -1,39 +1,40 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:47
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:60
  * @production GLBType : {@link ReferenceType} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">{@link BodyDecl}*</span> <span class="component">TypeBound:{@link Access}*</span>;
 
  */
 public class GLBType extends ReferenceType implements Cloneable {
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1596
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1700
    */
-  public HashSet implementedInterfaces(){
-    HashSet ret = new HashSet();
+  public Collection<InterfaceDecl> implementedInterfaces() {
+    Collection<InterfaceDecl> ret = new HashSet<InterfaceDecl>();
     for (int i = 0; i < getNumTypeBound(); i++) {
       ret.addAll(getTypeBound(i).type().implementedInterfaces());
     }
@@ -75,60 +76,48 @@ public class GLBType extends ReferenceType implements Cloneable {
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:30
+  /** @apilevel low-level 
+   * @declaredat ASTNode:28
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:36
+   * @declaredat ASTNode:34
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     subtype_TypeDecl_reset();
     strictSubtype_TypeDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:56
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:62
+  /** @apilevel internal 
+   * @declaredat ASTNode:48
    */
   public GLBType clone() throws CloneNotSupportedException {
     GLBType node = (GLBType) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:69
+  /** @apilevel internal 
+   * @declaredat ASTNode:53
    */
   public GLBType copy() {
     try {
       GLBType node = (GLBType) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -142,8 +131,9 @@ public class GLBType extends ReferenceType implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:88
+   * @declaredat ASTNode:72
    */
+  @Deprecated
   public GLBType fullCopy() {
     return treeCopyNoTransform();
   }
@@ -152,14 +142,14 @@ public class GLBType extends ReferenceType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:97
+   * @declaredat ASTNode:82
    */
   public GLBType treeCopyNoTransform() {
     GLBType tree = (GLBType) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -173,18 +163,26 @@ public class GLBType extends ReferenceType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:117
+   * @declaredat ASTNode:102
    */
   public GLBType treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    GLBType tree = (GLBType) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:124
+  /** @apilevel internal 
+   * @declaredat ASTNode:116
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((GLBType)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((GLBType) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -226,7 +224,7 @@ public class GLBType extends ReferenceType implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -289,11 +287,10 @@ public class GLBType extends ReferenceType implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -317,7 +314,6 @@ public class GLBType extends ReferenceType implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -328,6 +324,13 @@ public class GLBType extends ReferenceType implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -394,11 +397,10 @@ public class GLBType extends ReferenceType implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeBound(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeBoundListNoTransform() : getTypeBoundList();
+    List<Access> list = (parent == null) ? getTypeBoundListNoTransform() : getTypeBoundList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeBoundNoTransform(Access node) {
     List<Access> list = getTypeBoundListNoTransform();
@@ -422,7 +424,6 @@ public class GLBType extends ReferenceType implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeBound")
   public List<Access> getTypeBoundList() {
     List<Access> list = (List<Access>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -433,6 +434,13 @@ public class GLBType extends ReferenceType implements Cloneable {
    */
   public List<Access> getTypeBoundListNoTransform() {
     return (List<Access>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeBound list without
+   * triggering rewrites.
+   */
+  public Access getTypeBoundNoTransform(int i) {
+    return (Access) getTypeBoundListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeBound list.
@@ -454,12 +462,12 @@ public class GLBType extends ReferenceType implements Cloneable {
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1584
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1688
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1688")
   public String typeName() {
-    ASTNode$State state = state();
-    try {
+    {
         if (getNumTypeBound() == 0) {
           return "<NOTYPE>";
         }
@@ -470,203 +478,171 @@ public class GLBType extends ReferenceType implements Cloneable {
         }
         return sb.toString();
       }
-    finally {
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:400
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:400")
+  public boolean supertypeLUBType(LUBType type) {
+    {
+        // TODO(joqvist): changed from Access to TypeDecl, is this correct?
+        ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>(getNumTypeBound());
+        for (int i = 0; i < getNumTypeBound(); i++) {
+          bounds.add(getTypeBound(i).type());
+        }
+        return type == lookupLUBType(bounds);
+      }
+  }
+  /** @apilevel internal */
+  private void subtype_TypeDecl_reset() {
+    subtype_TypeDecl_values = null;
+  }
+  protected java.util.Map subtype_TypeDecl_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
+  public boolean subtype(TypeDecl type) {
+    Object _parameters = type;
+    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (subtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = subtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      subtype_TypeDecl_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_subtype_TypeDecl_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_subtype_TypeDecl_value = type.supertypeGLBType(this);
+        if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_subtype_TypeDecl_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
+
+      state.leaveCircle();
+      return new_subtype_TypeDecl_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_subtype_TypeDecl_value = type.supertypeGLBType(this);
+      if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_subtype_TypeDecl_value;
+      }
+      return new_subtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
   }
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat extendj/java5/frontend/GenericsSubtype.jrag:376
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:424
    */
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeLUBType(LUBType type) {
-    ASTNode$State state = state();
-    try {
-        ArrayList bounds = new ArrayList(getNumTypeBound());
-        for (int i = 0; i < getNumTypeBound(); i++) {
-          bounds.add(getTypeBound(i));
-        }
-        return type == lookupLUBType(bounds);
-      }
-    finally {
-    }
-  }
-  /**
-   * @apilevel internal
-   */
-  private void subtype_TypeDecl_reset() {
-    subtype_TypeDecl_values = null;
-  }
-  protected java.util.Map subtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
-  public boolean subtype(TypeDecl type) {
-    Object _parameters = type;
-    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    ASTNode$State.CircularValue _value;
-    if(subtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = subtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
-      } else {
-        _value = (ASTNode$State.CircularValue) _o;
-      }
-    } else {
-      _value = new ASTNode$State.CircularValue();
-      subtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
-    }
-    ASTNode$State state = state();
-    boolean new_subtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
-      do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
-        new_subtype_TypeDecl_value = type.supertypeGLBType(this);
-        if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_subtype_TypeDecl_value);
-        }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
-      } else {
-        subtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.supertypeGLBType(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
-      return new_subtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_subtype_TypeDecl_value = type.supertypeGLBType(this);
-      if (state.RESET_CYCLE) {
-        subtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
-        _value.value = new_subtype_TypeDecl_value;
-      }
-      state.INTERMEDIATE_VALUE = true;
-      return new_subtype_TypeDecl_value;
-    }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:424")
   public boolean supertypeGLBType(GLBType type) {
-    ASTNode$State state = state();
     boolean supertypeGLBType_GLBType_value = this == type;
-
     return supertypeGLBType_GLBType_value;
   }
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat extendj/java8/frontend/GenericsSubtype.jrag:316
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:321
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:321")
   public boolean strictSupertypeLUBType(LUBType type) {
-    ASTNode$State state = state();
-    try {
-        ArrayList bounds = new ArrayList(getNumTypeBound());
+    {
+        // TODO(joqvist): changed from Access to TypeDecl, is this correct?
+        ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>(getNumTypeBound());
         for (int i = 0; i < getNumTypeBound(); i++) {
-          bounds.add(getTypeBound(i));
+          bounds.add(getTypeBound(i).type());
         }
         return type == lookupLUBType(bounds);
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void strictSubtype_TypeDecl_reset() {
     strictSubtype_TypeDecl_values = null;
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
-    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(strictSubtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = strictSubtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (strictSubtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = strictSubtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       strictSubtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_strictSubtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_strictSubtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_strictSubtype_TypeDecl_value = type.strictSupertypeGLBType(this);
-        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_strictSubtype_TypeDecl_value);
+        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_strictSubtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
-      } else {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.strictSupertypeGLBType(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_strictSubtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_strictSubtype_TypeDecl_value = type.strictSupertypeGLBType(this);
-      if (state.RESET_CYCLE) {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_strictSubtype_TypeDecl_value = type.strictSupertypeGLBType(this);
+      if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_strictSubtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_strictSubtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeGLBType(GLBType type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeGLBType_GLBType_value = this == type;
-
-    return strictSupertypeGLBType_GLBType_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:342
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:342")
+  public boolean strictSupertypeGLBType(GLBType type) {
+    boolean strictSupertypeGLBType_GLBType_value = this == type;
+    return strictSupertypeGLBType_GLBType_value;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

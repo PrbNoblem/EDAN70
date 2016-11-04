@@ -5,35 +5,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect BytecodeSignatures
- * @declaredat extendj/java5/frontend/BytecodeSignatures.jrag:33
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/BytecodeSignatures.jrag:33
  */
 public class Signatures extends java.lang.Object {
   
-    // simple parser framework
+    // Simple parser framework.
     String data;
 
   
     int pos;
 
   
+
     public Signatures(String s) {
       data = s;
       pos = 0;
@@ -90,10 +93,15 @@ public class Signatures extends java.lang.Object {
     // 4.4.4 Signatures
 
     public static class ClassSignature extends Signatures {
+      protected Access superclassSignature;
+
+      protected List superinterfaceSignature = new List();
+
       public ClassSignature(String s) {
         super(s);
         classSignature();
       }
+
       void classSignature() {
         if (next("<")) {
           formalTypeParameters();
@@ -104,16 +112,29 @@ public class Signatures extends java.lang.Object {
         }
       }
 
-      public boolean hasFormalTypeParameters() { return typeParameters != null; }
-      public List typeParameters() { return typeParameters; }
+      public boolean hasFormalTypeParameters() {
+        return typeParameters != null;
+      }
 
-      public boolean hasSuperclassSignature() { return superclassSignature != null; }
-      public Access superclassSignature() { return superclassSignature; }
-      protected Access superclassSignature;
+      public List typeParameters() {
+        return typeParameters;
+      }
 
-      public boolean hasSuperinterfaceSignature() { return superinterfaceSignature.getNumChildNoTransform() != 0; }
-      public List superinterfaceSignature() { return superinterfaceSignature; }
-      protected List superinterfaceSignature = new List();
+      public boolean hasSuperclassSignature() {
+        return superclassSignature != null;
+      }
+
+      public Access superclassSignature() {
+        return superclassSignature;
+      }
+
+      public boolean hasSuperinterfaceSignature() {
+        return superinterfaceSignature.getNumChildNoTransform() != 0;
+      }
+
+      public List superinterfaceSignature() {
+        return superinterfaceSignature;
+      }
 
       Access parseSuperclassSignature() {
         return classTypeSignature();
@@ -127,23 +148,32 @@ public class Signatures extends java.lang.Object {
   
 
     public static class FieldSignature extends Signatures {
+      private Access fieldTypeAccess;
+
       public FieldSignature(String s) {
         super(s);
         fieldTypeAccess = fieldTypeSignature();
       }
+
       Access fieldTypeAccess() {
         return fieldTypeAccess;
       }
-      private Access fieldTypeAccess;
     }
 
   
 
     public static class MethodSignature extends Signatures {
+      protected Collection<Access> parameterTypes = new ArrayList<Access>();
+
+      protected List exceptionList = new List();
+
+      protected Access returnType = null;
+
       public MethodSignature(String s) {
         super(s);
         methodTypeSignature();
       }
+
       void methodTypeSignature() {
         if (next("<")) {
           formalTypeParameters();
@@ -158,6 +188,7 @@ public class Signatures extends java.lang.Object {
           exceptionList.add(throwsSignature());
         }
       }
+
       Access parseReturnType() {
         if (next("V")) {
           eat("V");
@@ -176,19 +207,34 @@ public class Signatures extends java.lang.Object {
         }
       }
 
-      public boolean hasFormalTypeParameters() { return typeParameters != null; }
-      public List typeParameters() { return typeParameters; }
+      public boolean hasFormalTypeParameters() {
+        return typeParameters != null;
+      }
 
-      public Collection parameterTypes() { return parameterTypes; }
-      protected Collection parameterTypes = new ArrayList();
+      public List typeParameters() {
+        return typeParameters;
+      }
 
-      public List exceptionList() { return exceptionList; }
-      public boolean hasExceptionList() { return exceptionList.getNumChildNoTransform() != 0; }
-      protected List exceptionList = new List();
+      public Collection<Access> parameterTypes() {
+        return parameterTypes;
+      }
 
-      protected Access returnType = null;
-      public boolean hasReturnType() { return returnType != null; }
-      public Access returnType() { return returnType; }
+      public List exceptionList() {
+        return exceptionList;
+      }
+
+      public boolean hasExceptionList() {
+        return exceptionList.getNumChildNoTransform() != 0;
+      }
+
+      public boolean hasReturnType() {
+        return returnType != null;
+      }
+
+      public Access returnType() {
+        return returnType;
+      }
+
     }
 
   
@@ -210,7 +256,7 @@ public class Signatures extends java.lang.Object {
 
     TypeVariable formalTypeParameter() {
       String id = identifier();
-      List bounds = new List();
+      List<Access> bounds = new List<Access>();
       Access classBound = classBound();
       if (classBound != null) {
         bounds.add(classBound);
@@ -232,7 +278,6 @@ public class Signatures extends java.lang.Object {
         return fieldTypeSignature();
       } else {
         return null;
-        //return new TypeAccess("java.lang", "Object");
       }
     }
 
@@ -245,7 +290,6 @@ public class Signatures extends java.lang.Object {
 
   
 
-
     Access fieldTypeSignature() {
       if (next("L")) {
         return classTypeSignature();
@@ -256,10 +300,11 @@ public class Signatures extends java.lang.Object {
       } else {
         error("L or [ or T");
       }
-      return null; // error never returns
+      return null; // Error never returns.
     }
 
   
+
     boolean nextIsFieldTypeSignature() {
       return next("L") || next("[") || next("T");
     }
@@ -268,7 +313,7 @@ public class Signatures extends java.lang.Object {
 
     Access classTypeSignature() {
       eat("L");
-      // Package and Type Name
+      // Package and Type Name.
       StringBuilder packageName = new StringBuilder();
       String typeName = identifier();
       while (next("/")) {
@@ -282,10 +327,10 @@ public class Signatures extends java.lang.Object {
       Access a = typeName.indexOf('$') == -1 ?
         new TypeAccess(packageName.toString(), typeName) :
         new BytecodeTypeAccess(packageName.toString(), typeName);
-      if (next("<")) { // type arguments of top level type
+      if (next("<")) { // Type arguments of top level type.
         a = new ParTypeAccess(a, typeArguments());
       }
-      while (next(".")) { // inner classes
+      while (next(".")) { // Inner classes.
         a = a.qualifiesAccess(classTypeSignatureSuffix());
       }
       eat(";");
@@ -364,24 +409,32 @@ public class Signatures extends java.lang.Object {
 
     Access baseType() {
       if (next("B")) {
-        eat("B"); return new PrimitiveTypeAccess("byte");
+        eat("B");
+        return new PrimitiveTypeAccess("byte");
       } else if (next("C")) {
-        eat("C"); return new PrimitiveTypeAccess("char");
+        eat("C");
+        return new PrimitiveTypeAccess("char");
       } else if (next("D")) {
-        eat("D"); return new PrimitiveTypeAccess("double");
+        eat("D");
+        return new PrimitiveTypeAccess("double");
       } else if (next("F")) {
-        eat("F"); return new PrimitiveTypeAccess("float");
+        eat("F");
+        return new PrimitiveTypeAccess("float");
       } else if (next("I")) {
-        eat("I"); return new PrimitiveTypeAccess("int");
+        eat("I");
+        return new PrimitiveTypeAccess("int");
       } else if (next("J")) {
-        eat("J"); return new PrimitiveTypeAccess("long");
+        eat("J");
+        return new PrimitiveTypeAccess("long");
       } else if (next("S")) {
-        eat("S"); return new PrimitiveTypeAccess("short");
+        eat("S");
+        return new PrimitiveTypeAccess("short");
       } else if (next("Z")) {
-        eat("Z"); return new PrimitiveTypeAccess("boolean");
+        eat("Z");
+        return new PrimitiveTypeAccess("boolean");
       }
       error("baseType");
-      return null; // error never returns
+      return null; // Error never returns.
     }
 
 

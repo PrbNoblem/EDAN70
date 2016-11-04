@@ -52,9 +52,7 @@ aspect PrettyPrintUtil {
     prettyPrint(new PrettyPrinter("  ", out));
   }
 
-  /**
-   * @return the name of the class implementing this AST node
-   */
+  /** @return the name of the class implementing this AST node. */
   public String ASTNode.toString() {
     return getClass().getName();
   }
@@ -91,49 +89,23 @@ aspect PrettyPrintUtil {
   public void ForStmt.prettyPrint(PrettyPrinter out) {
     out.print("for (");
     if (getNumInitStmt() > 0) {
-      if (getInitStmt(0) instanceof VarDeclStmt) {
-        VarDeclStmt var = (VarDeclStmt) getInitStmt(0);
-        int minDimension = Integer.MAX_VALUE;
-        for (VariableDeclaration decl : var.getSingleDeclList()) {
-          minDimension = Math.min(minDimension, decl.type().dimension());
-        }
-
-        // Print type.
-        out.print(var.getModifiers());
-        out.print(var.type().elementType().typeName());
-        for (int i = minDimension; i > 0; i--) {
-          out.print("[]");
-        }
-
-        // Print individual declarations.
-        for (int i = 0; i < var.getNumSingleDecl(); ++i) {
-          if (i != 0) {
-            out.print(",");
-          }
-          VariableDeclaration decl = var.getSingleDecl(i);
-          out.print(" " + decl.name());
-          for (int j = decl.type().dimension() - minDimension; j > 0; j -= 1) {
-            out.print("[]");
-          }
-          if (decl.hasInit()) {
-            out.print(" = ");
-            out.print(decl.getInit());
-          }
-        }
-      } else if (getInitStmt(0) instanceof ExprStmt) {
+      if (getInitStmt(0) instanceof ExprStmt) {
         ExprStmt stmt = (ExprStmt) getInitStmt(0);
         out.print(stmt.getExpr());
         for (int i = 1; i < getNumInitStmt(); i++) {
           out.print(", ");
-          stmt = (ExprStmt)getInitStmt(i);
+          stmt = (ExprStmt) getInitStmt(i);
           out.print(stmt.getExpr());
         }
+        out.print("; ");
       } else {
-        throw new Error("Unexpected initializer in for loop: " + getInitStmt(0));
+        out.print(getInitStmt(0));
+        out.print(" ");
       }
+    } else {
+      out.print(" ; ");
     }
 
-    out.print("; ");
     if (hasCondition()) {
       out.print(getCondition());
     }
@@ -210,7 +182,7 @@ aspect PrettyPrintUtil {
   /**
    * Has package name (not @primitive)
    */
-  syn boolean TypeAccess.hasPackage() = decl().isReferenceType() && !getPackage().isEmpty();
+  syn boolean TypeAccess.hasPackage() = !getPackage().isEmpty() && decl().isReferenceType();
 
   syn boolean InstanceInitializer.blockIsEmpty() = getBlock().getNumStmt() == 0;
 
@@ -246,9 +218,9 @@ aspect PrettyPrintUtil {
 
   syn boolean MethodDecl.hasModifiers() = getModifiers().getNumModifier() > 0;
 
-  syn boolean FieldDeclaration.hasModifiers() = getModifiers().getNumModifier() > 0;
+  syn boolean FieldDecl.hasModifiers() = getModifiers().getNumModifier() > 0;
 
-  syn boolean VariableDeclaration.hasModifiers() = getModifiers().getNumModifier() > 0;
+  syn boolean Declarator.hasModifiers() = getModifiers().getNumModifier() > 0;
 
   syn boolean ParameterDeclaration.hasModifiers() = getModifiers().getNumModifier() > 0;
 
@@ -264,7 +236,7 @@ aspect PrettyPrintUtil {
 
   syn String CharacterLiteral.escapedLiteral() = escape(getLITERAL());
 
-  syn boolean AbstractDot.needsDot() = !(getRight() instanceof ArrayAccess);
+  syn boolean AbstractDot.needsDot() = !(rightSide() instanceof ArrayAccess);
 
   /** The operator string used for pretty printing this expression. */
   syn String Binary.printOp();
@@ -349,7 +321,7 @@ aspect PrettyPrintUtil {
           result.append("\\\\");
           break;
         default:
-          int value = (int)s.charAt(i);
+          int value = (int) s.charAt(i);
           if (value < 0x20 || (value > 0x7e)) {
             result.append(asEscape(value));
           } else {
@@ -369,5 +341,4 @@ aspect PrettyPrintUtil {
     s.append(hex);
     return s.toString();
   }
-
 }

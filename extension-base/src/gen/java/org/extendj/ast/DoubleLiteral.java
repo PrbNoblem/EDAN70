@@ -1,24 +1,25 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -26,23 +27,11 @@ import java.io.DataInputStream;
  * Can store any value representable as an
  * IEEE 754 64-bit double-precision floating point number.
  * @ast node
- * @declaredat extendj/java7/grammar/Literals.ast:67
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:67
  * @production DoubleLiteral : {@link NumericLiteral};
 
  */
 public class DoubleLiteral extends NumericLiteral implements Cloneable {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:678
-   */
-  public void typeCheck() {
-    if (!isZero() && constant().doubleValue() == 0.0f) {
-      errorf("It is an error for nonzero floating-point %s to round to zero", getLITERAL());
-    }
-    if (constant().doubleValue() == Double.NEGATIVE_INFINITY || constant().doubleValue() == Double.POSITIVE_INFINITY) {
-      errorf("the floating-point literal \"%s\" is too large", getLITERAL());
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -70,23 +59,21 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
   public DoubleLiteral(beaver.Symbol p0) {
     setLITERAL(p0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return true;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -94,37 +81,27 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
     isZero_reset();
     constant_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:48
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:54
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public DoubleLiteral clone() throws CloneNotSupportedException {
     DoubleLiteral node = (DoubleLiteral) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public DoubleLiteral copy() {
     try {
       DoubleLiteral node = (DoubleLiteral) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -138,8 +115,9 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:80
+   * @declaredat ASTNode:64
    */
+  @Deprecated
   public DoubleLiteral fullCopy() {
     return treeCopyNoTransform();
   }
@@ -148,14 +126,14 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:89
+   * @declaredat ASTNode:74
    */
   public DoubleLiteral treeCopyNoTransform() {
     DoubleLiteral tree = (DoubleLiteral) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -169,18 +147,26 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:109
+   * @declaredat ASTNode:94
    */
   public DoubleLiteral treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    DoubleLiteral tree = (DoubleLiteral) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:116
+  /** @apilevel internal 
+   * @declaredat ASTNode:108
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_LITERAL == ((DoubleLiteral)node).tokenString_LITERAL);    
+    return super.is$Equal(node) && (tokenString_LITERAL == ((DoubleLiteral) node).tokenString_LITERAL);    
   }
   /**
    * Replaces the lexeme LITERAL.
@@ -196,7 +182,7 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
    * @apilevel internal
    */
   public void setLITERAL(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setLITERAL is only valid for String lexemes");
     tokenString_LITERAL = (String)symbol.value;
     LITERALstart = symbol.getStart();
@@ -214,81 +200,78 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
   /**
    * Defer pretty printing to superclass.
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:138
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:138
    */
     public void prettyPrint(PrettyPrinter out) {
     super.prettyPrint(out);
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = typeDouble();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isZero_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isZero_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isZero_reset() {
-    isZero_computed = false;
+    isZero_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isZero_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isZero_value;
+
+  /**
+   * @return true if this floating point literal is equivalent to a zero literal
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:60")
   public boolean isZero() {
-    if(isZero_computed) {
+    ASTNode$State state = state();
+    if (isZero_computed == ASTNode$State.NON_CYCLE || isZero_computed == state().cycle()) {
       return isZero_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isZero_value = isZero_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      isZero_computed = true;
+    if (state().inCircle()) {
+      isZero_computed = state().cycle();
+    
     } else {
+      isZero_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isZero_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean isZero_compute() {
       for (int i = 0; i < digits.length(); i++) {
         char c = Character.toLowerCase(digits.charAt(i));
@@ -301,64 +284,108 @@ public class DoubleLiteral extends NumericLiteral implements Cloneable {
       }
       return true;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean constant_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Constant constant_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void constant_reset() {
-    constant_computed = false;
+    constant_computed = null;
     constant_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle constant_computed = null;
+
+  /** @apilevel internal */
+  protected Constant constant_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
   public Constant constant() {
-    if(constant_computed) {
+    ASTNode$State state = state();
+    if (constant_computed == ASTNode$State.NON_CYCLE || constant_computed == state().cycle()) {
       return constant_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     constant_value = constant_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      constant_computed = true;
+    if (state().inCircle()) {
+      constant_computed = state().cycle();
+    
     } else {
+      constant_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return constant_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Constant constant_compute() {
       try {
         return Constant.create(Double.parseDouble(getDigits()));
-      }
-      catch (NumberFormatException e) {
+      } catch (NumberFormatException e) {
         Constant c = Constant.create(0.0d);
         c.error = true;
         return c;
       }
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * Utility attribute for literal rewriting.
+   * Any of the NumericLiteral subclasses have already
+   * been rewritten and/or parsed, and should not be
+   * rewritten again.
+   * 
+   * @return true if this literal is a "raw", not-yet-parsed NumericLiteral
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364")
   public boolean needsRewrite() {
-    ASTNode$State state = state();
     boolean needsRewrite_value = false;
-
     return needsRewrite_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:778
+    if (!isZero() && constant().doubleValue() == 0.0f) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:783
+    if (constant().doubleValue() == Double.NEGATIVE_INFINITY
+              || constant().doubleValue() == Double.POSITIVE_INFINITY) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!isZero() && constant().doubleValue() == 0.0f) {
+      collection.add(errorf("It is an error for nonzero floating-point %s to round to zero", getLITERAL()));
+    }
+    if (constant().doubleValue() == Double.NEGATIVE_INFINITY
+              || constant().doubleValue() == Double.POSITIVE_INFINITY) {
+      collection.add(errorf("the floating-point literal \"%s\" is too large", getLITERAL()));
+    }
   }
 }

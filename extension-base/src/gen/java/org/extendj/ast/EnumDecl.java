@@ -1,199 +1,39 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Enums.ast:1
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Enums.ast:1
  * @production EnumDecl : {@link ClassDecl} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">[SuperClass:{@link Access}]</span> <span class="component">Implements:{@link Access}*</span> <span class="component">{@link BodyDecl}*</span>;
 
  */
 public class EnumDecl extends ClassDecl implements Cloneable {
   /**
+   * Not implemented using generated pretty-print code because we have to separate
+   * enum constants and enum body declarations.
    * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:68
-   */
-  public void typeCheck() {
-    super.typeCheck();
-    for (Iterator iter = memberMethods("finalize").iterator(); iter.hasNext(); ) {
-      MethodDecl m = (MethodDecl) iter.next();
-      if (m.getNumParameter() == 0 && m.hostType() == this) {
-        error("an enum may not declare a finalizer");
-      }
-    }
-    checkEnum(this);
-  }
-  /**
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:105
-   */
-  private boolean done = false;
-  /**
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:106
-   */
-  private boolean done() {
-    if (done) {
-      return true;
-    }
-    done = true;
-    return false;
-  }
-  /**
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:354
-   */
-  private void addValues() {
-    int numConstants = enumConstants().size();
-    List initValues = new List();
-    for (Iterator iter = enumConstants().iterator(); iter.hasNext(); ) {
-      EnumConstant c = (EnumConstant) iter.next();
-      initValues.add(c.createBoundFieldAccess());
-    }
-    FieldDeclaration values = new FieldDeclaration(
-      new Modifiers(new List().add(
-        new Modifier("private")).add(
-        new Modifier("static")).add(
-        new Modifier("final")).add(
-        new Modifier("synthetic"))
-      ),
-      arrayType().createQualifiedAccess(),
-      "$VALUES",
-      new Opt(
-          new ArrayCreationExpr(
-            new ArrayTypeWithSizeAccess(
-              createQualifiedAccess(),
-              Literal.buildIntegerLiteral(enumConstants().size())
-            ),
-            new Opt(
-              new ArrayInit(
-                initValues
-              )
-            )
-          )
-      )
-    );
-    addBodyDecl(values);
-    // public static final Test[] values() { return (Test[])$VALUES.clone(); }
-    addBodyDecl(
-      new MethodDecl(
-        new Modifiers(new List().add(
-          new Modifier("public")).add(
-          new Modifier("static")).add(
-          new Modifier("final")).add(
-          new Modifier("synthetic"))
-        ),
-        arrayType().createQualifiedAccess(),
-        "values",
-        new List(),
-        new List(),
-        new Opt(
-          new Block(
-            new List().add(
-              new ReturnStmt(
-                new Opt(
-                  new CastExpr(
-                    arrayType().createQualifiedAccess(),
-                    values.createBoundFieldAccess().qualifiesAccess(
-                      new MethodAccess(
-                        "clone",
-                        new List()
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-    // public static Test valueOf(String s) { return (Test) java.lang.Enum.valueOf(Test.class, s); }
-    addBodyDecl(
-      new MethodDecl(
-        new Modifiers(new List().add(
-          new Modifier("public")).add(
-          new Modifier("static")).add(
-          new Modifier("synthetic"))
-        ),
-        createQualifiedAccess(),
-        "valueOf",
-        new List().add(
-          new ParameterDeclaration(
-            new Modifiers(new List()),
-            typeString().createQualifiedAccess(),
-            "s"
-          )
-        ),
-        new List(),
-        new Opt(
-          new Block(
-            new List().add(
-              new ReturnStmt(
-                new Opt(
-                  new CastExpr(
-                    createQualifiedAccess(),
-                    lookupType("java.lang", "Enum").createQualifiedAccess().qualifiesAccess(
-                      new MethodAccess(
-                        "valueOf",
-                        new List().add(
-                          createQualifiedAccess().qualifiesAccess(new ClassAccess())
-                        ).add(
-                          new VarAccess(
-                            "s"
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-  }
-  /**
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:496
-   */
-  protected void checkEnum(EnumDecl enumDecl) {
-    for (int i = 0; i < getNumBodyDecl(); i++) {
-      if (getBodyDecl(i) instanceof ConstructorDecl) {
-        getBodyDecl(i).checkEnum(enumDecl);
-      } else if (getBodyDecl(i) instanceof InstanceInitializer) {
-        getBodyDecl(i).checkEnum(enumDecl);
-      } else if (getBodyDecl(i) instanceof FieldDeclaration) {
-        FieldDeclaration f = (FieldDeclaration) getBodyDecl(i);
-        if (!f.isStatic() && f.hasInit()) {
-          f.checkEnum(enumDecl);
-        }
-      }
-    }
-  }
-  /**
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:605
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:686
    */
   public void prettyPrint(PrettyPrinter out) {
     if (!docComment.isEmpty()) {
@@ -211,36 +51,31 @@ public class EnumDecl extends ClassDecl implements Cloneable {
       });
     }
     out.print(" {");
+    out.println();
+    out.indent(1);
+    out.pushIndentation();
+    boolean inConstantList = true;
     for (int i = 0; i < getNumBodyDecl(); i++) {
       BodyDecl d = getBodyDecl(i);
-      out.print(d);
       if (d instanceof EnumConstant) {
-        if (i + 1 < getNumBodyDecl() && !(getBodyDecl(i + 1) instanceof EnumConstant)) {
+        if (i > 0) {
+          out.print(",");
+          out.println();
+        }
+      } else if (!d.isSynthetic()) {
+        if (inConstantList) {
           out.println();
           out.print(";");
+          inConstantList = false;
         }
+        out.println();
+        out.println();
       }
+      out.print(d);
     }
+    out.popIndentation();
     out.println();
     out.print("}");
-  }
-  /**
-   * Check that the enum does not contain unimplemented abstract methods.
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:723
-   */
-  public void checkModifiers() {
-    super.checkModifiers();
-    if (!unimplementedMethods().isEmpty()) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("" + name() + " lacks implementations in one or more "
-          + "enum constants for the following methods:\n");
-      for (Iterator iter = unimplementedMethods().iterator(); iter.hasNext(); ) {
-        MethodDecl m = (MethodDecl) iter.next();
-        sb.append("  " + m.signature() + " in " + m.hostType().typeName() + "\n");
-      }
-      error(sb.toString());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -280,63 +115,58 @@ public class EnumDecl extends ClassDecl implements Cloneable {
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:32
+  /** @apilevel low-level 
+   * @declaredat ASTNode:30
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:38
+   * @declaredat ASTNode:36
    */
   public boolean mayHaveRewrite() {
-    return true;
+    return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:44
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     isStatic_reset();
     getSuperClassOpt_reset();
     getImplicitConstructorOpt_reset();
+    localFieldsMap_reset();
     enumConstants_reset();
+    methodsNameMap_reset();
+    valuesFieldDeclarator_reset();
+    implicitValuesField_reset();
+    implicitValuesMethod_reset();
+    implicitValueOfMethod_reset();
     unimplementedMethods_reset();
+    localMethodsSignatureMap_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:55
+  /** @apilevel internal 
+   * @declaredat ASTNode:56
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:61
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:67
+  /** @apilevel internal 
+   * @declaredat ASTNode:60
    */
   public EnumDecl clone() throws CloneNotSupportedException {
     EnumDecl node = (EnumDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:74
+  /** @apilevel internal 
+   * @declaredat ASTNode:65
    */
   public EnumDecl copy() {
     try {
       EnumDecl node = (EnumDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -350,8 +180,9 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:93
+   * @declaredat ASTNode:84
    */
+  @Deprecated
   public EnumDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -360,7 +191,7 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:102
+   * @declaredat ASTNode:94
    */
   public EnumDecl treeCopyNoTransform() {
     EnumDecl tree = (EnumDecl) copy();
@@ -373,7 +204,7 @@ public class EnumDecl extends ClassDecl implements Cloneable {
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -387,18 +218,32 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:128
+   * @declaredat ASTNode:120
    */
   public EnumDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    EnumDecl tree = (EnumDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 3:
+        case 4:
+          tree.children[i] = new Opt();
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:135
+  /** @apilevel internal 
+   * @declaredat ASTNode:140
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((EnumDecl)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((EnumDecl) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -440,7 +285,7 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -503,11 +348,10 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addImplements(Access node) {
-    List<Access> list = (parent == null || state == null) ? getImplementsListNoTransform() : getImplementsList();
+    List<Access> list = (parent == null) ? getImplementsListNoTransform() : getImplementsList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addImplementsNoTransform(Access node) {
     List<Access> list = getImplementsListNoTransform();
@@ -531,7 +375,6 @@ public class EnumDecl extends ClassDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Implements")
   public List<Access> getImplementsList() {
     List<Access> list = (List<Access>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -542,6 +385,13 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    */
   public List<Access> getImplementsListNoTransform() {
     return (List<Access>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the Implements list without
+   * triggering rewrites.
+   */
+  public Access getImplementsNoTransform(int i) {
+    return (Access) getImplementsListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Implements list.
@@ -608,11 +458,10 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -636,7 +485,6 @@ public class EnumDecl extends ClassDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -647,6 +495,13 @@ public class EnumDecl extends ClassDecl implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -756,187 +611,224 @@ public class EnumDecl extends ClassDecl implements Cloneable {
   protected int getSuperClassOptChildPosition() {
     return 4;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199")
   public boolean isValidAnnotationMethodReturnType() {
-    ASTNode$State state = state();
     boolean isValidAnnotationMethodReturnType_value = true;
-
     return isValidAnnotationMethodReturnType_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:38
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:38")
   public boolean isEnumDecl() {
-    ASTNode$State state = state();
     boolean isEnumDecl_value = true;
-
     return isEnumDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isStatic_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isStatic_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isStatic_reset() {
-    isStatic_computed = false;
+    isStatic_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isStatic_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isStatic_value;
+
+  /**
+   * @attribute syn
+   * @aspect Modifiers
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:239
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:239")
   public boolean isStatic() {
-    if(isStatic_computed) {
+    ASTNode$State state = state();
+    if (isStatic_computed == ASTNode$State.NON_CYCLE || isStatic_computed == state().cycle()) {
       return isStatic_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isStatic_value = isNestedType();
-    if (isFinal && num == state().boundariesCrossed) {
-      isStatic_computed = true;
+    if (state().inCircle()) {
+      isStatic_computed = state().cycle();
+    
     } else {
+      isStatic_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isStatic_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeHierarchyCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:354
    */
-  protected boolean getSuperClassOpt_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Opt getSuperClassOpt_value;
-  /**
-   * @apilevel internal
-   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:354")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>(super.typeProblems());
+        for (MethodDecl m : memberMethods("finalize")) {
+          if (m.getNumParameter() == 0 && m.hostType() == this) {
+            problems.add(error("an enum may not declare a finalizer"));
+          }
+        }
+        return problems;
+      }
+  }
+  /** @apilevel internal */
   private void getSuperClassOpt_reset() {
     getSuperClassOpt_computed = false;
+    
     getSuperClassOpt_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Opt getSuperClassOpt() {
-    if(getSuperClassOpt_computed) {
-      return (Opt) getChild(getSuperClassOptChildPosition());
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    getSuperClassOpt_value = getSuperClassOpt_compute();
-    setChild(getSuperClassOpt_value, getSuperClassOptChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getSuperClassOpt_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
+  /** @apilevel internal */
+  protected boolean getSuperClassOpt_computed = false;
 
-    Opt node = (Opt) this.getChild(getSuperClassOptChildPosition());
+  /** @apilevel internal */
+  protected Opt<Access> getSuperClassOpt_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:87")
+  public Opt<Access> getSuperClassOpt() {
+    ASTNode$State state = state();
+    if (getSuperClassOpt_computed) {
+      return (Opt<Access>) getChild(getSuperClassOptChildPosition());
+    }
+    state().enterLazyAttribute();
+    getSuperClassOpt_value = new Opt<Access>(new ParTypeAccess(
+              new TypeAccess("java.lang", "Enum"),
+              new List<Access>(createQualifiedAccess())));
+    setChild(getSuperClassOpt_value, getSuperClassOptChildPosition());
+    getSuperClassOpt_computed = true;
+    state().leaveLazyAttribute();
+    Opt<Access> node = (Opt<Access>) this.getChild(getSuperClassOptChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
-  private Opt getSuperClassOpt_compute() {
-      return new Opt(
-        new ParTypeAccess(
-          new TypeAccess(
-            "java.lang",
-            "Enum"
-          ),
-          new List().add(createQualifiedAccess())
-        )
-      );
-    }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getImplicitConstructorOpt_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Opt<ConstructorDecl> getImplicitConstructorOpt_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void getImplicitConstructorOpt_reset() {
     getImplicitConstructorOpt_computed = false;
+    
     getImplicitConstructorOpt_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean getImplicitConstructorOpt_computed = false;
+
+  /** @apilevel internal */
+  protected Opt<ConstructorDecl> getImplicitConstructorOpt_value;
+
+  /**
+   * Implicit constructor for enum type.
+   * @attribute syn nta
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:104
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:104")
   public Opt<ConstructorDecl> getImplicitConstructorOpt() {
-    if(getImplicitConstructorOpt_computed) {
+    ASTNode$State state = state();
+    if (getImplicitConstructorOpt_computed) {
       return (Opt<ConstructorDecl>) getChild(getImplicitConstructorOptChildPosition());
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     getImplicitConstructorOpt_value = getImplicitConstructorOpt_compute();
     setChild(getImplicitConstructorOpt_value, getImplicitConstructorOptChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getImplicitConstructorOpt_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    getImplicitConstructorOpt_computed = true;
+    state().leaveLazyAttribute();
     Opt<ConstructorDecl> node = (Opt<ConstructorDecl>) this.getChild(getImplicitConstructorOptChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Opt<ConstructorDecl> getImplicitConstructorOpt_compute() {
       if (needsImplicitConstructor()) {
-        List parameterList = new List();
-        parameterList.add(
-            new ParameterDeclaration(new TypeAccess("java.lang", "String"), "p0")
-        );
-        parameterList.add(
-            new ParameterDeclaration(new TypeAccess("int"), "p1")
-        );
+        List<ParameterDeclaration> parameters = new List<ParameterDeclaration>(
+            new ParameterDeclaration(new TypeAccess("java.lang", "String"), "p0"),
+            new ParameterDeclaration(new TypeAccess("int"), "p1"));
         ConstructorDecl constructor = new ConstructorDecl(
-            new Modifiers(new List()
-              .add(new Modifier("private"))
-              .add(new Modifier("synthetic"))
-              ),
+            new Modifiers(new List<Modifier>(new Modifier("synthetic"))),
             name(),
-            parameterList,
-            new List(),
-            new Opt(
-              new ExprStmt(
+            parameters,
+            new List<Access>(),
+            new Opt<Stmt>(new ExprStmt(
                 new SuperConstructorAccess(
-                  "super",
-                  new List()
-                  .add(new VarAccess("p0"))
-                  .add(new VarAccess("p1"))
-                  )
-                )
-              ),
-            new Block(new List())
-            );
+                    "super",
+                    new List<Expr>(
+                        new VarAccess("p0"),
+                        new VarAccess("p1"))))),
+            new Block());
         return new Opt<ConstructorDecl>(constructor);
       } else {
         return new Opt<ConstructorDecl>();
       }
     }
+  /** @apilevel internal */
+  private void localFieldsMap_reset() {
+    localFieldsMap_computed = null;
+    localFieldsMap_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle localFieldsMap_computed = null;
+
+  /** @apilevel internal */
+  protected Map<String, SimpleSet<Variable>> localFieldsMap_value;
+
+  /**
+   * @attribute syn
+   * @aspect Fields
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:390
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Fields", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:390")
+  public Map<String, SimpleSet<Variable>> localFieldsMap() {
+    ASTNode$State state = state();
+    if (localFieldsMap_computed == ASTNode$State.NON_CYCLE || localFieldsMap_computed == state().cycle()) {
+      return localFieldsMap_value;
+    }
+    localFieldsMap_value = localFieldsMap_compute();
+    if (state().inCircle()) {
+      localFieldsMap_computed = state().cycle();
+    
+    } else {
+      localFieldsMap_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return localFieldsMap_value;
+  }
+  /** @apilevel internal */
+  private Map<String, SimpleSet<Variable>> localFieldsMap_compute() {
+      Map<String, SimpleSet<Variable>> map = new HashMap<String, SimpleSet<Variable>>(
+          super.localFieldsMap());
+      for (BodyDecl decl : getBodyDeclList()) {
+        if (decl instanceof EnumConstant) {
+          EnumConstant constant = (EnumConstant) decl;
+          putSimpleSetElement(map, constant.name(), constant);
+        }
+      }
+      putSimpleSetElement(map, "$VALUES", valuesFieldDeclarator());
+      return map;
+    }
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat extendj/java4/frontend/Modifiers.jrag:250
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:244
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:244")
   public boolean isFinal() {
-    ASTNode$State state = state();
-    try {
-        for (Iterator iter = enumConstants().iterator(); iter.hasNext(); ) {
-          EnumConstant c = (EnumConstant) iter.next();
+    {
+        for (EnumConstant c : enumConstants()) {
           ClassInstanceExpr e = (ClassInstanceExpr) c.getInit();
           if (e.hasTypeDecl()) {
             return false;
@@ -944,64 +836,314 @@ public class EnumDecl extends ClassDecl implements Cloneable {
         }
         return true;
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean enumConstants_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected ArrayList enumConstants_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void enumConstants_reset() {
-    enumConstants_computed = false;
+    enumConstants_computed = null;
     enumConstants_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public ArrayList enumConstants() {
-    if(enumConstants_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle enumConstants_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<EnumConstant> enumConstants_value;
+
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:405
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:405")
+  public Collection<EnumConstant> enumConstants() {
+    ASTNode$State state = state();
+    if (enumConstants_computed == ASTNode$State.NON_CYCLE || enumConstants_computed == state().cycle()) {
       return enumConstants_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     enumConstants_value = enumConstants_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      enumConstants_computed = true;
+    if (state().inCircle()) {
+      enumConstants_computed = state().cycle();
+    
     } else {
+      enumConstants_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return enumConstants_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private ArrayList enumConstants_compute() {
-      ArrayList list = new ArrayList();
+  /** @apilevel internal */
+  private Collection<EnumConstant> enumConstants_compute() {
+      Collection<EnumConstant> list = new ArrayList<EnumConstant>();
       for (int i = 0; i < getNumBodyDecl(); i++) {
         if (getBodyDecl(i).isEnumConstant()) {
-          list.add(getBodyDecl(i));
+          list.add((EnumConstant) getBodyDecl(i));
         }
       }
       return list;
     }
+  /** @apilevel internal */
+  private void methodsNameMap_reset() {
+    methodsNameMap_computed = null;
+    methodsNameMap_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle methodsNameMap_computed = null;
+
+  /** @apilevel internal */
+  protected Map<String, Collection<MethodDecl>> methodsNameMap_value;
+
+  /**
+   * @return map from method name to method declarations
+   * @attribute syn
+   * @aspect MemberMethods
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:343
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MemberMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:343")
+  public Map<String, Collection<MethodDecl>> methodsNameMap() {
+    ASTNode$State state = state();
+    if (methodsNameMap_computed == ASTNode$State.NON_CYCLE || methodsNameMap_computed == state().cycle()) {
+      return methodsNameMap_value;
+    }
+    methodsNameMap_value = methodsNameMap_compute();
+    if (state().inCircle()) {
+      methodsNameMap_computed = state().cycle();
+    
+    } else {
+      methodsNameMap_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return methodsNameMap_value;
+  }
+  /** @apilevel internal */
+  private Map<String, Collection<MethodDecl>> methodsNameMap_compute() {
+      Map<String, Collection<MethodDecl>> map = new HashMap<String, Collection<MethodDecl>>();
+      // Copy map entries manually to avoid aliasing the collections.
+      for (Map.Entry<String, Collection<MethodDecl>> entry : super.methodsNameMap().entrySet()) {
+        map.put(entry.getKey(), new ArrayList<MethodDecl>(entry.getValue()));
+      }
+      addMethodToMap(implicitValuesMethod(), map);
+      addMethodToMap(implicitValueOfMethod(), map);
+      return map;
+    }
+  /** @apilevel internal */
+  private void valuesFieldDeclarator_reset() {
+    valuesFieldDeclarator_computed = null;
+    valuesFieldDeclarator_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle valuesFieldDeclarator_computed = null;
+
+  /** @apilevel internal */
+  protected FieldDeclarator valuesFieldDeclarator_value;
+
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:452
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:452")
+  public FieldDeclarator valuesFieldDeclarator() {
+    ASTNode$State state = state();
+    if (valuesFieldDeclarator_computed == ASTNode$State.NON_CYCLE || valuesFieldDeclarator_computed == state().cycle()) {
+      return valuesFieldDeclarator_value;
+    }
+    valuesFieldDeclarator_value = implicitValuesField().getDeclarator(0);
+    if (state().inCircle()) {
+      valuesFieldDeclarator_computed = state().cycle();
+    
+    } else {
+      valuesFieldDeclarator_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return valuesFieldDeclarator_value;
+  }
+  /** @apilevel internal */
+  private void implicitValuesField_reset() {
+    implicitValuesField_computed = false;
+    
+    implicitValuesField_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean implicitValuesField_computed = false;
+
+  /** @apilevel internal */
+  protected FieldDecl implicitValuesField_value;
+
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:455
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:455")
+  public FieldDecl implicitValuesField() {
+    ASTNode$State state = state();
+    if (implicitValuesField_computed) {
+      return implicitValuesField_value;
+    }
+    state().enterLazyAttribute();
+    implicitValuesField_value = implicitValuesField_compute();
+    implicitValuesField_value.setParent(this);
+    implicitValuesField_computed = true;
+    state().leaveLazyAttribute();
+    return implicitValuesField_value;
+  }
+  /** @apilevel internal */
+  private FieldDecl implicitValuesField_compute() {
+      int numConstants = enumConstants().size();
+      List initValues = new List();
+      for (EnumConstant c : enumConstants()) {
+        initValues.add(c.createBoundAccess());
+      }
+      FieldDeclarator values = new FieldDeclarator(
+          "$VALUES",
+          new List<Dims>(),
+          new Opt<Expr>(
+              new ArrayCreationExpr(
+                new ArrayTypeWithSizeAccess(
+                  createQualifiedAccess(),
+                  Literal.buildIntegerLiteral(enumConstants().size())),
+                new Opt(
+                  new ArrayInit(
+                    initValues)))));
+      return new FieldDecl(
+          new Modifiers(new List<Modifier>(
+              new Modifier("private"),
+              new Modifier("static"),
+              new Modifier("final"),
+              new Modifier("synthetic"))),
+          arrayType().createQualifiedAccess(),
+          new List<FieldDeclarator>(values));
+    }
+  /** @apilevel internal */
+  private void implicitValuesMethod_reset() {
+    implicitValuesMethod_computed = false;
+    
+    implicitValuesMethod_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean implicitValuesMethod_computed = false;
+
+  /** @apilevel internal */
+  protected MethodDecl implicitValuesMethod_value;
+
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:483
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:483")
+  public MethodDecl implicitValuesMethod() {
+    ASTNode$State state = state();
+    if (implicitValuesMethod_computed) {
+      return implicitValuesMethod_value;
+    }
+    state().enterLazyAttribute();
+    implicitValuesMethod_value = implicitValuesMethod_compute();
+    implicitValuesMethod_value.setParent(this);
+    implicitValuesMethod_computed = true;
+    state().leaveLazyAttribute();
+    return implicitValuesMethod_value;
+  }
+  /** @apilevel internal */
+  private MethodDecl implicitValuesMethod_compute() {
+      return
+        new MethodDecl(
+          new Modifiers(new List<Modifier>(
+            new Modifier("public"),
+            new Modifier("static"),
+            new Modifier("final"),
+            new Modifier("synthetic"))),
+          arrayType().createQualifiedAccess(),
+          "values",
+          new List(),
+          new List(),
+          new Opt(
+            new Block(
+              new List().add(
+                new ReturnStmt(
+                  new Opt(
+                    new CastExpr(
+                      arrayType().createQualifiedAccess(),
+                      valuesFieldDeclarator().createBoundAccess().qualifiesAccess(
+                        new MethodAccess(
+                          "clone",
+                          new List())))))))));
+    }
+  /** @apilevel internal */
+  private void implicitValueOfMethod_reset() {
+    implicitValueOfMethod_computed = false;
+    
+    implicitValueOfMethod_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean implicitValueOfMethod_computed = false;
+
+  /** @apilevel internal */
+  protected MethodDecl implicitValueOfMethod_value;
+
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:509
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:509")
+  public MethodDecl implicitValueOfMethod() {
+    ASTNode$State state = state();
+    if (implicitValueOfMethod_computed) {
+      return implicitValueOfMethod_value;
+    }
+    state().enterLazyAttribute();
+    implicitValueOfMethod_value = implicitValueOfMethod_compute();
+    implicitValueOfMethod_value.setParent(this);
+    implicitValueOfMethod_computed = true;
+    state().leaveLazyAttribute();
+    return implicitValueOfMethod_value;
+  }
+  /** @apilevel internal */
+  private MethodDecl implicitValueOfMethod_compute() {
+      return
+        new MethodDecl(
+          new Modifiers(new List<Modifier>(
+              new Modifier("public"),
+              new Modifier("static"),
+              new Modifier("synthetic"))),
+          createQualifiedAccess(),
+          "valueOf",
+          new List().add(
+            new ParameterDeclaration(
+              new Modifiers(new List()),
+              typeString().createQualifiedAccess(),
+              "s")),
+          new List(),
+          new Opt(
+            new Block(
+              new List().add(
+                new ReturnStmt(
+                  new Opt(
+                    new CastExpr(
+                      createQualifiedAccess(),
+                      lookupType("java.lang", "Enum").createQualifiedAccess().qualifiesAccess(
+                        new MethodAccess(
+                          "valueOf",
+                          new List().add(
+                            createQualifiedAccess().qualifiesAccess(new ClassAccess())
+                          ).add(
+                            new VarAccess(
+                              "s")))))))))));
+    }
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat extendj/java4/frontend/Modifiers.jrag:245
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:237
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:237")
   public boolean isAbstract() {
-    ASTNode$State state = state();
-    try {
+    {
         for (int i = 0; i < getNumBodyDecl(); i++) {
           if (getBodyDecl(i) instanceof MethodDecl) {
             MethodDecl m = (MethodDecl) getBodyDecl(i);
@@ -1012,61 +1154,55 @@ public class EnumDecl extends ClassDecl implements Cloneable {
         }
         return false;
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean unimplementedMethods_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Collection unimplementedMethods_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void unimplementedMethods_reset() {
-    unimplementedMethods_computed = false;
+    unimplementedMethods_computed = null;
     unimplementedMethods_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Collection unimplementedMethods() {
-    if(unimplementedMethods_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle unimplementedMethods_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<MethodDecl> unimplementedMethods_value;
+
+  /**
+   * @attribute syn
+   * @aspect Modifiers
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:35
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:35")
+  public Collection<MethodDecl> unimplementedMethods() {
+    ASTNode$State state = state();
+    if (unimplementedMethods_computed == ASTNode$State.NON_CYCLE || unimplementedMethods_computed == state().cycle()) {
       return unimplementedMethods_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     unimplementedMethods_value = unimplementedMethods_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      unimplementedMethods_computed = true;
+    if (state().inCircle()) {
+      unimplementedMethods_computed = state().cycle();
+    
     } else {
+      unimplementedMethods_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return unimplementedMethods_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private Collection unimplementedMethods_compute() {
+  /** @apilevel internal */
+  private Collection<MethodDecl> unimplementedMethods_compute() {
       Collection<MethodDecl> methods = new LinkedList<MethodDecl>();
       for (Iterator iter = interfacesMethodsIterator(); iter.hasNext(); ) {
         MethodDecl method = (MethodDecl) iter.next();
-        SimpleSet set = (SimpleSet) localMethodsSignature(method.signature());
-        if (set.size() == 1) {
-          MethodDecl n = (MethodDecl) set.iterator().next();
+        SimpleSet<MethodDecl> set = localMethodsSignature(method.signature());
+        if (set.isSingleton()) {
+          MethodDecl n = set.singletonValue();
           if (!n.isAbstract()) {
             continue;
           }
         }
         boolean implemented = false;
-        set = (SimpleSet) ancestorMethods(method.signature());
-        for (Iterator i2 = set.iterator(); i2.hasNext(); ) {
-          MethodDecl n = (MethodDecl) i2.next();
+        set = ancestorMethods(method.signature());
+        for (MethodDecl n : set) {
           if (!n.isAbstract()) {
             implemented = true;
             break;
@@ -1084,15 +1220,15 @@ public class EnumDecl extends ClassDecl implements Cloneable {
         }
       }
   
-      Collection unimplemented = new ArrayList();
+      Collection<MethodDecl> unimplemented = new ArrayList<MethodDecl>();
       for (MethodDecl method : methods) {
         if (enumConstants().isEmpty()) {
           unimplemented.add(method);
           continue;
         }
         boolean missing = false;
-        for (Iterator iter = enumConstants().iterator(); iter.hasNext(); ) {
-          if (!((EnumConstant) iter.next()).implementsMethod(method)) {
+        for (EnumConstant c : enumConstants()) {
+          if (!c.implementsMethod(method)) {
             missing = true;
             break;
           }
@@ -1105,74 +1241,173 @@ public class EnumDecl extends ClassDecl implements Cloneable {
       return unimplemented;
     }
   /**
+   * Check that the enum does not contain unimplemented abstract methods.
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:793
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:793")
+  public Collection<Problem> modifierProblems() {
+    {
+        if (!unimplementedMethods().isEmpty()) {
+          StringBuilder sb = new StringBuilder();
+          sb.append("" + name() + " lacks implementations in one or more "
+              + "enum constants for the following methods:\n");
+          for (MethodDecl m : unimplementedMethods()) {
+            sb.append("  " + m.signature() + " in " + m.hostType().typeName() + "\n");
+          }
+          return Collections.singletonList(error(sb.toString()));
+        }
+        return Collections.emptyList();
+      }
+  }
+  /** @apilevel internal */
+  private void localMethodsSignatureMap_reset() {
+    localMethodsSignatureMap_computed = null;
+    localMethodsSignatureMap_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle localMethodsSignatureMap_computed = null;
+
+  /** @apilevel internal */
+  protected Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap_value;
+
+  /**
+   * @return a mapping of method signature to method declaration
+   * @attribute syn
+   * @aspect MemberMethods
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:410
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MemberMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:410")
+  public Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap() {
+    ASTNode$State state = state();
+    if (localMethodsSignatureMap_computed == ASTNode$State.NON_CYCLE || localMethodsSignatureMap_computed == state().cycle()) {
+      return localMethodsSignatureMap_value;
+    }
+    localMethodsSignatureMap_value = localMethodsSignatureMap_compute();
+    if (state().inCircle()) {
+      localMethodsSignatureMap_computed = state().cycle();
+    
+    } else {
+      localMethodsSignatureMap_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return localMethodsSignatureMap_value;
+  }
+  /** @apilevel internal */
+  private Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap_compute() {
+      Map<String, SimpleSet<MethodDecl>> map = new HashMap<String, SimpleSet<MethodDecl>>(
+          super.localMethodsSignatureMap());
+      putSimpleSetElement(map, implicitValuesMethod().signature(), implicitValuesMethod());
+      putSimpleSetElement(map, implicitValueOfMethod().signature(), implicitValueOfMethod());
+      return map;
+    }
+  /**
    * @attribute inh
    * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:466
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:541
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:541")
   public TypeDecl typeString() {
-    ASTNode$State state = state();
-    TypeDecl typeString_value = getParent().Define_TypeDecl_typeString(this, null);
-
+    TypeDecl typeString_value = getParent().Define_typeString(this, null);
     return typeString_value;
   }
   /**
-   * @declaredat extendj/java5/frontend/Enums.jrag:55
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:438
    * @apilevel internal
    */
-  public boolean Define_boolean_mayBeAbstract(ASTNode caller, ASTNode child) {
-    if (caller == getModifiersNoTransform()) {
+  public boolean Define_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:60
       return false;
     }
     else {
-      return super.Define_boolean_mayBeAbstract(caller, child);
+      return super.Define_mayBeAbstract(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/Enums.jrag:62
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:436
    * @apilevel internal
    */
-  public boolean Define_boolean_mayBeStatic(ASTNode caller, ASTNode child) {
-    if (caller == getModifiersNoTransform()) {
+  public boolean Define_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:67
       return isNestedType();
     }
     else {
-      return super.Define_boolean_mayBeStatic(caller, child);
+      return super.Define_mayBeStatic(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/Enums.jrag:335
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:130
    * @apilevel internal
    */
-  public boolean Define_boolean_mayBeFinal(ASTNode caller, ASTNode child) {
-    if (caller == getModifiersNoTransform()) {
+  public boolean Define_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getImplicitConstructorOptNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:134
+      return false;
+    }
+    else if (_callerNode == getBodyDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:132
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return true;
+    }
+    else {
+      return getParent().Define_isOriginalEnumConstructor(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:437
+   * @apilevel internal
+   */
+  public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:403
       return false;
     }
     else {
-      return super.Define_boolean_mayBeFinal(caller, child);
+      return super.Define_mayBeFinal(_callerNode, _childNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at @declaredat extendj/java5/frontend/Enums.jrag:116
-    if (!done()) {
-      state().duringEnums++;
-      ASTNode result = rewriteRule0();
-      state().duringEnums--;
-      return result;
-    }
     return super.rewriteTo();
   }
-  /**
-   * @declaredat @declaredat extendj/java5/frontend/Enums.jrag:116
-   * @apilevel internal
-   */
-  private EnumDecl rewriteRule0() {
-{
-      transformEnumConstructors();
-      addValues(); // Add the values() and getValue(String s) methods
-      return this;
-    }  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:788
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : modifierProblems()) {
+      collection.add(value);
+    }
+  }
 }

@@ -5,200 +5,186 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
- * @declaredat ASTNode$State:4
+ * @declaredat ASTNode$State:2
  */
 public class ASTNode$State extends java.lang.Object {
   
-
-  /**
-   * @apilevel internal
-   */
-  public boolean INTERMEDIATE_VALUE = false;
-
-  
-
-  /**
-   * @apilevel internal
-   */
-  public boolean IN_CIRCLE = false;
-
-  
-
-  /**
-   * @apilevel internal
-   */
-  public int CIRCLE_INDEX = 1;
-
-  
-
-  /**
-   * @apilevel internal
-   */
-  public boolean CHANGE = false;
-
-  
-
-  /**
-   * @apilevel internal
-   */
-  public boolean RESET_CYCLE = false;
-
-  
-
-  /**
-   * @apilevel internal
-   */
-  static public class CircularValue {
+  /** @apilevel internal */
+  protected static class CircularValue {
     Object value;
-    int visited = -1;
+    Cycle cycle;
   }
-
-  
-  /**
-   * @apilevel internal
-   */
-  public static final int REWRITE_CHANGE = 1;
 
   
 
   /**
+   * Instances of this class are used to uniquely identify circular evaluation cycles.
    * @apilevel internal
    */
-  public static final int REWRITE_NOCHANGE = 2;
+  protected static class Cycle {
+  }
+
+  
+
+  /** The cycle ID used outside of circular evaluation. */
+  public static final Cycle NON_CYCLE = new Cycle();
 
   
 
   /**
+   * Tracks the state of the current circular evaluation. This class defines a
+   * stack structure where the next element on the stack is pointed to by the
+   * {@code next} field.
    * @apilevel internal
    */
-  public static final int REWRITE_INTERRUPT = 3;
+  protected static class CircleState {
+    final CircleState next;
+    boolean inCircle = false;
+    boolean change = false;
 
-  
+    /** Evaluation depth of lazy attributes. */
+    int lazyAttribute = 0;
 
-  public int boundariesCrossed = 0;
+    /** Cycle ID of the latest cycle in this circular evaluation. */
+    Cycle cycle = NON_CYCLE;
 
-  
-
-  // state code
-  private int[] stack;
-
-  
-
-  private int pos;
-
-  
-
-  public ASTNode$State() {
-    stack = new int[64];
-    pos = 0;
+    protected CircleState(CircleState next) {
+      this.next = next;
+    }
   }
 
   
 
-  private void ensureSize(int size) {
-    if(size < stack.length)
-      return;
-    int[] newStack = new int[stack.length * 2];
-    System.arraycopy(stack, 0, newStack, 0, stack.length);
-    stack = newStack;
+  /** Sentinel circle state representing non-circular evaluation. */
+  private static final CircleState CIRCLE_BOTTOM = new CircleState(null);
+
+  
+
+  /**
+   * Current circular state.
+   * @apilevel internal
+   */
+  private CircleState circle = CIRCLE_BOTTOM;
+
+  
+
+  /** @apilevel internal */
+  protected boolean inCircle() {
+    return circle.inCircle;
   }
 
   
 
-  public void push(int i) {
-    ensureSize(pos+1);
-    stack[pos++] = i;
+  /** @apilevel internal */
+  protected boolean calledByLazyAttribute() {
+    return circle.lazyAttribute > 0;
   }
 
   
 
-  public int pop() {
-    return stack[--pos];
+  /** @apilevel internal */
+  protected void enterLazyAttribute() {
+    circle.lazyAttribute += 1;
   }
 
   
 
-  public int peek() {
-    return stack[pos-1];
+  /** @apilevel internal */
+  protected void leaveLazyAttribute() {
+    circle.lazyAttribute -= 1;
   }
 
-  protected int duringBoundNames = 0;
+  
 
-  protected int duringNameResolution = 0;
+  /** @apilevel internal */
+  protected void enterCircle() {
+    CircleState next = new CircleState(circle);
+    next.inCircle = true;
+    circle = next;
+  }
 
-  protected int duringVariableDeclarationTransformation = 0;
+  
 
-  protected int duringJava7Literals = 0;
+  /** @apilevel internal */
+  protected void leaveCircle() {
+    circle = circle.next;
+  }
 
-  protected int duringDU = 0;
+  
 
-  protected int duringAnnotations = 0;
+  /** @apilevel internal */
+  protected Cycle nextCycle() {
+    Cycle cycle = new Cycle();
+    circle.cycle = cycle;
+    return cycle;
+  }
 
-  protected int duringEnums = 0;
+  
 
-  protected int duringGenericTypeVariables = 0;
+  /** @apilevel internal */
+  protected Cycle cycle() {
+    return circle.cycle;
+  }
 
-  protected int duringMethodReference = 0;
+  
+
+  /** @apilevel internal */
+  protected CircleState currentCircle() {
+    return circle;
+  }
+
+  
+
+
+  /** @apilevel internal */
+  protected void setChangeInCycle() {
+    circle.change = true;
+  }
+
+  
+
+  /** @apilevel internal */
+  protected boolean testAndClearChangeInCycle() {
+    boolean change = circle.change;
+    circle.change = false;
+    return change;
+  }
+
+  
+
+  /** @apilevel internal */
+  protected boolean changeInCycle() {
+    return circle.change;
+  }
+
+  
+
+
+  protected ASTNode$State() {
+  }
 
   public void reset() {
-    IN_CIRCLE = false;
-    CIRCLE_INDEX = 1;
-    CHANGE = false;
-    boundariesCrossed = 0;
-    if(duringBoundNames != 0) {
-      System.out.println("Warning: resetting duringBoundNames");
-      duringBoundNames = 0;
-    }
-    if(duringNameResolution != 0) {
-      System.out.println("Warning: resetting duringNameResolution");
-      duringNameResolution = 0;
-    }
-    if(duringVariableDeclarationTransformation != 0) {
-      System.out.println("Warning: resetting duringVariableDeclarationTransformation");
-      duringVariableDeclarationTransformation = 0;
-    }
-    if(duringJava7Literals != 0) {
-      System.out.println("Warning: resetting duringJava7Literals");
-      duringJava7Literals = 0;
-    }
-    if(duringDU != 0) {
-      System.out.println("Warning: resetting duringDU");
-      duringDU = 0;
-    }
-    if(duringAnnotations != 0) {
-      System.out.println("Warning: resetting duringAnnotations");
-      duringAnnotations = 0;
-    }
-    if(duringEnums != 0) {
-      System.out.println("Warning: resetting duringEnums");
-      duringEnums = 0;
-    }
-    if(duringGenericTypeVariables != 0) {
-      System.out.println("Warning: resetting duringGenericTypeVariables");
-      duringGenericTypeVariables = 0;
-    }
-    if(duringMethodReference != 0) {
-      System.out.println("Warning: resetting duringMethodReference");
-      duringMethodReference = 0;
-    }
-
+    // Reset circular evaluation state.
+    circle = CIRCLE_BOTTOM;
   }
 
 

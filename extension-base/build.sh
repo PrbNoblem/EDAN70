@@ -138,12 +138,10 @@ ${JASTADD} --package="org.extendj.ast" \
     'extendj/java7/grammar/TryWithResources.ast' \
     'extendj/java7/frontend/Constant.jadd' \
     'extendj/java7/frontend/PrettyPrint.jadd' \
-    'extendj/java7/frontend/Warnings.jadd' \
     'extendj/java7/frontend/Diamond.jrag' \
     'extendj/java7/frontend/Literals.jrag' \
     'extendj/java7/frontend/MultiCatch.jrag' \
     'extendj/java7/frontend/PreciseRethrow.jrag' \
-    'extendj/java7/frontend/PrettyPrint.jrag' \
     'extendj/java7/frontend/SafeVarargs.jrag' \
     'extendj/java7/frontend/StringsInSwitch.jrag' \
     'extendj/java7/frontend/SuppressWarnings.jrag' \

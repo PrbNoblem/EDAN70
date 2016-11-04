@@ -1,48 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:163
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:165
  * @production BitwiseExpr : {@link Binary};
 
  */
 public abstract class BitwiseExpr extends Binary implements Cloneable {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:227
-   */
-  public void typeCheck() {
-    TypeDecl left = getLeftOperand().type();
-    TypeDecl right = getRightOperand().type();
-    if (left.isIntegralType() && right.isIntegralType()) {
-      return;
-    } else if (left.isBoolean() && right.isBoolean()) {
-      return;
-    } else {
-      errorf("%s is not compatible with %s", left.typeName(), right.typeName());
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -66,45 +52,34 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public BitwiseExpr clone() throws CloneNotSupportedException {
     BitwiseExpr node = (BitwiseExpr) super.clone();
@@ -116,15 +91,16 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:62
+   * @declaredat ASTNode:48
    */
+  @Deprecated
   public abstract BitwiseExpr fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:69
+   * @declaredat ASTNode:56
    */
   public abstract BitwiseExpr treeCopyNoTransform();
   /**
@@ -133,7 +109,7 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:64
    */
   public abstract BitwiseExpr treeCopy();
   /**
@@ -188,43 +164,40 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
   public Expr getRightOperandNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = type_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl type_compute() {
       if (getLeftOperand().type().isIntegralType() && getRightOperand().type().isIntegralType()) {
         // 15.22.1
@@ -236,9 +209,50 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
       return unknownType();
     }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:264
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:264")
+  public Collection<Problem> typeProblems() {
+    {
+        TypeDecl left = getLeftOperand().type();
+        TypeDecl right = getRightOperand().type();
+        if (left.isIntegralType() && right.isIntegralType()) {
+          return Collections.emptyList();
+        } else if (left.isBoolean() && right.isBoolean()) {
+          return Collections.emptyList();
+        } else {
+          return Collections.singletonList(errorf("%s is not compatible with %s",
+              left.typeName(), right.typeName()));
+        }
+      }
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:262
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
   }
 }

@@ -1,43 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:27
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:40
  * @production WildcardExtendsType : {@link AbstractWildcardType} ::= <span class="component">{@link Access}</span>;
 
  */
 public class WildcardExtendsType extends AbstractWildcardType implements Cloneable {
-  /**
-   * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1070
-   */
-  public Access substitute(Parameterization parTypeDecl) {
-    if (!usesTypeVariable()) {
-      return super.substitute(parTypeDecl);
-    }
-    return new WildcardExtends(getAccess().type().substitute(parTypeDecl));
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -73,28 +64,28 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:29
+  /** @apilevel low-level 
+   * @declaredat ASTNode:27
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:35
+   * @declaredat ASTNode:33
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    involvesTypeParameters_reset();
+    memberFields_String_reset();
+    erasure_reset();
     usesTypeVariable_reset();
+    involvesTypeParameters_reset();
     subtype_TypeDecl_reset();
     containedIn_TypeDecl_reset();
     sameStructure_TypeDecl_reset();
@@ -102,37 +93,27 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
     strictSubtype_TypeDecl_reset();
     strictContainedIn_TypeDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:55
+  /** @apilevel internal 
+   * @declaredat ASTNode:51
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:61
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:67
+  /** @apilevel internal 
+   * @declaredat ASTNode:55
    */
   public WildcardExtendsType clone() throws CloneNotSupportedException {
     WildcardExtendsType node = (WildcardExtendsType) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:74
+  /** @apilevel internal 
+   * @declaredat ASTNode:60
    */
   public WildcardExtendsType copy() {
     try {
       WildcardExtendsType node = (WildcardExtendsType) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -146,8 +127,9 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:93
+   * @declaredat ASTNode:79
    */
+  @Deprecated
   public WildcardExtendsType fullCopy() {
     return treeCopyNoTransform();
   }
@@ -156,14 +138,14 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:102
+   * @declaredat ASTNode:89
    */
   public WildcardExtendsType treeCopyNoTransform() {
     WildcardExtendsType tree = (WildcardExtendsType) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -177,18 +159,26 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:122
+   * @declaredat ASTNode:109
    */
   public WildcardExtendsType treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    WildcardExtendsType tree = (WildcardExtendsType) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:129
+  /** @apilevel internal 
+   * @declaredat ASTNode:123
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((WildcardExtendsType)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((WildcardExtendsType) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -230,7 +220,7 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -293,11 +283,10 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -321,7 +310,6 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -332,6 +320,13 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -376,412 +371,451 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
   public Access getAccessNoTransform() {
     return (Access) getChildNoTransform(2);
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean withinBounds(TypeDecl bound, Parameterization par) {
+  /**
+   * @attribute syn
+   * @aspect MemberMethods
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:332
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MemberMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:332")
+  public Collection<MethodDecl> memberMethods(String name) {
+    Collection<MethodDecl> memberMethods_String_value = getAccess().type().memberMethods(name);
+    return memberMethods_String_value;
+  }
+  /** @apilevel internal */
+  private void memberFields_String_reset() {
+    memberFields_String_computed = new java.util.HashMap(4);
+    memberFields_String_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map memberFields_String_values;
+  /** @apilevel internal */
+  protected java.util.Map memberFields_String_computed;
+  /**
+   * @attribute syn
+   * @aspect Fields
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:475
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Fields", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:475")
+  public SimpleSet<Variable> memberFields(String name) {
+    Object _parameters = name;
+    if (memberFields_String_computed == null) memberFields_String_computed = new java.util.HashMap(4);
+    if (memberFields_String_values == null) memberFields_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean withinBounds_TypeDecl_Parameterization_value = bound.boundOf(extendsType(), par) || extendsType().boundOf(bound, par);
+    if (memberFields_String_values.containsKey(_parameters) && memberFields_String_computed != null
+        && memberFields_String_computed.containsKey(_parameters)
+        && (memberFields_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || memberFields_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) memberFields_String_values.get(_parameters);
+    }
+    SimpleSet<Variable> memberFields_String_value = getAccess().type().memberFields(name);
+    if (state().inCircle()) {
+      memberFields_String_values.put(_parameters, memberFields_String_value);
+      memberFields_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      memberFields_String_values.put(_parameters, memberFields_String_value);
+      memberFields_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return memberFields_String_value;
+  }
+  /** @apilevel internal */
+  private void erasure_reset() {
+    erasure_computed = null;
+    erasure_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle erasure_computed = null;
 
-    return withinBounds_TypeDecl_Parameterization_value;
-  }
+  /** @apilevel internal */
+  protected TypeDecl erasure_value;
+
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect GenericsErasure
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:418
    */
-  protected int involvesTypeParameters_visited = -1;
-  /**
-   * @apilevel internal
-   */
-  private void involvesTypeParameters_reset() {
-    involvesTypeParameters_computed = false;
-    involvesTypeParameters_initialized = false;
-    involvesTypeParameters_visited = -1;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean involvesTypeParameters_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean involvesTypeParameters_initialized = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean involvesTypeParameters_value;
-  @ASTNodeAnnotation.Attribute
-  public boolean involvesTypeParameters() {
-    if(involvesTypeParameters_computed) {
-      return involvesTypeParameters_value;
-    }
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsErasure", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:418")
+  public TypeDecl erasure() {
     ASTNode$State state = state();
-    boolean new_involvesTypeParameters_value;
-    if (!involvesTypeParameters_initialized) {
-      involvesTypeParameters_initialized = true;
-      involvesTypeParameters_value = false;
+    if (erasure_computed == ASTNode$State.NON_CYCLE || erasure_computed == state().cycle()) {
+      return erasure_value;
     }
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      do {
-        involvesTypeParameters_visited = state.CIRCLE_INDEX;
-        state.CHANGE = false;
-        new_involvesTypeParameters_value = extendsType().involvesTypeParameters();
-        if (new_involvesTypeParameters_value != involvesTypeParameters_value) {
-          state.CHANGE = true;
-        }
-        involvesTypeParameters_value = new_involvesTypeParameters_value;
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        involvesTypeParameters_computed = true;
-      } else {
-        state.RESET_CYCLE = true;
-        boolean $tmp = extendsType().involvesTypeParameters();
-        state.RESET_CYCLE = false;
-        involvesTypeParameters_computed = false;
-        involvesTypeParameters_initialized = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
-      return involvesTypeParameters_value;
+    erasure_value = getAccess().type().erasure();
+    if (state().inCircle()) {
+      erasure_computed = state().cycle();
+    
+    } else {
+      erasure_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    if(involvesTypeParameters_visited != state.CIRCLE_INDEX) {
-      involvesTypeParameters_visited = state.CIRCLE_INDEX;
-      if (state.RESET_CYCLE) {
-        involvesTypeParameters_computed = false;
-        involvesTypeParameters_initialized = false;
-        involvesTypeParameters_visited = -1;
-        return involvesTypeParameters_value;
-      }
-      new_involvesTypeParameters_value = extendsType().involvesTypeParameters();
-      if (new_involvesTypeParameters_value != involvesTypeParameters_value) {
-        state.CHANGE = true;
-      }
-      involvesTypeParameters_value = new_involvesTypeParameters_value;
-      state.INTERMEDIATE_VALUE = true;
-      return involvesTypeParameters_value;
-    }
-    state.INTERMEDIATE_VALUE = true;
-    return involvesTypeParameters_value;
+    return erasure_value;
   }
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:806
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:801
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:801")
   public boolean sameSignature(Access a) {
-    ASTNode$State state = state();
-    try {
+    {
         if (a instanceof WildcardExtends) {
           return getAccess().type().sameSignature(((WildcardExtends) a).getAccess());
         }
         return super.sameSignature(a);
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
-  protected int usesTypeVariable_visited = -1;
-  /**
-   * @apilevel internal
-   */
+/** @apilevel internal */
+protected ASTNode$State.Cycle usesTypeVariable_cycle = null;
+  /** @apilevel internal */
   private void usesTypeVariable_reset() {
     usesTypeVariable_computed = false;
     usesTypeVariable_initialized = false;
-    usesTypeVariable_visited = -1;
+    usesTypeVariable_cycle = null;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   protected boolean usesTypeVariable_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean usesTypeVariable_initialized = false;
-  /**
-   * @apilevel internal
-   */
+
+  /** @apilevel internal */
   protected boolean usesTypeVariable_value;
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean usesTypeVariable_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1189")
   public boolean usesTypeVariable() {
-    if(usesTypeVariable_computed) {
+    if (usesTypeVariable_computed) {
       return usesTypeVariable_value;
     }
     ASTNode$State state = state();
-    boolean new_usesTypeVariable_value;
     if (!usesTypeVariable_initialized) {
       usesTypeVariable_initialized = true;
       usesTypeVariable_value = false;
     }
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
       do {
-        usesTypeVariable_visited = state.CIRCLE_INDEX;
-        state.CHANGE = false;
-        new_usesTypeVariable_value = getAccess().type().usesTypeVariable();
+        usesTypeVariable_cycle = state.nextCycle();
+        boolean new_usesTypeVariable_value = getAccess().type().usesTypeVariable();
         if (new_usesTypeVariable_value != usesTypeVariable_value) {
-          state.CHANGE = true;
+          state.setChangeInCycle();
         }
         usesTypeVariable_value = new_usesTypeVariable_value;
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        usesTypeVariable_computed = true;
-      } else {
-        state.RESET_CYCLE = true;
-        boolean $tmp = getAccess().type().usesTypeVariable();
-        state.RESET_CYCLE = false;
-        usesTypeVariable_computed = false;
-        usesTypeVariable_initialized = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
-      return usesTypeVariable_value;
-    }
-    if(usesTypeVariable_visited != state.CIRCLE_INDEX) {
-      usesTypeVariable_visited = state.CIRCLE_INDEX;
-      if (state.RESET_CYCLE) {
-        usesTypeVariable_computed = false;
-        usesTypeVariable_initialized = false;
-        usesTypeVariable_visited = -1;
-        return usesTypeVariable_value;
-      }
-      new_usesTypeVariable_value = getAccess().type().usesTypeVariable();
+      } while (state.testAndClearChangeInCycle());
+      usesTypeVariable_computed = true;
+
+      state.leaveCircle();
+    } else if (usesTypeVariable_cycle != state.cycle()) {
+      usesTypeVariable_cycle = state.cycle();
+      boolean new_usesTypeVariable_value = getAccess().type().usesTypeVariable();
       if (new_usesTypeVariable_value != usesTypeVariable_value) {
-        state.CHANGE = true;
+        state.setChangeInCycle();
       }
       usesTypeVariable_value = new_usesTypeVariable_value;
-      state.INTERMEDIATE_VALUE = true;
-      return usesTypeVariable_value;
+    } else {
     }
-    state.INTERMEDIATE_VALUE = true;
     return usesTypeVariable_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1575
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1575")
   public TypeDecl extendsType() {
-    ASTNode$State state = state();
     TypeDecl extendsType_value = getAccess().type();
-
     return extendsType_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeWildcard(WildcardType type) {
-    ASTNode$State state = state();
-    boolean supertypeWildcard_WildcardType_value = typeObject().subtype(this);
-
-    return supertypeWildcard_WildcardType_value;
+  /**
+   * @param bound the bounded type variable
+   * @return {@code true} if this type is within the bounds of the parameter type
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:40
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:40")
+  public boolean withinBounds(TypeDecl bound) {
+    boolean withinBounds_TypeDecl_value = bound.boundOf(extendsType());
+    return withinBounds_TypeDecl_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:87
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:87")
+  public boolean boundOfArray(ArrayDecl type) {
+    boolean boundOfArray_ArrayDecl_value = getAccess().type().boundOfArray(type);
+    return boundOfArray_ArrayDecl_value;
+  }
+/** @apilevel internal */
+protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
+  /** @apilevel internal */
+  private void involvesTypeParameters_reset() {
+    involvesTypeParameters_computed = false;
+    involvesTypeParameters_initialized = false;
+    involvesTypeParameters_cycle = null;
+  }
+  /** @apilevel internal */
+  protected boolean involvesTypeParameters_computed = false;
+
+  /** @apilevel internal */
+  protected boolean involvesTypeParameters_value;
+  /** @apilevel internal */
+  protected boolean involvesTypeParameters_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsInference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:37")
+  public boolean involvesTypeParameters() {
+    if (involvesTypeParameters_computed) {
+      return involvesTypeParameters_value;
+    }
+    ASTNode$State state = state();
+    if (!involvesTypeParameters_initialized) {
+      involvesTypeParameters_initialized = true;
+      involvesTypeParameters_value = false;
+    }
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      do {
+        involvesTypeParameters_cycle = state.nextCycle();
+        boolean new_involvesTypeParameters_value = extendsType().involvesTypeParameters();
+        if (new_involvesTypeParameters_value != involvesTypeParameters_value) {
+          state.setChangeInCycle();
+        }
+        involvesTypeParameters_value = new_involvesTypeParameters_value;
+      } while (state.testAndClearChangeInCycle());
+      involvesTypeParameters_computed = true;
+
+      state.leaveCircle();
+    } else if (involvesTypeParameters_cycle != state.cycle()) {
+      involvesTypeParameters_cycle = state.cycle();
+      boolean new_involvesTypeParameters_value = extendsType().involvesTypeParameters();
+      if (new_involvesTypeParameters_value != involvesTypeParameters_value) {
+        state.setChangeInCycle();
+      }
+      involvesTypeParameters_value = new_involvesTypeParameters_value;
+    } else {
+    }
+    return involvesTypeParameters_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:69
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:69")
+  public boolean supertypeWildcard(WildcardType type) {
+    boolean supertypeWildcard_WildcardType_value = typeObject().subtype(this);
+    return supertypeWildcard_WildcardType_value;
+  }
+  /** @apilevel internal */
   private void subtype_TypeDecl_reset() {
     subtype_TypeDecl_values = null;
   }
   protected java.util.Map subtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
-    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(subtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = subtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (subtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = subtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       subtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_subtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_subtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_subtype_TypeDecl_value = type.supertypeWildcardExtends(this);
-        if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_subtype_TypeDecl_value);
+        if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_subtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
-      } else {
-        subtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.supertypeWildcardExtends(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_subtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_subtype_TypeDecl_value = type.supertypeWildcardExtends(this);
-      if (state.RESET_CYCLE) {
-        subtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_subtype_TypeDecl_value = type.supertypeWildcardExtends(this);
+      if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_subtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_subtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeWildcardExtends(WildcardExtendsType type) {
-    ASTNode$State state = state();
-    boolean supertypeWildcardExtends_WildcardExtendsType_value = type.extendsType().subtype(extendsType());
-
-    return supertypeWildcardExtends_WildcardExtendsType_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeClassDecl(ClassDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeClassDecl_ClassDecl_value = type.subtype(extendsType());
-
-    return supertypeClassDecl_ClassDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeInterfaceDecl(InterfaceDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeInterfaceDecl_InterfaceDecl_value = type.subtype(extendsType());
-
-    return supertypeInterfaceDecl_InterfaceDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeParClassDecl(ParClassDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeParClassDecl_ParClassDecl_value = type.subtype(extendsType());
-
-    return supertypeParClassDecl_ParClassDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeParInterfaceDecl(ParInterfaceDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeParInterfaceDecl_ParInterfaceDecl_value = type.subtype(extendsType());
-
-    return supertypeParInterfaceDecl_ParInterfaceDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeRawClassDecl(RawClassDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeRawClassDecl_RawClassDecl_value = type.subtype(extendsType());
-
-    return supertypeRawClassDecl_RawClassDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeRawInterfaceDecl(RawInterfaceDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeRawInterfaceDecl_RawInterfaceDecl_value = type.subtype(extendsType());
-
-    return supertypeRawInterfaceDecl_RawInterfaceDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeTypeVariable(TypeVariable type) {
-    ASTNode$State state = state();
-    boolean supertypeTypeVariable_TypeVariable_value = type.subtype(extendsType());
-
-    return supertypeTypeVariable_TypeVariable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeArrayDecl(ArrayDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeArrayDecl_ArrayDecl_value = type.subtype(extendsType());
-
-    return supertypeArrayDecl_ArrayDecl_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:76
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:76")
+  public boolean supertypeWildcardExtends(WildcardExtendsType type) {
+    boolean supertypeWildcardExtends_WildcardExtendsType_value = type.extendsType().subtype(extendsType());
+    return supertypeWildcardExtends_WildcardExtendsType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
+  public boolean supertypeClassDecl(ClassDecl type) {
+    boolean supertypeClassDecl_ClassDecl_value = type.subtype(extendsType());
+    return supertypeClassDecl_ClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522")
+  public boolean supertypeInterfaceDecl(InterfaceDecl type) {
+    boolean supertypeInterfaceDecl_InterfaceDecl_value = type.subtype(extendsType());
+    return supertypeInterfaceDecl_InterfaceDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:146
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:146")
+  public boolean supertypeParClassDecl(ParClassDecl type) {
+    boolean supertypeParClassDecl_ParClassDecl_value = type.subtype(extendsType());
+    return supertypeParClassDecl_ParClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:150
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:150")
+  public boolean supertypeParInterfaceDecl(ParInterfaceDecl type) {
+    boolean supertypeParInterfaceDecl_ParInterfaceDecl_value = type.subtype(extendsType());
+    return supertypeParInterfaceDecl_ParInterfaceDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:49
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:49")
+  public boolean supertypeRawClassDecl(RawClassDecl type) {
+    boolean supertypeRawClassDecl_RawClassDecl_value = type.subtype(extendsType());
+    return supertypeRawClassDecl_RawClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:53
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:53")
+  public boolean supertypeRawInterfaceDecl(RawInterfaceDecl type) {
+    boolean supertypeRawInterfaceDecl_RawInterfaceDecl_value = type.subtype(extendsType());
+    return supertypeRawInterfaceDecl_RawInterfaceDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:362
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:362")
+  public boolean supertypeTypeVariable(TypeVariable type) {
+    boolean supertypeTypeVariable_TypeVariable_value = type.subtype(extendsType());
+    return supertypeTypeVariable_TypeVariable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:539
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:539")
+  public boolean supertypeArrayDecl(ArrayDecl type) {
+    boolean supertypeArrayDecl_ArrayDecl_value = type.subtype(extendsType());
+    return supertypeArrayDecl_ArrayDecl_value;
+  }
+  /** @apilevel internal */
   private void containedIn_TypeDecl_reset() {
     containedIn_TypeDecl_values = null;
   }
   protected java.util.Map containedIn_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:162")
   public boolean containedIn(TypeDecl type) {
     Object _parameters = type;
-    if (containedIn_TypeDecl_values == null) containedIn_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (containedIn_TypeDecl_values == null) containedIn_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(containedIn_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = containedIn_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (containedIn_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = containedIn_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       containedIn_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_containedIn_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_containedIn_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_containedIn_TypeDecl_value = containedIn_compute(type);
-        if (new_containedIn_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_containedIn_TypeDecl_value);
+        if (new_containedIn_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_containedIn_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        containedIn_TypeDecl_values.put(_parameters, new_containedIn_TypeDecl_value);
-      } else {
-        containedIn_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = containedIn_compute(type);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      containedIn_TypeDecl_values.put(_parameters, new_containedIn_TypeDecl_value);
+
+      state.leaveCircle();
       return new_containedIn_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_containedIn_TypeDecl_value = containedIn_compute(type);
-      if (state.RESET_CYCLE) {
-        containedIn_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_containedIn_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_containedIn_TypeDecl_value = containedIn_compute(type);
+      if (new_containedIn_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_containedIn_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_containedIn_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean containedIn_compute(TypeDecl type) {
       if (type == this || type instanceof WildcardType) {
         return true;
@@ -791,320 +825,299 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
         return false;
       }
     }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void sameStructure_TypeDecl_reset() {
     sameStructure_TypeDecl_values = null;
   }
   protected java.util.Map sameStructure_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:216")
   public boolean sameStructure(TypeDecl t) {
     Object _parameters = t;
-    if (sameStructure_TypeDecl_values == null) sameStructure_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (sameStructure_TypeDecl_values == null) sameStructure_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(sameStructure_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = sameStructure_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (sameStructure_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = sameStructure_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       sameStructure_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_sameStructure_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_sameStructure_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_sameStructure_TypeDecl_value = super.sameStructure(t) || t instanceof WildcardExtendsType
               && ((WildcardExtendsType) t).extendsType().sameStructure(extendsType());
-        if (new_sameStructure_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_sameStructure_TypeDecl_value);
+        if (new_sameStructure_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_sameStructure_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        sameStructure_TypeDecl_values.put(_parameters, new_sameStructure_TypeDecl_value);
-      } else {
-        sameStructure_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = super.sameStructure(t) || t instanceof WildcardExtendsType
-              && ((WildcardExtendsType) t).extendsType().sameStructure(extendsType());
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      sameStructure_TypeDecl_values.put(_parameters, new_sameStructure_TypeDecl_value);
+
+      state.leaveCircle();
       return new_sameStructure_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_sameStructure_TypeDecl_value = super.sameStructure(t) || t instanceof WildcardExtendsType
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_sameStructure_TypeDecl_value = super.sameStructure(t) || t instanceof WildcardExtendsType
             && ((WildcardExtendsType) t).extendsType().sameStructure(extendsType());
-      if (state.RESET_CYCLE) {
-        sameStructure_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_sameStructure_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+      if (new_sameStructure_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_sameStructure_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_sameStructure_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
   }
-  protected java.util.Map instanceOf_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void instanceOf_TypeDecl_reset() {
+    instanceOf_TypeDecl_computed = new java.util.HashMap(4);
     instanceOf_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map instanceOf_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map instanceOf_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeWideningAndIdentity
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
   public boolean instanceOf(TypeDecl type) {
     Object _parameters = type;
-    if (instanceOf_TypeDecl_values == null) instanceOf_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(instanceOf_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)instanceOf_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (instanceOf_TypeDecl_computed == null) instanceOf_TypeDecl_computed = new java.util.HashMap(4);
+    if (instanceOf_TypeDecl_values == null) instanceOf_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean instanceOf_TypeDecl_value = subtype(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      instanceOf_TypeDecl_values.put(_parameters, Boolean.valueOf(instanceOf_TypeDecl_value));
-    } else {
+    if (instanceOf_TypeDecl_values.containsKey(_parameters) && instanceOf_TypeDecl_computed != null
+        && instanceOf_TypeDecl_computed.containsKey(_parameters)
+        && (instanceOf_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || instanceOf_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) instanceOf_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean instanceOf_TypeDecl_value = subtype(type);
+    if (state().inCircle()) {
+      instanceOf_TypeDecl_values.put(_parameters, instanceOf_TypeDecl_value);
+      instanceOf_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      instanceOf_TypeDecl_values.put(_parameters, instanceOf_TypeDecl_value);
+      instanceOf_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return instanceOf_TypeDecl_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:68
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:68")
   public boolean strictSupertypeWildcard(WildcardType type) {
-    ASTNode$State state = state();
     boolean strictSupertypeWildcard_WildcardType_value = typeObject().strictSubtype(this);
-
     return strictSupertypeWildcard_WildcardType_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void strictSubtype_TypeDecl_reset() {
     strictSubtype_TypeDecl_values = null;
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
-    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(strictSubtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = strictSubtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (strictSubtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = strictSubtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       strictSubtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_strictSubtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_strictSubtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
-        new_strictSubtype_TypeDecl_value = type.strictSupertypeWildcardExtends(this);
-        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_strictSubtype_TypeDecl_value);
+        _value.cycle = state.nextCycle();
+        new_strictSubtype_TypeDecl_value = extendsType().strictSubtype(type);
+        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_strictSubtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
-      } else {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.strictSupertypeWildcardExtends(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_strictSubtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_strictSubtype_TypeDecl_value = type.strictSupertypeWildcardExtends(this);
-      if (state.RESET_CYCLE) {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_strictSubtype_TypeDecl_value = extendsType().strictSubtype(type);
+      if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_strictSubtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_strictSubtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeWildcardExtends(WildcardExtendsType type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeWildcardExtends_WildcardExtendsType_value = type.extendsType().strictSubtype(extendsType());
-
-    return strictSupertypeWildcardExtends_WildcardExtendsType_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeClassDecl(ClassDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeClassDecl_ClassDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeClassDecl_ClassDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeInterfaceDecl(InterfaceDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeInterfaceDecl_InterfaceDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeInterfaceDecl_InterfaceDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeParClassDecl(ParClassDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeParClassDecl_ParClassDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeParClassDecl_ParClassDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeParInterfaceDecl(ParInterfaceDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeParInterfaceDecl_ParInterfaceDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeParInterfaceDecl_ParInterfaceDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeRawClassDecl(RawClassDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeRawClassDecl_RawClassDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeRawClassDecl_RawClassDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeRawInterfaceDecl(RawInterfaceDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeRawInterfaceDecl_RawInterfaceDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeRawInterfaceDecl_RawInterfaceDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeTypeVariable(TypeVariable type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeTypeVariable_TypeVariable_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeTypeVariable_TypeVariable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean strictSupertypeArrayDecl(ArrayDecl type) {
-    ASTNode$State state = state();
-    boolean strictSupertypeArrayDecl_ArrayDecl_value = type.strictSubtype(extendsType());
-
-    return strictSupertypeArrayDecl_ArrayDecl_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
+  public boolean strictSupertypeClassDecl(ClassDecl type) {
+    boolean strictSupertypeClassDecl_ClassDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeClassDecl_ClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398")
+  public boolean strictSupertypeInterfaceDecl(InterfaceDecl type) {
+    boolean strictSupertypeInterfaceDecl_InterfaceDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeInterfaceDecl_InterfaceDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:149
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:149")
+  public boolean strictSupertypeParClassDecl(ParClassDecl type) {
+    boolean strictSupertypeParClassDecl_ParClassDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeParClassDecl_ParClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:153
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:153")
+  public boolean strictSupertypeParInterfaceDecl(ParInterfaceDecl type) {
+    boolean strictSupertypeParInterfaceDecl_ParInterfaceDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeParInterfaceDecl_ParInterfaceDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:52
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:52")
+  public boolean strictSupertypeRawClassDecl(RawClassDecl type) {
+    boolean strictSupertypeRawClassDecl_RawClassDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeRawClassDecl_RawClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:56
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:56")
+  public boolean strictSupertypeRawInterfaceDecl(RawInterfaceDecl type) {
+    boolean strictSupertypeRawInterfaceDecl_RawInterfaceDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeRawInterfaceDecl_RawInterfaceDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:281
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:281")
+  public boolean strictSupertypeTypeVariable(TypeVariable type) {
+    boolean strictSupertypeTypeVariable_TypeVariable_value = type.strictSubtype(extendsType());
+    return strictSupertypeTypeVariable_TypeVariable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:415
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:415")
+  public boolean strictSupertypeArrayDecl(ArrayDecl type) {
+    boolean strictSupertypeArrayDecl_ArrayDecl_value = type.strictSubtype(extendsType());
+    return strictSupertypeArrayDecl_ArrayDecl_value;
+  }
+  /** @apilevel internal */
   private void strictContainedIn_TypeDecl_reset() {
     strictContainedIn_TypeDecl_values = null;
   }
   protected java.util.Map strictContainedIn_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:165")
   public boolean strictContainedIn(TypeDecl type) {
     Object _parameters = type;
-    if (strictContainedIn_TypeDecl_values == null) strictContainedIn_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (strictContainedIn_TypeDecl_values == null) strictContainedIn_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(strictContainedIn_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = strictContainedIn_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (strictContainedIn_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = strictContainedIn_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       strictContainedIn_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_strictContainedIn_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_strictContainedIn_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_strictContainedIn_TypeDecl_value = strictContainedIn_compute(type);
-        if (new_strictContainedIn_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_strictContainedIn_TypeDecl_value);
+        if (new_strictContainedIn_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_strictContainedIn_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        strictContainedIn_TypeDecl_values.put(_parameters, new_strictContainedIn_TypeDecl_value);
-      } else {
-        strictContainedIn_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = strictContainedIn_compute(type);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      strictContainedIn_TypeDecl_values.put(_parameters, new_strictContainedIn_TypeDecl_value);
+
+      state.leaveCircle();
       return new_strictContainedIn_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_strictContainedIn_TypeDecl_value = strictContainedIn_compute(type);
-      if (state.RESET_CYCLE) {
-        strictContainedIn_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_strictContainedIn_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_strictContainedIn_TypeDecl_value = strictContainedIn_compute(type);
+      if (new_strictContainedIn_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_strictContainedIn_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_strictContainedIn_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean strictContainedIn_compute(TypeDecl type) {
       if (type == this || type instanceof WildcardType) {
         return true;
@@ -1114,10 +1127,12 @@ public class WildcardExtendsType extends AbstractWildcardType implements Cloneab
         return false;
       }
     }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

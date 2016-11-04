@@ -1,87 +1,48 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/GenericMethods.ast:7
- * @production ParMethodDecl : {@link MethodDecl} ::= <span class="component">TypeArgument:{@link Access}*</span> <span class="component">&lt;GenericMethodDecl:GenericMethodDecl&gt;</span>;
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:4
+ * @production ParMethodDecl : {@link MethodDecl} ::= <span class="component">TypeArgument:{@link Access}*</span> <span class="component">&lt;GenericMethodDecl:GenericMethodDecl&gt;</span> <span class="component">TypeParameter:{@link TypeVariable}*</span> <span class="component">&lt;Parameterization:Parameterization&gt;</span>;
 
  */
-public class ParMethodDecl extends MethodDecl implements Cloneable, Parameterization {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:121
-   */
-  public void collectErrors() {
-  }
+public class ParMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:968
-   */
-  public TypeDecl substitute(TypeVariable typeVariable) {
-    for (int i = 0; i < numTypeParameter(); i++) {
-      if (typeParameter(i) == typeVariable) {
-        return getTypeArgument(i).type();
-      }
-    }
-    return genericMethodDecl().hostType().substitute(typeVariable);
-  }
-  /**
-   * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1001
-   */
-  public boolean isRawType() {
-    return false;
-  }
-  /**
-   * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1009
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1142
    */
   public int numTypeParameter() {
     return genericMethodDecl().original().getNumTypeParameter();
   }
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1017
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1150
    */
   public TypeVariable typeParameter(int index) {
     return genericMethodDecl().original().getTypeParameter(index);
   }
-  /**
-   * A raw type parameterization. Performs no substitutions.
-   * @aspect MethodSignature15
-   * @declaredat extendj/java5/frontend/MethodSignature.jrag:240
-   */
-  public static final Parameterization RAW = new Parameterization() {
-    @Override
-    public boolean isRawType() {
-      return true;
-    }
-    @Override
-    public TypeDecl substitute(TypeVariable typeVariable) {
-      return typeVariable;
-    }
-  };
   /**
    * @declaredat ASTNode:1
    */
@@ -96,16 +57,17 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * @declaredat ASTNode:10
    */
   public void init$Children() {
-    children = new ASTNode[6];
+    children = new ASTNode[7];
     setChild(new List(), 2);
     setChild(new List(), 3);
     setChild(new Opt(), 4);
     setChild(new List(), 5);
+    setChild(new List(), 6);
   }
   /**
-   * @declaredat ASTNode:17
+   * @declaredat ASTNode:18
    */
-  public ParMethodDecl(Modifiers p0, Access p1, String p2, List<ParameterDeclaration> p3, List<Access> p4, Opt<Block> p5, List<Access> p6, GenericMethodDecl p7) {
+  public ParMethodDecl(Modifiers p0, Access p1, String p2, List<ParameterDeclaration> p3, List<Access> p4, Opt<Block> p5, List<Access> p6, GenericMethodDecl p7, List<TypeVariable> p8, Parameterization p9) {
     setChild(p0, 0);
     setChild(p1, 1);
     setID(p2);
@@ -114,11 +76,13 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
     setChild(p5, 4);
     setChild(p6, 5);
     setGenericMethodDecl(p7);
+    setChild(p8, 6);
+    setParameterization(p9);
   }
   /**
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:30
    */
-  public ParMethodDecl(Modifiers p0, Access p1, beaver.Symbol p2, List<ParameterDeclaration> p3, List<Access> p4, Opt<Block> p5, List<Access> p6, GenericMethodDecl p7) {
+  public ParMethodDecl(Modifiers p0, Access p1, beaver.Symbol p2, List<ParameterDeclaration> p3, List<Access> p4, Opt<Block> p5, List<Access> p6, GenericMethodDecl p7, List<TypeVariable> p8, Parameterization p9) {
     setChild(p0, 0);
     setChild(p1, 1);
     setID(p2);
@@ -127,62 +91,52 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
     setChild(p5, 4);
     setChild(p6, 5);
     setGenericMethodDecl(p7);
+    setChild(p8, 6);
+    setParameterization(p9);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:40
+  /** @apilevel low-level 
+   * @declaredat ASTNode:43
    */
   protected int numChildren() {
-    return 6;
+    return 7;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:46
+   * @declaredat ASTNode:49
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:53
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    lessSpecificThan_MethodDecl_reset();
     genericMethodDecl_reset();
     sourceMethodDecl_reset();
-    lessSpecificThan_MethodDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:60
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:67
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:73
+  /** @apilevel internal 
+   * @declaredat ASTNode:64
    */
   public ParMethodDecl clone() throws CloneNotSupportedException {
     ParMethodDecl node = (ParMethodDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:80
+  /** @apilevel internal 
+   * @declaredat ASTNode:69
    */
   public ParMethodDecl copy() {
     try {
       ParMethodDecl node = (ParMethodDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -196,8 +150,9 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:99
+   * @declaredat ASTNode:88
    */
+  @Deprecated
   public ParMethodDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -206,14 +161,14 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:108
+   * @declaredat ASTNode:98
    */
   public ParMethodDecl treeCopyNoTransform() {
     ParMethodDecl tree = (ParMethodDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -227,18 +182,26 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:128
+   * @declaredat ASTNode:118
    */
   public ParMethodDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ParMethodDecl tree = (ParMethodDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:135
+  /** @apilevel internal 
+   * @declaredat ASTNode:132
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ParMethodDecl)node).tokenString_ID) && (tokenGenericMethodDecl_GenericMethodDecl == ((ParMethodDecl)node).tokenGenericMethodDecl_GenericMethodDecl);    
+    return super.is$Equal(node) && (tokenString_ID == ((ParMethodDecl) node).tokenString_ID) && (tokenGenericMethodDecl_GenericMethodDecl == ((ParMethodDecl) node).tokenGenericMethodDecl_GenericMethodDecl) && (tokenParameterization_Parameterization == ((ParMethodDecl) node).tokenParameterization_Parameterization);    
   }
   /**
    * Replaces the Modifiers child.
@@ -306,7 +269,7 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -369,11 +332,10 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -397,7 +359,6 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -408,6 +369,13 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -474,11 +442,10 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -502,7 +469,6 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -513,6 +479,13 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -630,11 +603,10 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -658,7 +630,6 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(5);
-    list.getNumChild();
     return list;
   }
   /**
@@ -669,6 +640,13 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(5);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -695,8 +673,7 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
   public void setGenericMethodDecl(GenericMethodDecl value) {
     tokenGenericMethodDecl_GenericMethodDecl = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected GenericMethodDecl tokenGenericMethodDecl_GenericMethodDecl;
   /**
@@ -709,113 +686,279 @@ public class ParMethodDecl extends MethodDecl implements Cloneable, Parameteriza
     return tokenGenericMethodDecl_GenericMethodDecl;
   }
   /**
-   * @apilevel internal
+   * Replaces the TypeParameter list.
+   * @param list The new list node to be used as the TypeParameter list.
+   * @apilevel high-level
    */
-  protected boolean genericMethodDecl_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected GenericMethodDecl genericMethodDecl_value;
-  /**
-   * @apilevel internal
-   */
-  private void genericMethodDecl_reset() {
-    genericMethodDecl_computed = false;
-    genericMethodDecl_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public GenericMethodDecl genericMethodDecl() {
-    if(genericMethodDecl_computed) {
-      return genericMethodDecl_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    genericMethodDecl_value = getGenericMethodDecl();
-    if (isFinal && num == state().boundariesCrossed) {
-      genericMethodDecl_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return genericMethodDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public MethodDecl erasedMethod() {
-    ASTNode$State state = state();
-    MethodDecl erasedMethod_value = genericMethodDecl().erasedMethod();
-
-    return erasedMethod_value;
+  public void setTypeParameterList(List<TypeVariable> list) {
+    setChild(list, 6);
   }
   /**
-   * @apilevel internal
+   * Retrieves the number of children in the TypeParameter list.
+   * @return Number of children in the TypeParameter list.
+   * @apilevel high-level
    */
-  protected boolean sourceMethodDecl_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected MethodDecl sourceMethodDecl_value;
-  /**
-   * @apilevel internal
-   */
-  private void sourceMethodDecl_reset() {
-    sourceMethodDecl_computed = false;
-    sourceMethodDecl_value = null;
+  public int getNumTypeParameter() {
+    return getTypeParameterList().getNumChild();
   }
-  @ASTNodeAnnotation.Attribute
-  public MethodDecl sourceMethodDecl() {
-    if(sourceMethodDecl_computed) {
-      return sourceMethodDecl_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    sourceMethodDecl_value = genericMethodDecl().original().sourceMethodDecl();
-    if (isFinal && num == state().boundariesCrossed) {
-      sourceMethodDecl_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return sourceMethodDecl_value;
-  }
-  protected java.util.Map lessSpecificThan_MethodDecl_values;
   /**
-   * @apilevel internal
+   * Retrieves the number of children in the TypeParameter list.
+   * Calling this method will not trigger rewrites.
+   * @return Number of children in the TypeParameter list.
+   * @apilevel low-level
    */
+  public int getNumTypeParameterNoTransform() {
+    return getTypeParameterListNoTransform().getNumChildNoTransform();
+  }
+  /**
+   * Retrieves the element at index {@code i} in the TypeParameter list.
+   * @param i Index of the element to return.
+   * @return The element at position {@code i} in the TypeParameter list.
+   * @apilevel high-level
+   */
+  public TypeVariable getTypeParameter(int i) {
+    return (TypeVariable) getTypeParameterList().getChild(i);
+  }
+  /**
+   * Check whether the TypeParameter list has any children.
+   * @return {@code true} if it has at least one child, {@code false} otherwise.
+   * @apilevel high-level
+   */
+  public boolean hasTypeParameter() {
+    return getTypeParameterList().getNumChild() != 0;
+  }
+  /**
+   * Append an element to the TypeParameter list.
+   * @param node The element to append to the TypeParameter list.
+   * @apilevel high-level
+   */
+  public void addTypeParameter(TypeVariable node) {
+    List<TypeVariable> list = (parent == null) ? getTypeParameterListNoTransform() : getTypeParameterList();
+    list.addChild(node);
+  }
+  /** @apilevel low-level 
+   */
+  public void addTypeParameterNoTransform(TypeVariable node) {
+    List<TypeVariable> list = getTypeParameterListNoTransform();
+    list.addChild(node);
+  }
+  /**
+   * Replaces the TypeParameter list element at index {@code i} with the new node {@code node}.
+   * @param node The new node to replace the old list element.
+   * @param i The list index of the node to be replaced.
+   * @apilevel high-level
+   */
+  public void setTypeParameter(TypeVariable node, int i) {
+    List<TypeVariable> list = getTypeParameterList();
+    list.setChild(node, i);
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * @return The node representing the TypeParameter list.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.ListChild(name="TypeParameter")
+  public List<TypeVariable> getTypeParameterList() {
+    List<TypeVariable> list = (List<TypeVariable>) getChild(6);
+    return list;
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the TypeParameter list.
+   * @apilevel low-level
+   */
+  public List<TypeVariable> getTypeParameterListNoTransform() {
+    return (List<TypeVariable>) getChildNoTransform(6);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeParameter list without
+   * triggering rewrites.
+   */
+  public TypeVariable getTypeParameterNoTransform(int i) {
+    return (TypeVariable) getTypeParameterListNoTransform().getChildNoTransform(i);
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * @return The node representing the TypeParameter list.
+   * @apilevel high-level
+   */
+  public List<TypeVariable> getTypeParameters() {
+    return getTypeParameterList();
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the TypeParameter list.
+   * @apilevel low-level
+   */
+  public List<TypeVariable> getTypeParametersNoTransform() {
+    return getTypeParameterListNoTransform();
+  }
+  /**
+   * Replaces the lexeme Parameterization.
+   * @param value The new value for the lexeme Parameterization.
+   * @apilevel high-level
+   */
+  public void setParameterization(Parameterization value) {
+    tokenParameterization_Parameterization = value;
+  }
+  /** @apilevel internal 
+   */
+  protected Parameterization tokenParameterization_Parameterization;
+  /**
+   * Retrieves the value for the lexeme Parameterization.
+   * @return The value for the lexeme Parameterization.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.Token(name="Parameterization")
+  public Parameterization getParameterization() {
+    return tokenParameterization_Parameterization;
+  }
+  /** @apilevel internal */
   private void lessSpecificThan_MethodDecl_reset() {
+    lessSpecificThan_MethodDecl_computed = new java.util.HashMap(4);
     lessSpecificThan_MethodDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map lessSpecificThan_MethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map lessSpecificThan_MethodDecl_computed;
+  /**
+   * Caution: a less specific than b does not mean b is not less specific than a!
+   * @param m argument method to compare to
+   * @return {@code true} if any parameter of this method decl is not a
+   * subtype (non-proper subtype) of the corresponding parameter of the
+   * argument method
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:250
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:250")
   public boolean lessSpecificThan(MethodDecl m) {
     Object _parameters = m;
-    if (lessSpecificThan_MethodDecl_values == null) lessSpecificThan_MethodDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(lessSpecificThan_MethodDecl_values.containsKey(_parameters)) {
-      return ((Boolean)lessSpecificThan_MethodDecl_values.get(_parameters)).booleanValue();
-    }
+    if (lessSpecificThan_MethodDecl_computed == null) lessSpecificThan_MethodDecl_computed = new java.util.HashMap(4);
+    if (lessSpecificThan_MethodDecl_values == null) lessSpecificThan_MethodDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    if (lessSpecificThan_MethodDecl_values.containsKey(_parameters) && lessSpecificThan_MethodDecl_computed != null
+        && lessSpecificThan_MethodDecl_computed.containsKey(_parameters)
+        && (lessSpecificThan_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || lessSpecificThan_MethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) lessSpecificThan_MethodDecl_values.get(_parameters);
+    }
     boolean lessSpecificThan_MethodDecl_value = genericMethodDecl().lessSpecificThan(m instanceof ParMethodDecl
               ? ((ParMethodDecl) m).genericMethodDecl() : m );
-    if (isFinal && num == state().boundariesCrossed) {
-      lessSpecificThan_MethodDecl_values.put(_parameters, Boolean.valueOf(lessSpecificThan_MethodDecl_value));
+    if (state().inCircle()) {
+      lessSpecificThan_MethodDecl_values.put(_parameters, lessSpecificThan_MethodDecl_value);
+      lessSpecificThan_MethodDecl_computed.put(_parameters, state().cycle());
+    
     } else {
+      lessSpecificThan_MethodDecl_values.put(_parameters, lessSpecificThan_MethodDecl_value);
+      lessSpecificThan_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return lessSpecificThan_MethodDecl_value;
   }
+  /** @apilevel internal */
+  private void genericMethodDecl_reset() {
+    genericMethodDecl_computed = null;
+    genericMethodDecl_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle genericMethodDecl_computed = null;
+
+  /** @apilevel internal */
+  protected GenericMethodDecl genericMethodDecl_value;
+
   /**
+   * @attribute syn
+   * @aspect GenericMethods
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:52
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:52")
+  public GenericMethodDecl genericMethodDecl() {
+    ASTNode$State state = state();
+    if (genericMethodDecl_computed == ASTNode$State.NON_CYCLE || genericMethodDecl_computed == state().cycle()) {
+      return genericMethodDecl_value;
+    }
+    genericMethodDecl_value = getGenericMethodDecl();
+    if (state().inCircle()) {
+      genericMethodDecl_computed = state().cycle();
+    
+    } else {
+      genericMethodDecl_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return genericMethodDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524")
+  public MethodDecl erasedMethod() {
+    MethodDecl erasedMethod_value = genericMethodDecl().erasedMethod();
+    return erasedMethod_value;
+  }
+  /** @apilevel internal */
+  private void sourceMethodDecl_reset() {
+    sourceMethodDecl_computed = null;
+    sourceMethodDecl_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle sourceMethodDecl_computed = null;
+
+  /** @apilevel internal */
+  protected MethodDecl sourceMethodDecl_value;
+
+  /**
+   * @attribute syn
+   * @aspect SourceDeclarations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729")
+  public MethodDecl sourceMethodDecl() {
+    ASTNode$State state = state();
+    if (sourceMethodDecl_computed == ASTNode$State.NON_CYCLE || sourceMethodDecl_computed == state().cycle()) {
+      return sourceMethodDecl_value;
+    }
+    sourceMethodDecl_value = genericMethodDecl().original().sourceMethodDecl();
+    if (state().inCircle()) {
+      sourceMethodDecl_computed = state().cycle();
+    
+    } else {
+      sourceMethodDecl_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return sourceMethodDecl_value;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    {
+        TypeDecl paramType = getParameterization().substitute(name);
+        if (paramType != null) {
+          return paramType;
+        }
+        return lookupType(name);
+      }
+  }
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

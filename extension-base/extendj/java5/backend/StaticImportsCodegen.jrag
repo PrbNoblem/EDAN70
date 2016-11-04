@@ -29,20 +29,12 @@
  */
 
 aspect StaticImportsCodegen {
-  refine GenericsCodegen protected TypeDecl VarAccess.fieldQualifierType() {
+  refine GenericsCodegen
+  eq VarAccess.fieldQualifierType() {
     TypeDecl typeDecl = refined();
     if (typeDecl != null) {
       return typeDecl;
     }
     return decl().hostType();
   }
-
-  refine GenericsCodegen protected TypeDecl MethodAccess.methodQualifierType() {
-    TypeDecl typeDecl = refined();
-    if (typeDecl != null) {
-      return typeDecl;
-    }
-    return decl().hostType();
-  }
-
 }

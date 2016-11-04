@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:223
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:225
  * @production AssertStmt : {@link Stmt} ::= <span class="component">Condition:{@link Expr}</span> <span class="component">[Message:{@link Expr}]</span>;
 
  */
 public class AssertStmt extends Stmt implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:419
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:78
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasMessage()) {
@@ -43,19 +44,6 @@ public class AssertStmt extends Stmt implements Cloneable {
       out.print("assert ");
       out.print(getCondition());
       out.print(";");
-    }
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:443
-   */
-  public void typeCheck() {
-    // 14.10
-    if (!getCondition().type().isBoolean()) {
-      error("Assert requires boolean condition");
-    }
-    if (hasMessage() && getMessage().type().isVoid()) {
-      error("The detail message of an assert statement may not be void");
     }
   }
   /**
@@ -82,60 +70,48 @@ public class AssertStmt extends Stmt implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    isDAafter_Variable_reset();
-    isDUafter_Variable_reset();
+    assignedAfter_Variable_reset();
+    unassignedAfter_Variable_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:47
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public AssertStmt clone() throws CloneNotSupportedException {
     AssertStmt node = (AssertStmt) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:60
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public AssertStmt copy() {
     try {
       AssertStmt node = (AssertStmt) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -149,8 +125,9 @@ public class AssertStmt extends Stmt implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:79
+   * @declaredat ASTNode:63
    */
+  @Deprecated
   public AssertStmt fullCopy() {
     return treeCopyNoTransform();
   }
@@ -159,14 +136,14 @@ public class AssertStmt extends Stmt implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:88
+   * @declaredat ASTNode:73
    */
   public AssertStmt treeCopyNoTransform() {
     AssertStmt tree = (AssertStmt) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -180,15 +157,23 @@ public class AssertStmt extends Stmt implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:108
+   * @declaredat ASTNode:93
    */
   public AssertStmt treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    AssertStmt tree = (AssertStmt) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:115
+  /** @apilevel internal 
+   * @declaredat ASTNode:107
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -270,85 +255,175 @@ public class AssertStmt extends Stmt implements Cloneable {
   public Opt<Expr> getMessageOptNoTransform() {
     return (Opt<Expr>) getChildNoTransform(1);
   }
-  protected java.util.Map isDAafter_Variable_values;
-  /**
-   * @apilevel internal
-   */
-  private void isDAafter_Variable_reset() {
-    isDAafter_Variable_values = null;
+  /** @apilevel internal */
+  private void assignedAfter_Variable_reset() {
+    assignedAfter_Variable_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafter(Variable v) {
+  protected java.util.Map assignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:264")
+  public boolean assignedAfter(Variable v) {
     Object _parameters = v;
-    if (isDAafter_Variable_values == null) isDAafter_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDAafter_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDAafter_Variable_values.get(_parameters)).booleanValue();
+    if (assignedAfter_Variable_values == null) assignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (assignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = assignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      assignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDAafter_Variable_value = getCondition().isDAafter(v);
-    if (isFinal && num == state().boundariesCrossed) {
-      isDAafter_Variable_values.put(_parameters, Boolean.valueOf(isDAafter_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_assignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_assignedAfter_Variable_value = getCondition().assignedAfter(v);
+        if (new_assignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_assignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      assignedAfter_Variable_values.put(_parameters, new_assignedAfter_Variable_value);
 
-    return isDAafter_Variable_value;
+      state.leaveCircle();
+      return new_assignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_assignedAfter_Variable_value = getCondition().assignedAfter(v);
+      if (new_assignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_assignedAfter_Variable_value;
+      }
+      return new_assignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
   }
-  protected java.util.Map isDUafter_Variable_values;
-  /**
-   * @apilevel internal
-   */
-  private void isDUafter_Variable_reset() {
-    isDUafter_Variable_values = null;
+  /** @apilevel internal */
+  private void unassignedAfter_Variable_reset() {
+    unassignedAfter_Variable_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafter(Variable v) {
+  protected java.util.Map unassignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:899")
+  public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
-    if (isDUafter_Variable_values == null) isDUafter_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDUafter_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDUafter_Variable_values.get(_parameters)).booleanValue();
+    if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDUafter_Variable_value = getCondition().isDUafter(v);
-    if (isFinal && num == state().boundariesCrossed) {
-      isDUafter_Variable_values.put(_parameters, Boolean.valueOf(isDUafter_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfter_Variable_value = getCondition().unassignedAfter(v);
+        if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfter_Variable_values.put(_parameters, new_unassignedAfter_Variable_value);
 
-    return isDUafter_Variable_value;
+      state.leaveCircle();
+      return new_unassignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfter_Variable_value = getCondition().unassignedAfter(v);
+      if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfter_Variable_value;
+      }
+      return new_unassignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect PreciseRethrow
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78")
   public boolean modifiedInScope(Variable var) {
-    ASTNode$State state = state();
     boolean modifiedInScope_Variable_value = false;
-
     return modifiedInScope_Variable_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:460
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
    * @apilevel internal
    */
-  public boolean Define_boolean_isDAbefore(ASTNode caller, ASTNode child, Variable v) {
-    if (caller == getMessageOptNoTransform()) {
-      return getCondition().isDAafter(v);
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (_callerNode == getMessageOptNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:523
+      return getCondition().assignedAfter(v);
     }
     else {
-      return getParent().Define_boolean_isDAbefore(this, caller, v);
+      return getParent().Define_assignedBefore(this, _callerNode, v);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:502
+    if (!getCondition().type().isBoolean()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:507
+    if (hasMessage() && getMessage().type().isVoid()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getCondition().type().isBoolean()) {
+      collection.add(error("Assert requires boolean condition"));
+    }
+    if (hasMessage() && getMessage().type().isVoid()) {
+      collection.add(error("The detail message of an assert statement may not be void"));
+    }
   }
 }

@@ -1,53 +1,41 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/ConstructorReference.ast:4
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:4
  * @production ArrayReference : {@link ConstructorReference};
 
  */
 public class ArrayReference extends ConstructorReference implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat extendj/java8/frontend/PrettyPrint.jadd:84
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:35
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getTypeAccess());
     out.print("::new");
-  }
-  /**
-   * @aspect Java8NameCheck
-   * @declaredat extendj/java8/frontend/NameCheck.jrag:539
-   */
-  public void nameCheck() {
-    Access typeAccess = getTypeAccess();
-    while (typeAccess instanceof ArrayTypeAccess) {
-      typeAccess = ((ArrayTypeAccess) typeAccess).getAccess();
-    }
-    if (typeAccess instanceof ParTypeAccess) {
-      error("Cannot create array of generic type");
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -71,61 +59,49 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
   public ArrayReference(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    potentiallyCompatible_TypeDecl_BodyDecl_reset();
     congruentTo_FunctionDescriptor_reset();
     isExact_reset();
-    potentiallyCompatible_TypeDecl_BodyDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:34
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:46
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public ArrayReference clone() throws CloneNotSupportedException {
     ArrayReference node = (ArrayReference) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:59
+  /** @apilevel internal 
+   * @declaredat ASTNode:43
    */
   public ArrayReference copy() {
     try {
       ArrayReference node = (ArrayReference) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -139,8 +115,9 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:78
+   * @declaredat ASTNode:62
    */
+  @Deprecated
   public ArrayReference fullCopy() {
     return treeCopyNoTransform();
   }
@@ -149,14 +126,14 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:87
+   * @declaredat ASTNode:72
    */
   public ArrayReference treeCopyNoTransform() {
     ArrayReference tree = (ArrayReference) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -170,15 +147,23 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:107
+   * @declaredat ASTNode:92
    */
   public ArrayReference treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ArrayReference tree = (ArrayReference) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:114
+  /** @apilevel internal 
+   * @declaredat ASTNode:106
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -209,37 +194,96 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
   public Access getTypeAccessNoTransform() {
     return (Access) getChildNoTransform(0);
   }
-  protected java.util.Map congruentTo_FunctionDescriptor_values;
+  /** @apilevel internal */
+  private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
+    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    potentiallyCompatible_TypeDecl_BodyDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
+  public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
+    java.util.List _parameters = new java.util.ArrayList(2);
+    _parameters.add(type);
+    _parameters.add(candidateDecl);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
+        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
+        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
+    }
+    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
+    if (state().inCircle()) {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return potentiallyCompatible_TypeDecl_BodyDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
+      if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
+        return true;
+      } else if (!super.potentiallyCompatible(type, candidateDecl)) {
+        return false;
+      }
+      InterfaceDecl iDecl = (InterfaceDecl) type;
+      FunctionDescriptor f = iDecl.functionDescriptor();
+      return f.method.arity() == 1;
+    }
+  /** @apilevel internal */
   private void congruentTo_FunctionDescriptor_reset() {
+    congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
     congruentTo_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
-    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(congruentTo_FunctionDescriptor_values.containsKey(_parameters)) {
-      return ((Boolean)congruentTo_FunctionDescriptor_values.get(_parameters)).booleanValue();
-    }
+    if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      congruentTo_FunctionDescriptor_values.put(_parameters, Boolean.valueOf(congruentTo_FunctionDescriptor_value));
-    } else {
+    if (congruentTo_FunctionDescriptor_values.containsKey(_parameters) && congruentTo_FunctionDescriptor_computed != null
+        && congruentTo_FunctionDescriptor_computed.containsKey(_parameters)
+        && (congruentTo_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || congruentTo_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) congruentTo_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
+    if (state().inCircle()) {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return congruentTo_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean congruentTo_compute(FunctionDescriptor f) {
       if (f.method.getNumParameter() != 1) {
         return false;
@@ -254,86 +298,81 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
       }
       return true;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isExact_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isExact_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isExact_reset() {
-    isExact_computed = false;
+    isExact_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isExact_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isExact_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127")
   public boolean isExact() {
-    if(isExact_computed) {
+    ASTNode$State state = state();
+    if (isExact_computed == ASTNode$State.NON_CYCLE || isExact_computed == state().cycle()) {
       return isExact_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isExact_value = true;
-    if (isFinal && num == state().boundariesCrossed) {
-      isExact_computed = true;
+    if (state().inCircle()) {
+      isExact_computed = state().cycle();
+    
     } else {
+      isExact_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isExact_value;
   }
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Java8NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:534
    */
-  private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
-    potentiallyCompatible_TypeDecl_BodyDecl_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
-    java.util.List _parameters = new java.util.ArrayList(2);
-    _parameters.add(type);
-    _parameters.add(candidateDecl);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters)) {
-      return ((Boolean)potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, Boolean.valueOf(potentiallyCompatible_TypeDecl_BodyDecl_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return potentiallyCompatible_TypeDecl_BodyDecl_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
-      if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
-        return true;
-      } else if (!super.potentiallyCompatible(type, candidateDecl)) {
-        return false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:534")
+  public Collection<Problem> nameProblems() {
+    {
+        Access typeAccess = getTypeAccess();
+        while (typeAccess instanceof ArrayTypeAccess) {
+          typeAccess = ((ArrayTypeAccess) typeAccess).getAccess();
+        }
+        if (typeAccess instanceof ParTypeAccess) {
+          return Collections.singletonList(error("Cannot create array of generic type"));
+        }
+        return Collections.emptyList();
       }
-      InterfaceDecl iDecl = (InterfaceDecl) type;
-      FunctionDescriptor f = iDecl.functionDescriptor();
-      return f.method.arity() == 1;
-    }
-  /**
-   * @apilevel internal
-   */
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:532
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

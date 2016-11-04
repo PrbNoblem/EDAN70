@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:6
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:6
  * @production PrimitiveCompilationUnit : {@link CompilationUnit};
 
  */
@@ -62,23 +63,21 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
     setChild(p1, 0);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:28
+  /** @apilevel low-level 
+   * @declaredat ASTNode:26
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:34
+   * @declaredat ASTNode:32
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -94,37 +93,27 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
     typeNull_reset();
     unknownType_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:51
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:63
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:69
+  /** @apilevel internal 
+   * @declaredat ASTNode:55
    */
   public PrimitiveCompilationUnit clone() throws CloneNotSupportedException {
     PrimitiveCompilationUnit node = (PrimitiveCompilationUnit) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:76
+  /** @apilevel internal 
+   * @declaredat ASTNode:60
    */
   public PrimitiveCompilationUnit copy() {
     try {
       PrimitiveCompilationUnit node = (PrimitiveCompilationUnit) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -138,8 +127,9 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:95
+   * @declaredat ASTNode:79
    */
+  @Deprecated
   public PrimitiveCompilationUnit fullCopy() {
     return treeCopyNoTransform();
   }
@@ -148,14 +138,14 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:104
+   * @declaredat ASTNode:89
    */
   public PrimitiveCompilationUnit treeCopyNoTransform() {
     PrimitiveCompilationUnit tree = (PrimitiveCompilationUnit) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -169,18 +159,26 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:124
+   * @declaredat ASTNode:109
    */
   public PrimitiveCompilationUnit treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    PrimitiveCompilationUnit tree = (PrimitiveCompilationUnit) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:131
+  /** @apilevel internal 
+   * @declaredat ASTNode:123
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_PackageDecl == ((PrimitiveCompilationUnit)node).tokenString_PackageDecl);    
+    return super.is$Equal(node) && (tokenString_PackageDecl == ((PrimitiveCompilationUnit) node).tokenString_PackageDecl);    
   }
   /**
    * Replaces the lexeme PackageDecl.
@@ -196,7 +194,7 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    * @apilevel internal
    */
   public void setPackageDecl(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackageDecl is only valid for String lexemes");
     tokenString_PackageDecl = (String)symbol.value;
     PackageDeclstart = symbol.getStart();
@@ -259,11 +257,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    * @apilevel high-level
    */
   public void addImportDecl(ImportDecl node) {
-    List<ImportDecl> list = (parent == null || state == null) ? getImportDeclListNoTransform() : getImportDeclList();
+    List<ImportDecl> list = (parent == null) ? getImportDeclListNoTransform() : getImportDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addImportDeclNoTransform(ImportDecl node) {
     List<ImportDecl> list = getImportDeclListNoTransform();
@@ -287,7 +284,6 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   @ASTNodeAnnotation.ListChild(name="ImportDecl")
   public List<ImportDecl> getImportDeclList() {
     List<ImportDecl> list = (List<ImportDecl>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -298,6 +294,13 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    */
   public List<ImportDecl> getImportDeclListNoTransform() {
     return (List<ImportDecl>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the ImportDecl list without
+   * triggering rewrites.
+   */
+  public ImportDecl getImportDeclNoTransform(int i) {
+    return (ImportDecl) getImportDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the ImportDecl list.
@@ -364,11 +367,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    * @apilevel high-level
    */
   public void addTypeDecl(TypeDecl node) {
-    List<TypeDecl> list = (parent == null || state == null) ? getTypeDeclListNoTransform() : getTypeDeclList();
+    List<TypeDecl> list = (parent == null) ? getTypeDeclListNoTransform() : getTypeDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeDeclNoTransform(TypeDecl node) {
     List<TypeDecl> list = getTypeDeclListNoTransform();
@@ -392,7 +394,6 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   @ASTNodeAnnotation.ListChild(name="TypeDecl")
   public List<TypeDecl> getTypeDeclList() {
     List<TypeDecl> list = (List<TypeDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -403,6 +404,13 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
    */
   public List<TypeDecl> getTypeDeclListNoTransform() {
     return (List<TypeDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeDecl list without
+   * triggering rewrites.
+   */
+  public TypeDecl getTypeDeclNoTransform(int i) {
+    return (TypeDecl) getTypeDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeDecl list.
@@ -421,45 +429,38 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   public List<TypeDecl> getTypeDeclsNoTransform() {
     return getTypeDeclListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeBoolean_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeBoolean_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeBoolean_reset() {
     typeBoolean_computed = false;
+    
     typeBoolean_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeBoolean_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeBoolean_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:37
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:37")
   public TypeDecl typeBoolean() {
-    if(typeBoolean_computed) {
+    ASTNode$State state = state();
+    if (typeBoolean_computed) {
       return typeBoolean_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeBoolean_value = typeBoolean_compute();
     typeBoolean_value.setParent(this);
-    typeBoolean_value.is$Final = true;
-    if (true) {
-      typeBoolean_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeBoolean_computed = true;
+    state().leaveLazyAttribute();
     return typeBoolean_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeBoolean_compute() {
       BooleanType type = new BooleanType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -467,45 +468,38 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(unknownType().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeByte_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeByte_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeByte_reset() {
     typeByte_computed = false;
+    
     typeByte_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeByte_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeByte_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:45
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:45")
   public TypeDecl typeByte() {
-    if(typeByte_computed) {
+    ASTNode$State state = state();
+    if (typeByte_computed) {
       return typeByte_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeByte_value = typeByte_compute();
     typeByte_value.setParent(this);
-    typeByte_value.is$Final = true;
-    if (true) {
-      typeByte_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeByte_computed = true;
+    state().leaveLazyAttribute();
     return typeByte_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeByte_compute() {
       ByteType type = new ByteType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -513,45 +507,38 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(typeShort().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeShort_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeShort_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeShort_reset() {
     typeShort_computed = false;
+    
     typeShort_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeShort_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeShort_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:53
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:53")
   public TypeDecl typeShort() {
-    if(typeShort_computed) {
+    ASTNode$State state = state();
+    if (typeShort_computed) {
       return typeShort_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeShort_value = typeShort_compute();
     typeShort_value.setParent(this);
-    typeShort_value.is$Final = true;
-    if (true) {
-      typeShort_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeShort_computed = true;
+    state().leaveLazyAttribute();
     return typeShort_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeShort_compute() {
       ShortType type = new ShortType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -559,45 +546,38 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(typeInt().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeChar_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeChar_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeChar_reset() {
     typeChar_computed = false;
+    
     typeChar_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeChar_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeChar_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:61
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:61")
   public TypeDecl typeChar() {
-    if(typeChar_computed) {
+    ASTNode$State state = state();
+    if (typeChar_computed) {
       return typeChar_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeChar_value = typeChar_compute();
     typeChar_value.setParent(this);
-    typeChar_value.is$Final = true;
-    if (true) {
-      typeChar_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeChar_computed = true;
+    state().leaveLazyAttribute();
     return typeChar_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeChar_compute() {
       CharType type = new CharType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -605,45 +585,38 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(typeInt().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeInt_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeInt_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeInt_reset() {
     typeInt_computed = false;
+    
     typeInt_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeInt_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeInt_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:69
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:69")
   public TypeDecl typeInt() {
-    if(typeInt_computed) {
+    ASTNode$State state = state();
+    if (typeInt_computed) {
       return typeInt_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeInt_value = typeInt_compute();
     typeInt_value.setParent(this);
-    typeInt_value.is$Final = true;
-    if (true) {
-      typeInt_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeInt_computed = true;
+    state().leaveLazyAttribute();
     return typeInt_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeInt_compute() {
       IntType type = new IntType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -651,92 +624,79 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(typeLong().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeLong_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeLong_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeLong_reset() {
     typeLong_computed = false;
+    
     typeLong_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeLong_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeLong_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:77
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:77")
   public TypeDecl typeLong() {
-    if(typeLong_computed) {
+    ASTNode$State state = state();
+    if (typeLong_computed) {
       return typeLong_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeLong_value = typeLong_compute();
     typeLong_value.setParent(this);
-    typeLong_value.is$Final = true;
-    if (true) {
-      typeLong_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeLong_computed = true;
+    state().leaveLazyAttribute();
     return typeLong_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeLong_compute() {
       LongType type = new LongType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
       type.setID("long");
-      // Float doesn't seem right here, keeping it because the old code does this
+      // TODO(joqivst): investigate this.
+      // Float does not seem right here, keeping it because the old code does this.
       type.setSuperClass(typeFloat().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeFloat_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeFloat_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeFloat_reset() {
     typeFloat_computed = false;
+    
     typeFloat_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeFloat_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeFloat_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:87")
   public TypeDecl typeFloat() {
-    if(typeFloat_computed) {
+    ASTNode$State state = state();
+    if (typeFloat_computed) {
       return typeFloat_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeFloat_value = typeFloat_compute();
     typeFloat_value.setParent(this);
-    typeFloat_value.is$Final = true;
-    if (true) {
-      typeFloat_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeFloat_computed = true;
+    state().leaveLazyAttribute();
     return typeFloat_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeFloat_compute() {
       FloatType type = new FloatType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -744,45 +704,38 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(typeDouble().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeDouble_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeDouble_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeDouble_reset() {
     typeDouble_computed = false;
+    
     typeDouble_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeDouble_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeDouble_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:95
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:95")
   public TypeDecl typeDouble() {
-    if(typeDouble_computed) {
+    ASTNode$State state = state();
+    if (typeDouble_computed) {
       return typeDouble_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeDouble_value = typeDouble_compute();
     typeDouble_value.setParent(this);
-    typeDouble_value.is$Final = true;
-    if (true) {
-      typeDouble_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeDouble_computed = true;
+    state().leaveLazyAttribute();
     return typeDouble_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeDouble_compute() {
       DoubleType type = new DoubleType();
       type.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -790,135 +743,114 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       type.setSuperClass(unknownType().createQualifiedAccess());
       return type;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeVoid_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeVoid_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeVoid_reset() {
     typeVoid_computed = false;
+    
     typeVoid_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeVoid_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeVoid_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:103
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:103")
   public TypeDecl typeVoid() {
-    if(typeVoid_computed) {
+    ASTNode$State state = state();
+    if (typeVoid_computed) {
       return typeVoid_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeVoid_value = typeVoid_compute();
     typeVoid_value.setParent(this);
-    typeVoid_value.is$Final = true;
-    if (true) {
-      typeVoid_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeVoid_computed = true;
+    state().leaveLazyAttribute();
     return typeVoid_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeVoid_compute() {
       VoidType classDecl = new VoidType();
       classDecl.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
       classDecl.setID("void");
       return classDecl;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeNull_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeNull_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void typeNull_reset() {
     typeNull_computed = false;
+    
     typeNull_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean typeNull_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl typeNull_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:110
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:110")
   public TypeDecl typeNull() {
-    if(typeNull_computed) {
+    ASTNode$State state = state();
+    if (typeNull_computed) {
       return typeNull_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     typeNull_value = typeNull_compute();
     typeNull_value.setParent(this);
-    typeNull_value.is$Final = true;
-    if (true) {
-      typeNull_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    typeNull_computed = true;
+    state().leaveLazyAttribute();
     return typeNull_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl typeNull_compute() {
       NullType classDecl = new NullType();
       classDecl.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
       classDecl.setID("null");
       return classDecl;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean unknownType_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl unknownType_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void unknownType_reset() {
     unknownType_computed = false;
+    
     unknownType_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean unknownType_computed = false;
+
+  /** @apilevel internal */
+  protected TypeDecl unknownType_value;
+
+  /**
+   * @attribute syn
+   * @aspect PrimitiveTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:117
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:117")
   public TypeDecl unknownType() {
-    if(unknownType_computed) {
+    ASTNode$State state = state();
+    if (unknownType_computed) {
       return unknownType_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     unknownType_value = unknownType_compute();
     unknownType_value.setParent(this);
-    unknownType_value.is$Final = true;
-    if (true) {
-      unknownType_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    unknownType_computed = true;
+    state().leaveLazyAttribute();
     return unknownType_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl unknownType_compute() {
       ClassDecl classDecl = new UnknownType();
       classDecl.setModifiers(new Modifiers(new List().add(new Modifier("public"))));
@@ -934,13 +866,14 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
           new Opt()
       );
       classDecl.addBodyDecl(methodDecl);
-      FieldDeclaration fieldDecl = new FieldDeclaration(
-          new Modifiers(new List().add(
-            new Modifier("public")
-          )),
-          new PrimitiveTypeAccess("Unknown"),
+      FieldDeclarator unknown = new FieldDeclarator(
           "unknown",
-          new Opt()
+          new List<Dims>(),
+          new Opt<Expr>());
+      FieldDecl fieldDecl = new FieldDecl(
+          new Modifiers(new List<Modifier>(new Modifier("public"))),
+          new PrimitiveTypeAccess("Unknown"),
+          new List<FieldDeclarator>(unknown)
       );
       classDecl.addBodyDecl(fieldDecl);
       ConstructorDecl constrDecl = new ConstructorDecl(
@@ -954,10 +887,12 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
       classDecl.addBodyDecl(constrDecl);
       return classDecl;
     }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:51
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:64
  * @production BridgeMethodDecl : {@link MethodDecl};
 
  */
@@ -69,58 +70,46 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
     setChild(p4, 3);
     setChild(p5, 4);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:35
+  /** @apilevel low-level 
+   * @declaredat ASTNode:33
    */
   protected int numChildren() {
     return 5;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:41
+   * @declaredat ASTNode:39
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:47
+  /** @apilevel internal 
+   * @declaredat ASTNode:43
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:47
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:59
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:65
+  /** @apilevel internal 
+   * @declaredat ASTNode:51
    */
   public BridgeMethodDecl clone() throws CloneNotSupportedException {
     BridgeMethodDecl node = (BridgeMethodDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:72
+  /** @apilevel internal 
+   * @declaredat ASTNode:56
    */
   public BridgeMethodDecl copy() {
     try {
       BridgeMethodDecl node = (BridgeMethodDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -134,8 +123,9 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:75
    */
+  @Deprecated
   public BridgeMethodDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -144,14 +134,14 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:100
+   * @declaredat ASTNode:85
    */
   public BridgeMethodDecl treeCopyNoTransform() {
     BridgeMethodDecl tree = (BridgeMethodDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -165,18 +155,26 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:120
+   * @declaredat ASTNode:105
    */
   public BridgeMethodDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    BridgeMethodDecl tree = (BridgeMethodDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:127
+  /** @apilevel internal 
+   * @declaredat ASTNode:119
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((BridgeMethodDecl)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((BridgeMethodDecl) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -244,7 +242,7 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -307,11 +305,10 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -335,7 +332,6 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -346,6 +342,13 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -412,11 +415,10 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -440,7 +442,6 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -451,6 +452,13 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -520,10 +528,12 @@ public class BridgeMethodDecl extends MethodDecl implements Cloneable {
   public Opt<Block> getBlockOptNoTransform() {
     return (Opt<Block>) getChildNoTransform(4);
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

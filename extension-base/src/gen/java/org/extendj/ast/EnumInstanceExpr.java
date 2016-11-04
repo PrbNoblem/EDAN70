@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Enums.ast:5
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Enums.ast:5
  * @production EnumInstanceExpr : {@link ClassInstanceExpr} ::= <span class="component">{@link Access}</span> <span class="component">Arg:{@link Expr}*</span> <span class="component">[{@link TypeDecl}]</span>;
 
  */
@@ -52,60 +53,48 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
   public EnumInstanceExpr(Opt<TypeDecl> p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     getAccess_reset();
     getArgList_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:47
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public EnumInstanceExpr clone() throws CloneNotSupportedException {
     EnumInstanceExpr node = (EnumInstanceExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:60
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public EnumInstanceExpr copy() {
     try {
       EnumInstanceExpr node = (EnumInstanceExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -119,8 +108,9 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:79
+   * @declaredat ASTNode:63
    */
+  @Deprecated
   public EnumInstanceExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -129,7 +119,7 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:88
+   * @declaredat ASTNode:73
    */
   public EnumInstanceExpr treeCopyNoTransform() {
     EnumInstanceExpr tree = (EnumInstanceExpr) copy();
@@ -144,7 +134,7 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -158,14 +148,30 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:116
+   * @declaredat ASTNode:101
    */
   public EnumInstanceExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    EnumInstanceExpr tree = (EnumInstanceExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 1:
+          tree.children[i] = null;
+          continue;
+        case 2:
+          tree.children[i] = new List();
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    * @declaredat ASTNode:123
    */
   protected boolean is$Equal(ASTNode node) {
@@ -297,11 +303,10 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -335,6 +340,13 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
     return (List<Expr>) getChildNoTransform(2);
   }
   /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
+  }
+  /**
    * Retrieves the Arg list.
    * @return The node representing the Arg list.
    * @apilevel high-level
@@ -351,90 +363,78 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
   public List<Expr> getArgsNoTransform() {
     return getArgListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getAccess_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Access getAccess_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void getAccess_reset() {
     getAccess_computed = false;
+    
     getAccess_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean getAccess_computed = false;
+
+  /** @apilevel internal */
+  protected Access getAccess_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:291
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:291")
   public Access getAccess() {
-    if(getAccess_computed) {
+    ASTNode$State state = state();
+    if (getAccess_computed) {
       return (Access) getChild(getAccessChildPosition());
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     getAccess_value = getAccess_compute();
     setChild(getAccess_value, getAccessChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getAccess_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    getAccess_computed = true;
+    state().leaveLazyAttribute();
     Access node = (Access) this.getChild(getAccessChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Access getAccess_compute() {
       return hostType().createQualifiedAccess();
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getArgList_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected List<Expr> getArgList_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void getArgList_reset() {
     getArgList_computed = false;
+    
     getArgList_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean getArgList_computed = false;
+
+  /** @apilevel internal */
+  protected List<Expr> getArgList_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:295
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:295")
   public List<Expr> getArgList() {
-    if(getArgList_computed) {
+    ASTNode$State state = state();
+    if (getArgList_computed) {
       return (List<Expr>) getChild(getArgListChildPosition());
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     getArgList_value = getArgList_compute();
     setChild(getArgList_value, getArgListChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getArgList_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    getArgList_computed = true;
+    state().leaveLazyAttribute();
     List<Expr> node = (List<Expr>) this.getChild(getArgListChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private List<Expr> getArgList_compute() {
       EnumConstant ec = (EnumConstant) getParent().getParent();
-      List<EnumConstant> ecs = (List<EnumConstant>)ec.getParent();
+      List<EnumConstant> ecs = (List<EnumConstant>) ec.getParent();
       int idx = ecs.getIndexOfChild(ec);
       if (idx == -1) {
         throw new Error("internal: cannot determine numeric value of enum constant");
@@ -447,10 +447,12 @@ public class EnumInstanceExpr extends ClassInstanceExpr implements Cloneable {
       }
       return argList;
     }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

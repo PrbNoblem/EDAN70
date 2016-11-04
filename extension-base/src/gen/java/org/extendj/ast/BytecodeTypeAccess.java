@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/BoundNames.ast:10
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/BoundNames.ast:10
  * @production BytecodeTypeAccess : {@link TypeAccess};
 
  */
@@ -57,58 +58,47 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
     setPackage(p0);
     setID(p1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:23
+  /** @apilevel low-level 
+   * @declaredat ASTNode:21
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:29
+   * @declaredat ASTNode:27
    */
   public boolean mayHaveRewrite() {
     return true;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:35
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    rewrittenNode_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:47
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public BytecodeTypeAccess clone() throws CloneNotSupportedException {
     BytecodeTypeAccess node = (BytecodeTypeAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:60
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public BytecodeTypeAccess copy() {
     try {
       BytecodeTypeAccess node = (BytecodeTypeAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -122,8 +112,9 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:79
+   * @declaredat ASTNode:64
    */
+  @Deprecated
   public BytecodeTypeAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -132,14 +123,14 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:88
+   * @declaredat ASTNode:74
    */
   public BytecodeTypeAccess treeCopyNoTransform() {
     BytecodeTypeAccess tree = (BytecodeTypeAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -153,18 +144,26 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:108
+   * @declaredat ASTNode:94
    */
   public BytecodeTypeAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    BytecodeTypeAccess tree = (BytecodeTypeAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:115
+  /** @apilevel internal 
+   * @declaredat ASTNode:108
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_Package == ((BytecodeTypeAccess)node).tokenString_Package) && (tokenString_ID == ((BytecodeTypeAccess)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_Package == ((BytecodeTypeAccess) node).tokenString_Package) && (tokenString_ID == ((BytecodeTypeAccess) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme Package.
@@ -180,7 +179,7 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
    * @apilevel internal
    */
   public void setPackage(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackage is only valid for String lexemes");
     tokenString_Package = (String)symbol.value;
     Packagestart = symbol.getStart();
@@ -209,7 +208,7 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -224,18 +223,13 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
   public String getID() {
     return tokenString_ID != null ? tokenString_ID : "";
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at @declaredat extendj/java4/frontend/BoundNames.jrag:115
-    state().duringBoundNames++;
-    ASTNode result = rewriteRule0();
-    state().duringBoundNames--;
-    return result;
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:115
+    return rewriteRule0();
   }
   /**
-   * @declaredat @declaredat extendj/java4/frontend/BoundNames.jrag:115
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:115
    * @apilevel internal
    */
   private Access rewriteRule0() {
@@ -244,12 +238,12 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
         return new TypeAccess(packageName(), name());
       } else {
         String[] names = name().split("\\$");
-        Access a = null; // the resulting access
-        String newName = null; // the subname to try
-        TypeDecl type = null; // qualifying type if one
+        Access a = null; // The resulting access.
+        String newName = null; // The subname to try.
+        TypeDecl type = null; // Qualifying type if one.
         for (int i = 0; i < names.length; i++) {
-          newName = newName == null ? names[i] : (newName + "$" + names[i]);
-          SimpleSet set;
+          newName = (newName == null) ? names[i] : (newName + "$" + names[i]);
+          SimpleSet<TypeDecl> set;
           if (type != null) {
             set = type.memberTypes(newName);
           } else if (packageName().equals("")) {
@@ -257,16 +251,79 @@ public class BytecodeTypeAccess extends TypeAccess implements Cloneable {
           } else {
             set = lookupType(packageName(), newName).asSet();
           }
-          if (!set.isEmpty()) {
-            a = a == null ? (Access) new TypeAccess(packageName(), newName) : (Access) a.qualifiesAccess(new TypeAccess(newName));
-            type = (TypeDecl) set.iterator().next();
-            newName = null; // reset subname
+          if (set.isSingleton()) {
+            a = (a == null)
+                ? new TypeAccess(packageName(), newName)
+                : a.qualifiesAccess(new TypeAccess(newName));
+            type = set.singletonValue();
+            newName = null; // Reset subname.
           }
         }
-        if (a == null) {
-          a = new TypeAccess(packageName(), name());
-        }
-        return a;
+        return (a != null) ? a : new TypeAccess(packageName(), name());
       }
     }  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return true;
+  }
+  /** @apilevel internal */
+  private void rewrittenNode_reset() {
+    rewrittenNode_computed = false;
+    rewrittenNode_initialized = false;
+    rewrittenNode_value = null;
+    rewrittenNode_cycle = null;
+  }
+/** @apilevel internal */
+protected ASTNode$State.Cycle rewrittenNode_cycle = null;
+  /** @apilevel internal */
+  protected boolean rewrittenNode_computed = false;
+
+  /** @apilevel internal */
+  protected ASTNode rewrittenNode_value;
+  /** @apilevel internal */
+  protected boolean rewrittenNode_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="", declaredAt=":0")
+  public ASTNode rewrittenNode() {
+    if (rewrittenNode_computed) {
+      return rewrittenNode_value;
+    }
+    ASTNode$State state = state();
+    if (!rewrittenNode_initialized) {
+      rewrittenNode_initialized = true;
+      rewrittenNode_value = this;
+      if (rewrittenNode_value != null) {
+        rewrittenNode_value.setParent(getParent());
+      }
+    }
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      do {
+        rewrittenNode_cycle = state.nextCycle();
+        ASTNode new_rewrittenNode_value = rewrittenNode_value.rewriteTo();
+        if (new_rewrittenNode_value != rewrittenNode_value || new_rewrittenNode_value.canRewrite()) {
+          state.setChangeInCycle();
+        }
+        rewrittenNode_value = new_rewrittenNode_value;
+        if (rewrittenNode_value != null) {
+          rewrittenNode_value.setParent(getParent());
+        }
+      } while (state.testAndClearChangeInCycle());
+      rewrittenNode_computed = true;
+
+      state.leaveCircle();
+    } else if (rewrittenNode_cycle != state.cycle()) {
+      rewrittenNode_cycle = state.cycle();
+      ASTNode new_rewrittenNode_value = rewrittenNode_value.rewriteTo();
+      if (new_rewrittenNode_value != rewrittenNode_value || new_rewrittenNode_value.canRewrite()) {
+        state.setChangeInCycle();
+      }
+      rewrittenNode_value = new_rewrittenNode_value;
+      if (rewrittenNode_value != null) {
+        rewrittenNode_value.setParent(getParent());
+      }
+    } else {
+    }
+    return rewrittenNode_value;
+  }
 }

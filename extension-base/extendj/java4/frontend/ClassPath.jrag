@@ -1,4 +1,5 @@
 /* Copyright (c) 2005-2008, Torbjorn Ekman
+ *               2015-2016, Jesper Öqvist <jesper.oqvist@cs.lth.se>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,6 +30,9 @@
  */
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
@@ -37,26 +41,48 @@ import java.util.ArrayList;
 import beaver.*;
 
 aspect ClassPath {
+  /** Interface for ExtendJ bytecode reader adapter. */
   public interface BytecodeReader {
     CompilationUnit read(InputStream is, String fullName, Program p)
         throws FileNotFoundException, IOException;
   }
 
+  /** Interface for ExtendJ Java parser adapter. */
   public interface JavaParser {
     CompilationUnit parse(InputStream is, String fileName)
         throws IOException, beaver.Parser.Exception;
   }
 
-  protected BytecodeReader Program.bytecodeReader;
+  protected BytecodeReader Program.bytecodeReader = defaultBytecodeReader();
 
   public void Program.initBytecodeReader(BytecodeReader r) {
     bytecodeReader = r;
   }
 
-  protected JavaParser Program.javaParser;
+  public static BytecodeReader Program.defaultBytecodeReader() {
+    return new BytecodeReader() {
+      @Override
+      public CompilationUnit read(InputStream is, String fullName, Program p)
+          throws FileNotFoundException, IOException {
+        return new BytecodeParser(is, fullName).parse(null, null, p);
+      }
+    };
+  }
+
+  protected JavaParser Program.javaParser = defaultJavaParser();
 
   public void Program.initJavaParser(JavaParser p) {
     javaParser = p;
+  }
+
+  public static JavaParser Program.defaultJavaParser() {
+    return new JavaParser() {
+      @Override
+      public CompilationUnit parse(InputStream is, String fileName)
+          throws IOException, beaver.Parser.Exception {
+        return new org.extendj.parser.JavaParser().parse(is, fileName);
+      }
+    };
   }
 
   /**
@@ -79,6 +105,7 @@ aspect ClassPath {
   inh CompilationUnit ASTNode.compilationUnit();
 
   eq CompilationUnit.getChild().compilationUnit() = this;
+
   eq Program.getChild().compilationUnit() = null; // No enclosing compilation unit found.
 
   /**
@@ -100,20 +127,26 @@ aspect ClassPath {
   }
 
   /**
-   * Iterate over all source files and on-demand loaded compilation units.
+   * Creates an iterator to iterate over compilation units parsed from source files.
    */
   public Iterator<CompilationUnit> Program.compilationUnitIterator() {
     return new Iterator<CompilationUnit>() {
       int index = 0;
+
+      @Override
       public boolean hasNext() {
         return index < getNumCompilationUnit();
       }
+
+      @Override
       public CompilationUnit next() {
         if (getNumCompilationUnit() == index) {
           throw new java.util.NoSuchElementException();
         }
         return getCompilationUnit(index++);
       }
+
+      @Override
       public void remove() {
         throw new UnsupportedOperationException();
       }
@@ -136,10 +169,12 @@ aspect ClassPath {
     /**
      * Tracks all currently available packages in the program classpath.
      */
-    private Set<String> packages = Collections.newSetFromMap(new HashMap<String,Boolean>());
+    private Set<String> packages = new HashSet<String>();
 
     private boolean pathsInitialized = false;
+
     private ArrayList<PathPart> classPath = new ArrayList<PathPart>();
+
     private ArrayList<PathPart> sourcePath = new ArrayList<PathPart>();
 
     private final Program program;
@@ -171,12 +206,14 @@ aspect ClassPath {
 
       String[] bootclasspaths;
       if (program.options().hasValueForOption("-bootclasspath")) {
-        bootclasspaths = program.options().getValueForOption("-bootclasspath").split(File.pathSeparator);
+        bootclasspaths = program.options().getValueForOption("-bootclasspath")
+            .split(File.pathSeparator);
       } else {
-        bootclasspaths = System.getProperty("sun.boot.class.path").split(File.pathSeparator);
+        bootclasspaths = System.getProperty("sun.boot.class.path")
+            .split(File.pathSeparator);
       }
-      for (int i = 0; i < bootclasspaths.length; i++) {
-        classPaths.add(bootclasspaths[i]);
+      for (String path : bootclasspaths) {
+        classPaths.add(path);
       }
 
       String[] extdirs;
@@ -185,8 +222,8 @@ aspect ClassPath {
       } else {
         extdirs = System.getProperty("java.ext.dirs").split(File.pathSeparator);
       }
-      for (int i = 0; i < extdirs.length; i++) {
-        classPaths.add(extdirs[i]);
+      for (String path : extdirs) {
+        classPaths.add(path);
       }
 
       String[] userClasses = null;
@@ -198,21 +235,21 @@ aspect ClassPath {
         userClasses = new String[] { "." };
       }
       if (!program.options().hasValueForOption("-sourcepath")) {
-        for (int i = 0; i < userClasses.length; i++) {
-          classPaths.add(userClasses[i]);
-          sourcePaths.add(userClasses[i]);
+        for (String path : userClasses) {
+          classPaths.add(path);
+          sourcePaths.add(path);
         }
       } else {
-        for (int i = 0; i < userClasses.length; i++) {
-          classPaths.add(userClasses[i]);
+        for (String path : userClasses) {
+          classPaths.add(path);
         }
         userClasses = program.options().getValueForOption("-sourcepath").split(File.pathSeparator);
-        for (int i = 0; i < userClasses.length; i++) {
-          sourcePaths.add(userClasses[i]);
+        for (String path : userClasses) {
+          sourcePaths.add(path);
         }
       }
 
-      for (String path: classPaths) {
+      for (String path : classPaths) {
         PathPart part = PathPart.createClassPath(path);
         if (part != null) {
           addClassPath(part);
@@ -220,7 +257,7 @@ aspect ClassPath {
           System.out.println("Warning: Could not use " + path + " as class path");
         }
       }
-      for (String path: sourcePaths) {
+      for (String path : sourcePaths) {
         PathPart part = PathPart.createSourcePath(path);
         if (part != null) {
           addSourcePath(part);
@@ -237,8 +274,7 @@ aspect ClassPath {
      */
     public synchronized InputStream getInputStream(String name) {
       try {
-        for (Iterator iter = classPath.iterator(); iter.hasNext(); ) {
-          PathPart part = (PathPart) iter.next();
+        for (PathPart part : classPath) {
           ClassSource source = part.findSource(name);
           if (source != ClassSource.NONE) {
             return source.openInputStream();
@@ -253,8 +289,8 @@ aspect ClassPath {
      * Load a compilation unit from disk based on a classname. A class file is parsed if one exists
      * matching the classname that is not older than a corresponding source file, otherwise the
      * source file is selected.
-     * <p>
-     * This method is called by the LibCompilationUnit NTA.  We rely on the result of this method
+     *
+     * <p>This method is called by the LibCompilationUnit NTA.  We rely on the result of this method
      * being cached because it will return a newly parsed compilation unit each time it is called.
      *
      * @return the loaded compilation unit, or the provided default compilation unit if no matching
@@ -266,21 +302,21 @@ aspect ClassPath {
         initPaths();
         ClassSource sourcePart = ClassSource.NONE;
         ClassSource classPart = ClassSource.NONE;
-        for (PathPart part: sourcePath) {
+        for (PathPart part : sourcePath) {
           sourcePart = part.findSource(typeName);
           if (sourcePart != ClassSource.NONE) {
             break;
           }
         }
-        for (PathPart part: classPath) {
+        for (PathPart part : classPath) {
           classPart = part.findSource(typeName);
           if (classPart != ClassSource.NONE) {
             break;
           }
         }
 
-        if (sourcePart != ClassSource.NONE && (classPart == ClassSource.NONE ||
-              classPart.lastModified() < sourcePart.lastModified())) {
+        if (sourcePart != ClassSource.NONE && (classPart == ClassSource.NONE
+              || classPart.lastModified() < sourcePart.lastModified())) {
           CompilationUnit unit = sourcePart.parseCompilationUnit(program);
           int index = typeName.lastIndexOf('.');
           if (index == -1) {
@@ -303,7 +339,7 @@ aspect ClassPath {
           }
         }
         return defaultCompilationUnit;
-      } catch(IOException e) {
+      } catch (IOException e) {
         // Attributes can't throw checked exceptions, so convert this to an Error.
         throw new Error(e);
       }
@@ -315,7 +351,7 @@ aspect ClassPath {
     public synchronized void addPackage(String packageName) {
       int end = packageName.length();
       while (end > 0 && packages.add(packageName.substring(0, end))) {
-        end = packageName.lastIndexOf('.', end-1);
+        end = packageName.lastIndexOf('.', end - 1);
       }
     }
 
@@ -343,13 +379,13 @@ aspect ClassPath {
       if (packages.contains(packageName)) {
         return true;
       }
-      for (PathPart part: classPath) {
+      for (PathPart part : classPath) {
         if (part.hasPackage(packageName)) {
           addPackage(packageName);
           return true;
         }
       }
-      for (PathPart part: sourcePath) {
+      for (PathPart part : sourcePath) {
         if (part.hasPackage(packageName)) {
           addPackage(packageName);
           return true;
@@ -377,8 +413,8 @@ aspect ClassPath {
    * Load a compilation unit from disk, selecting a class file
    * if one exists that is not older than a corresponding source
    * file, otherwise the source file is selected.
-   * <p>
-   * This method is called by the LibCompilationUnit NTA.  We rely on the
+   *
+   * <p>This method is called by the LibCompilationUnit NTA.  We rely on the
    * result of this method being cached because it will return a newly parsed
    * compilation unit each time it is called.
    *
@@ -397,14 +433,17 @@ aspect ClassPath {
   }
 
   private ClassSource CompilationUnit.classSource = ClassSource.NONE;
+
   private boolean CompilationUnit.fromSource = false;
 
   public void CompilationUnit.setClassSource(ClassSource source) {
     this.classSource = source;
   }
+
   public ClassSource CompilationUnit.getClassSource() {
     return classSource;
   }
+
   public void CompilationUnit.setFromSource(boolean value) {
     this.fromSource = value;
   }

@@ -1,39 +1,39 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:25
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:38
  * @production AbstractWildcardType : {@link TypeDecl};
 
  */
 public abstract class AbstractWildcardType extends TypeDecl implements Cloneable {
   /**
-   * Qualified access for wildcard types.
-   * Since they have no ordinary package and type name
-   * we just return the bound access.
+   * Qualified access for wildcard types.  Since they have no ordinary package
+   * and type name we just return the bound access.
    * @aspect Generics
-   * @declaredat extendj/java5/frontend/Generics.jrag:39
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:38
    */
   public Access createQualifiedAccess() {
     return createBoundAccess();
@@ -71,44 +71,34 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
     setID(p1);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:27
+  /** @apilevel low-level 
+   * @declaredat ASTNode:25
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:33
+   * @declaredat ASTNode:31
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    castingConversionTo_TypeDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:45
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:51
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public AbstractWildcardType clone() throws CloneNotSupportedException {
     AbstractWildcardType node = (AbstractWildcardType) super.clone();
@@ -120,15 +110,16 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:68
+   * @declaredat ASTNode:55
    */
+  @Deprecated
   public abstract AbstractWildcardType fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:75
+   * @declaredat ASTNode:63
    */
   public abstract AbstractWildcardType treeCopyNoTransform();
   /**
@@ -137,7 +128,7 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:83
+   * @declaredat ASTNode:71
    */
   public abstract AbstractWildcardType treeCopy();
   /**
@@ -180,7 +171,7 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -243,11 +234,10 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -271,7 +261,6 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -282,6 +271,13 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -300,24 +296,99 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
   public List<BodyDecl> getBodyDeclsNoTransform() {
     return getBodyDeclListNoTransform();
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isWildcard() {
-    ASTNode$State state = state();
-    boolean isWildcard_value = true;
-
-    return isWildcard_value;
+  /** @apilevel internal */
+  private void castingConversionTo_TypeDecl_reset() {
+    castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    castingConversionTo_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isReifiable() {
+  /** @apilevel internal */
+  protected java.util.Map castingConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map castingConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeConversion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100")
+  public boolean castingConversionTo(TypeDecl type) {
+    Object _parameters = type;
+    if (castingConversionTo_TypeDecl_computed == null) castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (castingConversionTo_TypeDecl_values == null) castingConversionTo_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean isReifiable_value = false;
-
-    return isReifiable_value;
+    if (castingConversionTo_TypeDecl_values.containsKey(_parameters) && castingConversionTo_TypeDecl_computed != null
+        && castingConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (castingConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || castingConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) castingConversionTo_TypeDecl_values.get(_parameters);
+    }
+    boolean castingConversionTo_TypeDecl_value = erasure().castingConversionTo(type);
+    if (state().inCircle()) {
+      castingConversionTo_TypeDecl_values.put(_parameters, castingConversionTo_TypeDecl_value);
+      castingConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      castingConversionTo_TypeDecl_values.put(_parameters, castingConversionTo_TypeDecl_value);
+      castingConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return castingConversionTo_TypeDecl_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178")
+  public boolean isReferenceType() {
+    boolean isReferenceType_value = true;
+    return isReferenceType_value;
+  }
+  /**
+   * A type is reifiable if it either refers to a non-parameterized type,
+   * is a raw type, is a parameterized type with only unbound wildcard
+   * parameters or is an array type with a reifiable type parameter.
+   * 
+   * @see "JLS SE7 &sect;4.7"
+   * @attribute syn
+   * @aspect ReifiableTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
+  public boolean isReifiable() {
+    boolean isReifiable_value = false;
+    return isReifiable_value;
+  }
+  /** @return {@code true} if this type is a wildcard type, possibly with type bounds. 
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:120
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:120")
+  public boolean isWildcard() {
+    boolean isWildcard_value = true;
+    return isWildcard_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577")
+  public boolean supertypeNullType(NullType type) {
+    boolean supertypeNullType_NullType_value = true;
+    return supertypeNullType_NullType_value;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

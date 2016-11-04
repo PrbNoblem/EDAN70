@@ -1,46 +1,67 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/BoundNames.ast:3
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/BoundNames.ast:3
  * @production BoundMethodAccess : {@link MethodAccess};
 
  */
 public class BoundMethodAccess extends MethodAccess implements Cloneable {
   /**
+   * A BoundMethodAccess is a MethodAccess where the name analysis is bypassed
+   * by explicitly setting the desired binding. This is useful when name
+   * binding is cached and recomputation is undesired.
+   * 
+   * <p>Specifying the hostType changes the target qualifier type which is used
+   * to invoke the bound method.
    * @aspect BoundNames
-   * @declaredat extendj/java4/frontend/BoundNames.jrag:81
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:68
    */
-  public BoundMethodAccess(String name, List args, MethodDecl methodDecl) {
+  public BoundMethodAccess(String name, List args, MethodDecl methodDecl,
+      TypeDecl hostType) {
     this(name, args);
     this.methodDecl = methodDecl;
+    this.boundHostType = hostType;
   }
   /**
    * @aspect BoundNames
-   * @declaredat extendj/java4/frontend/BoundNames.jrag:85
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:75
+   */
+  public BoundMethodAccess(String name, List args, MethodDecl methodDecl) {
+    this(name, args, methodDecl, methodDecl.hostType());
+  }
+  /**
+   * @aspect BoundNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:79
    */
   private MethodDecl methodDecl;
+  /**
+   * @aspect BoundNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:81
+   */
+  private TypeDecl boundHostType;
   /**
    * @declaredat ASTNode:1
    */
@@ -72,59 +93,47 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
     setID(p0);
     setChild(p1, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:25
+  /** @apilevel low-level 
+   * @declaredat ASTNode:23
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:31
+   * @declaredat ASTNode:29
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     decl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:44
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:50
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public BoundMethodAccess clone() throws CloneNotSupportedException {
     BoundMethodAccess node = (BoundMethodAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:47
    */
   public BoundMethodAccess copy() {
     try {
       BoundMethodAccess node = (BoundMethodAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -138,8 +147,9 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:82
+   * @declaredat ASTNode:66
    */
+  @Deprecated
   public BoundMethodAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -148,14 +158,14 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:76
    */
   public BoundMethodAccess treeCopyNoTransform() {
     BoundMethodAccess tree = (BoundMethodAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -169,18 +179,26 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:111
+   * @declaredat ASTNode:96
    */
   public BoundMethodAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    BoundMethodAccess tree = (BoundMethodAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:118
+  /** @apilevel internal 
+   * @declaredat ASTNode:110
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((BoundMethodAccess)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((BoundMethodAccess) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme ID.
@@ -196,7 +214,7 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -259,11 +277,10 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -287,7 +304,6 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -298,6 +314,13 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -316,44 +339,45 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
   public List<Expr> getArgsNoTransform() {
     return getArgListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean decl_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected MethodDecl decl_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void decl_reset() {
-    decl_computed = false;
+    decl_computed = null;
     decl_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle decl_computed = null;
+
+  /** @apilevel internal */
+  protected MethodDecl decl_value;
+
+  /**
+   * @attribute syn
+   * @aspect LookupMethod
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:159
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:159")
   public MethodDecl decl() {
-    if(decl_computed) {
+    ASTNode$State state = state();
+    if (decl_computed == ASTNode$State.NON_CYCLE || decl_computed == state().cycle()) {
       return decl_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     decl_value = methodDecl;
-    if (isFinal && num == state().boundariesCrossed) {
-      decl_computed = true;
+    if (state().inCircle()) {
+      decl_computed = state().cycle();
+    
     } else {
+      decl_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return decl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

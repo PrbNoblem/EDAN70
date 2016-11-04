@@ -1,52 +1,44 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:28
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:28
  * @production PackageAccess : {@link Access} ::= <span class="component">&lt;Package:String&gt;</span>;
 
  */
 public class PackageAccess extends Access implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:139
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:525
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getPackage());
   }
   /**
-   * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:82
-   */
-  public void nameCheck() {
-    if (!hasPackage(packageName())) {
-      errorf("package %s not found", packageName());
-    }
-  }
-  /**
    * @aspect NodeConstructors
-   * @declaredat extendj/java4/frontend/NodeConstructors.jrag:39
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:40
    */
   public PackageAccess(String name, int start, int end) {
     this(name);
@@ -80,58 +72,46 @@ public class PackageAccess extends Access implements Cloneable {
   public PackageAccess(beaver.Symbol p0) {
     setPackage(p0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public PackageAccess clone() throws CloneNotSupportedException {
     PackageAccess node = (PackageAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public PackageAccess copy() {
     try {
       PackageAccess node = (PackageAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -145,8 +125,9 @@ public class PackageAccess extends Access implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:61
    */
+  @Deprecated
   public PackageAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -155,14 +136,14 @@ public class PackageAccess extends Access implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:86
+   * @declaredat ASTNode:71
    */
   public PackageAccess treeCopyNoTransform() {
     PackageAccess tree = (PackageAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -176,18 +157,26 @@ public class PackageAccess extends Access implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:106
+   * @declaredat ASTNode:91
    */
   public PackageAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    PackageAccess tree = (PackageAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:113
+  /** @apilevel internal 
+   * @declaredat ASTNode:105
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_Package == ((PackageAccess)node).tokenString_Package);    
+    return super.is$Equal(node) && (tokenString_Package == ((PackageAccess) node).tokenString_Package);    
   }
   /**
    * Replaces the lexeme Package.
@@ -197,8 +186,7 @@ public class PackageAccess extends Access implements Cloneable {
   public void setPackage(String value) {
     tokenString_Package = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected String tokenString_Package;
   /**
@@ -213,7 +201,7 @@ public class PackageAccess extends Access implements Cloneable {
    * @apilevel internal
    */
   public void setPackage(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackage is only valid for String lexemes");
     tokenString_Package = (String)symbol.value;
     Packagestart = symbol.getStart();
@@ -228,59 +216,120 @@ public class PackageAccess extends Access implements Cloneable {
   public String getPackage() {
     return tokenString_Package != null ? tokenString_Package : "";
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeHierarchyCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:47
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:47")
+  public boolean isUnknown() {
+    boolean isUnknown_value = !hasPackage(packageName());
+    return isUnknown_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect AccessTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:60")
+  public boolean isPackageAccess() {
+    boolean isPackageAccess_value = true;
+    return isPackageAccess_value;
+  }
+  /**
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
+   * @attribute syn
+   * @aspect SyntacticClassification
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.PACKAGE_NAME;
+    return predNameType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:87")
+  public Collection<Problem> nameProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (!hasPackage(packageName())) {
+          problems.add(errorf("package %s not found", packageName()));
+        }
+        return problems;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect VariableScope
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264")
+  public SimpleSet<Variable> qualifiedLookupVariable(String name) {
+    SimpleSet<Variable> qualifiedLookupVariable_String_value = emptySet();
+    return qualifiedLookupVariable_String_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupFullyQualifiedTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:110
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:110")
   public boolean hasQualifiedPackage(String packageName) {
-    ASTNode$State state = state();
     boolean hasQualifiedPackage_String_value = hasPackage(packageName() + "." + packageName);
-
     return hasQualifiedPackage_String_value;
   }
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:553
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet qualifiedLookupType(String name) {
-    ASTNode$State state = state();
-    try {
-        SimpleSet c = SimpleSet.emptySet;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563")
+  public SimpleSet<TypeDecl> qualifiedLookupType(String name) {
+    {
+        SimpleSet<TypeDecl> result = emptySet();
         TypeDecl typeDecl = lookupType(packageName(), name);
         if (!typeDecl.isUnknown()) {
           if (hostType() != null && typeDecl.accessibleFrom(hostType())) {
-            c = c.add(typeDecl);
+            result = result.add(typeDecl);
           } else if (hostType() == null && typeDecl.accessibleFromPackage(hostPackage())) {
-            c = c.add(typeDecl);
+            result = result.add(typeDecl);
           }
         }
-        return c;
+        return result;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet qualifiedLookupVariable(String name) {
-    ASTNode$State state = state();
-    SimpleSet qualifiedLookupVariable_String_value = SimpleSet.emptySet;
-
-    return qualifiedLookupVariable_String_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:41
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:41")
   public String name() {
-    ASTNode$State state = state();
     String name_value = getPackage();
-
     return name_value;
   }
   /**
    * @attribute syn
    * @aspect Names
-   * @declaredat extendj/java4/frontend/QualifiedNames.jrag:44
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43")
   public String packageName() {
-    ASTNode$State state = state();
-    try {
+    {
         StringBuilder sb = new StringBuilder();
         if (hasPrevExpr()) {
           sb.append(prevExpr().packageName());
@@ -289,46 +338,42 @@ public class PackageAccess extends Access implements Cloneable {
         sb.append(getPackage());
         return sb.toString();
       }
-    finally {
-    }
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isPackageAccess() {
-    ASTNode$State state = state();
-    boolean isPackageAccess_value = true;
-
-    return isPackageAccess_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public NameType predNameType() {
-    ASTNode$State state = state();
-    NameType predNameType_value = NameType.PACKAGE_NAME;
-
-    return predNameType_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isUnknown() {
-    ASTNode$State state = state();
-    boolean isUnknown_value = !hasPackage(packageName());
-
-    return isUnknown_value;
   }
   /**
    * @attribute inh
    * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:308
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:354
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:354")
   public boolean hasPackage(String packageName) {
-    ASTNode$State state = state();
-    boolean hasPackage_String_value = getParent().Define_boolean_hasPackage(this, null, packageName);
-
+    boolean hasPackage_String_value = getParent().Define_hasPackage(this, null, packageName);
     return hasPackage_String_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:85
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

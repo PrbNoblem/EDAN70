@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:184
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:186
  * @production ConditionalExpr : {@link Expr} ::= <span class="component">Condition:{@link Expr}</span> <span class="component">TrueExpr:{@link Expr}</span> <span class="component">FalseExpr:{@link Expr}</span>;
 
  */
 public class ConditionalExpr extends Expr implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:177
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:246
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getCondition());
@@ -38,18 +39,6 @@ public class ConditionalExpr extends Expr implements Cloneable {
     out.print(getTrueExpr());
     out.print(" : ");
     out.print(getFalseExpr());
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:648
-   */
-  public void typeCheck() {
-    if (!getCondition().type().isBoolean()) {
-      error("The first operand of a conditional expression must be a boolean");
-    }
-    if (type().isUnknown() && !getTrueExpr().type().isUnknown() && !getFalseExpr().type().isUnknown()) {
-      error("The types of the second and third operand in this conditional expression do not match");
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -75,30 +64,31 @@ public class ConditionalExpr extends Expr implements Cloneable {
     setChild(p1, 1);
     setChild(p2, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     constant_reset();
     isConstant_reset();
-    booleanOperator_reset();
     type_reset();
+    booleanOperator_reset();
+    unassignedAfterTrue_Variable_reset();
+    unassignedAfterFalse_Variable_reset();
+    unassignedAfter_Variable_reset();
     compatibleStrictContext_TypeDecl_reset();
     compatibleLooseContext_TypeDecl_reset();
     pertinentToApplicability_Expr_BodyDecl_int_reset();
@@ -112,37 +102,27 @@ public class ConditionalExpr extends Expr implements Cloneable {
     isPolyExpression_reset();
     assignConversionTo_TypeDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:55
+  /** @apilevel internal 
+   * @declaredat ASTNode:52
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:61
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:67
+  /** @apilevel internal 
+   * @declaredat ASTNode:56
    */
   public ConditionalExpr clone() throws CloneNotSupportedException {
     ConditionalExpr node = (ConditionalExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:74
+  /** @apilevel internal 
+   * @declaredat ASTNode:61
    */
   public ConditionalExpr copy() {
     try {
       ConditionalExpr node = (ConditionalExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -156,8 +136,9 @@ public class ConditionalExpr extends Expr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:93
+   * @declaredat ASTNode:80
    */
+  @Deprecated
   public ConditionalExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -166,14 +147,14 @@ public class ConditionalExpr extends Expr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:102
+   * @declaredat ASTNode:90
    */
   public ConditionalExpr treeCopyNoTransform() {
     ConditionalExpr tree = (ConditionalExpr) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -187,15 +168,23 @@ public class ConditionalExpr extends Expr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:122
+   * @declaredat ASTNode:110
    */
   public ConditionalExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ConditionalExpr tree = (ConditionalExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:129
+  /** @apilevel internal 
+   * @declaredat ASTNode:124
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -279,312 +268,486 @@ public class ConditionalExpr extends Expr implements Cloneable {
     return (Expr) getChildNoTransform(2);
   }
   /**
-   * @aspect TypeAnalysis
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:391
-   */
-  private TypeDecl refined_TypeAnalysis_ConditionalExpr_type()
-{
-    TypeDecl trueType = getTrueExpr().type();
-    TypeDecl falseType = getFalseExpr().type();
-
-    if (trueType == falseType) {
-      return trueType;
-    }
-
-    if (trueType.isNumericType() && falseType.isNumericType()) {
-      if (trueType.isByte() && falseType.isShort()) {
-        return falseType;
-      }
-      if (trueType.isShort() && falseType.isByte()) {
-        return trueType;
-      }
-      if ((trueType.isByte() || trueType.isShort() || trueType.isChar())
-          && falseType.isInt() && getFalseExpr().isConstant()
-          && getFalseExpr().representableIn(trueType)) {
-        return trueType;
-      }
-      if ((falseType.isByte() || falseType.isShort() || falseType.isChar())
-          && trueType.isInt() && getTrueExpr().isConstant()
-          && getTrueExpr().representableIn(falseType)) {
-        return falseType;
-      }
-      return trueType.binaryNumericPromotion(falseType);
-    } else if (trueType.isBoolean() && falseType.isBoolean()) {
-      return trueType;
-    } else if (trueType.isReferenceType() && falseType.isNull()) {
-      return trueType;
-    } else if (trueType.isNull() && falseType.isReferenceType()) {
-      return falseType;
-    } else if (trueType.isReferenceType() && falseType.isReferenceType()) {
-      if (trueType.assignConversionTo(falseType, null)) {
-        return falseType;
-      }
-      if (falseType.assignConversionTo(trueType, null)) {
-        return trueType;
-      }
-      return unknownType();
-    } else {
-      return unknownType();
-    }
-  }
-  /**
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:248
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:237
    */
   private TypeDecl refined_AutoBoxing_ConditionalExpr_type()
 {
-    TypeDecl trueType = getTrueExpr().type();
-    TypeDecl falseType = getFalseExpr().type();
-    if (trueType.isBoolean() && falseType.isBoolean()) {
-      if (trueType == falseType) {
-        return trueType;
-      }
-      if (trueType.isReferenceType()) {
-        return trueType.unboxed();
-      }
-      return trueType;
+    TypeDecl second = getTrueExpr().type();
+    TypeDecl third = getFalseExpr().type();
+
+    if (second == third) {
+      return second;
+    } else if (second.isReferenceType() && third.isNull()) {
+      return second;
+    } else if (second.isNull() && third.isReferenceType()) {
+      return third;
     }
-    return refined_TypeAnalysis_ConditionalExpr_type();
+
+    if (second.isPrimitiveType()) {
+      if (!second.isNull() && third.isNull()) {
+        return second;
+      }
+    } else if (!second.unboxed().isUnknown()) {
+      second = second.unboxed();
+    }
+
+    if (third.isPrimitiveType()) {
+      if (!third.isNull() && second.isNull()) {
+        return third;
+      }
+    } else if (!third.unboxed().isUnknown()) {
+      third = third.unboxed();
+    }
+
+    return conditionalExprType(second, third);
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean constant_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Constant constant_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void constant_reset() {
-    constant_computed = false;
+    constant_computed = null;
     constant_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle constant_computed = null;
+
+  /** @apilevel internal */
+  protected Constant constant_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:85
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:85")
   public Constant constant() {
-    if(constant_computed) {
+    ASTNode$State state = state();
+    if (constant_computed == ASTNode$State.NON_CYCLE || constant_computed == state().cycle()) {
       return constant_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    constant_value = type().questionColon(getCondition().constant(), getTrueExpr().constant(),getFalseExpr().constant());
-    if (isFinal && num == state().boundariesCrossed) {
-      constant_computed = true;
+    constant_value = type().questionColon(getCondition().constant(),
+              getTrueExpr().constant(),getFalseExpr().constant());
+    if (state().inCircle()) {
+      constant_computed = state().cycle();
+    
     } else {
+      constant_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return constant_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isConstant_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isConstant_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isConstant_reset() {
-    isConstant_computed = false;
+    isConstant_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isConstant_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isConstant_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:406
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:406")
   public boolean isConstant() {
-    if(isConstant_computed) {
+    ASTNode$State state = state();
+    if (isConstant_computed == ASTNode$State.NON_CYCLE || isConstant_computed == state().cycle()) {
       return isConstant_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isConstant_value = getCondition().isConstant() && getTrueExpr().isConstant() && getFalseExpr().isConstant();
-    if (isFinal && num == state().boundariesCrossed) {
-      isConstant_computed = true;
+    if (state().inCircle()) {
+      isConstant_computed = state().cycle();
+    
     } else {
+      isConstant_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isConstant_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean booleanOperator_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean booleanOperator_value;
-  /**
-   * @apilevel internal
-   */
-  private void booleanOperator_reset() {
-    booleanOperator_computed = false;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean booleanOperator() {
-    if(booleanOperator_computed) {
-      return booleanOperator_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    booleanOperator_value = getTrueExpr().type().isBoolean() && getFalseExpr().type().isBoolean();
-    if (isFinal && num == state().boundariesCrossed) {
-      booleanOperator_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return booleanOperator_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafterTrue(Variable v) {
-    ASTNode$State state = state();
-    boolean isDAafterTrue_Variable_value = isFalse() || (getTrueExpr().isDAafterTrue(v) && getFalseExpr().isDAafterTrue(v));
-
-    return isDAafterTrue_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafterFalse(Variable v) {
-    ASTNode$State state = state();
-    boolean isDAafterFalse_Variable_value = isTrue() || (getTrueExpr().isDAafterFalse(v) && getFalseExpr().isDAafterFalse(v));
-
-    return isDAafterFalse_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafter(Variable v) {
-    ASTNode$State state = state();
-    boolean isDAafter_Variable_value = booleanOperator() ? isDAafterTrue(v) && isDAafterFalse(v) : getTrueExpr().isDAafter(v) && getFalseExpr().isDAafter(v);
-
-    return isDAafter_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafterTrue(Variable v) {
-    ASTNode$State state = state();
-    boolean isDUafterTrue_Variable_value = getTrueExpr().isDUafterTrue(v) && getFalseExpr().isDUafterTrue(v);
-
-    return isDUafterTrue_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafterFalse(Variable v) {
-    ASTNode$State state = state();
-    boolean isDUafterFalse_Variable_value = getTrueExpr().isDUafterFalse(v) && getFalseExpr().isDUafterFalse(v);
-
-    return isDUafterFalse_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafter(Variable v) {
-    ASTNode$State state = state();
-    boolean isDUafter_Variable_value = booleanOperator() ? isDUafterTrue(v) && isDUafterFalse(v) : getTrueExpr().isDUafter(v) && getFalseExpr().isDUafter(v);
-
-    return isDUafter_Variable_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = type_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl type_compute() {
       TypeDecl type = refined_AutoBoxing_ConditionalExpr_type();
-      TypeDecl trueType = getTrueExpr().type();
-      TypeDecl falseType = getFalseExpr().type();
-  
       if (type.isUnknown()) {
+        TypeDecl trueType = getTrueExpr().type();
+        TypeDecl falseType = getFalseExpr().type();
         if (!trueType.isReferenceType() && !trueType.boxed().isUnknown()) {
           trueType = trueType.boxed();
         }
         if (!falseType.isReferenceType() && !falseType.boxed().isUnknown()) {
           falseType = falseType.boxed();
         }
-  
         ArrayList<TypeDecl> list = new ArrayList<TypeDecl>();
         list.add(trueType);
         list.add(falseType);
-        return type.lookupLUBType(list);
+        return type.lookupLUBType(list).lub();
       }
       return type;
     }
-  @ASTNodeAnnotation.Attribute
-  public boolean modifiedInScope(Variable var) {
+  /**
+   * Returns the type of a conditional expression, given the types of the
+   * second and third operands.
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:396
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:396")
+  public TypeDecl conditionalExprType(TypeDecl second, TypeDecl third) {
+    {
+        if (second == third) {
+          return second;
+        }
+    
+        if (second.isNumericType() && third.isNumericType()) {
+          if (second.isByte() && third.isShort()) {
+            return third;
+          }
+          if (second.isShort() && third.isByte()) {
+            return second;
+          }
+          if ((second.isByte() || second.isShort() || second.isChar())
+              && third.isInt() && getFalseExpr().isConstant()
+              && getFalseExpr().representableIn(second)) {
+            return second;
+          }
+          if ((third.isByte() || third.isShort() || third.isChar())
+              && second.isInt() && getTrueExpr().isConstant()
+              && getTrueExpr().representableIn(third)) {
+            return third;
+          }
+          return second.binaryNumericPromotion(third);
+        } else if (second.isBoolean() && third.isBoolean()) {
+          return second;
+        } else if (second.isReferenceType() && third.isNull()) {
+          return second;
+        } else if (second.isNull() && third.isReferenceType()) {
+          return third;
+        } else if (second.isReferenceType() && third.isReferenceType()) {
+          if (second.assignConversionTo(third, null)) {
+            return third;
+          }
+          if (third.assignConversionTo(second, null)) {
+            return second;
+          }
+          return unknownType();
+        } else {
+          return unknownType();
+        }
+      }
+  }
+  /** @apilevel internal */
+  private void booleanOperator_reset() {
+    booleanOperator_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle booleanOperator_computed = null;
+
+  /** @apilevel internal */
+  protected boolean booleanOperator_value;
+
+  /**
+   * @attribute syn
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:253
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:253")
+  public boolean booleanOperator() {
     ASTNode$State state = state();
+    if (booleanOperator_computed == ASTNode$State.NON_CYCLE || booleanOperator_computed == state().cycle()) {
+      return booleanOperator_value;
+    }
+    booleanOperator_value = getTrueExpr().type().isBoolean() && getFalseExpr().type().isBoolean();
+    if (state().inCircle()) {
+      booleanOperator_computed = state().cycle();
+    
+    } else {
+      booleanOperator_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return booleanOperator_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:378
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:378")
+  public boolean assignedAfterTrue(Variable v) {
+    boolean assignedAfterTrue_Variable_value = isFalse() || (getTrueExpr().assignedAfterTrue(v) && getFalseExpr().assignedAfterTrue(v));
+    return assignedAfterTrue_Variable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:380
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:380")
+  public boolean assignedAfterFalse(Variable v) {
+    boolean assignedAfterFalse_Variable_value = isTrue() || (getTrueExpr().assignedAfterFalse(v) && getFalseExpr().assignedAfterFalse(v));
+    return assignedAfterFalse_Variable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
+  public boolean assignedAfter(Variable v) {
+    boolean assignedAfter_Variable_value = booleanOperator()
+          ? assignedAfterTrue(v) && assignedAfterFalse(v)
+          : getTrueExpr().assignedAfter(v) && getFalseExpr().assignedAfter(v);
+    return assignedAfter_Variable_value;
+  }
+  /** @apilevel internal */
+  private void unassignedAfterTrue_Variable_reset() {
+    unassignedAfterTrue_Variable_values = null;
+  }
+  protected java.util.Map unassignedAfterTrue_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:909")
+  public boolean unassignedAfterTrue(Variable v) {
+    Object _parameters = v;
+    if (unassignedAfterTrue_Variable_values == null) unassignedAfterTrue_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfterTrue_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfterTrue_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfterTrue_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfterTrue_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfterTrue_Variable_value = getTrueExpr().unassignedAfterTrue(v) && getFalseExpr().unassignedAfterTrue(v);
+        if (new_unassignedAfterTrue_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfterTrue_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfterTrue_Variable_values.put(_parameters, new_unassignedAfterTrue_Variable_value);
+
+      state.leaveCircle();
+      return new_unassignedAfterTrue_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfterTrue_Variable_value = getTrueExpr().unassignedAfterTrue(v) && getFalseExpr().unassignedAfterTrue(v);
+      if (new_unassignedAfterTrue_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfterTrue_Variable_value;
+      }
+      return new_unassignedAfterTrue_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /** @apilevel internal */
+  private void unassignedAfterFalse_Variable_reset() {
+    unassignedAfterFalse_Variable_values = null;
+  }
+  protected java.util.Map unassignedAfterFalse_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:911")
+  public boolean unassignedAfterFalse(Variable v) {
+    Object _parameters = v;
+    if (unassignedAfterFalse_Variable_values == null) unassignedAfterFalse_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfterFalse_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfterFalse_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfterFalse_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfterFalse_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfterFalse_Variable_value = getTrueExpr().unassignedAfterFalse(v) && getFalseExpr().unassignedAfterFalse(v);
+        if (new_unassignedAfterFalse_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfterFalse_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfterFalse_Variable_values.put(_parameters, new_unassignedAfterFalse_Variable_value);
+
+      state.leaveCircle();
+      return new_unassignedAfterFalse_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfterFalse_Variable_value = getTrueExpr().unassignedAfterFalse(v) && getFalseExpr().unassignedAfterFalse(v);
+      if (new_unassignedAfterFalse_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfterFalse_Variable_value;
+      }
+      return new_unassignedAfterFalse_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /** @apilevel internal */
+  private void unassignedAfter_Variable_reset() {
+    unassignedAfter_Variable_values = null;
+  }
+  protected java.util.Map unassignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
+  public boolean unassignedAfter(Variable v) {
+    Object _parameters = v;
+    if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfter_Variable_value = booleanOperator()
+              ? unassignedAfterTrue(v) && unassignedAfterFalse(v)
+              : getTrueExpr().unassignedAfter(v) && getFalseExpr().unassignedAfter(v);
+        if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfter_Variable_values.put(_parameters, new_unassignedAfter_Variable_value);
+
+      state.leaveCircle();
+      return new_unassignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfter_Variable_value = booleanOperator()
+            ? unassignedAfterTrue(v) && unassignedAfterFalse(v)
+            : getTrueExpr().unassignedAfter(v) && getFalseExpr().unassignedAfter(v);
+      if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfter_Variable_value;
+      }
+      return new_unassignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /**
+   * @attribute syn
+   * @aspect PreciseRethrow
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145")
+  public boolean modifiedInScope(Variable var) {
     boolean modifiedInScope_Variable_value = getCondition().modifiedInScope(var)
           || getTrueExpr().modifiedInScope(var)
           || getFalseExpr().modifiedInScope(var);
-
     return modifiedInScope_Variable_value;
   }
-  protected java.util.Map compatibleStrictContext_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void compatibleStrictContext_TypeDecl_reset() {
+    compatibleStrictContext_TypeDecl_computed = new java.util.HashMap(4);
     compatibleStrictContext_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map compatibleStrictContext_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map compatibleStrictContext_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32")
   public boolean compatibleStrictContext(TypeDecl type) {
     Object _parameters = type;
-    if (compatibleStrictContext_TypeDecl_values == null) compatibleStrictContext_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(compatibleStrictContext_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)compatibleStrictContext_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (compatibleStrictContext_TypeDecl_computed == null) compatibleStrictContext_TypeDecl_computed = new java.util.HashMap(4);
+    if (compatibleStrictContext_TypeDecl_values == null) compatibleStrictContext_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean compatibleStrictContext_TypeDecl_value = compatibleStrictContext_compute(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      compatibleStrictContext_TypeDecl_values.put(_parameters, Boolean.valueOf(compatibleStrictContext_TypeDecl_value));
-    } else {
+    if (compatibleStrictContext_TypeDecl_values.containsKey(_parameters) && compatibleStrictContext_TypeDecl_computed != null
+        && compatibleStrictContext_TypeDecl_computed.containsKey(_parameters)
+        && (compatibleStrictContext_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || compatibleStrictContext_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) compatibleStrictContext_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean compatibleStrictContext_TypeDecl_value = compatibleStrictContext_compute(type);
+    if (state().inCircle()) {
+      compatibleStrictContext_TypeDecl_values.put(_parameters, compatibleStrictContext_TypeDecl_value);
+      compatibleStrictContext_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      compatibleStrictContext_TypeDecl_values.put(_parameters, compatibleStrictContext_TypeDecl_value);
+      compatibleStrictContext_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return compatibleStrictContext_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean compatibleStrictContext_compute(TypeDecl type) {
       if (isPolyExpression()) {
         return getTrueExpr().compatibleStrictContext(type)
@@ -593,37 +756,45 @@ public class ConditionalExpr extends Expr implements Cloneable {
         return super.compatibleStrictContext(type);
       }
     }
-  protected java.util.Map compatibleLooseContext_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void compatibleLooseContext_TypeDecl_reset() {
+    compatibleLooseContext_TypeDecl_computed = new java.util.HashMap(4);
     compatibleLooseContext_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map compatibleLooseContext_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map compatibleLooseContext_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76")
   public boolean compatibleLooseContext(TypeDecl type) {
     Object _parameters = type;
-    if (compatibleLooseContext_TypeDecl_values == null) compatibleLooseContext_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(compatibleLooseContext_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)compatibleLooseContext_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (compatibleLooseContext_TypeDecl_computed == null) compatibleLooseContext_TypeDecl_computed = new java.util.HashMap(4);
+    if (compatibleLooseContext_TypeDecl_values == null) compatibleLooseContext_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean compatibleLooseContext_TypeDecl_value = compatibleLooseContext_compute(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      compatibleLooseContext_TypeDecl_values.put(_parameters, Boolean.valueOf(compatibleLooseContext_TypeDecl_value));
-    } else {
+    if (compatibleLooseContext_TypeDecl_values.containsKey(_parameters) && compatibleLooseContext_TypeDecl_computed != null
+        && compatibleLooseContext_TypeDecl_computed.containsKey(_parameters)
+        && (compatibleLooseContext_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || compatibleLooseContext_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) compatibleLooseContext_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean compatibleLooseContext_TypeDecl_value = compatibleLooseContext_compute(type);
+    if (state().inCircle()) {
+      compatibleLooseContext_TypeDecl_values.put(_parameters, compatibleLooseContext_TypeDecl_value);
+      compatibleLooseContext_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      compatibleLooseContext_TypeDecl_values.put(_parameters, compatibleLooseContext_TypeDecl_value);
+      compatibleLooseContext_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return compatibleLooseContext_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean compatibleLooseContext_compute(TypeDecl type) {
       if (isPolyExpression()) {
         return getTrueExpr().compatibleLooseContext(type)
@@ -632,110 +803,141 @@ public class ConditionalExpr extends Expr implements Cloneable {
         return super.compatibleLooseContext(type);
       }
     }
-  protected java.util.Map pertinentToApplicability_Expr_BodyDecl_int_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void pertinentToApplicability_Expr_BodyDecl_int_reset() {
+    pertinentToApplicability_Expr_BodyDecl_int_computed = new java.util.HashMap(4);
     pertinentToApplicability_Expr_BodyDecl_int_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map pertinentToApplicability_Expr_BodyDecl_int_values;
+  /** @apilevel internal */
+  protected java.util.Map pertinentToApplicability_Expr_BodyDecl_int_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104")
   public boolean pertinentToApplicability(Expr access, BodyDecl decl, int argIndex) {
     java.util.List _parameters = new java.util.ArrayList(3);
     _parameters.add(access);
     _parameters.add(decl);
-    _parameters.add(Integer.valueOf(argIndex));
-    if (pertinentToApplicability_Expr_BodyDecl_int_values == null) pertinentToApplicability_Expr_BodyDecl_int_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(pertinentToApplicability_Expr_BodyDecl_int_values.containsKey(_parameters)) {
-      return ((Boolean)pertinentToApplicability_Expr_BodyDecl_int_values.get(_parameters)).booleanValue();
-    }
+    _parameters.add(argIndex);
+    if (pertinentToApplicability_Expr_BodyDecl_int_computed == null) pertinentToApplicability_Expr_BodyDecl_int_computed = new java.util.HashMap(4);
+    if (pertinentToApplicability_Expr_BodyDecl_int_values == null) pertinentToApplicability_Expr_BodyDecl_int_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    if (pertinentToApplicability_Expr_BodyDecl_int_values.containsKey(_parameters) && pertinentToApplicability_Expr_BodyDecl_int_computed != null
+        && pertinentToApplicability_Expr_BodyDecl_int_computed.containsKey(_parameters)
+        && (pertinentToApplicability_Expr_BodyDecl_int_computed.get(_parameters) == ASTNode$State.NON_CYCLE || pertinentToApplicability_Expr_BodyDecl_int_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) pertinentToApplicability_Expr_BodyDecl_int_values.get(_parameters);
+    }
     boolean pertinentToApplicability_Expr_BodyDecl_int_value = getFalseExpr().pertinentToApplicability(access, decl, argIndex)
           && getTrueExpr().pertinentToApplicability(access, decl, argIndex);
-    if (isFinal && num == state().boundariesCrossed) {
-      pertinentToApplicability_Expr_BodyDecl_int_values.put(_parameters, Boolean.valueOf(pertinentToApplicability_Expr_BodyDecl_int_value));
+    if (state().inCircle()) {
+      pertinentToApplicability_Expr_BodyDecl_int_values.put(_parameters, pertinentToApplicability_Expr_BodyDecl_int_value);
+      pertinentToApplicability_Expr_BodyDecl_int_computed.put(_parameters, state().cycle());
+    
     } else {
+      pertinentToApplicability_Expr_BodyDecl_int_values.put(_parameters, pertinentToApplicability_Expr_BodyDecl_int_value);
+      pertinentToApplicability_Expr_BodyDecl_int_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return pertinentToApplicability_Expr_BodyDecl_int_value;
   }
-  protected java.util.Map moreSpecificThan_TypeDecl_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void moreSpecificThan_TypeDecl_TypeDecl_reset() {
+    moreSpecificThan_TypeDecl_TypeDecl_computed = new java.util.HashMap(4);
     moreSpecificThan_TypeDecl_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map moreSpecificThan_TypeDecl_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map moreSpecificThan_TypeDecl_TypeDecl_computed;
+  /**
+   * Computes which type is more specific for a specific argument, as defined in 15.12.2.5
+   * @param type1
+   * @param type2
+   * @return {@code true} if type1 is more specific than type2, {@code false} otherwise
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230")
   public boolean moreSpecificThan(TypeDecl type1, TypeDecl type2) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type1);
     _parameters.add(type2);
-    if (moreSpecificThan_TypeDecl_TypeDecl_values == null) moreSpecificThan_TypeDecl_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(moreSpecificThan_TypeDecl_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)moreSpecificThan_TypeDecl_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (moreSpecificThan_TypeDecl_TypeDecl_computed == null) moreSpecificThan_TypeDecl_TypeDecl_computed = new java.util.HashMap(4);
+    if (moreSpecificThan_TypeDecl_TypeDecl_values == null) moreSpecificThan_TypeDecl_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean moreSpecificThan_TypeDecl_TypeDecl_value = moreSpecificThan_compute(type1, type2);
-    if (isFinal && num == state().boundariesCrossed) {
-      moreSpecificThan_TypeDecl_TypeDecl_values.put(_parameters, Boolean.valueOf(moreSpecificThan_TypeDecl_TypeDecl_value));
-    } else {
+    if (moreSpecificThan_TypeDecl_TypeDecl_values.containsKey(_parameters) && moreSpecificThan_TypeDecl_TypeDecl_computed != null
+        && moreSpecificThan_TypeDecl_TypeDecl_computed.containsKey(_parameters)
+        && (moreSpecificThan_TypeDecl_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || moreSpecificThan_TypeDecl_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) moreSpecificThan_TypeDecl_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean moreSpecificThan_TypeDecl_TypeDecl_value = moreSpecificThan_compute(type1, type2);
+    if (state().inCircle()) {
+      moreSpecificThan_TypeDecl_TypeDecl_values.put(_parameters, moreSpecificThan_TypeDecl_TypeDecl_value);
+      moreSpecificThan_TypeDecl_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      moreSpecificThan_TypeDecl_TypeDecl_values.put(_parameters, moreSpecificThan_TypeDecl_TypeDecl_value);
+      moreSpecificThan_TypeDecl_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return moreSpecificThan_TypeDecl_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean moreSpecificThan_compute(TypeDecl type1, TypeDecl type2) {
       if (super.moreSpecificThan(type1, type2)) {
         return true;
       }
-      return getTrueExpr().moreSpecificThan(type1, type2) && getFalseExpr().moreSpecificThan(type1, type2);
+      return getTrueExpr().moreSpecificThan(type1, type2)
+          && getFalseExpr().moreSpecificThan(type1, type2);
     }
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
+    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
     potentiallyCompatible_TypeDecl_BodyDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
   public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type);
     _parameters.add(candidateDecl);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters)) {
-      return ((Boolean)potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters)).booleanValue();
-    }
+    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, Boolean.valueOf(potentiallyCompatible_TypeDecl_BodyDecl_value));
-    } else {
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
+        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
+        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
+    if (state().inCircle()) {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return potentiallyCompatible_TypeDecl_BodyDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
       if (!isPolyExpression()) {
         return true;
@@ -743,235 +945,241 @@ public class ConditionalExpr extends Expr implements Cloneable {
       return getTrueExpr().potentiallyCompatible(type, candidateDecl)
           && getFalseExpr().potentiallyCompatible(type, candidateDecl);
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isBooleanExpression_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isBooleanExpression_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isBooleanExpression_reset() {
-    isBooleanExpression_computed = false;
+    isBooleanExpression_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isBooleanExpression_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isBooleanExpression_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:29
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:29")
   public boolean isBooleanExpression() {
-    if(isBooleanExpression_computed) {
+    ASTNode$State state = state();
+    if (isBooleanExpression_computed == ASTNode$State.NON_CYCLE || isBooleanExpression_computed == state().cycle()) {
       return isBooleanExpression_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isBooleanExpression_value = isBooleanConditional();
-    if (isFinal && num == state().boundariesCrossed) {
-      isBooleanExpression_computed = true;
+    if (state().inCircle()) {
+      isBooleanExpression_computed = state().cycle();
+    
     } else {
+      isBooleanExpression_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isBooleanExpression_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isBooleanConditional_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isBooleanConditional_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isBooleanConditional_reset() {
-    isBooleanConditional_computed = false;
+    isBooleanConditional_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isBooleanConditional_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isBooleanConditional_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:55
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:55")
   public boolean isBooleanConditional() {
-    if(isBooleanConditional_computed) {
+    ASTNode$State state = state();
+    if (isBooleanConditional_computed == ASTNode$State.NON_CYCLE || isBooleanConditional_computed == state().cycle()) {
       return isBooleanConditional_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    isBooleanConditional_value = getTrueExpr().isBooleanExpression() && getFalseExpr().isBooleanExpression();
-    if (isFinal && num == state().boundariesCrossed) {
-      isBooleanConditional_computed = true;
+    isBooleanConditional_value = getTrueExpr().isBooleanExpression() && getFalseExpr().isBooleanExpression()
+          || getTrueExpr().isBooleanExpression() && getFalseExpr().isNullLiteral()
+          || getFalseExpr().isBooleanExpression() && getTrueExpr().isNullLiteral();
+    if (state().inCircle()) {
+      isBooleanConditional_computed = state().cycle();
+    
     } else {
+      isBooleanConditional_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isBooleanConditional_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isNumericExpression_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isNumericExpression_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isNumericExpression_reset() {
-    isNumericExpression_computed = false;
+    isNumericExpression_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isNumericExpression_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isNumericExpression_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:60")
   public boolean isNumericExpression() {
-    if(isNumericExpression_computed) {
+    ASTNode$State state = state();
+    if (isNumericExpression_computed == ASTNode$State.NON_CYCLE || isNumericExpression_computed == state().cycle()) {
       return isNumericExpression_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isNumericExpression_value = isNumericConditional();
-    if (isFinal && num == state().boundariesCrossed) {
-      isNumericExpression_computed = true;
+    if (state().inCircle()) {
+      isNumericExpression_computed = state().cycle();
+    
     } else {
+      isNumericExpression_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isNumericExpression_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isNumericConditional_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isNumericConditional_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isNumericConditional_reset() {
-    isNumericConditional_computed = false;
+    isNumericConditional_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isNumericConditional_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isNumericConditional_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:78
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:78")
   public boolean isNumericConditional() {
-    if(isNumericConditional_computed) {
+    ASTNode$State state = state();
+    if (isNumericConditional_computed == ASTNode$State.NON_CYCLE || isNumericConditional_computed == state().cycle()) {
       return isNumericConditional_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    isNumericConditional_value = getTrueExpr().isNumericExpression() && getFalseExpr().isNumericExpression();
-    if (isFinal && num == state().boundariesCrossed) {
-      isNumericConditional_computed = true;
+    isNumericConditional_value = getTrueExpr().isNumericExpression() && getFalseExpr().isNumericExpression()
+          || getTrueExpr().isNumericExpression() && getFalseExpr().isNullLiteral()
+          || getFalseExpr().isNumericExpression() && getTrueExpr().isNullLiteral();
+    if (state().inCircle()) {
+      isNumericConditional_computed = state().cycle();
+    
     } else {
+      isNumericConditional_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isNumericConditional_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isReferenceConditional_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isReferenceConditional_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isReferenceConditional_reset() {
-    isReferenceConditional_computed = false;
+    isReferenceConditional_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isReferenceConditional_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isReferenceConditional_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:83
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:83")
   public boolean isReferenceConditional() {
-    if(isReferenceConditional_computed) {
+    ASTNode$State state = state();
+    if (isReferenceConditional_computed == ASTNode$State.NON_CYCLE || isReferenceConditional_computed == state().cycle()) {
       return isReferenceConditional_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isReferenceConditional_value = !isBooleanConditional() && !isNumericConditional();
-    if (isFinal && num == state().boundariesCrossed) {
-      isReferenceConditional_computed = true;
+    if (state().inCircle()) {
+      isReferenceConditional_computed = state().cycle();
+    
     } else {
+      isReferenceConditional_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isReferenceConditional_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isPolyExpression_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isPolyExpression_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isPolyExpression_reset() {
-    isPolyExpression_computed = false;
+    isPolyExpression_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isPolyExpression_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isPolyExpression_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86")
   public boolean isPolyExpression() {
-    if(isPolyExpression_computed) {
+    ASTNode$State state = state();
+    if (isPolyExpression_computed == ASTNode$State.NON_CYCLE || isPolyExpression_computed == state().cycle()) {
       return isPolyExpression_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isPolyExpression_value = isReferenceConditional() && (assignmentContext() || invocationContext());
-    if (isFinal && num == state().boundariesCrossed) {
-      isPolyExpression_computed = true;
+    if (state().inCircle()) {
+      isPolyExpression_computed = state().cycle();
+    
     } else {
+      isPolyExpression_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isPolyExpression_value;
   }
-  protected java.util.Map assignConversionTo_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void assignConversionTo_TypeDecl_reset() {
+    assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
     assignConversionTo_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map assignConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map assignConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149")
   public boolean assignConversionTo(TypeDecl type) {
     Object _parameters = type;
-    if (assignConversionTo_TypeDecl_values == null) assignConversionTo_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(assignConversionTo_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)assignConversionTo_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (assignConversionTo_TypeDecl_computed == null) assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (assignConversionTo_TypeDecl_values == null) assignConversionTo_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean assignConversionTo_TypeDecl_value = assignConversionTo_compute(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      assignConversionTo_TypeDecl_values.put(_parameters, Boolean.valueOf(assignConversionTo_TypeDecl_value));
-    } else {
+    if (assignConversionTo_TypeDecl_values.containsKey(_parameters) && assignConversionTo_TypeDecl_computed != null
+        && assignConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (assignConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || assignConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) assignConversionTo_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean assignConversionTo_TypeDecl_value = assignConversionTo_compute(type);
+    if (state().inCircle()) {
+      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
+      assignConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
+      assignConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return assignConversionTo_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean assignConversionTo_compute(TypeDecl type) {
       if (!isPolyExpression()) {
         return type().assignConversionTo(type, this);
@@ -980,150 +1188,220 @@ public class ConditionalExpr extends Expr implements Cloneable {
       }
     }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:428
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
    * @apilevel internal
    */
-  public boolean Define_boolean_isDAbefore(ASTNode caller, ASTNode child, Variable v) {
-    if (caller == getFalseExprNoTransform()) {
-      return getCondition().isDAafterFalse(v);
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getFalseExprNoTransform() != null && _callerNode == getFalseExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:466
+      return getCondition().assignedAfterFalse(v);
     }
-    else if (caller == getTrueExprNoTransform()) {
-      return getCondition().isDAafterTrue(v);
+    else if (getTrueExprNoTransform() != null && _callerNode == getTrueExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:464
+      return getCondition().assignedAfterTrue(v);
     }
-    else if (caller == getConditionNoTransform()) {
-      return isDAbefore(v);
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:462
+      return assignedBefore(v);
     }
     else {
-      return getParent().Define_boolean_isDAbefore(this, caller, v);
+      return getParent().Define_assignedBefore(this, _callerNode, v);
     }
   }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:919
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
    * @apilevel internal
    */
-  public boolean Define_boolean_isDUbefore(ASTNode caller, ASTNode child, Variable v) {
-    if (caller == getFalseExprNoTransform()) {
-      return getCondition().isDUafterFalse(v);
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getFalseExprNoTransform() != null && _callerNode == getFalseExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1062
+      return getCondition().unassignedAfterFalse(v);
     }
-    else if (caller == getTrueExprNoTransform()) {
-      return getCondition().isDUafterTrue(v);
+    else if (getTrueExprNoTransform() != null && _callerNode == getTrueExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1059
+      return getCondition().unassignedAfterTrue(v);
     }
-    else if (caller == getConditionNoTransform()) {
-      return isDUbefore(v);
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1057
+      return unassignedBefore(v);
     }
     else {
-      return getParent().Define_boolean_isDUbefore(this, caller, v);
+      return getParent().Define_unassignedBefore(this, _callerNode, v);
     }
   }
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:35
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_targetType(ASTNode caller, ASTNode child) {
-    if (caller == getFalseExprNoTransform()) {
+  public TypeDecl Define_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getFalseExprNoTransform() != null && _callerNode == getFalseExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:35
       return targetType();
     }
-    else if (caller == getTrueExprNoTransform()) {
+    else if (getTrueExprNoTransform() != null && _callerNode == getTrueExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:34
       return targetType();
     }
     else {
-      return getParent().Define_TypeDecl_targetType(this, caller);
+      return getParent().Define_targetType(this, _callerNode);
     }
   }
+  protected boolean canDefine_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:273
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
    * @apilevel internal
    */
-  public boolean Define_boolean_assignmentContext(ASTNode caller, ASTNode child) {
-    if (caller == getFalseExprNoTransform()) {
-      return isPolyExpression() ? assignmentContext() : false;
-    }
-    else if (caller == getTrueExprNoTransform()) {
-      return isPolyExpression() ? assignmentContext() : false;
-    }
-    else if (caller == getConditionNoTransform()) {
+  public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:257
       return false;
     }
     else {
-      return getParent().Define_boolean_assignmentContext(this, caller);
+      return getParent().Define_assignmentContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:275
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
    * @apilevel internal
    */
-  public boolean Define_boolean_invocationContext(ASTNode caller, ASTNode child) {
-    if (caller == getFalseExprNoTransform()) {
-      return isPolyExpression() ? invocationContext() : false;
-    }
-    else if (caller == getTrueExprNoTransform()) {
-      return isPolyExpression() ? invocationContext() : false;
-    }
-    else if (caller == getConditionNoTransform()) {
+  public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:258
       return false;
     }
     else {
-      return getParent().Define_boolean_invocationContext(this, caller);
+      return getParent().Define_invocationContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:278
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
    * @apilevel internal
    */
-  public boolean Define_boolean_castContext(ASTNode caller, ASTNode child) {
-    if (caller == getFalseExprNoTransform()) {
+  public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getFalseExprNoTransform() != null && _callerNode == getFalseExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:269
       return false;
     }
-    else if (caller == getTrueExprNoTransform()) {
+    else if (getTrueExprNoTransform() != null && _callerNode == getTrueExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:264
       return false;
     }
-    else if (caller == getConditionNoTransform()) {
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:259
       return false;
     }
     else {
-      return getParent().Define_boolean_castContext(this, caller);
+      return getParent().Define_castContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_castContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:280
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
-  public boolean Define_boolean_numericContext(ASTNode caller, ASTNode child) {
-    if (caller == getFalseExprNoTransform()) {
+  public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getFalseExprNoTransform() != null && _callerNode == getFalseExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:271
       return false;
     }
-    else if (caller == getTrueExprNoTransform()) {
+    else if (getTrueExprNoTransform() != null && _callerNode == getTrueExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:266
       return false;
     }
-    else if (caller == getConditionNoTransform()) {
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:260
       return false;
     }
     else {
-      return getParent().Define_boolean_numericContext(this, caller);
+      return getParent().Define_numericContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:279
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
-  public boolean Define_boolean_stringContext(ASTNode caller, ASTNode child) {
-    if (caller == getFalseExprNoTransform()) {
+  public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getFalseExprNoTransform() != null && _callerNode == getFalseExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:270
       return false;
     }
-    else if (caller == getTrueExprNoTransform()) {
+    else if (getTrueExprNoTransform() != null && _callerNode == getTrueExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:265
       return false;
     }
-    else if (caller == getConditionNoTransform()) {
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:261
       return false;
     }
     else {
-      return getParent().Define_boolean_stringContext(this, caller);
+      return getParent().Define_stringContext(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:738
+    if (!getCondition().type().isBoolean()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:743
+    if (type().isUnknown() && !getTrueExpr().type().isUnknown()
+              && !getFalseExpr().type().isUnknown()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getCondition().type().isBoolean()) {
+      collection.add(error("The first operand of a conditional expression must be a boolean"));
+    }
+    if (type().isUnknown() && !getTrueExpr().type().isUnknown()
+              && !getFalseExpr().type().isUnknown()) {
+      collection.add(error("The types of the second and third operand in "
+                + "this conditional expression do not match"));
+    }
   }
 }

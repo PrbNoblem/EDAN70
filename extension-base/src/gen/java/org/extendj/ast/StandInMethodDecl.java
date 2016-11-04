@@ -1,68 +1,69 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Stand-in method for type inference on generic instance creation.
  * @ast node
- * @declaredat extendj/java7/grammar/Diamond.ast:9
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Diamond.ast:9
  * @production StandInMethodDecl : {@link GenericMethodDecl};
 
  */
 public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
   /**
    * @aspect Java7PrettyPrint
-   * @declaredat extendj/java7/frontend/PrettyPrint.jadd:81
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PrettyPrint.jadd:56
    */
   public void prettyPrint(PrettyPrinter out) {
   }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:45
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:45
    */
   public void nameCheck() { }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:46
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:46
    */
   public void typeCheck() { }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:47
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:47
    */
   public void exceptionHandling() { }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:48
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:48
    */
   public void checkUnreachableStmt() { }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:49
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:49
    */
   public void definiteAssignment() { }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:50
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:50
    */
   public void checkModifiers() { }
   /**
@@ -109,58 +110,46 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
     setChild(p5, 4);
     setChild(p6, 5);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:38
+  /** @apilevel low-level 
+   * @declaredat ASTNode:36
    */
   protected int numChildren() {
     return 6;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:44
+   * @declaredat ASTNode:42
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:62
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:68
+  /** @apilevel internal 
+   * @declaredat ASTNode:54
    */
   public StandInMethodDecl clone() throws CloneNotSupportedException {
     StandInMethodDecl node = (StandInMethodDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:75
+  /** @apilevel internal 
+   * @declaredat ASTNode:59
    */
   public StandInMethodDecl copy() {
     try {
       StandInMethodDecl node = (StandInMethodDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -174,8 +163,9 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:94
+   * @declaredat ASTNode:78
    */
+  @Deprecated
   public StandInMethodDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -184,14 +174,14 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:103
+   * @declaredat ASTNode:88
    */
   public StandInMethodDecl treeCopyNoTransform() {
     StandInMethodDecl tree = (StandInMethodDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -205,18 +195,26 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:123
+   * @declaredat ASTNode:108
    */
   public StandInMethodDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    StandInMethodDecl tree = (StandInMethodDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:130
+  /** @apilevel internal 
+   * @declaredat ASTNode:122
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((StandInMethodDecl)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((StandInMethodDecl) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -284,7 +282,7 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -347,11 +345,10 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -375,7 +372,6 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -386,6 +382,13 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -452,11 +455,10 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -480,7 +482,6 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -491,6 +492,13 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -608,11 +616,10 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeParameter(TypeVariable node) {
-    List<TypeVariable> list = (parent == null || state == null) ? getTypeParameterListNoTransform() : getTypeParameterList();
+    List<TypeVariable> list = (parent == null) ? getTypeParameterListNoTransform() : getTypeParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeParameterNoTransform(TypeVariable node) {
     List<TypeVariable> list = getTypeParameterListNoTransform();
@@ -636,7 +643,6 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeParameter")
   public List<TypeVariable> getTypeParameterList() {
     List<TypeVariable> list = (List<TypeVariable>) getChild(5);
-    list.getNumChild();
     return list;
   }
   /**
@@ -647,6 +653,13 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
    */
   public List<TypeVariable> getTypeParameterListNoTransform() {
     return (List<TypeVariable>) getChildNoTransform(5);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeParameter list without
+   * triggering rewrites.
+   */
+  public TypeVariable getTypeParameterNoTransform(int i) {
+    return (TypeVariable) getTypeParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeParameter list.
@@ -665,10 +678,12 @@ public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
   public List<TypeVariable> getTypeParametersNoTransform() {
     return getTypeParameterListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

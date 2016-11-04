@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:41
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:41
  * @production ReferenceType : {@link TypeDecl};
 
  */
@@ -61,46 +62,35 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
     setID(p1);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:27
+  /** @apilevel low-level 
+   * @declaredat ASTNode:25
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:33
+   * @declaredat ASTNode:31
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     narrowingConversionTo_TypeDecl_reset();
     unboxed_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:47
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:53
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:59
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public ReferenceType clone() throws CloneNotSupportedException {
     ReferenceType node = (ReferenceType) super.clone();
@@ -112,15 +102,16 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:70
+   * @declaredat ASTNode:56
    */
+  @Deprecated
   public abstract ReferenceType fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:64
    */
   public abstract ReferenceType treeCopyNoTransform();
   /**
@@ -129,7 +120,7 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:72
    */
   public abstract ReferenceType treeCopy();
   /**
@@ -172,7 +163,7 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -235,11 +226,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -263,7 +253,6 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -274,6 +263,13 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -292,44 +288,56 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   public List<BodyDecl> getBodyDeclsNoTransform() {
     return getBodyDeclListNoTransform();
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeConversion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38")
   public boolean wideningConversionTo(TypeDecl type) {
-    ASTNode$State state = state();
     boolean wideningConversionTo_TypeDecl_value = instanceOf(type);
-
     return wideningConversionTo_TypeDecl_value;
   }
-  protected java.util.Map narrowingConversionTo_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void narrowingConversionTo_TypeDecl_reset() {
+    narrowingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
     narrowingConversionTo_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map narrowingConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map narrowingConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeConversion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39")
   public boolean narrowingConversionTo(TypeDecl type) {
     Object _parameters = type;
-    if (narrowingConversionTo_TypeDecl_values == null) narrowingConversionTo_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(narrowingConversionTo_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)narrowingConversionTo_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (narrowingConversionTo_TypeDecl_computed == null) narrowingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (narrowingConversionTo_TypeDecl_values == null) narrowingConversionTo_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean narrowingConversionTo_TypeDecl_value = narrowingConversionTo_compute(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      narrowingConversionTo_TypeDecl_values.put(_parameters, Boolean.valueOf(narrowingConversionTo_TypeDecl_value));
-    } else {
+    if (narrowingConversionTo_TypeDecl_values.containsKey(_parameters) && narrowingConversionTo_TypeDecl_computed != null
+        && narrowingConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (narrowingConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || narrowingConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) narrowingConversionTo_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean narrowingConversionTo_TypeDecl_value = narrowingConversionTo_compute(type);
+    if (state().inCircle()) {
+      narrowingConversionTo_TypeDecl_values.put(_parameters, narrowingConversionTo_TypeDecl_value);
+      narrowingConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      narrowingConversionTo_TypeDecl_values.put(_parameters, narrowingConversionTo_TypeDecl_value);
+      narrowingConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return narrowingConversionTo_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean narrowingConversionTo_compute(TypeDecl type) {
       if (type.instanceOf(this)) {
         return true;
@@ -353,88 +361,95 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
       }
       return false;
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178")
   public boolean isReferenceType() {
-    ASTNode$State state = state();
     boolean isReferenceType_value = true;
-
     return isReferenceType_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeWideningAndIdentity
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:530
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:530")
   public boolean isSupertypeOfNullType(NullType type) {
-    ASTNode$State state = state();
     boolean isSupertypeOfNullType_NullType_value = true;
-
     return isSupertypeOfNullType_NullType_value;
   }
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:151
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199")
   public boolean isValidAnnotationMethodReturnType() {
-    ASTNode$State state = state();
-    try {
+    {
         if (isString()) {
           return true;
         }
         if (fullName().equals("java.lang.Class")) {
           return true;
         }
-        // include generic versions of Class
+        // Include generic versions of Class.
         if (erasure().fullName().equals("java.lang.Class")) {
           return true;
         }
         return false;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect AutoBoxing
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:73
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:73")
   public boolean unboxingConversionTo(TypeDecl typeDecl) {
-    ASTNode$State state = state();
     boolean unboxingConversionTo_TypeDecl_value = unboxed() == typeDecl;
-
     return unboxingConversionTo_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean unboxed_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl unboxed_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void unboxed_reset() {
-    unboxed_computed = false;
+    unboxed_computed = null;
     unboxed_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle unboxed_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl unboxed_value;
+
+  /** Mapping between Reference type and corresponding unboxed Primitive type. 
+   * @attribute syn
+   * @aspect AutoBoxing
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77")
   public TypeDecl unboxed() {
-    if(unboxed_computed) {
+    ASTNode$State state = state();
+    if (unboxed_computed == ASTNode$State.NON_CYCLE || unboxed_computed == state().cycle()) {
       return unboxed_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     unboxed_value = unboxed_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      unboxed_computed = true;
+    if (state().inCircle()) {
+      unboxed_computed = state().cycle();
+    
     } else {
+      unboxed_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return unboxed_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl unboxed_compute() {
       if (packageName().equals("java.lang") && isTopLevelType()) {
         String n = name();
@@ -465,162 +480,188 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
       }
       return unknownType();
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect NumericPromotion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:157
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:157")
   public TypeDecl unaryNumericPromotion() {
-    ASTNode$State state = state();
     TypeDecl unaryNumericPromotion_value = isNumericType() && !isUnknown() ? unboxed().unaryNumericPromotion() : this;
-
     return unaryNumericPromotion_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect NumericPromotion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:166
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:166")
   public TypeDecl binaryNumericPromotion(TypeDecl type) {
-    ASTNode$State state = state();
     TypeDecl binaryNumericPromotion_TypeDecl_value = unboxed().binaryNumericPromotion(type);
-
     return binaryNumericPromotion_TypeDecl_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:187
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:187")
   public boolean isNumericType() {
-    ASTNode$State state = state();
     boolean isNumericType_value = !unboxed().isUnknown() && unboxed().isNumericType();
-
     return isNumericType_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:191
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:191")
   public boolean isIntegralType() {
-    ASTNode$State state = state();
     boolean isIntegralType_value = !unboxed().isUnknown() && unboxed().isIntegralType();
-
     return isIntegralType_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237")
   public boolean isPrimitive() {
-    ASTNode$State state = state();
     boolean isPrimitive_value = !unboxed().isUnknown() && unboxed().isPrimitive();
-
     return isPrimitive_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195")
   public boolean isBoolean() {
-    ASTNode$State state = state();
     boolean isBoolean_value = fullName().equals("java.lang.Boolean") && unboxed().isBoolean();
-
     return isBoolean_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577")
   public boolean supertypeNullType(NullType type) {
-    ASTNode$State state = state();
     boolean supertypeNullType_NullType_value = true;
-
     return supertypeNullType_NullType_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:454
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:454")
   public boolean strictSupertypeNullType(NullType type) {
-    ASTNode$State state = state();
     boolean strictSupertypeNullType_NullType_value = true;
-
     return strictSupertypeNullType_NullType_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:103
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:110
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:110")
   public TypeDecl typeBoolean() {
-    ASTNode$State state = state();
-    TypeDecl typeBoolean_value = getParent().Define_TypeDecl_typeBoolean(this, null);
-
+    TypeDecl typeBoolean_value = getParent().Define_typeBoolean(this, null);
     return typeBoolean_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:104
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:112
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:112")
   public TypeDecl typeByte() {
-    ASTNode$State state = state();
-    TypeDecl typeByte_value = getParent().Define_TypeDecl_typeByte(this, null);
-
+    TypeDecl typeByte_value = getParent().Define_typeByte(this, null);
     return typeByte_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:105
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:114
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:114")
   public TypeDecl typeChar() {
-    ASTNode$State state = state();
-    TypeDecl typeChar_value = getParent().Define_TypeDecl_typeChar(this, null);
-
+    TypeDecl typeChar_value = getParent().Define_typeChar(this, null);
     return typeChar_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:106
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:116
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:116")
   public TypeDecl typeShort() {
-    ASTNode$State state = state();
-    TypeDecl typeShort_value = getParent().Define_TypeDecl_typeShort(this, null);
-
+    TypeDecl typeShort_value = getParent().Define_typeShort(this, null);
     return typeShort_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:107
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:118
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:118")
   public TypeDecl typeInt() {
-    ASTNode$State state = state();
-    TypeDecl typeInt_value = getParent().Define_TypeDecl_typeInt(this, null);
-
+    TypeDecl typeInt_value = getParent().Define_typeInt(this, null);
     return typeInt_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:108
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:120
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:120")
   public TypeDecl typeLong() {
-    ASTNode$State state = state();
-    TypeDecl typeLong_value = getParent().Define_TypeDecl_typeLong(this, null);
-
+    TypeDecl typeLong_value = getParent().Define_typeLong(this, null);
     return typeLong_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:109
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:122
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:122")
   public TypeDecl typeFloat() {
-    ASTNode$State state = state();
-    TypeDecl typeFloat_value = getParent().Define_TypeDecl_typeFloat(this, null);
-
+    TypeDecl typeFloat_value = getParent().Define_typeFloat(this, null);
     return typeFloat_value;
   }
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat extendj/java5/frontend/AutoBoxing.jrag:110
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:124
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:124")
   public TypeDecl typeDouble() {
-    ASTNode$State state = state();
-    TypeDecl typeDouble_value = getParent().Define_TypeDecl_typeDouble(this, null);
-
+    TypeDecl typeDouble_value = getParent().Define_typeDouble(this, null);
     return typeDouble_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect PathPart
- * @declaredat extendj/java4/frontend/PathPart.jadd:510
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PathPart.jadd:510
  */
 public class JarFilePath extends PathPart {
   
@@ -63,7 +65,7 @@ public class JarFilePath extends PathPart {
     private static void scanJar(ZipFile jar, Collection<String> packages,
         String fileSuffix) {
       // Add all zip entries to a set so that we can quickly check if the Jar
-      // contains a given class
+      // contains a given class.
       for (Enumeration entries = jar.entries(); entries.hasMoreElements(); ) {
         ZipEntry entry = (ZipEntry) entries.nextElement();
         String path = entry.getName();

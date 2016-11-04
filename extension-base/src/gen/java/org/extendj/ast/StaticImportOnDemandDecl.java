@@ -1,24 +1,25 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -26,30 +27,19 @@ import java.io.DataInputStream;
  * members declared in the type named by a canonical name to be imported as
  * needed.
  * @ast node
- * @declaredat extendj/java5/grammar/StaticImports.ast:19
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/StaticImports.ast:19
  * @production StaticImportOnDemandDecl : {@link StaticImportDecl};
 
  */
 public class StaticImportOnDemandDecl extends StaticImportDecl implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat extendj/java5/frontend/PrettyPrint.jadd:328
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:350
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("import static ");
     out.print(getAccess());
     out.print(".*;");
-  }
-  /**
-   * The TypeName must be the canonical name of a class or interface type
-   * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:118
-   */
-  public void nameCheck() {
-    if (!getAccess().type().typeName().equals(typeName())) {
-      errorf("In on-demand import: %s is not the canonical name of type %s",
-          typeName(), getAccess().type().typeName());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -73,58 +63,46 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
   public StaticImportOnDemandDecl(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:43
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:49
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public StaticImportOnDemandDecl clone() throws CloneNotSupportedException {
     StaticImportOnDemandDecl node = (StaticImportOnDemandDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public StaticImportOnDemandDecl copy() {
     try {
       StaticImportOnDemandDecl node = (StaticImportOnDemandDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -138,8 +116,9 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:75
+   * @declaredat ASTNode:59
    */
+  @Deprecated
   public StaticImportOnDemandDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -148,14 +127,14 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:84
+   * @declaredat ASTNode:69
    */
   public StaticImportOnDemandDecl treeCopyNoTransform() {
     StaticImportOnDemandDecl tree = (StaticImportOnDemandDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -169,15 +148,23 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:104
+   * @declaredat ASTNode:89
    */
   public StaticImportOnDemandDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    StaticImportOnDemandDecl tree = (StaticImportOnDemandDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:111
+  /** @apilevel internal 
+   * @declaredat ASTNode:103
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -208,36 +195,71 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
   public Access getAccessNoTransform() {
     return (Access) getChildNoTransform(0);
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StaticImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98")
   public TypeDecl type() {
-    ASTNode$State state = state();
     TypeDecl type_value = getAccess().type();
-
     return type_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
   public boolean isOnDemand() {
-    ASTNode$State state = state();
     boolean isOnDemand_value = true;
-
     return isOnDemand_value;
   }
   /**
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:296
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:303
       return NameType.TYPE_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:125
+    if (!getAccess().type().typeName().equals(typeName())) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getAccess().type().typeName().equals(typeName())) {
+      collection.add(errorf("In on-demand import: %s is not the canonical name of type %s",
+                typeName(), getAccess().type().typeName()));
+    }
   }
 }

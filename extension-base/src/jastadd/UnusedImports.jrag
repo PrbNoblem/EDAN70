@@ -13,5 +13,6 @@ aspect UnusedImports {
 
     FieldDecl contributes ((PrimitiveTypeAccess)getTypeAccess()).getID()
 		when getTypeAccess().nodeType().equals("PrimitiveTypeAccess")
-		to CompilationUnit.usedTypes() for compilationUnit();
+		to CompilationUnit.usedTypes()
+        for compilationUnit();
 }

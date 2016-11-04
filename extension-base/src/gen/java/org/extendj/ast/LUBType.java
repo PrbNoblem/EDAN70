@@ -1,276 +1,271 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:46
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:59
  * @production LUBType : {@link ReferenceType} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">{@link BodyDecl}*</span> <span class="component">TypeBound:{@link Access}*</span>;
 
  */
 public class LUBType extends ReferenceType implements Cloneable {
   /**
-   * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:699
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1659
    */
-  public static HashSet EC(ArrayList list) {
-      HashSet result = new HashSet();
-      boolean first = true;
-      for (Iterator iter = list.iterator(); iter.hasNext(); ) {
-        TypeDecl U = (TypeDecl) iter.next();
-        // erased supertype set of U
-        HashSet EST = LUBType.EST(U);
-        if (first) {
-          result.addAll(EST);
-          first = false;
-        } else {
-          result.retainAll(EST);
-        }
-      }
-      return result;
+  public Collection<InterfaceDecl> implementedInterfaces() {
+    Collection<InterfaceDecl> ret = new HashSet<InterfaceDecl>();
+    for (int i = 0; i < getNumTypeBound(); i++) {
+      ret.addAll(getTypeBound(i).type().implementedInterfaces());
     }
+    return ret;
+  }
+  /**
+   * @aspect GenericMethodsInference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:642
+   */
+  public static Collection<TypeDecl> EC(ArrayList<TypeDecl> list) {
+    Collection<TypeDecl> result = new HashSet<TypeDecl>();
+    boolean first = true;
+    for (TypeDecl U : list) {
+      // Erased supertype set of U.
+      Collection<TypeDecl> EST = LUBType.EST(U);
+      if (first) {
+        result.addAll(EST);
+        first = false;
+      } else {
+        result.retainAll(EST);
+      }
+    }
+    return result;
+  }
   /**
    * The minimal erased candidate set for Tj
    * is MEC = {V | V in EC, forall  W != V in EC, not W <: V}
    * @return minimal erased candidate set for Tj
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:721
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:663
    */
-  public static HashSet MEC(ArrayList list) {
-      HashSet EC = LUBType.EC(list);
-      if (EC.size() == 1) {
-        return EC;
-      }
-      HashSet MEC = new HashSet();
-      for (Iterator iter = EC.iterator(); iter.hasNext(); ) {
-        TypeDecl V = (TypeDecl) iter.next();
-        boolean keep = true;
-        for (Iterator i2 = EC.iterator(); i2.hasNext(); ) {
-          TypeDecl W = (TypeDecl) i2.next();
-          if (!(V instanceof TypeVariable) && V != W && W.instanceOf(V)) {
-            keep = false;
-          }
-        }
-        if (keep) {
-          MEC.add(V);
-        }
-      }
-      return MEC;
+  public static Collection<TypeDecl> MEC(ArrayList<TypeDecl> list) {
+    Collection<TypeDecl> EC = LUBType.EC(list);
+    if (EC.size() == 1) {
+      return EC;
     }
+    Collection<TypeDecl> MEC = new HashSet<TypeDecl>();
+    for (TypeDecl V : EC) {
+      boolean keep = true;
+      for (TypeDecl W : EC) {
+        if (!(V instanceof TypeVariable) && V != W && W.instanceOf(V)) {
+          keep = false;
+        }
+      }
+      if (keep) {
+        MEC.add(V);
+      }
+    }
+    return MEC;
+  }
   /**
-   * relevant invocations of G, Inv(G)
+   * Relevant invocations of G, Inv(G)
    * Inv(G) = {V | 1 <= i <= k, V in ST(Ui), V = G<...>}
    * @return set of relevant invocations of G, Inv(G)
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:748
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:688
    */
-  public static HashSet Inv(TypeDecl G, ArrayList Us) {
-      HashSet result = new HashSet();
-      for (Iterator iter = Us.iterator(); iter.hasNext(); ) {
-        TypeDecl U = (TypeDecl) iter.next();
-        for (Iterator i2 = LUBType.ST(U).iterator(); i2.hasNext(); ) {
-          TypeDecl V = (TypeDecl) i2.next();
-          if (V instanceof ParTypeDecl && !V.isRawType() && ((ParTypeDecl) V).genericDecl() == G) {
-            result.add(V);
-          }
+  public static Collection<ParTypeDecl> Inv(TypeDecl G, Collection<TypeDecl> Us) {
+    Collection<ParTypeDecl> result = new HashSet<ParTypeDecl>();
+    for (TypeDecl U : Us) {
+      for (TypeDecl V : LUBType.ST(U)) {
+        if (V instanceof ParTypeDecl && !V.isRawType() && ((ParTypeDecl) V).genericDecl() == G) {
+          result.add((ParTypeDecl) V);
         }
       }
-      return result;
     }
+    return result;
+  }
   /**
    * @return least containing invocation (lci)
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:765
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:703
    */
-  public TypeDecl lci(HashSet set, TypeDecl G) {
-      ArrayList list = new ArrayList();
-      boolean first = true;
-      for (Iterator iter = set.iterator(); iter.hasNext(); ) {
-        ParTypeDecl decl = (ParTypeDecl) iter.next();
-        if (first) {
-          first = false;
-          for (int i = 0; i < decl.getNumArgument(); i++) {
-            list.add(decl.getArgument(i).type());
-          }
-        } else {
-          for (int i = 0; i < decl.getNumArgument(); i++) {
-            list.set(i, lcta((TypeDecl) list.get(i), decl.getArgument(i).type()));
-          }
+  public TypeDecl lci(Collection<ParTypeDecl> set, TypeDecl G) {
+    ArrayList<TypeDecl> list = new ArrayList<TypeDecl>();
+    boolean first = true;
+    for (ParTypeDecl decl : set) {
+      java.util.List<TypeDecl> declArgs = decl.getParameterization().args;
+      if (first) {
+        first = false;
+        for (TypeDecl arg : declArgs) {
+          list.add(arg);
+        }
+      } else {
+        for (int i = 0; i < declArgs.size(); i++) {
+          list.set(i, lcta(list.get(i), declArgs.get(i)));
         }
       }
-      return ((GenericTypeDecl) G).lookupParTypeDecl(list);
     }
+    return ((GenericTypeDecl) G).lookupParTypeDecl(list);
+  }
   /**
-   * least containing type arguments
+   * Least containing type arguments.
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:787
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:725
    */
   public TypeDecl lcta(TypeDecl X, TypeDecl Y) {
-      //System.err.println("Computing lcta for " + X.typeName() + " and " + Y.typeName());
-      if (!X.isWildcard() && !Y.isWildcard()) {
-        TypeDecl U = X;
-        TypeDecl V = Y;
-        return U == V ? U : lub(U, V).asWildcardExtends();
-      } else if (!X.isWildcard() && Y instanceof WildcardExtendsType) {
-        TypeDecl U = X;
-        TypeDecl V = ((WildcardExtendsType) Y).getAccess().type();
-        return lub(U, V).asWildcardExtends();
-      } else if (!Y.isWildcard() && X instanceof WildcardExtendsType) {
-        TypeDecl U = Y;
-        TypeDecl V = ((WildcardExtendsType) X).getAccess().type();
-        return lub(U, V).asWildcardExtends();
-      } else if (!X.isWildcard() && Y instanceof WildcardSuperType) {
-        TypeDecl U = X;
-        TypeDecl V = ((WildcardSuperType) Y).getAccess().type();
-        ArrayList bounds = new ArrayList();
-        bounds.add(U);
-        bounds.add(V);
-        return GLBTypeFactory.glb(bounds).asWildcardSuper();
-      } else if (!Y.isWildcard() && X instanceof WildcardSuperType) {
-        TypeDecl U = Y;
-        TypeDecl V = ((WildcardSuperType) X).getAccess().type();
-        ArrayList bounds = new ArrayList();
-        bounds.add(U);
-        bounds.add(V);
-        return GLBTypeFactory.glb(bounds).asWildcardSuper();
-      } else if (X instanceof WildcardExtendsType && Y instanceof WildcardExtendsType) {
-        TypeDecl U = ((WildcardExtendsType) X).getAccess().type();
-        TypeDecl V = ((WildcardExtendsType) Y).getAccess().type();
-        return lub(U, V).asWildcardExtends();
-      } else if (X instanceof WildcardExtendsType && Y instanceof WildcardSuperType) {
-        TypeDecl U = ((WildcardExtendsType) X).getAccess().type();
-        TypeDecl V = ((WildcardSuperType) Y).getAccess().type();
-        return U == V ? U : U.typeWildcard();
-      } else if (Y instanceof WildcardExtendsType && X instanceof WildcardSuperType) {
-        TypeDecl U = ((WildcardExtendsType) Y).getAccess().type();
-        TypeDecl V = ((WildcardSuperType) X).getAccess().type();
-        return U == V ? U : U.typeWildcard();
-      } else if (X instanceof WildcardSuperType && Y instanceof WildcardSuperType) {
-        TypeDecl U = ((WildcardSuperType) X).getAccess().type();
-        TypeDecl V = ((WildcardSuperType) Y).getAccess().type();
-        ArrayList bounds = new ArrayList();
-        bounds.add(U);
-        bounds.add(V);
-        return GLBTypeFactory.glb(bounds).asWildcardSuper();
-      } else {
-        throw new Error("lcta not defined for (" + X.getClass().getName() + ", " + Y.getClass().getName() + ")");
-      }
+    if (!X.isWildcard() && !Y.isWildcard()) {
+      TypeDecl U = X;
+      TypeDecl V = Y;
+      return U == V ? U : lub(U, V).asWildcardExtends();
+    } else if (!X.isWildcard() && Y instanceof WildcardExtendsType) {
+      TypeDecl U = X;
+      TypeDecl V = ((WildcardExtendsType) Y).getAccess().type();
+      return lub(U, V).asWildcardExtends();
+    } else if (!Y.isWildcard() && X instanceof WildcardExtendsType) {
+      TypeDecl U = Y;
+      TypeDecl V = ((WildcardExtendsType) X).getAccess().type();
+      return lub(U, V).asWildcardExtends();
+    } else if (!X.isWildcard() && Y instanceof WildcardSuperType) {
+      TypeDecl U = X;
+      TypeDecl V = ((WildcardSuperType) Y).getAccess().type();
+      ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>();
+      bounds.add(U);
+      bounds.add(V);
+      return GLBTypeFactory.glb(bounds).asWildcardSuper();
+    } else if (!Y.isWildcard() && X instanceof WildcardSuperType) {
+      TypeDecl U = Y;
+      TypeDecl V = ((WildcardSuperType) X).getAccess().type();
+      ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>();
+      bounds.add(U);
+      bounds.add(V);
+      return GLBTypeFactory.glb(bounds).asWildcardSuper();
+    } else if (X instanceof WildcardExtendsType && Y instanceof WildcardExtendsType) {
+      TypeDecl U = ((WildcardExtendsType) X).getAccess().type();
+      TypeDecl V = ((WildcardExtendsType) Y).getAccess().type();
+      return lub(U, V).asWildcardExtends();
+    } else if (X instanceof WildcardExtendsType && Y instanceof WildcardSuperType) {
+      TypeDecl U = ((WildcardExtendsType) X).getAccess().type();
+      TypeDecl V = ((WildcardSuperType) Y).getAccess().type();
+      return U == V ? U : U.typeWildcard();
+    } else if (Y instanceof WildcardExtendsType && X instanceof WildcardSuperType) {
+      TypeDecl U = ((WildcardExtendsType) Y).getAccess().type();
+      TypeDecl V = ((WildcardSuperType) X).getAccess().type();
+      return U == V ? U : U.typeWildcard();
+    } else if (X instanceof WildcardSuperType && Y instanceof WildcardSuperType) {
+      TypeDecl U = ((WildcardSuperType) X).getAccess().type();
+      TypeDecl V = ((WildcardSuperType) Y).getAccess().type();
+      ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>();
+      bounds.add(U);
+      bounds.add(V);
+      return GLBTypeFactory.glb(bounds).asWildcardSuper();
+    } else {
+      throw new Error("lcta not defined for (" + X.getClass().getName()
+          + ", " + Y.getClass().getName() + ")");
     }
+  }
   /**
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:839
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:777
    */
   public TypeDecl lub(TypeDecl X, TypeDecl Y) {
-      ArrayList list = new ArrayList(2);
-      list.add(X);
-      list.add(Y);
-      return lub(list);
-    }
+    ArrayList<TypeDecl> list = new ArrayList<TypeDecl>(2);
+    list.add(X);
+    list.add(Y);
+    return lub(list);
+  }
   /**
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:846
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:784
    */
-  public TypeDecl lub(ArrayList list) {
-      return lookupLUBType(list);
-    }
-  /**
+  public TypeDecl lub(ArrayList<TypeDecl> list) {
+    return lookupLUBType(list);
+  }
+  /** @return erased supertype set of the given type. 
    * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:851
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:789
    */
-  public static HashSet EST(TypeDecl t) {
-      HashSet result = new HashSet();
-      for (Iterator iter = LUBType.ST(t).iterator(); iter.hasNext(); ) {
-        TypeDecl typeDecl = (TypeDecl) iter.next();
-        if (typeDecl instanceof TypeVariable) {
-          result.add(typeDecl);
-        } else {
-          result.add(typeDecl.erasure());
-        }
-      }
-      return result;
-    }
-  /**
-   * @return supertype set of T
-   * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:867
-   */
-  public static HashSet ST(TypeDecl t) {
-      HashSet result = new HashSet();
-      LUBType.addSupertypes(result, t);
-      return result;
-    }
-  /**
-   * @aspect GenericMethodsInference
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:873
-   */
-  public static void addSupertypes(HashSet set, TypeDecl t) {
-      set.add(t);
-      if (t instanceof ClassDecl) {
-        ClassDecl type = (ClassDecl) t;
-        if (type.hasSuperclass()) {
-          addSupertypes(set, type.superclass());
-        }
-        for (int i = 0; i < type.getNumImplements(); i++) {
-          addSupertypes(set, type.getImplements(i).type());
-        }
-      } else if (t instanceof InterfaceDecl) {
-        InterfaceDecl type = (InterfaceDecl) t;
-        for (int i = 0; i < type.getNumSuperInterface(); i++) {
-          addSupertypes(set, type.getSuperInterface(i).type());
-        }
-        if (type.getNumSuperInterface() == 0) {
-          set.add(type.typeObject());
-        }
-      } else if (t instanceof TypeVariable) {
-        TypeVariable type = (TypeVariable) t;
-        for (int i = 0; i < type.getNumTypeBound(); i++) {
-          addSupertypes(set, type.getTypeBound(i).type());
-        }
-        if (type.getNumTypeBound() == 0) {
-          set.add(type.typeObject());
-        }
-      } else if (t instanceof LUBType) {
-        LUBType type = (LUBType) t;
-        for (int i = 0; i < type.getNumTypeBound(); i++) {
-          addSupertypes(set, type.getTypeBound(i).type());
-        }
-        if (type.getNumTypeBound() == 0) {
-          set.add(type.typeObject());
-        }
-      } else if (! (t instanceof NullType)) {
-        throw new Error("Operation not supported for " + t.fullName() + ", " + t.getClass().getName());
+  public static Collection<TypeDecl> EST(TypeDecl type) {
+    Collection<TypeDecl> result = new HashSet<TypeDecl>();
+    for (TypeDecl typeDecl : LUBType.ST(type)) {
+      if (typeDecl instanceof TypeVariable) {
+        result.add(typeDecl);
+      } else {
+        result.add(typeDecl.erasure());
       }
     }
-  /**
-   * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1555
+    return result;
+  }
+  /** @return supertype set of the given type. 
+   * @aspect GenericMethodsInference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:802
    */
-  public HashSet implementedInterfaces(){
-       HashSet ret = new HashSet();
-       for (int i = 0; i < getNumTypeBound(); i++) {
-           ret.addAll(getTypeBound(i).type().implementedInterfaces());
-       }
-       return ret;
-   }
+  public static Collection<TypeDecl> ST(TypeDecl type) {
+    Collection<TypeDecl> result = new HashSet<TypeDecl>();
+    LUBType.addSupertypes(result, type);
+    return result;
+  }
+  /**
+   * @aspect GenericMethodsInference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:808
+   */
+  public static void addSupertypes(Collection<TypeDecl> set, TypeDecl t) {
+    set.add(t);
+    if (t instanceof ClassDecl) {
+      ClassDecl type = (ClassDecl) t;
+      if (type.hasSuperclass()) {
+        addSupertypes(set, type.superclass());
+      }
+      for (int i = 0; i < type.getNumImplements(); i++) {
+        addSupertypes(set, type.getImplements(i).type());
+      }
+    } else if (t instanceof InterfaceDecl) {
+      InterfaceDecl type = (InterfaceDecl) t;
+      for (int i = 0; i < type.getNumSuperInterface(); i++) {
+        addSupertypes(set, type.getSuperInterface(i).type());
+      }
+      if (type.getNumSuperInterface() == 0) {
+        set.add(type.typeObject());
+      }
+    } else if (t instanceof TypeVariable) {
+      TypeVariable type = (TypeVariable) t;
+      for (int i = 0; i < type.getNumTypeBound(); i++) {
+        addSupertypes(set, type.getTypeBound(i).type());
+      }
+      if (type.getNumTypeBound() == 0) {
+        set.add(type.typeObject());
+      }
+    } else if (t instanceof LUBType) {
+      LUBType type = (LUBType) t;
+      for (int i = 0; i < type.getNumTypeBound(); i++) {
+        addSupertypes(set, type.getTypeBound(i).type());
+      }
+      if (type.getNumTypeBound() == 0) {
+        set.add(type.typeObject());
+      }
+    } else if (! (t instanceof NullType)) {
+      throw new Error("Operation not supported for "
+          + t.fullName() + ", " + t.getClass().getName());
+    }
+  }
   /**
    * @declaredat ASTNode:1
    */
@@ -307,23 +302,21 @@ public class LUBType extends ReferenceType implements Cloneable {
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:30
+  /** @apilevel low-level 
+   * @declaredat ASTNode:28
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:36
+   * @declaredat ASTNode:34
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -331,37 +324,27 @@ public class LUBType extends ReferenceType implements Cloneable {
     subtype_TypeDecl_reset();
     strictSubtype_TypeDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:57
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:49
    */
   public LUBType clone() throws CloneNotSupportedException {
     LUBType node = (LUBType) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:70
+  /** @apilevel internal 
+   * @declaredat ASTNode:54
    */
   public LUBType copy() {
     try {
       LUBType node = (LUBType) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -375,8 +358,9 @@ public class LUBType extends ReferenceType implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:89
+   * @declaredat ASTNode:73
    */
+  @Deprecated
   public LUBType fullCopy() {
     return treeCopyNoTransform();
   }
@@ -385,14 +369,14 @@ public class LUBType extends ReferenceType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:98
+   * @declaredat ASTNode:83
    */
   public LUBType treeCopyNoTransform() {
     LUBType tree = (LUBType) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -406,18 +390,26 @@ public class LUBType extends ReferenceType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:118
+   * @declaredat ASTNode:103
    */
   public LUBType treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    LUBType tree = (LUBType) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:125
+  /** @apilevel internal 
+   * @declaredat ASTNode:117
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((LUBType)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((LUBType) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -459,7 +451,7 @@ public class LUBType extends ReferenceType implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -522,11 +514,10 @@ public class LUBType extends ReferenceType implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -550,7 +541,6 @@ public class LUBType extends ReferenceType implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -561,6 +551,13 @@ public class LUBType extends ReferenceType implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -627,11 +624,10 @@ public class LUBType extends ReferenceType implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeBound(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeBoundListNoTransform() : getTypeBoundList();
+    List<Access> list = (parent == null) ? getTypeBoundListNoTransform() : getTypeBoundList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeBoundNoTransform(Access node) {
     List<Access> list = getTypeBoundListNoTransform();
@@ -655,7 +651,6 @@ public class LUBType extends ReferenceType implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeBound")
   public List<Access> getTypeBoundList() {
     List<Access> list = (List<Access>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -666,6 +661,13 @@ public class LUBType extends ReferenceType implements Cloneable {
    */
   public List<Access> getTypeBoundListNoTransform() {
     return (List<Access>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeBound list without
+   * triggering rewrites.
+   */
+  public Access getTypeBoundNoTransform(int i) {
+    return (Access) getTypeBoundListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeBound list.
@@ -685,67 +687,14 @@ public class LUBType extends ReferenceType implements Cloneable {
     return getTypeBoundListNoTransform();
   }
   /**
-   * @apilevel internal
-   */
-  protected boolean lub_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl lub_value;
-  /**
-   * @apilevel internal
-   */
-  private void lub_reset() {
-    lub_computed = false;
-    lub_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl lub() {
-    if(lub_computed) {
-      return lub_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    lub_value = lub_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      lub_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return lub_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private TypeDecl lub_compute() {
-      ArrayList list = new ArrayList();
-      for (int i = 0; i < getNumTypeBound(); i++) {
-        list.add(getTypeBound(i).type());
-      }
-      ArrayList bounds = new ArrayList();
-      for (Iterator iter = LUBType.MEC(list).iterator(); iter.hasNext(); ) {
-        TypeDecl W = (TypeDecl) iter.next();
-        TypeDecl C = W instanceof GenericTypeDecl ? lci(Inv(W, list), W) : W;
-        bounds.add(C);
-      }
-      if (bounds.size() == 1) {
-        return (TypeDecl) bounds.iterator().next();
-      }
-      return lookupLUBType(bounds);
-    }
-  /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1543
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1647
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1647")
   public String typeName() {
-    ASTNode$State state = state();
-    try {
+    {
         if (getNumTypeBound() == 0) {
           return "<NOTYPE>";
         }
@@ -756,217 +705,242 @@ public class LUBType extends ReferenceType implements Cloneable {
         }
         return sb.toString();
       }
-    finally {
-    }
   }
+  /** @apilevel internal */
+  private void lub_reset() {
+    lub_computed = null;
+    lub_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle lub_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl lub_value;
+
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect GenericMethodsInference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:623
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsInference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:623")
+  public TypeDecl lub() {
+    ASTNode$State state = state();
+    if (lub_computed == ASTNode$State.NON_CYCLE || lub_computed == state().cycle()) {
+      return lub_value;
+    }
+    lub_value = lub_compute();
+    if (state().inCircle()) {
+      lub_computed = state().cycle();
+    
+    } else {
+      lub_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return lub_value;
+  }
+  /** @apilevel internal */
+  private TypeDecl lub_compute() {
+      ArrayList<TypeDecl> list = new ArrayList<TypeDecl>();
+      for (int i = 0; i < getNumTypeBound(); i++) {
+        list.add(getTypeBound(i).type());
+      }
+      ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>();
+      for (TypeDecl W : LUBType.MEC(list)) {
+        TypeDecl C = W instanceof GenericTypeDecl ? lci(Inv(W, list), W) : W;
+        bounds.add(C);
+      }
+      if (bounds.size() == 1) {
+        return bounds.iterator().next();
+      }
+      return lookupLUBType(bounds);
+    }
+  /** @apilevel internal */
   private void subtype_TypeDecl_reset() {
     subtype_TypeDecl_values = null;
   }
   protected java.util.Map subtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
-    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(subtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = subtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (subtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = subtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       subtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_subtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_subtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_subtype_TypeDecl_value = type.supertypeLUBType(this);
-        if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_subtype_TypeDecl_value);
+        if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_subtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
-      } else {
-        subtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.supertypeLUBType(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_subtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_subtype_TypeDecl_value = type.supertypeLUBType(this);
-      if (state.RESET_CYCLE) {
-        subtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_subtype_TypeDecl_value = type.supertypeLUBType(this);
+      if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_subtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_subtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
   public boolean supertypeClassDecl(ClassDecl type) {
-    ASTNode$State state = state();
     boolean supertypeClassDecl_ClassDecl_value = type.subtype(lub());
-
     return supertypeClassDecl_ClassDecl_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522")
   public boolean supertypeInterfaceDecl(InterfaceDecl type) {
-    ASTNode$State state = state();
     boolean supertypeInterfaceDecl_InterfaceDecl_value = type.subtype(lub());
-
     return supertypeInterfaceDecl_InterfaceDecl_value;
   }
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat extendj/java5/frontend/GenericsSubtype.jrag:394
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:424
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:424")
   public boolean supertypeGLBType(GLBType type) {
-    ASTNode$State state = state();
-    try {
-        ArrayList bounds = new ArrayList(getNumTypeBound());
+    {
+        // TODO(joqvist): changed from Access to TypeDecl, is this correct?
+        ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>(getNumTypeBound());
         for (int i = 0; i < getNumTypeBound(); i++) {
-          bounds.add(getTypeBound(i));
+          bounds.add(getTypeBound(i).type());
         }
         return type == lookupGLBType(bounds);
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void strictSubtype_TypeDecl_reset() {
     strictSubtype_TypeDecl_values = null;
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
-    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(strictSubtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = strictSubtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (strictSubtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = strictSubtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       strictSubtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_strictSubtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_strictSubtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_strictSubtype_TypeDecl_value = type.strictSupertypeLUBType(this);
-        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_strictSubtype_TypeDecl_value);
+        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_strictSubtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
-      } else {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.strictSupertypeLUBType(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_strictSubtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_strictSubtype_TypeDecl_value = type.strictSupertypeLUBType(this);
-      if (state.RESET_CYCLE) {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_strictSubtype_TypeDecl_value = type.strictSupertypeLUBType(this);
+      if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_strictSubtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_strictSubtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
   public boolean strictSupertypeClassDecl(ClassDecl type) {
-    ASTNode$State state = state();
     boolean strictSupertypeClassDecl_ClassDecl_value = type.strictSubtype(lub());
-
     return strictSupertypeClassDecl_ClassDecl_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398")
   public boolean strictSupertypeInterfaceDecl(InterfaceDecl type) {
-    ASTNode$State state = state();
     boolean strictSupertypeInterfaceDecl_InterfaceDecl_value = type.strictSubtype(lub());
-
     return strictSupertypeInterfaceDecl_InterfaceDecl_value;
   }
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat extendj/java8/frontend/GenericsSubtype.jrag:336
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:342
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:342")
   public boolean strictSupertypeGLBType(GLBType type) {
-    ASTNode$State state = state();
-    try {
-        ArrayList bounds = new ArrayList(getNumTypeBound());
+    {
+        // TODO(joqvist): changed from Access to TypeDecl, is this correct?
+        ArrayList<TypeDecl> bounds = new ArrayList<TypeDecl>(getNumTypeBound());
         for (int i = 0; i < getNumTypeBound(); i++) {
-          bounds.add(getTypeBound(i));
+          bounds.add(getTypeBound(i).type());
         }
         return type == lookupGLBType(bounds);
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:4
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:4
  * @production CompilationUnit : {@link ASTNode} ::= <span class="component">&lt;PackageDecl:String&gt;</span> <span class="component">{@link ImportDecl}*</span> <span class="component">{@link TypeDecl}*</span>;
 
  */
 public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:302
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:223
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasPackageDecl()) {
@@ -57,101 +58,57 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
   /**
    * @aspect ClassPath
-   * @declaredat extendj/java4/frontend/ClassPath.jrag:399
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:435
    */
   private ClassSource classSource = ClassSource.NONE;
   /**
    * @aspect ClassPath
-   * @declaredat extendj/java4/frontend/ClassPath.jrag:400
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:437
    */
   private boolean fromSource = false;
   /**
    * @aspect ClassPath
-   * @declaredat extendj/java4/frontend/ClassPath.jrag:402
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:439
    */
   public void setClassSource(ClassSource source) {
     this.classSource = source;
   }
   /**
    * @aspect ClassPath
-   * @declaredat extendj/java4/frontend/ClassPath.jrag:405
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:443
    */
   public ClassSource getClassSource() {
     return classSource;
   }
   /**
    * @aspect ClassPath
-   * @declaredat extendj/java4/frontend/ClassPath.jrag:408
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:447
    */
   public void setFromSource(boolean value) {
     this.fromSource = value;
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:88
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:95
    */
-  protected Collection<Problem> errors = new LinkedList<Problem>();
-  /**
-   * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:89
-   */
-  protected Collection<Problem> warnings = new LinkedList<Problem>();
-  /**
-   * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:91
-   */
-  public Collection parseErrors() { return parseErrors; }
-  /**
-   * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:92
-   */
-  public void addParseError(Problem msg) { parseErrors.add(msg); }
-  /**
-   * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:93
-   */
-  protected Collection parseErrors = new ArrayList();
-  /**
-   * @return collection of semantic errors
-   * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:261
-   */
-  public Collection<Problem> errors() {
-    return errors;
+  public Collection<Problem> parseErrors() {
+    return parseErrors;
   }
   /**
-   * @return collection of semantic warnings
    * @aspect ErrorCheck
-   * @declaredat extendj/java4/frontend/ErrorCheck.jrag:268
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:99
    */
-  public Collection<Problem> warnings() {
-    return warnings;
+  public void addParseError(Problem msg) {
+    parseErrors.add(msg);
   }
   /**
-   * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:63
+   * @aspect ErrorCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:103
    */
-  public void refined_NameCheck_CompilationUnit_nameCheck() {
-    for (int i = 0; i < getNumImportDecl(); i++) {
-      ImportDecl decl = getImportDecl(i);
-      if (!decl.isOnDemand()) {
-        Iterator importIter = decl.importedTypes().iterator();
-        while (importIter.hasNext()) {
-          TypeDecl importedType = (TypeDecl) importIter.next();
-          Iterator iter = localLookupType(importedType.name()).iterator();
-          while (iter.hasNext()) {
-            TypeDecl local = (TypeDecl) iter.next();
-            if (local != importedType) {
-              errorf("imported type %s conflicts with visible type", decl.typeName());
-            }
-          }
-        }
-      }
-    }
-  }
+  protected Collection<Problem> parseErrors = new ArrayList<Problem>();
   /**
    * @aspect ExtensionBase
-   * @declaredat src/jastadd/ExtensionBase.jrag:3
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ExtensionBase.jrag:3
    */
   public void process() {
     System.out.println(pathName() + " contained no errors");
@@ -191,64 +148,54 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     setChild(p1, 0);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:28
+  /** @apilevel low-level 
+   * @declaredat ASTNode:26
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:34
+   * @declaredat ASTNode:32
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     packageName_reset();
     lookupType_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:48
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
-    CompilationUnit_usedTypes_computed = false;
+    CompilationUnit_problems_computed = null;
+    CompilationUnit_problems_value = null;
+    CompilationUnit_usedTypes_computed = null;
     CompilationUnit_usedTypes_value = null;
-    CompilationUnit_usedTypes_contributors = null;
-    collect_contributors_CompilationUnit_usedTypes = false;
+    contributorMap_CompilationUnit_problems = null;
+    contributorMap_CompilationUnit_usedTypes = null;
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:58
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:64
+  /** @apilevel internal 
+   * @declaredat ASTNode:52
    */
   public CompilationUnit clone() throws CloneNotSupportedException {
     CompilationUnit node = (CompilationUnit) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:71
+  /** @apilevel internal 
+   * @declaredat ASTNode:57
    */
   public CompilationUnit copy() {
     try {
       CompilationUnit node = (CompilationUnit) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -262,8 +209,9 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:90
+   * @declaredat ASTNode:76
    */
+  @Deprecated
   public CompilationUnit fullCopy() {
     return treeCopyNoTransform();
   }
@@ -272,14 +220,14 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:99
+   * @declaredat ASTNode:86
    */
   public CompilationUnit treeCopyNoTransform() {
     CompilationUnit tree = (CompilationUnit) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -293,18 +241,26 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:119
+   * @declaredat ASTNode:106
    */
   public CompilationUnit treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    CompilationUnit tree = (CompilationUnit) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:126
+  /** @apilevel internal 
+   * @declaredat ASTNode:120
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_PackageDecl == ((CompilationUnit)node).tokenString_PackageDecl);    
+    return super.is$Equal(node) && (tokenString_PackageDecl == ((CompilationUnit) node).tokenString_PackageDecl);    
   }
   /**
    * Replaces the lexeme PackageDecl.
@@ -314,8 +270,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   public void setPackageDecl(String value) {
     tokenString_PackageDecl = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected String tokenString_PackageDecl;
   /**
@@ -330,7 +285,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * @apilevel internal
    */
   public void setPackageDecl(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackageDecl is only valid for String lexemes");
     tokenString_PackageDecl = (String)symbol.value;
     PackageDeclstart = symbol.getStart();
@@ -393,11 +348,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * @apilevel high-level
    */
   public void addImportDecl(ImportDecl node) {
-    List<ImportDecl> list = (parent == null || state == null) ? getImportDeclListNoTransform() : getImportDeclList();
+    List<ImportDecl> list = (parent == null) ? getImportDeclListNoTransform() : getImportDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addImportDeclNoTransform(ImportDecl node) {
     List<ImportDecl> list = getImportDeclListNoTransform();
@@ -421,7 +375,6 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="ImportDecl")
   public List<ImportDecl> getImportDeclList() {
     List<ImportDecl> list = (List<ImportDecl>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -432,6 +385,13 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    */
   public List<ImportDecl> getImportDeclListNoTransform() {
     return (List<ImportDecl>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the ImportDecl list without
+   * triggering rewrites.
+   */
+  public ImportDecl getImportDeclNoTransform(int i) {
+    return (ImportDecl) getImportDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the ImportDecl list.
@@ -498,11 +458,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeDecl(TypeDecl node) {
-    List<TypeDecl> list = (parent == null || state == null) ? getTypeDeclListNoTransform() : getTypeDeclList();
+    List<TypeDecl> list = (parent == null) ? getTypeDeclListNoTransform() : getTypeDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeDeclNoTransform(TypeDecl node) {
     List<TypeDecl> list = getTypeDeclListNoTransform();
@@ -526,7 +485,6 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeDecl")
   public List<TypeDecl> getTypeDeclList() {
     List<TypeDecl> list = (List<TypeDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -537,6 +495,13 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    */
   public List<TypeDecl> getTypeDeclListNoTransform() {
     return (List<TypeDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeDecl list without
+   * triggering rewrites.
+   */
+  public TypeDecl getTypeDeclNoTransform(int i) {
+    return (TypeDecl) getTypeDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeDecl list.
@@ -556,746 +521,979 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return getTypeDeclListNoTransform();
   }
   /**
-   * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:273
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68
    */
-    public void nameCheck() {
-    refined_NameCheck_CompilationUnit_nameCheck();
+  private Collection<Problem> refined_NameCheck_CompilationUnit_nameProblems()
+{
+    Collection<Problem> problems = new LinkedList<Problem>();
     for (int i = 0; i < getNumImportDecl(); i++) {
-      if (getImportDecl(i) instanceof SingleStaticImportDecl) {
-        SingleStaticImportDecl decl = (SingleStaticImportDecl) getImportDecl(i);
-        String name = decl.name();
-        if (!decl.importedTypes(name).isEmpty()) {
-          TypeDecl type = (TypeDecl) decl.importedTypes(name).iterator().next();
-          if (localLookupType(name).contains(type)) {
-            decl.errorf("the imported name %s.%s is already declared in this compilation unit",
-                packageName(), name);
+      ImportDecl decl = getImportDecl(i);
+      if (!decl.isOnDemand()) {
+        for (TypeDecl importedType : decl.importedTypes()) {
+          for (TypeDecl local : localLookupType(importedType.name())) {
+            if (local != importedType) {
+              problems.add(errorf("imported type %s conflicts with visible type", decl.typeName()));
+            }
           }
         }
       }
     }
+    return problems;
   }
   /**
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:347
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:361
    */
-  private SimpleSet refined_TypeScopePropagation_CompilationUnit_Child_lookupType_String(String name)
+  private SimpleSet<TypeDecl> refined_TypeScopePropagation_CompilationUnit_Child_lookupType_String(String name)
 {
     // Locally declared types in the compilation unit.
-    SimpleSet set = localLookupType(name);
-    if (!set.isEmpty()) {
-      return set;
+    SimpleSet<TypeDecl> result = localLookupType(name);
+    if (!result.isEmpty()) {
+      return result;
     }
 
     // Imported types.
-    set = importedTypes(name);
-    if (!set.isEmpty()) {
-      return set;
+    result = importedTypes(name);
+    if (!result.isEmpty()) {
+      return result;
     }
 
     // Types in the same package.
-    TypeDecl result = lookupType(packageName(), name);
-    if (result.accessibleFromPackage(packageName())) {
-      return result;
+    TypeDecl pkgType = lookupType(packageName(), name);
+    if (pkgType.accessibleFromPackage(packageName())) {
+      return pkgType;
     }
 
     // Types imported on demand.
-    set = importedTypesOnDemand(name);
-    if (!set.isEmpty()) {
-      return set;
+    result = importedTypesOnDemand(name);
+    if (!result.isEmpty()) {
+      return result;
     }
 
     // Include primitive types.
-    result = lookupType(PRIMITIVE_PACKAGE_NAME, name);
-    if (!result.isUnknown()) {
-      return result;
+    TypeDecl primitiveType = lookupType(PRIMITIVE_PACKAGE_NAME, name);
+    if (!primitiveType.isUnknown()) {
+      return primitiveType;
     }
 
     // 7.5.5 Automatic Imports
-    result = lookupType("java.lang", name);
-    if (result.accessibleFromPackage(packageName())) {
-      return result;
+    TypeDecl defaultType = lookupType("java.lang", name);
+    if (defaultType.accessibleFromPackage(packageName())) {
+      return defaultType;
     }
     return lookupType(name);
   }
   /**
    * @aspect <NoAspect>
-   * @declaredat src/jastadd/UnusedImports.jrag:11
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
    */
-    private boolean collect_contributors_CompilationUnit_usedTypes = false;
-  protected void collect_contributors_CompilationUnit_usedTypes() {
-    if(collect_contributors_CompilationUnit_usedTypes) return;
-    super.collect_contributors_CompilationUnit_usedTypes();
-    collect_contributors_CompilationUnit_usedTypes = true;
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_problems = null;
+
+  protected void survey_CompilationUnit_problems() {
+    if (contributorMap_CompilationUnit_problems == null) {
+      contributorMap_CompilationUnit_problems = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_problems(this, contributorMap_CompilationUnit_problems);
+    }
   }
 
-  @ASTNodeAnnotation.Attribute
-  public String relativeName() {
-    ASTNode$State state = state();
-    String relativeName_value = getClassSource().relativeName();
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:11
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypes = null;
 
+  protected void survey_CompilationUnit_usedTypes() {
+    if (contributorMap_CompilationUnit_usedTypes == null) {
+      contributorMap_CompilationUnit_usedTypes = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_usedTypes(this, contributorMap_CompilationUnit_usedTypes);
+    }
+  }
+
+  /**
+   * @return The path to the source file, or the path to the file inside a Jar
+   * file.
+   * @attribute syn
+   * @aspect ClassPath
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:92
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:92")
+  public String relativeName() {
+    String relativeName_value = getClassSource().relativeName();
     return relativeName_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return The path to the source file, or the enclosing Jar file.
+   * @attribute syn
+   * @aspect ClassPath
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:97
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:97")
   public String pathName() {
-    ASTNode$State state = state();
     String pathName_value = getClassSource().pathName();
-
     return pathName_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return {@code true} if this compilation unit was parsed from source.
+   * @attribute syn
+   * @aspect ClassPath
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:102
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:102")
   public boolean fromSource() {
-    ASTNode$State state = state();
     boolean fromSource_value = fromSource;
-
     return fromSource_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect ErrorCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:280
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:280")
+  public Collection<Problem> errors() {
+    {
+        Collection<Problem> errors = new LinkedList<Problem>();
+        for (Problem problem : problems()) {
+          if (problem.severity() == Problem.Severity.ERROR) {
+            errors.add(problem);
+          }
+        }
+        return errors;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect ErrorCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:290
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:290")
+  public Collection<Problem> warnings() {
+    {
+        Collection<Problem> warnings = new LinkedList<Problem>();
+        for (Problem problem : problems()) {
+          if (problem.severity() == Problem.Severity.WARNING) {
+            warnings.add(problem);
+          }
+        }
+        return warnings;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68")
+  public Collection<Problem> nameProblems() {
+    {
+        Collection<Problem> problems = refined_NameCheck_CompilationUnit_nameProblems();
+        for (int i = 0; i < getNumImportDecl(); i++) {
+          if (getImportDecl(i) instanceof SingleStaticImportDecl) {
+            SingleStaticImportDecl decl = (SingleStaticImportDecl) getImportDecl(i);
+            String name = decl.name();
+            if (!decl.importedTypes(name).isEmpty()) {
+              TypeDecl type = decl.importedTypes(name).iterator().next();
+              if (localLookupType(name).contains(type)) {
+                problems.add(decl.errorf("the imported name %s.%s is already declared in this compilation unit",
+                    packageName(), name));
+              }
+            }
+          }
+        }
+        return problems;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:233
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:233")
+  public boolean hasPackageDecl() {
+    boolean hasPackageDecl_value = !getPackageDecl().isEmpty();
+    return hasPackageDecl_value;
   }
   /** Searches for a type with the given simple name in this compilation unit. 
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:387
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:401
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet localLookupType(String name) {
-    ASTNode$State state = state();
-    try {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:401")
+  public SimpleSet<TypeDecl> localLookupType(String name) {
+    {
         for (int i = 0; i < getNumTypeDecl(); i++) {
           if (getTypeDecl(i).name().equals(name)) {
-            return SimpleSet.emptySet.add(getTypeDecl(i));
+            return getTypeDecl(i);
           }
         }
-        return SimpleSet.emptySet;
+        return emptySet();
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:396
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:410
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes(String name) {
-    ASTNode$State state = state();
-    try {
-        SimpleSet set = SimpleSet.emptySet;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:410")
+  public SimpleSet<TypeDecl> importedTypes(String name) {
+    {
+        SimpleSet<TypeDecl> result = emptySet();
         for (int i = 0; i < getNumImportDecl(); i++) {
           if (!getImportDecl(i).isOnDemand()) {
-            for (Iterator iter = getImportDecl(i).importedTypes(name).iterator(); iter.hasNext(); ) {
-              set = set.add(iter.next());
+            for (TypeDecl type : getImportDecl(i).importedTypes(name)) {
+              result = result.add(type);
             }
           }
         }
-        return set;
+        return result;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:408
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:422
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypesOnDemand(String name) {
-    ASTNode$State state = state();
-    try {
-        SimpleSet set = SimpleSet.emptySet;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:422")
+  public SimpleSet<TypeDecl> importedTypesOnDemand(String name) {
+    {
+        SimpleSet<TypeDecl> result = emptySet();
         for (int i = 0; i < getNumImportDecl(); i++) {
           if (getImportDecl(i).isOnDemand()) {
-            for (Iterator iter = getImportDecl(i).importedTypes(name).iterator(); iter.hasNext(); ) {
-              set = set.add(iter.next());
+            for (TypeDecl type : getImportDecl(i).importedTypes(name)) {
+              result = result.add(type);
             }
           }
         }
-        return set;
+        return result;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean hasPackageDecl() {
-    ASTNode$State state = state();
-    boolean hasPackageDecl_value = !getPackageDecl().isEmpty();
-
-    return hasPackageDecl_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean packageName_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected String packageName_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void packageName_reset() {
-    packageName_computed = false;
+    packageName_computed = null;
     packageName_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle packageName_computed = null;
+
+  /** @apilevel internal */
+  protected String packageName_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeName
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:112
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:112")
   public String packageName() {
-    if(packageName_computed) {
+    ASTNode$State state = state();
+    if (packageName_computed == ASTNode$State.NON_CYCLE || packageName_computed == state().cycle()) {
       return packageName_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     packageName_value = packageName_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      packageName_computed = true;
+    if (state().inCircle()) {
+      packageName_computed = state().cycle();
+    
     } else {
+      packageName_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return packageName_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private String packageName_compute() {return getPackageDecl();}
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:186
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:191
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedFields(String name) {
-    ASTNode$State state = state();
-    try {
-        SimpleSet set = SimpleSet.emptySet;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:191")
+  public SimpleSet<Variable> importedFields(String name) {
+    {
+        SimpleSet<Variable> set = emptySet();
         for (int i = 0; i < getNumImportDecl(); i++) {
           if (!getImportDecl(i).isOnDemand()) {
-            for (Iterator iter = getImportDecl(i).importedFields(name).iterator(); iter.hasNext(); ) {
-              set = set.add(iter.next());
+            for (Variable field : getImportDecl(i).importedFields(name)) {
+              set = set.add(field);
             }
           }
         }
         return set;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:198
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:203
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedFieldsOnDemand(String name) {
-    ASTNode$State state = state();
-    try {
-        SimpleSet set = SimpleSet.emptySet;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:203")
+  public SimpleSet<Variable> importedFieldsOnDemand(String name) {
+    {
+        SimpleSet<Variable> set = emptySet();
         for (int i = 0; i < getNumImportDecl(); i++) {
           if (getImportDecl(i).isOnDemand()) {
-            for (Iterator iter = getImportDecl(i).importedFields(name).iterator(); iter.hasNext(); ) {
-              set = set.add(iter.next());
+            for (Variable field : getImportDecl(i).importedFields(name)) {
+              set = set.add(field);
             }
           }
         }
         return set;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:228
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:233
    */
-  @ASTNodeAnnotation.Attribute
-  public Collection importedMethods(String name) {
-    ASTNode$State state = state();
-    try {
-        Collection list = new ArrayList();
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:233")
+  public Collection<MethodDecl> importedMethods(String name) {
+    {
+        Collection<MethodDecl> methods = new ArrayList<MethodDecl>();
         for (int i = 0; i < getNumImportDecl(); i++) {
           if (!getImportDecl(i).isOnDemand()) {
-            list.addAll(getImportDecl(i).importedMethods(name));
+            methods.addAll(getImportDecl(i).importedMethods(name));
           }
         }
-        return list;
+        return methods;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:238
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:243
    */
-  @ASTNodeAnnotation.Attribute
-  public Collection importedMethodsOnDemand(String name) {
-    ASTNode$State state = state();
-    try {
-        Collection list = new ArrayList();
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:243")
+  public Collection<MethodDecl> importedMethodsOnDemand(String name) {
+    {
+        Collection<MethodDecl> methods = new ArrayList<MethodDecl>();
         for (int i = 0; i < getNumImportDecl(); i++) {
           if (getImportDecl(i).isOnDemand()) {
-            list.addAll(getImportDecl(i).importedMethods(name));
+            methods.addAll(getImportDecl(i).importedMethods(name));
           }
         }
-        return list;
+        return methods;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12")
   public String hej() {
-    ASTNode$State state = state();
     String hej_value = "jaha";
-
     return hej_value;
   }
   /**
    * @attribute inh
    * @aspect LookupFullyQualifiedTypes
-   * @declaredat extendj/java4/frontend/LookupType.jrag:133
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:131
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:131")
   public TypeDecl lookupType(String packageName, String typeName) {
-    ASTNode$State state = state();
-    TypeDecl lookupType_String_String_value = getParent().Define_TypeDecl_lookupType(this, null, packageName, typeName);
-
+    TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
     return lookupType_String_String_value;
   }
   /**
    * @attribute inh
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:336
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:350
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet lookupType(String name) {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:350")
+  public SimpleSet<TypeDecl> lookupType(String name) {
     Object _parameters = name;
-    if (lookupType_String_values == null) lookupType_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(lookupType_String_values.containsKey(_parameters)) {
-      return (SimpleSet)lookupType_String_values.get(_parameters);
-    }
+    if (lookupType_String_computed == null) lookupType_String_computed = new java.util.HashMap(4);
+    if (lookupType_String_values == null) lookupType_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet lookupType_String_value = getParent().Define_SimpleSet_lookupType(this, null, name);
-    if (isFinal && num == state().boundariesCrossed) {
-      lookupType_String_values.put(_parameters, lookupType_String_value);
-    } else {
+    if (lookupType_String_values.containsKey(_parameters) && lookupType_String_computed != null
+        && lookupType_String_computed.containsKey(_parameters)
+        && (lookupType_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || lookupType_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<TypeDecl>) lookupType_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<TypeDecl> lookupType_String_value = getParent().Define_lookupType(this, null, name);
+    if (state().inCircle()) {
+      lookupType_String_values.put(_parameters, lookupType_String_value);
+      lookupType_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      lookupType_String_values.put(_parameters, lookupType_String_value);
+      lookupType_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return lookupType_String_value;
   }
-  protected java.util.Map lookupType_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void lookupType_String_reset() {
+    lookupType_String_computed = new java.util.HashMap(4);
     lookupType_String_values = null;
   }
+  /** @apilevel internal */
+  protected java.util.Map lookupType_String_values;
+  /** @apilevel internal */
+  protected java.util.Map lookupType_String_computed;
   /**
    * @attribute inh
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:184
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:189
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet lookupVariable(String name) {
-    ASTNode$State state = state();
-    SimpleSet lookupVariable_String_value = getParent().Define_SimpleSet_lookupVariable(this, null, name);
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:189")
+  public SimpleSet<Variable> lookupVariable(String name) {
+    SimpleSet<Variable> lookupVariable_String_value = getParent().Define_lookupVariable(this, null, name);
     return lookupVariable_String_value;
   }
   /**
    * @attribute inh
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:226
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:231
    */
-  @ASTNodeAnnotation.Attribute
-  public Collection lookupMethod(String name) {
-    ASTNode$State state = state();
-    Collection lookupMethod_String_value = getParent().Define_Collection_lookupMethod(this, null, name);
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:231")
+  public Collection<MethodDecl> lookupMethod(String name) {
+    Collection<MethodDecl> lookupMethod_String_value = getParent().Define_lookupMethod(this, null, name);
     return lookupMethod_String_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/ClassPath.jrag:81
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105
    * @apilevel internal
    */
-  public CompilationUnit Define_CompilationUnit_compilationUnit(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return this;
-    }
+  public CompilationUnit Define_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return this;
+  }
+  protected boolean canDefine_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:73
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public boolean Define_boolean_isIncOrDec(ASTNode caller, ASTNode child) {
-    if (caller == getTypeDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return false;
-    }
-    else {
-      return getParent().Define_boolean_isIncOrDec(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:292
-   * @apilevel internal
-   */
-  public boolean Define_boolean_handlesException(ASTNode caller, ASTNode child, TypeDecl exceptionType) {
-    if (caller == getImportDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return false;
-    }
-    else if (caller == getTypeDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return false;
-    }
-    else {
-      return getParent().Define_boolean_handlesException(this, caller, exceptionType);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/LookupType.jrag:470
-   * @apilevel internal
-   */
-  public SimpleSet Define_SimpleSet_lookupType(ASTNode caller, ASTNode child, String name) {
-    if (caller == getImportDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return lookupType(name);
-    }
-    else  {
-      int childIndex = this.getIndexOfChild(caller);
-{
-    SimpleSet result = SimpleSet.emptySet;
-    for (Iterator iter = refined_TypeScopePropagation_CompilationUnit_Child_lookupType_String(name).iterator(); iter.hasNext(); ) {
-      TypeDecl typeDecl = (TypeDecl) iter.next();
-      if (typeDecl instanceof ParTypeDecl) {
-        result = result.add(((ParTypeDecl) typeDecl).genericDecl());
-      } else {
-        result = result.add(typeDecl);
-      }
-    }
-    return result;
-  }
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:53
-   * @apilevel internal
-   */
-  public SimpleSet Define_SimpleSet_allImportedTypes(ASTNode caller, ASTNode child, String name) {
-    if (caller == getImportDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return importedTypes(name);
-    }
-    else {
-      return getParent().Define_SimpleSet_allImportedTypes(this, caller, name);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/QualifiedNames.jrag:104
-   * @apilevel internal
-   */
-  public String Define_String_packageName(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return packageName();
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/SyntacticClassification.jrag:96
-   * @apilevel internal
-   */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getImportDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:93
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.PACKAGE_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
-  /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:538
-   * @apilevel internal
-   */
-  public TypeDecl Define_TypeDecl_enclosingType(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return null;
-    }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:570
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
    * @apilevel internal
    */
-  public boolean Define_boolean_isNestedType(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
+  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:299
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return false;
     }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:580
-   * @apilevel internal
-   */
-  public boolean Define_boolean_isMemberType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+    else if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:199
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return false;
     }
     else {
-      return getParent().Define_boolean_isMemberType(this, caller);
+      return getParent().Define_handlesException(this, _callerNode, exceptionType);
     }
   }
+  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:592
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50
    * @apilevel internal
    */
-  public boolean Define_boolean_isLocalClass(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
+  public SimpleSet<TypeDecl> Define_allImportedTypes(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:52
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return importedTypes(name);
+    }
+    else {
+      return getParent().Define_allImportedTypes(this, _callerNode, name);
+    }
+  }
+  protected boolean canDefine_allImportedTypes(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:547
+   * @apilevel internal
+   */
+  public TypeDecl Define_enclosingType(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:30
+   * @apilevel internal
+   */
+  public BodyDecl Define_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:572
+   * @apilevel internal
+   */
+  public boolean Define_isNestedType(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isNestedType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:580
+   * @apilevel internal
+   */
+  public boolean Define_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:583
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return false;
     }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:618
-   * @apilevel internal
-   */
-  public String Define_String_hostPackage(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return packageName();
+    else {
+      return getParent().Define_isMemberType(this, _callerNode);
     }
   }
+  protected boolean canDefine_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:635
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:598
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_hostType(ASTNode caller, ASTNode child) {
-    if (caller == getImportDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public boolean Define_isLocalClass(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isLocalClass(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:633
+   * @apilevel internal
+   */
+  public String Define_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return packageName();
+  }
+  protected boolean canDefine_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:76
+   * @apilevel internal
+   */
+  public TypeDecl Define_hostType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:646
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return null;
     }
     else {
-      return getParent().Define_TypeDecl_hostType(this, caller);
+      return getParent().Define_hostType(this, _callerNode);
     }
   }
+  protected boolean canDefine_hostType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:172
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:66
    * @apilevel internal
    */
-  public SimpleSet Define_SimpleSet_lookupVariable(ASTNode caller, ASTNode child, String name) {
-    if (caller == getTypeDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public boolean Define_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:68
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return false;
+    }
+    else {
+      return getParent().Define_isIncOrDec(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @apilevel internal
+   */
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:486
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return lookupType(name);
+    }
+    else {
+      int childIndex = this.getIndexOfChild(_callerNode);
       {
-    SimpleSet set = importedFields(name);
-    if (!set.isEmpty()) {
-      return set;
+          SimpleSet<TypeDecl> result = emptySet();
+          for (TypeDecl typeDecl : refined_TypeScopePropagation_CompilationUnit_Child_lookupType_String(name)) {
+            if (typeDecl instanceof ParTypeDecl) {
+              result = result.add(((ParTypeDecl) typeDecl).genericDecl());
+            } else {
+              result = result.add(typeDecl);
+            }
+          }
+          return result;
+        }
     }
-    set = importedFieldsOnDemand(name);
-    if (!set.isEmpty()) {
-      return set;
-    }
-    return lookupVariable(name);
   }
-    }
-    else {
-      return getParent().Define_SimpleSet_lookupVariable(this, caller, name);
-    }
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
   }
   /**
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:214
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:108
    * @apilevel internal
    */
-  public Collection Define_Collection_lookupMethod(ASTNode caller, ASTNode child, String name) {
-    if (caller == getTypeDeclListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public String Define_packageName(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return packageName();
+  }
+  protected boolean canDefine_packageName(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95
+   * @apilevel internal
+   */
+  public boolean Define_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @apilevel internal
+   */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:177
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       {
-    Collection list = importedMethods(name);
-    if (!list.isEmpty()) {
-      return list;
-    }
-    list = importedMethodsOnDemand(name);
-    if (!list.isEmpty()) {
-      return list;
-    }
-    return lookupMethod(name);
-  }
+          SimpleSet<Variable> set = importedFields(name);
+          if (!set.isEmpty()) {
+            return set;
+          }
+          set = importedFieldsOnDemand(name);
+          if (!set.isEmpty()) {
+            return set;
+          }
+          return lookupVariable(name);
+        }
     }
     else {
-      return getParent().Define_Collection_lookupMethod(this, caller, name);
+      return getParent().Define_lookupVariable(this, _callerNode, name);
     }
   }
-  /**
-   * @declaredat extendj/java8/frontend/EnclosingLambda.jrag:40
-   * @apilevel internal
-   */
-  public LambdaExpr Define_LambdaExpr_enclosingLambda(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return null;
-    }
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:202
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:52
    * @apilevel internal
    */
-  public boolean Define_boolean_assignmentContext(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return false;
+  public Collection<MethodDecl> Define_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:219
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      {
+          Collection<MethodDecl> methods = importedMethods(name);
+          if (!methods.isEmpty()) {
+            return methods;
+          }
+          methods = importedMethodsOnDemand(name);
+          if (!methods.isEmpty()) {
+            return methods;
+          }
+          return lookupMethod(name);
+        }
+    }
+    else {
+      return getParent().Define_lookupMethod(this, _callerNode, name);
     }
   }
-  /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:203
-   * @apilevel internal
-   */
-  public boolean Define_boolean_invocationContext(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return false;
-    }
+  protected boolean canDefine_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:204
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
    * @apilevel internal
    */
-  public boolean Define_boolean_castContext(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return false;
-    }
+  public String Define_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return "";
+  }
+  protected boolean canDefine_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:205
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:130
    * @apilevel internal
    */
-  public boolean Define_boolean_stringContext(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return false;
-    }
+  public boolean Define_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:206
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
    * @apilevel internal
    */
-  public boolean Define_boolean_numericContext(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return false;
-    }
+  public boolean Define_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:34
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29
    * @apilevel internal
    */
-  public int Define_int_typeVarPosition(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return -1;
-    }
+  public LambdaExpr Define_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:35
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
    * @apilevel internal
    */
-  public boolean Define_boolean_typeVarInMethod(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return false;
-    }
+  public int Define_typeVarPosition(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return -1;
+  }
+  protected boolean canDefine_typeVarPosition(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:51
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
    * @apilevel internal
    */
-  public int Define_int_genericMethodLevel(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return 0;
-    }
+  public boolean Define_typeVarInMethod(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_typeVarInMethod(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30
    * @apilevel internal
    */
+  public int Define_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return 0;
+  }
+  protected boolean canDefine_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
+   * @apilevel internal
+   */
+  public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
+   * @apilevel internal
+   */
+  public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
+   * @apilevel internal
+   */
+  public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_castContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
+   * @apilevel internal
+   */
+  public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
+   * @apilevel internal
+   */
+  public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
   }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
   /**
+   * Collects semantic errors in the AST.
+   * 
+   * <p>Separate error checks are added using individual contribution statements.
    * @attribute coll
-   * @aspect UnusedImports
-   * @declaredat src/jastadd/UnusedImports.jrag:11
+   * @aspect ErrorCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
    */
-  @ASTNodeAnnotation.Attribute
-  public HashSet<String> usedTypes() {
-    if(CompilationUnit_usedTypes_computed) {
-      return CompilationUnit_usedTypes_value;
-    }
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278")
+  public LinkedList<Problem> problems() {
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    CompilationUnit_usedTypes_value = usedTypes_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      CompilationUnit_usedTypes_computed = true;
-    } else {
+    if (CompilationUnit_problems_computed == ASTNode$State.NON_CYCLE || CompilationUnit_problems_computed == state().cycle()) {
+      return CompilationUnit_problems_value;
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return CompilationUnit_usedTypes_value;
+    CompilationUnit_problems_value = problems_compute();
+    if (state().inCircle()) {
+      CompilationUnit_problems_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_problems_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_problems_value;
   }
-  java.util.Collection CompilationUnit_usedTypes_contributors;
-
-  /**
-   * @apilevel internal
-   * @return the contributor set for usedTypes
-   */
-  public java.util.Collection CompilationUnit_usedTypes_contributors() {
-    if(CompilationUnit_usedTypes_contributors == null)
-      CompilationUnit_usedTypes_contributors  = new java.util.LinkedList();
-    return CompilationUnit_usedTypes_contributors;
-  }
-
-  /**
-   * @apilevel internal
-   */
-  private HashSet<String> usedTypes_compute() {
+  /** @apilevel internal */
+  private LinkedList<Problem> problems_compute() {
     ASTNode node = this;
-    while(node.getParent() != null && !(node instanceof CompilationUnit)) {
+    while (node != null && !(node instanceof CompilationUnit)) {
       node = node.getParent();
     }
     CompilationUnit root = (CompilationUnit) node;
-    root.collect_contributors_CompilationUnit_usedTypes();
-    CompilationUnit_usedTypes_value = new HashSet<String>();
-    if(CompilationUnit_usedTypes_contributors != null)
-    for (java.util.Iterator iter = CompilationUnit_usedTypes_contributors.iterator(); iter.hasNext(); ) {
-      ASTNode contributor = (ASTNode) iter.next();
-      contributor.contributeTo_CompilationUnit_CompilationUnit_usedTypes(CompilationUnit_usedTypes_value);
+    root.survey_CompilationUnit_problems();
+    LinkedList<Problem> _computedValue = new LinkedList<Problem>();
+    if (root.contributorMap_CompilationUnit_problems.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_problems.get(this)) {
+        contributor.contributeTo_CompilationUnit_problems(_computedValue);
+      }
     }
-    // TODO: disabled temporarily since collections may not be cached
-    //CompilationUnit_usedTypes_contributors = null;
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_problems_computed = null;
+
+  /** @apilevel internal */
+  protected LinkedList<Problem> CompilationUnit_problems_value;
+
+  /**
+   * @attribute coll
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:11
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:11")
+  public HashSet<String> usedTypes() {
+    ASTNode$State state = state();
+    if (CompilationUnit_usedTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypes_computed == state().cycle()) {
+      return CompilationUnit_usedTypes_value;
+    }
+    CompilationUnit_usedTypes_value = usedTypes_compute();
+    if (state().inCircle()) {
+      CompilationUnit_usedTypes_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_usedTypes_computed = ASTNode$State.NON_CYCLE;
+    
+    }
     return CompilationUnit_usedTypes_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean CompilationUnit_usedTypes_computed = false;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
+  private HashSet<String> usedTypes_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_usedTypes();
+    HashSet<String> _computedValue = new HashSet<String>();
+    if (root.contributorMap_CompilationUnit_usedTypes.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_usedTypes.get(this)) {
+        contributor.contributeTo_CompilationUnit_usedTypes(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_usedTypes_computed = null;
+
+  /** @apilevel internal */
   protected HashSet<String> CompilationUnit_usedTypes_value;
-  /**
-   * @apilevel internal
-   */
-  private void CompilationUnit_usedTypes_reset() {
-    CompilationUnit_usedTypes_computed = false;
-    CompilationUnit_usedTypes_value = null;
+
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:66
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

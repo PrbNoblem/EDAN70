@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/ConstructorReference.ast:3
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:3
  * @production ClassReference : {@link ConstructorReference} ::= <span class="component">TypeArgument:{@link Access}*</span>;
 
  */
 public class ClassReference extends ConstructorReference implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat extendj/java8/frontend/PrettyPrint.jadd:69
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:42
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getTypeAccess());
@@ -46,18 +47,6 @@ public class ClassReference extends ConstructorReference implements Cloneable {
       out.print(">");
     }
     out.print("new");
-  }
-  /**
-   * @aspect Java8NameCheck
-   * @declaredat extendj/java8/frontend/NameCheck.jrag:530
-   */
-  public void nameCheck() {
-    for (int i = 0; i < getNumTypeArgument(); i++) {
-      if (getTypeArgument(i) instanceof AbstractWildcard) {
-        error("Wildcard not allowed in constructor reference type argument lists");
-        break;
-      }
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -83,65 +72,53 @@ public class ClassReference extends ConstructorReference implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    potentiallyCompatible_TypeDecl_BodyDecl_reset();
     targetConstructor_FunctionDescriptor_reset();
     syntheticInstanceExpr_FunctionDescriptor_reset();
     congruentTo_FunctionDescriptor_reset();
     potentiallyApplicableConstructors_FunctionDescriptor_reset();
     exactCompileTimeDeclaration_reset();
     isExact_reset();
-    potentiallyCompatible_TypeDecl_BodyDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:46
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:52
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public ClassReference clone() throws CloneNotSupportedException {
     ClassReference node = (ClassReference) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:65
+  /** @apilevel internal 
+   * @declaredat ASTNode:49
    */
   public ClassReference copy() {
     try {
       ClassReference node = (ClassReference) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -155,8 +132,9 @@ public class ClassReference extends ConstructorReference implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:84
+   * @declaredat ASTNode:68
    */
+  @Deprecated
   public ClassReference fullCopy() {
     return treeCopyNoTransform();
   }
@@ -165,14 +143,14 @@ public class ClassReference extends ConstructorReference implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:93
+   * @declaredat ASTNode:78
    */
   public ClassReference treeCopyNoTransform() {
     ClassReference tree = (ClassReference) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -186,15 +164,23 @@ public class ClassReference extends ConstructorReference implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:113
+   * @declaredat ASTNode:98
    */
   public ClassReference treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ClassReference tree = (ClassReference) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:120
+  /** @apilevel internal 
+   * @declaredat ASTNode:112
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -273,11 +259,10 @@ public class ClassReference extends ConstructorReference implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -301,7 +286,6 @@ public class ClassReference extends ConstructorReference implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -312,6 +296,13 @@ public class ClassReference extends ConstructorReference implements Cloneable {
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -330,83 +321,143 @@ public class ClassReference extends ConstructorReference implements Cloneable {
   public List<Access> getTypeArgumentsNoTransform() {
     return getTypeArgumentListNoTransform();
   }
-  protected java.util.Map targetConstructor_FunctionDescriptor_values;
+  /** @apilevel internal */
+  private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
+    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    potentiallyCompatible_TypeDecl_BodyDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
+  public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
+    java.util.List _parameters = new java.util.ArrayList(2);
+    _parameters.add(type);
+    _parameters.add(candidateDecl);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
+        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
+        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
+    }
+    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
+    if (state().inCircle()) {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return potentiallyCompatible_TypeDecl_BodyDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
+      if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
+        return true;
+      } else if (!super.potentiallyCompatible(type, candidateDecl)) {
+        return false;
+      }
+  
+      InterfaceDecl iDecl = (InterfaceDecl) type;
+      FunctionDescriptor f = iDecl.functionDescriptor();
+  
+      boolean foundMethod = false;
+      for (ConstructorDecl decl : potentiallyApplicableConstructors(f)) {
+        if (f.method.arity() == decl.arity()) {
+          foundMethod = true;
+          break;
+        }
+      }
+      return foundMethod;
+    }
+  /** @apilevel internal */
   private void targetConstructor_FunctionDescriptor_reset() {
+    targetConstructor_FunctionDescriptor_computed = new java.util.HashMap(4);
     targetConstructor_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map targetConstructor_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map targetConstructor_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:31
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:31")
   public ConstructorDecl targetConstructor(FunctionDescriptor f) {
     Object _parameters = f;
-    if (targetConstructor_FunctionDescriptor_values == null) targetConstructor_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(targetConstructor_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (ConstructorDecl)targetConstructor_FunctionDescriptor_values.get(_parameters);
-    }
+    if (targetConstructor_FunctionDescriptor_computed == null) targetConstructor_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (targetConstructor_FunctionDescriptor_values == null) targetConstructor_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    ConstructorDecl targetConstructor_FunctionDescriptor_value = syntheticInstanceExpr(f).decl();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetConstructor_FunctionDescriptor_values.put(_parameters, targetConstructor_FunctionDescriptor_value);
-    } else {
+    if (targetConstructor_FunctionDescriptor_values.containsKey(_parameters) && targetConstructor_FunctionDescriptor_computed != null
+        && targetConstructor_FunctionDescriptor_computed.containsKey(_parameters)
+        && (targetConstructor_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || targetConstructor_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (ConstructorDecl) targetConstructor_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    ConstructorDecl targetConstructor_FunctionDescriptor_value = syntheticInstanceExpr(f).decl();
+    if (state().inCircle()) {
+      targetConstructor_FunctionDescriptor_values.put(_parameters, targetConstructor_FunctionDescriptor_value);
+      targetConstructor_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      targetConstructor_FunctionDescriptor_values.put(_parameters, targetConstructor_FunctionDescriptor_value);
+      targetConstructor_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return targetConstructor_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected java.util.Map syntheticInstanceExpr_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
-  protected List syntheticInstanceExpr_FunctionDescriptor_list;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void syntheticInstanceExpr_FunctionDescriptor_reset() {
     syntheticInstanceExpr_FunctionDescriptor_values = null;
     syntheticInstanceExpr_FunctionDescriptor_list = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected List syntheticInstanceExpr_FunctionDescriptor_list;
+  /** @apilevel internal */
+  protected java.util.Map syntheticInstanceExpr_FunctionDescriptor_values;
+
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:34
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:34")
   public ClassInstanceExpr syntheticInstanceExpr(FunctionDescriptor f) {
     Object _parameters = f;
-    if (syntheticInstanceExpr_FunctionDescriptor_values == null) syntheticInstanceExpr_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(syntheticInstanceExpr_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (ClassInstanceExpr)syntheticInstanceExpr_FunctionDescriptor_values.get(_parameters);
-    }
+    if (syntheticInstanceExpr_FunctionDescriptor_values == null) syntheticInstanceExpr_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    if (syntheticInstanceExpr_FunctionDescriptor_values.containsKey(_parameters)) {
+      return (ClassInstanceExpr) syntheticInstanceExpr_FunctionDescriptor_values.get(_parameters);
+    }
+    state().enterLazyAttribute();
     ClassInstanceExpr syntheticInstanceExpr_FunctionDescriptor_value = syntheticInstanceExpr_compute(f);
-    if(syntheticInstanceExpr_FunctionDescriptor_list == null) {
+    if (syntheticInstanceExpr_FunctionDescriptor_list == null) {
       syntheticInstanceExpr_FunctionDescriptor_list = new List();
-      syntheticInstanceExpr_FunctionDescriptor_list.is$Final = true;
       syntheticInstanceExpr_FunctionDescriptor_list.setParent(this);
     }
     syntheticInstanceExpr_FunctionDescriptor_list.add(syntheticInstanceExpr_FunctionDescriptor_value);
-    if(syntheticInstanceExpr_FunctionDescriptor_value != null) {
-      syntheticInstanceExpr_FunctionDescriptor_value = (ClassInstanceExpr) syntheticInstanceExpr_FunctionDescriptor_list.getChild(syntheticInstanceExpr_FunctionDescriptor_list.numChildren-1);
-      syntheticInstanceExpr_FunctionDescriptor_value.is$Final = true;
+    if (syntheticInstanceExpr_FunctionDescriptor_value != null) {
+      syntheticInstanceExpr_FunctionDescriptor_value = (ClassInstanceExpr) syntheticInstanceExpr_FunctionDescriptor_list.getChild(syntheticInstanceExpr_FunctionDescriptor_list.numChildren - 1);
     }
-    if (true) {
-      syntheticInstanceExpr_FunctionDescriptor_values.put(_parameters, syntheticInstanceExpr_FunctionDescriptor_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    syntheticInstanceExpr_FunctionDescriptor_values.put(_parameters, syntheticInstanceExpr_FunctionDescriptor_value);
+    state().leaveLazyAttribute();
     return syntheticInstanceExpr_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private ClassInstanceExpr syntheticInstanceExpr_compute(FunctionDescriptor f) {
       List<Expr> arguments = new List<Expr>();
       for (int i = 0; i < f.method.getNumParameter(); i++) {
@@ -418,7 +469,7 @@ public class ClassReference extends ConstructorReference implements Cloneable {
       if (hasTypeArgument()) {
         instanceExpr = new ParConstructorReferenceAccess(
             (Access) getTypeAccess().treeCopyNoTransform(), arguments,
-            new Opt(), (List<Access>)getTypeArgumentList().treeCopyNoTransform(), f);
+            new Opt(), (List<Access>) getTypeArgumentList().treeCopyNoTransform(), f);
       } else {
         // Must check for raw reference type, and in that case infer using diamond (JLS 15.13.1)
         boolean checkDiamond = true;
@@ -427,7 +478,7 @@ public class ClassReference extends ConstructorReference implements Cloneable {
           checkDiamond = false;
         }
         if (getTypeAccess().type().isRawType() && checkDiamond) {
-          DiamondAccess diamond = new DiamondAccess((Access)getTypeAccess().treeCopyNoTransform());
+          DiamondAccess diamond = new DiamondAccess((Access) getTypeAccess().treeCopyNoTransform());
           instanceExpr = new ConstructorReferenceAccess(diamond, arguments, f);
         } else {
           instanceExpr = new ConstructorReferenceAccess(
@@ -436,37 +487,45 @@ public class ClassReference extends ConstructorReference implements Cloneable {
       }
       return instanceExpr;
     }
-  protected java.util.Map congruentTo_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void congruentTo_FunctionDescriptor_reset() {
+    congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
     congruentTo_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
-    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(congruentTo_FunctionDescriptor_values.containsKey(_parameters)) {
-      return ((Boolean)congruentTo_FunctionDescriptor_values.get(_parameters)).booleanValue();
-    }
+    if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      congruentTo_FunctionDescriptor_values.put(_parameters, Boolean.valueOf(congruentTo_FunctionDescriptor_value));
-    } else {
+    if (congruentTo_FunctionDescriptor_values.containsKey(_parameters) && congruentTo_FunctionDescriptor_computed != null
+        && congruentTo_FunctionDescriptor_computed.containsKey(_parameters)
+        && (congruentTo_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || congruentTo_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) congruentTo_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
+    if (state().inCircle()) {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return congruentTo_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean congruentTo_compute(FunctionDescriptor f) {
       ConstructorDecl decl = targetConstructor(f);
       if (unknownConstructor() == decl) {
@@ -480,37 +539,45 @@ public class ClassReference extends ConstructorReference implements Cloneable {
       }
       return true;
     }
-  protected java.util.Map potentiallyApplicableConstructors_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void potentiallyApplicableConstructors_FunctionDescriptor_reset() {
+    potentiallyApplicableConstructors_FunctionDescriptor_computed = new java.util.HashMap(4);
     potentiallyApplicableConstructors_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map potentiallyApplicableConstructors_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyApplicableConstructors_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:100
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:100")
   public ArrayList<ConstructorDecl> potentiallyApplicableConstructors(FunctionDescriptor f) {
     Object _parameters = f;
-    if (potentiallyApplicableConstructors_FunctionDescriptor_values == null) potentiallyApplicableConstructors_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyApplicableConstructors_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (ArrayList<ConstructorDecl>)potentiallyApplicableConstructors_FunctionDescriptor_values.get(_parameters);
-    }
+    if (potentiallyApplicableConstructors_FunctionDescriptor_computed == null) potentiallyApplicableConstructors_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (potentiallyApplicableConstructors_FunctionDescriptor_values == null) potentiallyApplicableConstructors_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    ArrayList<ConstructorDecl> potentiallyApplicableConstructors_FunctionDescriptor_value = potentiallyApplicableConstructors_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyApplicableConstructors_FunctionDescriptor_values.put(_parameters, potentiallyApplicableConstructors_FunctionDescriptor_value);
-    } else {
+    if (potentiallyApplicableConstructors_FunctionDescriptor_values.containsKey(_parameters) && potentiallyApplicableConstructors_FunctionDescriptor_computed != null
+        && potentiallyApplicableConstructors_FunctionDescriptor_computed.containsKey(_parameters)
+        && (potentiallyApplicableConstructors_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyApplicableConstructors_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (ArrayList<ConstructorDecl>) potentiallyApplicableConstructors_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    ArrayList<ConstructorDecl> potentiallyApplicableConstructors_FunctionDescriptor_value = potentiallyApplicableConstructors_compute(f);
+    if (state().inCircle()) {
+      potentiallyApplicableConstructors_FunctionDescriptor_values.put(_parameters, potentiallyApplicableConstructors_FunctionDescriptor_value);
+      potentiallyApplicableConstructors_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyApplicableConstructors_FunctionDescriptor_values.put(_parameters, potentiallyApplicableConstructors_FunctionDescriptor_value);
+      potentiallyApplicableConstructors_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return potentiallyApplicableConstructors_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private ArrayList<ConstructorDecl> potentiallyApplicableConstructors_compute(FunctionDescriptor f) {
       TypeDecl classType = syntheticInstanceExpr(f).type();
       Collection<ConstructorDecl> col = classType.constructors();
@@ -535,43 +602,40 @@ public class ClassReference extends ConstructorReference implements Cloneable {
       }
       return applicable;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean exactCompileTimeDeclaration_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected ConstructorDecl exactCompileTimeDeclaration_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void exactCompileTimeDeclaration_reset() {
-    exactCompileTimeDeclaration_computed = false;
+    exactCompileTimeDeclaration_computed = null;
     exactCompileTimeDeclaration_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle exactCompileTimeDeclaration_computed = null;
+
+  /** @apilevel internal */
+  protected ConstructorDecl exactCompileTimeDeclaration_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:129
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:129")
   public ConstructorDecl exactCompileTimeDeclaration() {
-    if(exactCompileTimeDeclaration_computed) {
+    ASTNode$State state = state();
+    if (exactCompileTimeDeclaration_computed == ASTNode$State.NON_CYCLE || exactCompileTimeDeclaration_computed == state().cycle()) {
       return exactCompileTimeDeclaration_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     exactCompileTimeDeclaration_value = exactCompileTimeDeclaration_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      exactCompileTimeDeclaration_computed = true;
+    if (state().inCircle()) {
+      exactCompileTimeDeclaration_computed = state().cycle();
+    
     } else {
+      exactCompileTimeDeclaration_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return exactCompileTimeDeclaration_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private ConstructorDecl exactCompileTimeDeclaration_compute() {
       if (getTypeAccess().type().isRawType()) {
         if (getTypeAccess().type().hostType() == null || getTypeAccess().type().isStatic()
@@ -607,108 +671,97 @@ public class ClassReference extends ConstructorReference implements Cloneable {
       }
       return latestDecl;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isExact_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isExact_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isExact_reset() {
-    isExact_computed = false;
+    isExact_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isExact_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isExact_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstructorReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127")
   public boolean isExact() {
-    if(isExact_computed) {
+    ASTNode$State state = state();
+    if (isExact_computed == ASTNode$State.NON_CYCLE || isExact_computed == state().cycle()) {
       return isExact_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isExact_value = exactCompileTimeDeclaration() != unknownConstructor();
-    if (isFinal && num == state().boundariesCrossed) {
-      isExact_computed = true;
+    if (state().inCircle()) {
+      isExact_computed = state().cycle();
+    
     } else {
+      isExact_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isExact_value;
   }
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Java8NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:522
    */
-  private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
-    potentiallyCompatible_TypeDecl_BodyDecl_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
-    java.util.List _parameters = new java.util.ArrayList(2);
-    _parameters.add(type);
-    _parameters.add(candidateDecl);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters)) {
-      return ((Boolean)potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, Boolean.valueOf(potentiallyCompatible_TypeDecl_BodyDecl_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return potentiallyCompatible_TypeDecl_BodyDecl_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
-      if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
-        return true;
-      } else if (!super.potentiallyCompatible(type, candidateDecl)) {
-        return false;
-      }
-  
-      InterfaceDecl iDecl = (InterfaceDecl) type;
-      FunctionDescriptor f = iDecl.functionDescriptor();
-  
-      boolean foundMethod = false;
-      for (ConstructorDecl decl : potentiallyApplicableConstructors(f)) {
-        if (f.method.arity() == decl.arity()) {
-          foundMethod = true;
-          break;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:522")
+  public Collection<Problem> nameProblems() {
+    {
+        for (int i = 0; i < getNumTypeArgument(); i++) {
+          if (getTypeArgument(i) instanceof AbstractWildcard) {
+            return Collections.singletonList(
+                error("Wildcard not allowed in constructor reference type argument lists"));
+          }
         }
+        return Collections.emptyList();
       }
-      return foundMethod;
-    }
+  }
   /**
-   * @declaredat extendj/java8/frontend/ConstructorReference.jrag:65
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeArgumentListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeArgumentListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:65
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
     else {
-      return super.Define_NameType_nameType(caller, child);
+      return super.Define_nameType(_callerNode, _childNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:520
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

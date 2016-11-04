@@ -1,24 +1,25 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -26,19 +27,19 @@ import java.io.DataInputStream;
  * regular, non-NTA, blocks. This is required to avoid an endlessly
  * recursive AST.
  * @ast node
- * @declaredat extendj/java4/grammar/NTAFinally.ast:6
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/NTAFinally.ast:6
  * @production NTAFinallyBlock : {@link Block};
 
  */
 public class NTAFinallyBlock extends Block implements Cloneable {
   /**
    * @aspect NTAFinally
-   * @declaredat extendj/java4/frontend/NTAFinally.jrag:91
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NTAFinally.jrag:82
    */
   private FinallyHost origin;
   /**
    * @aspect NTAFinally
-   * @declaredat extendj/java4/frontend/NTAFinally.jrag:93
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NTAFinally.jrag:84
    */
   public NTAFinallyBlock(FinallyHost finallyHost) {
     this.origin = finallyHost;
@@ -66,58 +67,46 @@ public class NTAFinallyBlock extends Block implements Cloneable {
   public NTAFinallyBlock(List<Stmt> p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public NTAFinallyBlock clone() throws CloneNotSupportedException {
     NTAFinallyBlock node = (NTAFinallyBlock) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public NTAFinallyBlock copy() {
     try {
       NTAFinallyBlock node = (NTAFinallyBlock) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -131,8 +120,9 @@ public class NTAFinallyBlock extends Block implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public NTAFinallyBlock fullCopy() {
     return treeCopyNoTransform();
   }
@@ -141,14 +131,14 @@ public class NTAFinallyBlock extends Block implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public NTAFinallyBlock treeCopyNoTransform() {
     NTAFinallyBlock tree = (NTAFinallyBlock) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -162,15 +152,23 @@ public class NTAFinallyBlock extends Block implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public NTAFinallyBlock treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    NTAFinallyBlock tree = (NTAFinallyBlock) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -223,11 +221,10 @@ public class NTAFinallyBlock extends Block implements Cloneable {
    * @apilevel high-level
    */
   public void addStmt(Stmt node) {
-    List<Stmt> list = (parent == null || state == null) ? getStmtListNoTransform() : getStmtList();
+    List<Stmt> list = (parent == null) ? getStmtListNoTransform() : getStmtList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addStmtNoTransform(Stmt node) {
     List<Stmt> list = getStmtListNoTransform();
@@ -251,7 +248,6 @@ public class NTAFinallyBlock extends Block implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Stmt")
   public List<Stmt> getStmtList() {
     List<Stmt> list = (List<Stmt>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -262,6 +258,13 @@ public class NTAFinallyBlock extends Block implements Cloneable {
    */
   public List<Stmt> getStmtListNoTransform() {
     return (List<Stmt>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Stmt list without
+   * triggering rewrites.
+   */
+  public Stmt getStmtNoTransform(int i) {
+    return (Stmt) getStmtListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Stmt list.
@@ -281,19 +284,22 @@ public class NTAFinallyBlock extends Block implements Cloneable {
     return getStmtListNoTransform();
   }
   /**
-   * @declaredat extendj/java4/frontend/BranchTarget.jrag:282
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:273
    * @apilevel internal
    */
-  public FinallyHost Define_FinallyHost_enclosingFinally(ASTNode caller, ASTNode child, Stmt branch) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return origin.enclosingFinally(branch);
-    }
+  public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return origin.enclosingFinally(branch);
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

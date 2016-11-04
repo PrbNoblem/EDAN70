@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:192
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:194
  * @production BranchTargetStmt : {@link Stmt};
 
  */
 public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @aspect BranchTarget
-   * @declaredat extendj/java4/frontend/BranchTarget.jrag:108
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:112
    */
   public void collectBranches(Collection<Stmt> c) {
     c.addAll(escapedBranches());
@@ -50,51 +51,40 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
    */
   public void init$Children() {
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:15
+  /** @apilevel low-level 
+   * @declaredat ASTNode:13
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:21
+   * @declaredat ASTNode:19
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:27
+  /** @apilevel internal 
+   * @declaredat ASTNode:23
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    reachableBreak_reset();
+    reachableContinue_reset();
     targetBranches_reset();
     escapedBranches_reset();
     branches_reset();
     targetContinues_reset();
     targetBreaks_reset();
-    reachableBreak_reset();
-    reachableContinue_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:34
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:46
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public BranchTargetStmt clone() throws CloneNotSupportedException {
     BranchTargetStmt node = (BranchTargetStmt) super.clone();
@@ -106,15 +96,16 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:63
+   * @declaredat ASTNode:49
    */
+  @Deprecated
   public abstract BranchTargetStmt fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:70
+   * @declaredat ASTNode:57
    */
   public abstract BranchTargetStmt treeCopyNoTransform();
   /**
@@ -123,46 +114,125 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:78
+   * @declaredat ASTNode:65
    */
   public abstract BranchTargetStmt treeCopy();
+  /** @apilevel internal */
+  private void reachableBreak_reset() {
+    reachableBreak_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle reachableBreak_computed = null;
+
+  /** @apilevel internal */
+  protected boolean reachableBreak_value;
+
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect UnreachableStatements
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:85
    */
-  protected boolean targetBranches_computed = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:85")
+  public boolean reachableBreak() {
+    ASTNode$State state = state();
+    if (reachableBreak_computed == ASTNode$State.NON_CYCLE || reachableBreak_computed == state().cycle()) {
+      return reachableBreak_value;
+    }
+    reachableBreak_value = reachableBreak_compute();
+    if (state().inCircle()) {
+      reachableBreak_computed = state().cycle();
+    
+    } else {
+      reachableBreak_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return reachableBreak_value;
+  }
+  /** @apilevel internal */
+  private boolean reachableBreak_compute() {
+      for (BreakStmt stmt : targetBreaks()) {
+        if (stmt.reachable()) {
+          return true;
+        }
+      }
+      return false;
+    }
+  /** @apilevel internal */
+  private void reachableContinue_reset() {
+    reachableContinue_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle reachableContinue_computed = null;
+
+  /** @apilevel internal */
+  protected boolean reachableContinue_value;
+
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect UnreachableStatements
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:140
    */
-  protected Collection<Stmt> targetBranches_value;
-  /**
-   * @apilevel internal
-   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:140")
+  public boolean reachableContinue() {
+    ASTNode$State state = state();
+    if (reachableContinue_computed == ASTNode$State.NON_CYCLE || reachableContinue_computed == state().cycle()) {
+      return reachableContinue_value;
+    }
+    reachableContinue_value = reachableContinue_compute();
+    if (state().inCircle()) {
+      reachableContinue_computed = state().cycle();
+    
+    } else {
+      reachableContinue_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return reachableContinue_value;
+  }
+  /** @apilevel internal */
+  private boolean reachableContinue_compute() {
+      for (Stmt stmt : targetContinues()) {
+        if (stmt.reachable()) {
+          return true;
+        }
+      }
+      return false;
+    }
+  /** @apilevel internal */
   private void targetBranches_reset() {
-    targetBranches_computed = false;
+    targetBranches_computed = null;
     targetBranches_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle targetBranches_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<Stmt> targetBranches_value;
+
+  /**
+   * @attribute syn
+   * @aspect BranchTarget
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:88
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:88")
   public Collection<Stmt> targetBranches() {
-    if(targetBranches_computed) {
+    ASTNode$State state = state();
+    if (targetBranches_computed == ASTNode$State.NON_CYCLE || targetBranches_computed == state().cycle()) {
       return targetBranches_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     targetBranches_value = targetBranches_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetBranches_computed = true;
+    if (state().inCircle()) {
+      targetBranches_computed = state().cycle();
+    
     } else {
+      targetBranches_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return targetBranches_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Collection<Stmt> targetBranches_compute() {
       Collection<Stmt> set = new HashSet<Stmt>();
       for (Stmt branch : branches()) {
@@ -172,43 +242,40 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
       }
       return set;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean escapedBranches_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Collection<Stmt> escapedBranches_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void escapedBranches_reset() {
-    escapedBranches_computed = false;
+    escapedBranches_computed = null;
     escapedBranches_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle escapedBranches_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<Stmt> escapedBranches_value;
+
+  /**
+   * @attribute syn
+   * @aspect BranchTarget
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:90
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:90")
   public Collection<Stmt> escapedBranches() {
-    if(escapedBranches_computed) {
+    ASTNode$State state = state();
+    if (escapedBranches_computed == ASTNode$State.NON_CYCLE || escapedBranches_computed == state().cycle()) {
       return escapedBranches_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     escapedBranches_value = escapedBranches_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      escapedBranches_computed = true;
+    if (state().inCircle()) {
+      escapedBranches_computed = state().cycle();
+    
     } else {
+      escapedBranches_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return escapedBranches_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Collection<Stmt> escapedBranches_compute() {
       Collection<Stmt> set = new HashSet<Stmt>();
       for (Stmt branch : branches()) {
@@ -220,258 +287,168 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
       }
       return set;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean branches_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Collection<Stmt> branches_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void branches_reset() {
-    branches_computed = false;
+    branches_computed = null;
     branches_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle branches_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<Stmt> branches_value;
+
+  /**
+   * @attribute syn
+   * @aspect BranchTarget
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:92
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:92")
   public Collection<Stmt> branches() {
-    if(branches_computed) {
+    ASTNode$State state = state();
+    if (branches_computed == ASTNode$State.NON_CYCLE || branches_computed == state().cycle()) {
       return branches_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     branches_value = branches_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      branches_computed = true;
+    if (state().inCircle()) {
+      branches_computed = state().cycle();
+    
     } else {
+      branches_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return branches_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Collection<Stmt> branches_compute() {
       Collection<Stmt> set = new HashSet<Stmt>();
       super.collectBranches(set);
       return set;
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return <code>true</code> if this statement is a potential
+   * branch target of the given branch statement.
+   * @attribute syn
+   * @aspect BranchTarget
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215")
   public boolean potentialTargetOf(Stmt branch) {
-    ASTNode$State state = state();
     boolean potentialTargetOf_Stmt_value = false;
-
     return potentialTargetOf_Stmt_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean targetContinues_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Collection<Stmt> targetContinues_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void targetContinues_reset() {
-    targetContinues_computed = false;
+    targetContinues_computed = null;
     targetContinues_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Collection<Stmt> targetContinues() {
-    if(targetContinues_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle targetContinues_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<ContinueStmt> targetContinues_value;
+
+  /**
+   * @attribute syn
+   * @aspect BranchTarget
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:84
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:84")
+  public Collection<ContinueStmt> targetContinues() {
+    ASTNode$State state = state();
+    if (targetContinues_computed == ASTNode$State.NON_CYCLE || targetContinues_computed == state().cycle()) {
       return targetContinues_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     targetContinues_value = targetContinues_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetContinues_computed = true;
+    if (state().inCircle()) {
+      targetContinues_computed = state().cycle();
+    
     } else {
+      targetContinues_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return targetContinues_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private Collection<Stmt> targetContinues_compute() {
-      HashSet<Stmt> set = new HashSet<Stmt>();
+  /** @apilevel internal */
+  private Collection<ContinueStmt> targetContinues_compute() {
+      Collection<ContinueStmt> set = new HashSet<ContinueStmt>();
       for (Stmt branch : targetBranches()) {
         if (branch instanceof ContinueStmt) {
-          set.add(branch);
+          set.add((ContinueStmt) branch);
         }
       }
       if (getParent() instanceof LabeledStmt) {
         for (Stmt branch : ((LabeledStmt) getParent()).targetBranches()) {
           if (branch instanceof ContinueStmt) {
-            set.add(branch);
+            set.add((ContinueStmt) branch);
           }
         }
       }
       return set;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean targetBreaks_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Collection<Stmt> targetBreaks_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void targetBreaks_reset() {
-    targetBreaks_computed = false;
+    targetBreaks_computed = null;
     targetBreaks_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Collection<Stmt> targetBreaks() {
-    if(targetBreaks_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle targetBreaks_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<BreakStmt> targetBreaks_value;
+
+  /**
+   * @attribute syn
+   * @aspect BranchTarget
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:86
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:86")
+  public Collection<BreakStmt> targetBreaks() {
+    ASTNode$State state = state();
+    if (targetBreaks_computed == ASTNode$State.NON_CYCLE || targetBreaks_computed == state().cycle()) {
       return targetBreaks_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     targetBreaks_value = targetBreaks_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetBreaks_computed = true;
+    if (state().inCircle()) {
+      targetBreaks_computed = state().cycle();
+    
     } else {
+      targetBreaks_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return targetBreaks_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private Collection<Stmt> targetBreaks_compute() {
-      HashSet<Stmt> set = new HashSet<Stmt>();
+  /** @apilevel internal */
+  private Collection<BreakStmt> targetBreaks_compute() {
+      Collection<BreakStmt> set = new HashSet<BreakStmt>();
       for (Stmt branch : targetBranches()) {
         if (branch instanceof BreakStmt) {
-          set.add(branch);
+          set.add((BreakStmt) branch);
         }
       }
       return set;
     }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:273
    * @apilevel internal
    */
-  protected boolean reachableBreak_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean reachableBreak_value;
-  /**
-   * @apilevel internal
-   */
-  private void reachableBreak_reset() {
-    reachableBreak_computed = false;
+  public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return potentialTargetOf(branch) ? null : enclosingFinally(branch);
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean reachableBreak() {
-    if(reachableBreak_computed) {
-      return reachableBreak_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    reachableBreak_value = reachableBreak_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      reachableBreak_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return reachableBreak_value;
+  protected boolean canDefine_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    return true;
   }
-  /**
-   * @apilevel internal
-   */
-  private boolean reachableBreak_compute() {
-      for (Iterator iter = targetBreaks().iterator(); iter.hasNext(); ) {
-        BreakStmt stmt = (BreakStmt) iter.next();
-        if (stmt.reachable()) {
-          return true;
-        }
-      }
-      return false;
-    }
-  /**
-   * @apilevel internal
-   */
-  protected boolean reachableContinue_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean reachableContinue_value;
-  /**
-   * @apilevel internal
-   */
-  private void reachableContinue_reset() {
-    reachableContinue_computed = false;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean reachableContinue() {
-    if(reachableContinue_computed) {
-      return reachableContinue_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    reachableContinue_value = reachableContinue_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      reachableContinue_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return reachableContinue_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private boolean reachableContinue_compute() {
-      for (Iterator iter = targetContinues().iterator(); iter.hasNext(); ) {
-        Stmt stmt = (Stmt) iter.next();
-        if (stmt.reachable()) {
-          return true;
-        }
-      }
-      return false;
-    }
-  /**
-   * @declaredat extendj/java4/frontend/BranchTarget.jrag:275
-   * @apilevel internal
-   */
-  public FinallyHost Define_FinallyHost_enclosingFinally(ASTNode caller, ASTNode child, Stmt branch) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return potentialTargetOf(branch) ? null : enclosingFinally(branch);
-    }
-  }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

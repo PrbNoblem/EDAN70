@@ -1,41 +1,42 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/MethodReference.ast:8
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:8
  * @production ParMethodReferenceAccess : {@link ParMethodAccess};
 
  */
 public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:386
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:392
    */
   private FunctionDescriptor targetDescriptor;
   /**
    * @aspect Synthetics
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:387
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:393
    */
   public ParMethodReferenceAccess(String name,
       List<Expr> args, List<Access> typeArgs, FunctionDescriptor f) {
@@ -76,59 +77,47 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
     setChild(p1, 0);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:28
+  /** @apilevel low-level 
+   * @declaredat ASTNode:26
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:34
+   * @declaredat ASTNode:32
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     assignConvertedType_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:47
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:53
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:59
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public ParMethodReferenceAccess clone() throws CloneNotSupportedException {
     ParMethodReferenceAccess node = (ParMethodReferenceAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:66
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public ParMethodReferenceAccess copy() {
     try {
       ParMethodReferenceAccess node = (ParMethodReferenceAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -142,8 +131,9 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:69
    */
+  @Deprecated
   public ParMethodReferenceAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -152,14 +142,14 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:94
+   * @declaredat ASTNode:79
    */
   public ParMethodReferenceAccess treeCopyNoTransform() {
     ParMethodReferenceAccess tree = (ParMethodReferenceAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -173,18 +163,26 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:114
+   * @declaredat ASTNode:99
    */
   public ParMethodReferenceAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ParMethodReferenceAccess tree = (ParMethodReferenceAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:121
+  /** @apilevel internal 
+   * @declaredat ASTNode:113
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ParMethodReferenceAccess)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((ParMethodReferenceAccess) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme ID.
@@ -200,7 +198,7 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -263,11 +261,10 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -291,7 +288,6 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -302,6 +298,13 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -368,11 +371,10 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -396,7 +398,6 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -407,6 +408,13 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -425,44 +433,45 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
   public List<Access> getTypeArgumentsNoTransform() {
     return getTypeArgumentListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean assignConvertedType_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl assignConvertedType_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void assignConvertedType_reset() {
-    assignConvertedType_computed = false;
+    assignConvertedType_computed = null;
     assignConvertedType_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle assignConvertedType_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl assignConvertedType_value;
+
+  /**
+   * @attribute syn
+   * @aspect TargetType
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:176
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:176")
   public TypeDecl assignConvertedType() {
-    if(assignConvertedType_computed) {
+    ASTNode$State state = state();
+    if (assignConvertedType_computed == ASTNode$State.NON_CYCLE || assignConvertedType_computed == state().cycle()) {
       return assignConvertedType_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     assignConvertedType_value = targetDescriptor.method.type();
-    if (isFinal && num == state().boundariesCrossed) {
-      assignConvertedType_computed = true;
+    if (state().inCircle()) {
+      assignConvertedType_computed = state().cycle();
+    
     } else {
+      assignConvertedType_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return assignConvertedType_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

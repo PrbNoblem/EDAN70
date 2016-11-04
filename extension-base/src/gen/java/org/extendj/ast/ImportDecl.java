@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:9
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:9
  * @production ImportDecl : {@link ASTNode} ::= <span class="component">{@link Access}</span>;
 
  */
@@ -50,23 +51,21 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   public ImportDecl(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -75,23 +74,14 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
     importedFields_String_reset();
     importedMethods_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:47
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public ImportDecl clone() throws CloneNotSupportedException {
     ImportDecl node = (ImportDecl) super.clone();
@@ -103,15 +93,16 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:64
+   * @declaredat ASTNode:50
    */
+  @Deprecated
   public abstract ImportDecl fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:71
+   * @declaredat ASTNode:58
    */
   public abstract ImportDecl treeCopyNoTransform();
   /**
@@ -120,7 +111,7 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:79
+   * @declaredat ASTNode:66
    */
   public abstract ImportDecl treeCopy();
   /**
@@ -149,84 +140,101 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   public Access getAccessNoTransform() {
     return (Access) getChildNoTransform(0);
   }
-  protected java.util.Map importedTypes_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedTypes_String_reset() {
+    importedTypes_String_computed = new java.util.HashMap(4);
     importedTypes_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes(String name) {
+  /** @apilevel internal */
+  protected java.util.Map importedTypes_String_values;
+  /** @apilevel internal */
+  protected java.util.Map importedTypes_String_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434")
+  public SimpleSet<TypeDecl> importedTypes(String name) {
     Object _parameters = name;
-    if (importedTypes_String_values == null) importedTypes_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedTypes_String_values.containsKey(_parameters)) {
-      return (SimpleSet)importedTypes_String_values.get(_parameters);
-    }
+    if (importedTypes_String_computed == null) importedTypes_String_computed = new java.util.HashMap(4);
+    if (importedTypes_String_values == null) importedTypes_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet importedTypes_String_value = SimpleSet.emptySet;
-    if (isFinal && num == state().boundariesCrossed) {
-      importedTypes_String_values.put(_parameters, importedTypes_String_value);
-    } else {
+    if (importedTypes_String_values.containsKey(_parameters) && importedTypes_String_computed != null
+        && importedTypes_String_computed.containsKey(_parameters)
+        && (importedTypes_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || importedTypes_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<TypeDecl>) importedTypes_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<TypeDecl> importedTypes_String_value = emptySet();
+    if (state().inCircle()) {
+      importedTypes_String_values.put(_parameters, importedTypes_String_value);
+      importedTypes_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      importedTypes_String_values.put(_parameters, importedTypes_String_value);
+      importedTypes_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return importedTypes_String_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean importedTypes_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected SimpleSet importedTypes_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedTypes_reset() {
-    importedTypes_computed = false;
+    importedTypes_computed = null;
     importedTypes_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes() {
-    if(importedTypes_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle importedTypes_computed = null;
+
+  /** @apilevel internal */
+  protected SimpleSet<TypeDecl> importedTypes_value;
+
+  /**
+   * For a single-import declaration this will return a SimpleSet
+   * containing the TypeDecl for the imported type. For dynamic
+   * import declarations this returns the empty set.
+   * @return TypeDecl of imported type wrapped in SimpleSet
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451")
+  public SimpleSet<TypeDecl> importedTypes() {
+    ASTNode$State state = state();
+    if (importedTypes_computed == ASTNode$State.NON_CYCLE || importedTypes_computed == state().cycle()) {
       return importedTypes_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    importedTypes_value = SimpleSet.emptySet;
-    if (isFinal && num == state().boundariesCrossed) {
-      importedTypes_computed = true;
+    importedTypes_value = emptySet();
+    if (state().inCircle()) {
+      importedTypes_computed = state().cycle();
+    
     } else {
+      importedTypes_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return importedTypes_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
   public boolean isOnDemand() {
-    ASTNode$State state = state();
     boolean isOnDemand_value = false;
-
     return isOnDemand_value;
   }
   /**
    * @attribute syn
    * @aspect Names
-   * @declaredat extendj/java4/frontend/QualifiedNames.jrag:60
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:60
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:60")
   public String typeName() {
-    ASTNode$State state = state();
-    try {
+    {
         Access a = getAccess().lastAccess();
         String name = a.isTypeAccess() ? ((TypeAccess) a).nameWithPackage() : "";
         while (a.hasPrevExpr() && a.prevExpr() instanceof Access) {
@@ -238,117 +246,200 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
         }
         return name;
       }
-    finally {
-    }
   }
-  protected java.util.Map importedFields_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedFields_String_reset() {
     importedFields_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedFields(String name) {
+  protected java.util.Map importedFields_String_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:55")
+  public SimpleSet<Variable> importedFields(String name) {
     Object _parameters = name;
-    if (importedFields_String_values == null) importedFields_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedFields_String_values.containsKey(_parameters)) {
-      return (SimpleSet)importedFields_String_values.get(_parameters);
+    if (importedFields_String_values == null) importedFields_String_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (importedFields_String_values.containsKey(_parameters)) {
+      Object _cache = importedFields_String_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (SimpleSet<Variable>) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      importedFields_String_values.put(_parameters, _value);
+      _value.value = emptySet();
     }
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet importedFields_String_value = SimpleSet.emptySet;
-    if (isFinal && num == state().boundariesCrossed) {
-      importedFields_String_values.put(_parameters, importedFields_String_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      SimpleSet<Variable> new_importedFields_String_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_importedFields_String_value = emptySet();
+        if ((new_importedFields_String_value == null && ((SimpleSet<Variable>)_value.value) != null) || (new_importedFields_String_value != null && !new_importedFields_String_value.equals(((SimpleSet<Variable>)_value.value)))) {
+          state.setChangeInCycle();
+          _value.value = new_importedFields_String_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      importedFields_String_values.put(_parameters, new_importedFields_String_value);
 
-    return importedFields_String_value;
+      state.leaveCircle();
+      return new_importedFields_String_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      SimpleSet<Variable> new_importedFields_String_value = emptySet();
+      if ((new_importedFields_String_value == null && ((SimpleSet<Variable>)_value.value) != null) || (new_importedFields_String_value != null && !new_importedFields_String_value.equals(((SimpleSet<Variable>)_value.value)))) {
+        state.setChangeInCycle();
+        _value.value = new_importedFields_String_value;
+      }
+      return new_importedFields_String_value;
+    } else {
+      return (SimpleSet<Variable>) _value.value;
+    }
   }
-  protected java.util.Map importedMethods_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedMethods_String_reset() {
+    importedMethods_String_computed = new java.util.HashMap(4);
     importedMethods_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Collection importedMethods(String name) {
+  /** @apilevel internal */
+  protected java.util.Map importedMethods_String_values;
+  /** @apilevel internal */
+  protected java.util.Map importedMethods_String_computed;
+  /**
+   * @attribute syn
+   * @aspect StaticImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76")
+  public Collection<MethodDecl> importedMethods(String name) {
     Object _parameters = name;
-    if (importedMethods_String_values == null) importedMethods_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedMethods_String_values.containsKey(_parameters)) {
-      return (Collection)importedMethods_String_values.get(_parameters);
-    }
+    if (importedMethods_String_computed == null) importedMethods_String_computed = new java.util.HashMap(4);
+    if (importedMethods_String_values == null) importedMethods_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    Collection importedMethods_String_value = Collections.EMPTY_LIST;
-    if (isFinal && num == state().boundariesCrossed) {
-      importedMethods_String_values.put(_parameters, importedMethods_String_value);
-    } else {
+    if (importedMethods_String_values.containsKey(_parameters) && importedMethods_String_computed != null
+        && importedMethods_String_computed.containsKey(_parameters)
+        && (importedMethods_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || importedMethods_String_computed.get(_parameters) == state().cycle())) {
+      return (Collection<MethodDecl>) importedMethods_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    Collection<MethodDecl> importedMethods_String_value = Collections.EMPTY_LIST;
+    if (state().inCircle()) {
+      importedMethods_String_values.put(_parameters, importedMethods_String_value);
+      importedMethods_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      importedMethods_String_values.put(_parameters, importedMethods_String_value);
+      importedMethods_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return importedMethods_String_value;
   }
   /**
    * @attribute inh
-   * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:464
-   */
-  @ASTNodeAnnotation.Attribute
-  public String packageName() {
-    ASTNode$State state = state();
-    String packageName_value = getParent().Define_String_packageName(this, null);
-
-    return packageName_value;
-  }
-  /**
-   * @attribute inh
    * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:52
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet allImportedTypes(String name) {
-    ASTNode$State state = state();
-    SimpleSet allImportedTypes_String_value = getParent().Define_SimpleSet_allImportedTypes(this, null, name);
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50")
+  public SimpleSet<TypeDecl> allImportedTypes(String name) {
+    SimpleSet<TypeDecl> allImportedTypes_String_value = getParent().Define_allImportedTypes(this, null, name);
     return allImportedTypes_String_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:45
+   * @attribute inh
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:480
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:480")
+  public String packageName() {
+    String packageName_value = getParent().Define_packageName(this, null);
+    return packageName_value;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
-  public boolean Define_boolean_isDest(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
+   * @apilevel internal
+   */
+  public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @apilevel internal
+   */
+  public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return prevExprError();
+  }
+  protected boolean canDefine_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @apilevel internal
+   */
+  public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return nextAccessError();
+  }
+  protected boolean canDefine_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
+   * @apilevel internal
+   */
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:42
       return false;
     }
     else {
-      return getParent().Define_boolean_isDest(this, caller);
+      return getParent().Define_isDest(this, _callerNode);
     }
   }
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:54
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
    * @apilevel internal
    */
-  public boolean Define_boolean_isSource(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:51
       return true;
     }
     else {
-      return getParent().Define_boolean_isSource(this, caller);
+      return getParent().Define_isSource(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

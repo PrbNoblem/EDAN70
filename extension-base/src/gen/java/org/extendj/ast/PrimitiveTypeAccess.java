@@ -1,33 +1,41 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:23
- * @production PrimitiveTypeAccess : {@link TypeAccess} ::= <span class="component">&lt;Package:String&gt;</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">&lt;Name:String&gt;</span>;
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:23
+ * @production PrimitiveTypeAccess : {@link TypeAccess} ::= <span class="component">&lt;Package:String&gt;</span> <span class="component">&lt;ID:String&gt;</span>;
 
  */
 public class PrimitiveTypeAccess extends TypeAccess implements Cloneable {
+  /**
+   * @aspect NodeConstructors
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:92
+   */
+  public PrimitiveTypeAccess(String name) {
+    this(PRIMITIVE_PACKAGE_NAME, name);
+  }
   /**
    * @declaredat ASTNode:1
    */
@@ -46,17 +54,18 @@ public class PrimitiveTypeAccess extends TypeAccess implements Cloneable {
   /**
    * @declaredat ASTNode:12
    */
-  public PrimitiveTypeAccess(String p0) {
-    setName(p0);
+  public PrimitiveTypeAccess(String p0, String p1) {
+    setPackage(p0);
+    setID(p1);
   }
   /**
-   * @declaredat ASTNode:15
+   * @declaredat ASTNode:16
    */
-  public PrimitiveTypeAccess(beaver.Symbol p0) {
-    setName(p0);
+  public PrimitiveTypeAccess(beaver.Symbol p0, beaver.Symbol p1) {
+    setPackage(p0);
+    setID(p1);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    * @declaredat ASTNode:21
    */
   protected int numChildren() {
@@ -69,47 +78,34 @@ public class PrimitiveTypeAccess extends TypeAccess implements Cloneable {
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     decls_reset();
-    getPackage_reset();
-    getID_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:48
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:54
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public PrimitiveTypeAccess clone() throws CloneNotSupportedException {
     PrimitiveTypeAccess node = (PrimitiveTypeAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public PrimitiveTypeAccess copy() {
     try {
       PrimitiveTypeAccess node = (PrimitiveTypeAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -123,8 +119,9 @@ public class PrimitiveTypeAccess extends TypeAccess implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:80
+   * @declaredat ASTNode:64
    */
+  @Deprecated
   public PrimitiveTypeAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -133,14 +130,14 @@ public class PrimitiveTypeAccess extends TypeAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:89
+   * @declaredat ASTNode:74
    */
   public PrimitiveTypeAccess treeCopyNoTransform() {
     PrimitiveTypeAccess tree = (PrimitiveTypeAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -154,197 +151,135 @@ public class PrimitiveTypeAccess extends TypeAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:109
+   * @declaredat ASTNode:94
    */
   public PrimitiveTypeAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    PrimitiveTypeAccess tree = (PrimitiveTypeAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:116
+  /** @apilevel internal 
+   * @declaredat ASTNode:108
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_Name == ((PrimitiveTypeAccess)node).tokenString_Name);    
+    return super.is$Equal(node) && (tokenString_Package == ((PrimitiveTypeAccess) node).tokenString_Package) && (tokenString_ID == ((PrimitiveTypeAccess) node).tokenString_ID);    
   }
   /**
-   * Replaces the lexeme Name.
-   * @param value The new value for the lexeme Name.
+   * Replaces the lexeme Package.
+   * @param value The new value for the lexeme Package.
    * @apilevel high-level
    */
-  public void setName(String value) {
-    tokenString_Name = value;
+  public void setPackage(String value) {
+    tokenString_Package = value;
   }
   /**
+   * JastAdd-internal setter for lexeme Package using the Beaver parser.
+   * @param symbol Symbol containing the new value for the lexeme Package
    * @apilevel internal
    */
-  protected String tokenString_Name;
-  /**
-   */
-  public int Namestart;
-  /**
-   */
-  public int Nameend;
-  /**
-   * JastAdd-internal setter for lexeme Name using the Beaver parser.
-   * @param symbol Symbol containing the new value for the lexeme Name
-   * @apilevel internal
-   */
-  public void setName(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
-    throw new UnsupportedOperationException("setName is only valid for String lexemes");
-    tokenString_Name = (String)symbol.value;
-    Namestart = symbol.getStart();
-    Nameend = symbol.getEnd();
+  public void setPackage(beaver.Symbol symbol) {
+    if (symbol.value != null && !(symbol.value instanceof String))
+    throw new UnsupportedOperationException("setPackage is only valid for String lexemes");
+    tokenString_Package = (String)symbol.value;
+    Packagestart = symbol.getStart();
+    Packageend = symbol.getEnd();
   }
   /**
-   * Retrieves the value for the lexeme Name.
-   * @return The value for the lexeme Name.
+   * Retrieves the value for the lexeme Package.
+   * @return The value for the lexeme Package.
    * @apilevel high-level
    */
-  @ASTNodeAnnotation.Token(name="Name")
-  public String getName() {
-    return tokenString_Name != null ? tokenString_Name : "";
+  @ASTNodeAnnotation.Token(name="Package")
+  public String getPackage() {
+    return tokenString_Package != null ? tokenString_Package : "";
   }
   /**
-   * This method should not be called. This method throws an exception due to
-   * the corresponding child being an NTA shadowing a non-NTA child.
-   * @param node
-   * @apilevel internal
+   * Replaces the lexeme ID.
+   * @param value The new value for the lexeme ID.
+   * @apilevel high-level
    */
-  public void setPackage(String node) {
-    throw new Error("Can not replace NTA child Package in PrimitiveTypeAccess!");
+  public void setID(String value) {
+    tokenString_ID = value;
   }
   /**
+   * JastAdd-internal setter for lexeme ID using the Beaver parser.
+   * @param symbol Symbol containing the new value for the lexeme ID
    * @apilevel internal
    */
-  protected String tokenString_Package;
-  /**
-   * This method should not be called. This method throws an exception due to
-   * the corresponding child being an NTA shadowing a non-NTA child.
-   * @param node
-   * @apilevel internal
-   */
-  public void setID(String node) {
-    throw new Error("Can not replace NTA child ID in PrimitiveTypeAccess!");
+  public void setID(beaver.Symbol symbol) {
+    if (symbol.value != null && !(symbol.value instanceof String))
+    throw new UnsupportedOperationException("setID is only valid for String lexemes");
+    tokenString_ID = (String)symbol.value;
+    IDstart = symbol.getStart();
+    IDend = symbol.getEnd();
   }
   /**
-   * @apilevel internal
+   * Retrieves the value for the lexeme ID.
+   * @return The value for the lexeme ID.
+   * @apilevel high-level
    */
-  protected String tokenString_ID;
-  /**
-   * @apilevel internal
-   */
-  protected boolean decls_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected SimpleSet decls_value;
-  /**
-   * @apilevel internal
-   */
+  @ASTNodeAnnotation.Token(name="ID")
+  public String getID() {
+    return tokenString_ID != null ? tokenString_ID : "";
+  }
+  /** @apilevel internal */
   private void decls_reset() {
-    decls_computed = false;
+    decls_computed = null;
     decls_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet decls() {
-    if(decls_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle decls_computed = null;
+
+  /** @apilevel internal */
+  protected SimpleSet<TypeDecl> decls_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:311
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:311")
+  public SimpleSet<TypeDecl> decls() {
+    ASTNode$State state = state();
+    if (decls_computed == ASTNode$State.NON_CYCLE || decls_computed == state().cycle()) {
       return decls_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     decls_value = lookupType(PRIMITIVE_PACKAGE_NAME, name());
-    if (isFinal && num == state().boundariesCrossed) {
-      decls_computed = true;
+    if (state().inCircle()) {
+      decls_computed = state().cycle();
+    
     } else {
+      decls_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return decls_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7
    */
-  protected boolean getPackage_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected String getPackage_value;
-  /**
-   * @apilevel internal
-   */
-  private void getPackage_reset() {
-    getPackage_computed = false;
-    getPackage_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public String getPackage() {
-    if(getPackage_computed) {
-      return getPackage_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    getPackage_value = PRIMITIVE_PACKAGE_NAME;
-    if (isFinal && num == state().boundariesCrossed) {
-      getPackage_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return getPackage_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getID_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected String getID_value;
-  /**
-   * @apilevel internal
-   */
-  private void getID_reset() {
-    getID_computed = false;
-    getID_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public String getID() {
-    if(getID_computed) {
-      return getID_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    getID_value = getName();
-    if (isFinal && num == state().boundariesCrossed) {
-      getID_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return getID_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7")
   public String nodeType() {
-    ASTNode$State state = state();
     String nodeType_value = "PrimitiveTypeAccess";
-
     return nodeType_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

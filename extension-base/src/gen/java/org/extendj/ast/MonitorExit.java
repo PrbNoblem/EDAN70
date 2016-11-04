@@ -1,43 +1,44 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Used in code generation to represent the implicit monitor exit
  * call at the end of a synchronized block.
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:219
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:221
  * @production MonitorExit : {@link Block};
 
  */
 public class MonitorExit extends Block implements Cloneable {
   /**
    * @aspect MonitorExit
-   * @declaredat extendj/java4/frontend/MonitorExit.jrag:34
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/MonitorExit.jrag:34
    */
   protected SynchronizedStmt monitor = null;
   /**
    * @aspect MonitorExit
-   * @declaredat extendj/java4/frontend/MonitorExit.jrag:36
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/MonitorExit.jrag:36
    */
   public MonitorExit(SynchronizedStmt sync) {
     monitor = sync;
@@ -65,58 +66,46 @@ public class MonitorExit extends Block implements Cloneable {
   public MonitorExit(List<Stmt> p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public MonitorExit clone() throws CloneNotSupportedException {
     MonitorExit node = (MonitorExit) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public MonitorExit copy() {
     try {
       MonitorExit node = (MonitorExit) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -130,8 +119,9 @@ public class MonitorExit extends Block implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public MonitorExit fullCopy() {
     return treeCopyNoTransform();
   }
@@ -140,14 +130,14 @@ public class MonitorExit extends Block implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public MonitorExit treeCopyNoTransform() {
     MonitorExit tree = (MonitorExit) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -161,15 +151,23 @@ public class MonitorExit extends Block implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public MonitorExit treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    MonitorExit tree = (MonitorExit) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -222,11 +220,10 @@ public class MonitorExit extends Block implements Cloneable {
    * @apilevel high-level
    */
   public void addStmt(Stmt node) {
-    List<Stmt> list = (parent == null || state == null) ? getStmtListNoTransform() : getStmtList();
+    List<Stmt> list = (parent == null) ? getStmtListNoTransform() : getStmtList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addStmtNoTransform(Stmt node) {
     List<Stmt> list = getStmtListNoTransform();
@@ -250,7 +247,6 @@ public class MonitorExit extends Block implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Stmt")
   public List<Stmt> getStmtList() {
     List<Stmt> list = (List<Stmt>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -261,6 +257,13 @@ public class MonitorExit extends Block implements Cloneable {
    */
   public List<Stmt> getStmtListNoTransform() {
     return (List<Stmt>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Stmt list without
+   * triggering rewrites.
+   */
+  public Stmt getStmtNoTransform(int i) {
+    return (Stmt) getStmtListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Stmt list.
@@ -279,10 +282,12 @@ public class MonitorExit extends Block implements Cloneable {
   public List<Stmt> getStmtsNoTransform() {
     return getStmtListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

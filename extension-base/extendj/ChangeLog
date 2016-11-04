@@ -1,3 +1,132 @@
+2016-10-17  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Added separate error messages for default constructor problems.  This
+    removes the need for full error checking on default constructors and
+    enables generating more descriptive error messages.
+
+2016-04-01  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Redesigned name resolution rewrites. ParseName nodes now contain
+    multiple name parts and they are rewritten together at the same time.
+    This simplifies the rewrite process for ParseName nodes during syntactic
+    classification, and removes the need for rewriting Dot nodes.
+
+2016-03-30  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Redesigned generic type substitution. Type variables are no longer
+    substituted in the synthetic parameterized type declarations, instead
+    type variable substitution happens during type lookup.
+    Added two new AST node types: GenericMethodDeclErased and
+    GenericConstructorDeclErased.
+    The abstract grammar rules for ParClassDecl, ParInterfaceDecl,
+    RawClassDecl, and RawInterfaceDecl have been changed.
+
+2016-03-22  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Removed the List subtype BodyDeclList because it could cause null
+    pointer exceptions when inherited attributes were evaluated on NTA
+    children of BodyDeclList.
+    * Added a new BodyDecl subtype named SubstitutedBodyDecl. This is used for
+    generic type substitution of body declarations in generic types. This
+    replaces the old BodyDeclList NTAs.
+    * Removed the unecessary node types
+    VariableArityParameterDeclarationSubstituted and
+    ParameterDeclarationSubstituted.
+
+2016-03-08  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Added helper methods to build default bytecode reader and Java parser:
+    Program.defaultBytecodeReader() and Program.defaultJavaParser().
+
+2016-02-24  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Removed rewriting of EnumDecl. Implicit members in EnumDecl are now
+    generated using NTAs instead of by rewriting the EnumDecl.
+    * Removed side effects used to generate accessor methods. Accessor
+    methods are instead generated using declarative NTAs.
+    * Removed the ASTNode.transformation() method which walked over the AST
+    to add accessor methods etc.
+    * Removed ASTNode.clear() which was used to clear AST nodes after code
+    generation (used side effects).
+
+2016-02-23  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Replaced enum constructor transformation side effects by using the new
+    nonterminal attribute ConstructorDecl.transformedEnumConstructor().
+
+2016-02-22  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Replaced bridge method generation side effects by using an NTA and
+    collection attribute. Bridge methods are no longer generated during
+    the transformation phase. Bridge methods are now generated on demand
+    during code generation.
+
+2016-02-20  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Replaced the side effects used to add the "$assertionsDisabled" field
+    to a class by using NTAs instead. Assert statements have a new NTA called
+    "transformed()" which evaluates to the transformed form of the statement.
+    The $assertionsDisabled field is also generated using an NTA.
+
+2016-02-19  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Replaced enum switch transformation side effects. NTAs are now used to
+    generate extra fields and methods needed for enum switch statements
+    instead of using side effects to modify the BodyDecl list of a TypeDecl.
+    Also removed the side effects which modified the actual SwitchStmt and
+    nested ConstCase nodes.
+
+    * Removed side effects used to generate bytecode for ClassAccess in the
+    Java 4 backend module. This changes the bytecode generation in Java 4
+    mode, and may make it incompatible with Java 4 JVMs. ExtendJ should no
+    longer implicitly support Java 4, since we have not tested the Java 4
+    support for a long time and it is not reasonable to try to support Java 4
+    bytecode generation any longer.
+
+2016-02-12  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Replaced FieldDecl list rewrites.
+
+    FieldDecl nodes were previously rewritten to individual FieldDeclaration
+    nodes in BodyDecl lists using a list rewrite. List rewrites are a complicated
+    feature in JastAdd with some performance and correctness problems. Migrating
+    from list rewrites has the potential of improving performance and enabling
+    some interesting optimizations in JastAdd attribute evaluation.
+
+    In order to remove FieldDecl list rewrites, the AST nodes FieldDeclaration and
+    VariableDeclaration were removed from the abstract grammar. These have been
+    replaced by FieldDeclarator and VariableDeclarator, both inheriting from the
+    abstract type Declarator. A FieldDecl node now has a Declarator list that
+    contains FieldDeclarator nodes and which correspond the individual fields
+    declared in a single FieldDecl. A VarDeclStmt has had its VariableDecl list
+    replaced by a Declarator list containing VariableDeclarator nodes.
+
+    EnumConstant nodes behave much like FieldDecl nodes, but like the old
+    FieldDeclaration nodes they declare only a single field. EnumConstant used to
+    inherit from FieldDeclaration due to the many similarities between these nodes
+    and due to the similar methods used in code generation. Since FieldDeclaration
+    has been removed, and the corresponding code generation methods were moved to
+    FieldDeclarator, which is not a BodyDecl subtype, EnumConstant had to be
+    changed a bit to work after the refactoring. EnumConstant now as some
+    additional attribute and method declarations that were previously inherited
+    from FieldDeclaration.
+
+
+2016-02-04  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Added Modifiers and TypeAccess:Access NTAs in VariableDecl.  This
+    eliminated the need for the SingleDecl* NTA in VarDeclStmt.  This also
+    made VariableDeclaration redundant, so it has been removed from the
+    abstract grammar. Extensions using VariableDeclaration should switch to
+    using VariableDecl instead, and extensions using
+    VarDeclStmt.getSingleDecl(x) should use VarDeclStmt.getVariableDecl(x).
+
+2015-12-15  Jesper Öqvist <jesper.oqvist@cs.lth.se>
+
+    * Added robust set org.jastadd.util.RobustSet. This is used to track
+    loaded compilation units in a way that allows simultaneous iteration
+    over compilation units. This happens in the Frontend.run method.
+
 2015-10-14  Jesper Öqvist <jesper.oqvist@cs.lth.se>
 
     * Refactored pretty printing. Pretty printing aspects are now generated

@@ -1,67 +1,45 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:143
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:145
  * @production PostfixExpr : {@link Unary};
 
  */
 public abstract class PostfixExpr extends Unary implements Cloneable {
   /**
    * @aspect DefiniteAssignment
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:86
-   */
-  public void definiteAssignment() {
-    if (getOperand().isVariable()) {
-      Variable v = getOperand().varDecl();
-      if (v != null && v.isFinal()) {
-        error("++ and -- can not be applied to final variable " + v);
-      }
-    }
-  }
-  /**
-   * @aspect DA
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:521
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:601
    */
   protected boolean checkDUeverywhere(Variable v) {
     if (getOperand().isVariable() && getOperand().varDecl() == v) {
-      if (!isDAbefore(v)) {
+      if (!assignedBefore(v)) {
         return false;
       }
     }
     return super.checkDUeverywhere(v);
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:345
-   */
-  public void typeCheck() {
-    if (!getOperand().isVariable()) {
-      error("postfix expressions only work on variables");
-    } else if (!getOperand().type().isNumericType()) {
-      error("postfix expressions only operates on numeric types");
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -85,44 +63,33 @@ public abstract class PostfixExpr extends Unary implements Cloneable {
   public PostfixExpr(Expr p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:43
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:49
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public PostfixExpr clone() throws CloneNotSupportedException {
     PostfixExpr node = (PostfixExpr) super.clone();
@@ -134,15 +101,16 @@ public abstract class PostfixExpr extends Unary implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:60
+   * @declaredat ASTNode:46
    */
+  @Deprecated
   public abstract PostfixExpr fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:67
+   * @declaredat ASTNode:54
    */
   public abstract PostfixExpr treeCopyNoTransform();
   /**
@@ -151,7 +119,7 @@ public abstract class PostfixExpr extends Unary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:75
+   * @declaredat ASTNode:62
    */
   public abstract PostfixExpr treeCopy();
   /**
@@ -181,45 +149,111 @@ public abstract class PostfixExpr extends Unary implements Cloneable {
     return (Expr) getChildNoTransform(0);
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:67
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public boolean Define_boolean_isDest(ASTNode caller, ASTNode child) {
-    if (caller == getOperandNoTransform()) {
-      return true;
-    }
-    else {
-      return getParent().Define_boolean_isDest(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:76
-   * @apilevel internal
-   */
-  public boolean Define_boolean_isIncOrDec(ASTNode caller, ASTNode child) {
-    if (caller == getOperandNoTransform()) {
-      return true;
-    }
-    else {
-      return getParent().Define_boolean_isIncOrDec(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/SyntacticClassification.jrag:125
-   * @apilevel internal
-   */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getOperandNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getOperandNoTransform() != null && _callerNode == getOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:121
       return NameType.EXPRESSION_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
    * @apilevel internal
    */
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    if (getOperandNoTransform() != null && _callerNode == getOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:62
+      return true;
+    }
+    else {
+      return getParent().Define_isDest(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:66
+   * @apilevel internal
+   */
+  public boolean Define_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    if (getOperandNoTransform() != null && _callerNode == getOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:72
+      return true;
+    }
+    else {
+      return getParent().Define_isIncOrDec(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:401
+    if (!getOperand().isVariable()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:406
+    if (!getOperand().type().isNumericType()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:82
+    if (getOperand().isVariable()
+              && getOperand().varDecl() != null
+              && getOperand().varDecl().isFinal()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getOperand().isVariable()) {
+      collection.add(error("postfix expression only works on variables"));
+    }
+    if (!getOperand().type().isNumericType()) {
+      collection.add(error("postfix expression only operates on numeric types"));
+    }
+    if (getOperand().isVariable()
+              && getOperand().varDecl() != null
+              && getOperand().varDecl().isFinal()) {
+      collection.add(error("++ and -- can not be applied to final variable " + getOperand().varDecl().name()));
+    }
   }
 }

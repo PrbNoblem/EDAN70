@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect FrontendMain
- * @declaredat extendj/java4/frontend/FrontendMain.jrag:68
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/FrontendMain.jrag:68
  */
 abstract public class Frontend extends java.lang.Object {
   
@@ -31,37 +33,27 @@ abstract public class Frontend extends java.lang.Object {
 
   
 
-    /**
-     * Compile success
-     */
+    /** Compile success. */
     public static final int EXIT_SUCCESS = 0;
 
   
 
-    /**
-     * Lexical/semantic error.
-     */
+    /** Lexical/semantic error. */
     public static final int EXIT_ERROR = 1;
 
   
 
-    /**
-     * Command-line configuration error.
-     */
+    /** Command-line configuration error. */
     public static final int EXIT_CONFIG_ERROR = 2;
 
   
 
-    /**
-     * The compiler terminated by system error.
-     */
+    /** The compiler terminated by system error. */
     public static final int EXIT_SYSTEM_ERROR = 3;
 
   
 
-    /**
-     * The compiler terminated abnormally.
-     */
+    /** The compiler terminated abnormally. */
     public static final int EXIT_UNHANDLED_ERROR = 4;
 
   
@@ -69,7 +61,13 @@ abstract public class Frontend extends java.lang.Object {
     private final String name;
 
   
+
     private final String version;
+
+  
+
+    /** Root node for AST debugging. */
+    public static Program DrAST_root_node;
 
   
 
@@ -91,6 +89,7 @@ abstract public class Frontend extends java.lang.Object {
       this.name = name;
       this.version = version;
       program = new Program();
+      DrAST_root_node = program;
       program.state().reset();
     }
 
@@ -99,7 +98,6 @@ abstract public class Frontend extends java.lang.Object {
     /**
      * Process all compilation units listed in the command-line arguments, and
      * all compilation units referenced from those.
-     *
      * @return 0 on success, 1 on error, 2 on configuration error, 3 on system
      * error, 4 on unhandled error
      */
@@ -130,13 +128,13 @@ abstract public class Frontend extends java.lang.Object {
       Collection<CompilationUnit> work = new LinkedList<CompilationUnit>();
 
       try {
-        for (String file: files) {
+        for (String file : files) {
           program.addSourceFile(file);
         }
 
         int compileResult = EXIT_SUCCESS;
 
-        // process source compilation units
+        // Process source compilation units.
         Iterator<CompilationUnit> iter = program.compilationUnitIterator();
         while (iter.hasNext()) {
           CompilationUnit unit = iter.next();
@@ -153,22 +151,18 @@ abstract public class Frontend extends java.lang.Object {
         }
 
         // Process library compilation units.
-        RobustMap<String, CompilationUnit> valueMap = (RobustMap<String, CompilationUnit>)
-            program.getLibCompilationUnitValueMap();
-        if (valueMap != null) {
-          iter = valueMap.robustValueIterator();
-          while (iter.hasNext()) {
-            CompilationUnit unit = iter.next();
-            work.add(unit);
-            int result = processCompilationUnit(unit);
-            switch (result) {
-              case EXIT_SUCCESS:
-                break;
-              case EXIT_UNHANDLED_ERROR:
-                return result;
-              default:
-                compileResult = result;
-            }
+        Iterator<CompilationUnit> libraryIterator = program.libraryCompilationUnitIterator();
+        while (libraryIterator.hasNext()) {
+          CompilationUnit unit = libraryIterator.next();
+          work.add(unit);
+          int result = processCompilationUnit(unit);
+          switch (result) {
+            case EXIT_SUCCESS:
+              break;
+            case EXIT_UNHANDLED_ERROR:
+              return result;
+            default:
+              compileResult = result;
           }
         }
 
@@ -176,7 +170,7 @@ abstract public class Frontend extends java.lang.Object {
           return compileResult;
         }
 
-        for (CompilationUnit unit: work) {
+        for (CompilationUnit unit : work) {
           if (unit != null && unit.fromSource()) {
             long start = System.nanoTime();
             processNoErrors(unit);
@@ -220,7 +214,6 @@ abstract public class Frontend extends java.lang.Object {
           // or the recover from parse errors option is specified.
           if (errors.isEmpty() || program.options().hasOption("-recover")) {
             long start = System.nanoTime();
-            unit.collectErrors();
             errors = unit.errors();
             warnings = unit.warnings();
             program.errorCheckTime += System.nanoTime() - start;
@@ -274,9 +267,9 @@ abstract public class Frontend extends java.lang.Object {
       options.addKeyOption("-XprettyPrint");
       options.addKeyOption("-XdumpTree");
 
-      // non-javac options
-      options.addKeyOption("-profile"); // output profiling information
-      options.addKeyOption("-debug"); // extra debug checks and information
+      // Non-javac options.
+      options.addKeyOption("-profile"); // Output profiling information.
+      options.addKeyOption("-debug"); // Extra debug checks and information.
     }
 
   
@@ -289,7 +282,7 @@ abstract public class Frontend extends java.lang.Object {
       program.options().addOptions(args);
       boolean error = false;
       Collection<String> files = program.options().files();
-      for (String file: files) {
+      for (String file : files) {
         if (!new File(file).isFile()) {
           System.err.println("Error: neither a valid option nor a filename: " + file);
           error = true;
@@ -307,9 +300,8 @@ abstract public class Frontend extends java.lang.Object {
      * @param unit affected compilation unit
      */
     protected void processErrors(Collection<Problem> errors, CompilationUnit unit) {
-      System.err.println("Errors:");
-      for (Iterator iter2 = errors.iterator(); iter2.hasNext(); ) {
-        System.err.println(iter2.next());
+      for (Problem error : errors) {
+        System.err.println(error);
       }
     }
 
@@ -322,7 +314,6 @@ abstract public class Frontend extends java.lang.Object {
      * @param unit affected compilation unit
      */
     protected void processWarnings(Collection<Problem> warnings, CompilationUnit unit) {
-      System.err.println("Warnings:");
       for (Problem warning : warnings) {
         System.err.println(warning);
       }

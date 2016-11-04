@@ -53,25 +53,32 @@ aspect GenericsParTypeDecl {
   }
 
   syn String ParTypeDecl.nameWithArgs() {
+    java.util.List<TypeDecl> args = getParameterization().args;
     StringBuilder sb = new StringBuilder();
     sb.append(name());
     sb.append("<");
-    for (int i = 0; i < getNumArgument(); i++) {
+    for (int i = 0; i < args.size(); i++) {
       if (i != 0) {
         sb.append(", ");
       }
-      sb.append(getArgument(i).type().fullName());
+      sb.append(args.get(i).typeName());
     }
     sb.append(">");
     return sb.toString();
   }
+
   eq RawClassDecl.nameWithArgs() = name();
+
   eq RawInterfaceDecl.nameWithArgs() = name();
 
   inh lazy TypeDecl ParTypeDecl.genericDecl();
+
   eq Program.getChild().genericDecl() = null;
+
   eq GenericClassDecl.getChild().genericDecl() = this;
+
   eq GenericInterfaceDecl.getChild().genericDecl() = this;
+
   eq ParClassDecl.getBodyDecl(int index).genericDecl() {
     if (getBodyDecl(index) instanceof MemberTypeDecl) {
       MemberTypeDecl m = (MemberTypeDecl) getBodyDecl(index);
@@ -79,6 +86,7 @@ aspect GenericsParTypeDecl {
     }
     return genericDecl();
   }
+
   eq ParInterfaceDecl.getBodyDecl(int index).genericDecl() {
     if (getBodyDecl(index) instanceof MemberTypeDecl) {
       MemberTypeDecl m = (MemberTypeDecl) getBodyDecl(index);
@@ -89,7 +97,7 @@ aspect GenericsParTypeDecl {
 
   syn boolean BodyDecl.visibleTypeParameters() = true;
   eq MethodDecl.visibleTypeParameters() = !isStatic();
-  eq FieldDeclaration.visibleTypeParameters() = !isStatic();
+  syn boolean FieldDecl.visibleTypeParameters() = !isStatic();
   eq StaticInitializer.visibleTypeParameters() = false;
   eq MemberTypeDecl.visibleTypeParameters() = !isStatic();
 
@@ -98,23 +106,16 @@ aspect GenericsParTypeDecl {
 
   public Access ParTypeDecl.createQualifiedAccess() {
     List typeArgumentList = new List();
-    for (int i = 0; i < getNumArgument(); i++) {
-      Access a = (Access) getArgument(i);
-      if (a instanceof TypeAccess) {
-        typeArgumentList.add(a.type().createQualifiedAccess());
-      } else {
-        typeArgumentList.add(a.treeCopyNoTransform());
-      }
+    for (TypeDecl arg : getParameterization().args) {
+      typeArgumentList.add(arg.createQualifiedAccess());
     }
     if (!isTopLevelType()) {
       if (isRawType()) {
-        return enclosingType().createQualifiedAccess().qualifiesAccess(
-          new TypeAccess("", getID())
-        );
+        return enclosingType().createQualifiedAccess()
+            .qualifiesAccess(new TypeAccess("", getID()));
       } else {
-        return enclosingType().createQualifiedAccess().qualifiesAccess(
-          new ParTypeAccess(new TypeAccess("", getID()), typeArgumentList)
-        );
+        return enclosingType().createQualifiedAccess()
+            .qualifiesAccess(new ParTypeAccess(new TypeAccess("", getID()), typeArgumentList));
       }
     } else {
       if (isRawType()) {
@@ -124,5 +125,27 @@ aspect GenericsParTypeDecl {
       }
     }
   }
-}
 
+  // Ensure that type lookups that resolve to the generic type point to the generic type
+  // and not this parameterized type.
+  eq ParTypeDecl.localLookupType(String name) {
+    SimpleSet<TypeDecl> result = memberTypes(name);
+    if (!result.isEmpty()) {
+      return result;
+    }
+    if (name().equals(name)) {
+      return genericDecl(); // Type lookups for this type resolve to the generic type.
+    }
+
+    result = lookupType(name);
+    // 8.5.2
+    if (isClassDecl() && isStatic() && !isTopLevelType()) {
+      SimpleSet<TypeDecl> newSet = emptySet();
+      for (TypeDecl type : result) {
+        newSet = newSet.add(type);
+      }
+      result = newSet;
+    }
+    return result;
+  }
+}

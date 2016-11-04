@@ -26,21 +26,28 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 aspect ConstructorReferenceToClass {
+  ConstructorReference contributes toClass().getTypeDecl()
+      to TypeDecl.nestedTypes()
+      for hostType();
+
+  ConstructorReference contributes nta toClass() to TypeDecl.accessors();
 
   /* Build a nested ArrayTypeWithSizeAccess from the normal
      ArrayTypeAccess. This is to be used when generating
      the anonymous inner class which must instantiate a new
      array according to the array reference */
   syn ArrayTypeAccess ArrayReference.getArrayTypeWithSizeAccess(Expr expr) {
-    ArrayTypeAccess startAccess = (ArrayTypeAccess) getTypeAccess().treeCopyNoTransform();
-    return recursiveArrayTypeWithSizeAccess(startAccess, (Expr) expr.treeCopyNoTransform());
+    return recursiveArrayTypeWithSizeAccess((ArrayTypeAccess) getTypeAccess(),
+        (Expr) expr.treeCopyNoTransform());
   }
 
-  syn ArrayTypeAccess ArrayReference.recursiveArrayTypeWithSizeAccess(ArrayTypeAccess access, Expr expr) {
+  syn ArrayTypeAccess ArrayReference.recursiveArrayTypeWithSizeAccess(ArrayTypeAccess access,
+      Expr expr) {
     if (!(access.getAccess() instanceof ArrayTypeAccess)) {
-      return new ArrayTypeWithSizeAccess(access.getAccess(), expr);
+      return new ArrayTypeWithSizeAccess(access.getAccess().treeCopy(), expr);
     } else {
-      return new ArrayTypeAccess(recursiveArrayTypeWithSizeAccess((ArrayTypeAccess) access.getAccess(), expr));
+      return new ArrayTypeAccess(
+          recursiveArrayTypeWithSizeAccess((ArrayTypeAccess) access.getAccess(), expr));
     }
   }
 
@@ -66,20 +73,21 @@ aspect ConstructorReferenceToClass {
       methodThrows.add(new SyntheticTypeAccess(throwsType));
     }
     Opt<Block> methodBlock = new Opt<Block>(toBlock());
-    MethodDecl method = new MethodDecl(methodModifiers, returnType, iDecl.functionDescriptor().method.name(),
-                      methodParams, methodThrows, methodBlock);
+    MethodDecl method = new MethodDecl(methodModifiers, returnType,
+        iDecl.functionDescriptor().method.name(),
+        methodParams, methodThrows, methodBlock);
 
     bodyDecls.add(method);
 
-    /* Now the anonymous class can be built. Must use the type LambdaAnonymousDecl instead
-    of a normal AnonymousDecl in order for this and super keywords to get the type of the outer
-    scope. */
-    LambdaAnonymousDecl anonymousDecl = new LambdaAnonymousDecl(new Modifiers(), "ConstructorReference", bodyDecls);
-    for (Access impl: implementsList) {
-      anonymousDecl.addImplements(impl);
-    }
+    // Now the anonymous class can be built. We use the type
+    // LambdaAnonymousDecl instead of a normal AnonymousDecl in order for this
+    // and super keywords to get the type of the outer scope.
+    LambdaAnonymousDecl anonymousDecl = new LambdaAnonymousDecl(new Modifiers(),
+        "ConstructorReference", implementsList, bodyDecls);
 
-    return new ClassInstanceExpr((Access) implementsInterface.treeCopyNoTransform(), new List<Expr>(), new Opt<TypeDecl>(anonymousDecl));
+    return new ClassInstanceExpr(
+        (Access) implementsInterface.treeCopyNoTransform(),
+        new List<Expr>(), new Opt<TypeDecl>(anonymousDecl));
   }
 
   syn lazy Block ConstructorReference.toBlock();
@@ -98,7 +106,8 @@ aspect ConstructorReferenceToClass {
     // First, build an ArrayCreationExpr used in the block
     String paramName = targetInterface().functionDescriptor().method.getParameter(0).name();
     VarAccess paramAccess = new VarAccess(paramName);
-    ArrayCreationExpr arrayExpr = new ArrayCreationExpr(getArrayTypeWithSizeAccess(paramAccess), new Opt());
+    ArrayCreationExpr arrayExpr = new ArrayCreationExpr(getArrayTypeWithSizeAccess(paramAccess),
+        new Opt());
 
     // Next build actual block
     Stmt blockStmt = null;
@@ -121,14 +130,15 @@ aspect ConstructorReferenceToClass {
 
     ClassInstanceExpr instanceExpr = null;
     if (hasTypeArgument()) {
-      instanceExpr = new ParClassInstanceExpr((Access) getTypeAccess().treeCopyNoTransform(), arguments,
-                          new Opt(), (List<Access>)getTypeArgumentList().treeCopyNoTransform());
+      instanceExpr = new ParClassInstanceExpr((Access) getTypeAccess().treeCopyNoTransform(),
+          arguments, new Opt(), (List<Access>) getTypeArgumentList().treeCopyNoTransform());
     } else {
       if (getTypeAccess().type().isRawType()) {
         DiamondAccess diamond = new DiamondAccess((Access) getTypeAccess().treeCopyNoTransform());
         instanceExpr = new ClassInstanceExpr(diamond, arguments);
       } else {
-        instanceExpr = new ClassInstanceExpr((Access) getTypeAccess().treeCopyNoTransform(), arguments);
+        instanceExpr = new ClassInstanceExpr((Access) getTypeAccess().treeCopyNoTransform(),
+            arguments);
       }
     }
     Stmt blockStmt = null;
@@ -140,6 +150,5 @@ aspect ConstructorReferenceToClass {
     List<Stmt> stmtList = new List<Stmt>();
     stmtList.add(blockStmt);
     return new Block(stmtList);
-
   }
 }

@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/GenericMethods.ast:19
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:22
  * @production ParClassInstanceExpr : {@link ClassInstanceExpr} ::= <span class="component">TypeArgument:{@link Access}*</span>;
 
  */
 public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable {
   /**
    * @aspect GenericMethodsPrettyPrint
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:251
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:282
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("<");
@@ -71,58 +72,46 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
     setChild(p2, 2);
     setChild(p3, 3);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:25
+  /** @apilevel low-level 
+   * @declaredat ASTNode:23
    */
   protected int numChildren() {
     return 4;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:31
+   * @declaredat ASTNode:29
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:43
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:49
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:55
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public ParClassInstanceExpr clone() throws CloneNotSupportedException {
     ParClassInstanceExpr node = (ParClassInstanceExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:62
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public ParClassInstanceExpr copy() {
     try {
       ParClassInstanceExpr node = (ParClassInstanceExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -136,8 +125,9 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:81
+   * @declaredat ASTNode:65
    */
+  @Deprecated
   public ParClassInstanceExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -146,14 +136,14 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:90
+   * @declaredat ASTNode:75
    */
   public ParClassInstanceExpr treeCopyNoTransform() {
     ParClassInstanceExpr tree = (ParClassInstanceExpr) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -167,15 +157,23 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:110
+   * @declaredat ASTNode:95
    */
   public ParClassInstanceExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ParClassInstanceExpr tree = (ParClassInstanceExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:117
+  /** @apilevel internal 
+   * @declaredat ASTNode:109
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -254,11 +252,10 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -282,7 +279,6 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -293,6 +289,13 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -410,11 +413,10 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -438,7 +440,6 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -449,6 +450,13 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -468,47 +476,61 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
     return getTypeArgumentListNoTransform();
   }
   /**
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:208
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeArgumentListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeArgumentListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:239
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
     else {
-      return super.Define_NameType_nameType(caller, child);
+      return super.Define_nameType(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:209
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
-  public SimpleSet Define_SimpleSet_lookupType(ASTNode caller, ASTNode child, String name) {
-    if (caller == getTypeArgumentListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getTypeArgumentListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:240
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return unqualifiedScope().lookupType(name);
     }
     else {
-      return super.Define_SimpleSet_lookupType(caller, child, name);
+      return super.Define_lookupType(_callerNode, _childNode, name);
     }
   }
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java7/frontend/Diamond.jrag:422
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:425
    * @apilevel internal
    */
-  public boolean Define_boolean_isExplicitGenericConstructorAccess(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public boolean Define_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:430
       return true;
     }
     else {
-      return getParent().Define_boolean_isExplicitGenericConstructorAccess(this, caller);
+      return getParent().Define_isExplicitGenericConstructorAccess(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

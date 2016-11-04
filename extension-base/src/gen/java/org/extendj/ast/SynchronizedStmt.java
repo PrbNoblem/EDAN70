@@ -1,62 +1,50 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:213
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:215
  * @production SynchronizedStmt : {@link Stmt} ::= <span class="component">{@link Expr}</span> <span class="component">{@link Block}</span> <span class="component">{@link MonitorExit}</span>;
 
  */
 public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:202
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:579
    */
   public void prettyPrint(PrettyPrinter out) {
-    out.print("synchronized ");
+    out.print("synchronized (");
     out.print(getExpr());
-    out.print(" ");
+    out.print(") ");
     out.print(getBlock());
-    if (!out.isNewLine()) {
-      out.println();
-    }
   }
   /**
-   * @aspect DU
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:1046
+   * @aspect DefiniteUnassignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1239
    */
   public Block getFinallyBlock() {
     return getMonitorExit();
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:424
-   */
-  public void typeCheck() {
-    TypeDecl type = getExpr().type();
-    if (!type.isReferenceType() || type.isNull()) {
-      error("*** The type of the expression must be a reference");
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -81,62 +69,50 @@ public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    isDAafter_Variable_reset();
-    isDUafter_Variable_reset();
     getMonitorExit_reset();
     canCompleteNormally_reset();
+    assignedAfter_Variable_reset();
+    unassignedAfter_Variable_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:48
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:54
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public SynchronizedStmt clone() throws CloneNotSupportedException {
     SynchronizedStmt node = (SynchronizedStmt) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public SynchronizedStmt copy() {
     try {
       SynchronizedStmt node = (SynchronizedStmt) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -150,8 +126,9 @@ public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:80
+   * @declaredat ASTNode:64
    */
+  @Deprecated
   public SynchronizedStmt fullCopy() {
     return treeCopyNoTransform();
   }
@@ -160,7 +137,7 @@ public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:89
+   * @declaredat ASTNode:74
    */
   public SynchronizedStmt treeCopyNoTransform() {
     SynchronizedStmt tree = (SynchronizedStmt) copy();
@@ -172,7 +149,7 @@ public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -186,15 +163,28 @@ public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:114
+   * @declaredat ASTNode:99
    */
   public SynchronizedStmt treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    SynchronizedStmt tree = (SynchronizedStmt) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 2:
+          tree.children[i] = null;
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:121
+  /** @apilevel internal 
+   * @declaredat ASTNode:118
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -268,223 +258,320 @@ public class SynchronizedStmt extends Stmt implements Cloneable, FinallyHost {
   protected int getMonitorExitChildPosition() {
     return 2;
   }
-  protected java.util.Map isDAafter_Variable_values;
-  /**
-   * @apilevel internal
-   */
-  private void isDAafter_Variable_reset() {
-    isDAafter_Variable_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafter(Variable v) {
-    Object _parameters = v;
-    if (isDAafter_Variable_values == null) isDAafter_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDAafter_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDAafter_Variable_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDAafter_Variable_value = getBlock().isDAafter(v);
-    if (isFinal && num == state().boundariesCrossed) {
-      isDAafter_Variable_values.put(_parameters, Boolean.valueOf(isDAafter_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return isDAafter_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafterFinally(Variable v) {
-    ASTNode$State state = state();
-    boolean isDUafterFinally_Variable_value = true;
-
-    return isDUafterFinally_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafterFinally(Variable v) {
-    ASTNode$State state = state();
-    boolean isDAafterFinally_Variable_value = false;
-
-    return isDAafterFinally_Variable_value;
-  }
-  protected java.util.Map isDUafter_Variable_values;
-  /**
-   * @apilevel internal
-   */
-  private void isDUafter_Variable_reset() {
-    isDUafter_Variable_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafter(Variable v) {
-    Object _parameters = v;
-    if (isDUafter_Variable_values == null) isDUafter_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDUafter_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDUafter_Variable_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDUafter_Variable_value = getBlock().isDUafter(v);
-    if (isFinal && num == state().boundariesCrossed) {
-      isDUafter_Variable_values.put(_parameters, Boolean.valueOf(isDUafter_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return isDUafter_Variable_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getMonitorExit_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected MonitorExit getMonitorExit_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void getMonitorExit_reset() {
     getMonitorExit_computed = false;
+    
     getMonitorExit_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean getMonitorExit_computed = false;
+
+  /** @apilevel internal */
+  protected MonitorExit getMonitorExit_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect MonitorExit
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/MonitorExit.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="MonitorExit", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/MonitorExit.jrag:32")
   public MonitorExit getMonitorExit() {
-    if(getMonitorExit_computed) {
+    ASTNode$State state = state();
+    if (getMonitorExit_computed) {
       return (MonitorExit) getChild(getMonitorExitChildPosition());
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     getMonitorExit_value = new MonitorExit(this);
     setChild(getMonitorExit_value, getMonitorExitChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getMonitorExit_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    getMonitorExit_computed = true;
+    state().leaveLazyAttribute();
     MonitorExit node = (MonitorExit) this.getChild(getMonitorExitChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean canCompleteNormally_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean canCompleteNormally_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void canCompleteNormally_reset() {
-    canCompleteNormally_computed = false;
+    canCompleteNormally_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle canCompleteNormally_computed = null;
+
+  /** @apilevel internal */
+  protected boolean canCompleteNormally_value;
+
+  /**
+   * @attribute syn
+   * @aspect UnreachableStatements
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:50
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:50")
   public boolean canCompleteNormally() {
-    if(canCompleteNormally_computed) {
+    ASTNode$State state = state();
+    if (canCompleteNormally_computed == ASTNode$State.NON_CYCLE || canCompleteNormally_computed == state().cycle()) {
       return canCompleteNormally_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     canCompleteNormally_value = getBlock().canCompleteNormally();
-    if (isFinal && num == state().boundariesCrossed) {
-      canCompleteNormally_computed = true;
+    if (state().inCircle()) {
+      canCompleteNormally_computed = state().cycle();
+    
     } else {
+      canCompleteNormally_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return canCompleteNormally_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean modifiedInScope(Variable var) {
+  /** @apilevel internal */
+  private void assignedAfter_Variable_reset() {
+    assignedAfter_Variable_values = null;
+  }
+  protected java.util.Map assignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:264")
+  public boolean assignedAfter(Variable v) {
+    Object _parameters = v;
+    if (assignedAfter_Variable_values == null) assignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (assignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = assignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      assignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
     ASTNode$State state = state();
-    boolean modifiedInScope_Variable_value = getBlock().modifiedInScope(var);
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_assignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_assignedAfter_Variable_value = getBlock().assignedAfter(v);
+        if (new_assignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_assignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      assignedAfter_Variable_values.put(_parameters, new_assignedAfter_Variable_value);
 
+      state.leaveCircle();
+      return new_assignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_assignedAfter_Variable_value = getBlock().assignedAfter(v);
+      if (new_assignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_assignedAfter_Variable_value;
+      }
+      return new_assignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /**
+   * @attribute syn
+   * @aspect DefiniteUnassignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1246
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1246")
+  public boolean unassignedAfterFinally(Variable v) {
+    boolean unassignedAfterFinally_Variable_value = true;
+    return unassignedAfterFinally_Variable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect DefiniteUnassignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1251
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1251")
+  public boolean assignedAfterFinally(Variable v) {
+    boolean assignedAfterFinally_Variable_value = false;
+    return assignedAfterFinally_Variable_value;
+  }
+  /** @apilevel internal */
+  private void unassignedAfter_Variable_reset() {
+    unassignedAfter_Variable_values = null;
+  }
+  protected java.util.Map unassignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:899")
+  public boolean unassignedAfter(Variable v) {
+    Object _parameters = v;
+    if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfter_Variable_value = getBlock().unassignedAfter(v);
+        if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfter_Variable_values.put(_parameters, new_unassignedAfter_Variable_value);
+
+      state.leaveCircle();
+      return new_unassignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfter_Variable_value = getBlock().unassignedAfter(v);
+      if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfter_Variable_value;
+      }
+      return new_unassignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /**
+   * @attribute syn
+   * @aspect PreciseRethrow
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78")
+  public boolean modifiedInScope(Variable var) {
+    boolean modifiedInScope_Variable_value = getBlock().modifiedInScope(var);
     return modifiedInScope_Variable_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/BranchTarget.jrag:273
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
    * @apilevel internal
    */
-  public FinallyHost Define_FinallyHost_enclosingFinally(ASTNode caller, ASTNode child, Stmt branch) {
-    if (caller == getMonitorExitNoTransform()) {
+  public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
+    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:165
+      return reachable();
+    }
+    else {
+      return getParent().Define_reachable(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_reachable(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
+   * @apilevel internal
+   */
+  public boolean Define_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
+    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:217
+      return reachable();
+    }
+    else {
+      return getParent().Define_reportUnreachable(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @apilevel internal
+   */
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:849
+      return getExpr().assignedAfter(v);
+    }
+    else if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:847
+      return assignedBefore(v);
+    }
+    else {
+      return getParent().Define_assignedBefore(this, _callerNode, v);
+    }
+  }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
+   * @apilevel internal
+   */
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1571
+      return getExpr().unassignedAfter(v);
+    }
+    else if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1569
+      return unassignedBefore(v);
+    }
+    else {
+      return getParent().Define_unassignedBefore(this, _callerNode, v);
+    }
+  }
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:273
+   * @apilevel internal
+   */
+  public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    if (getMonitorExitNoTransform() != null && _callerNode == getMonitorExit()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:284
       return enclosingFinally(branch);
     }
-    else  {
-      int childIndex = this.getIndexOfChild(caller);
+    else {
+      int childIndex = this.getIndexOfChild(_callerNode);
       return this;
     }
   }
-  /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:739
-   * @apilevel internal
-   */
-  public boolean Define_boolean_isDAbefore(ASTNode caller, ASTNode child, Variable v) {
-    if (caller == getBlockNoTransform()) {
-      return getExpr().isDAafter(v);
-    }
-    else if (caller == getExprNoTransform()) {
-      return isDAbefore(v);
-    }
-    else {
-      return getParent().Define_boolean_isDAbefore(this, caller, v);
-    }
+  protected boolean canDefine_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    return true;
   }
-  /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:1358
-   * @apilevel internal
-   */
-  public boolean Define_boolean_isDUbefore(ASTNode caller, ASTNode child, Variable v) {
-    if (caller == getBlockNoTransform()) {
-      return getExpr().isDUafter(v);
-    }
-    else if (caller == getExprNoTransform()) {
-      return isDUbefore(v);
-    }
-    else {
-      return getParent().Define_boolean_isDUbefore(this, caller, v);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/UnreachableStatements.jrag:168
-   * @apilevel internal
-   */
-  public boolean Define_boolean_reachable(ASTNode caller, ASTNode child) {
-    if (caller == getBlockNoTransform()) {
-      return reachable();
-    }
-    else {
-      return getParent().Define_boolean_reachable(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/UnreachableStatements.jrag:219
-   * @apilevel internal
-   */
-  public boolean Define_boolean_reportUnreachable(ASTNode caller, ASTNode child) {
-    if (caller == getBlockNoTransform()) {
-      return reachable();
-    }
-    else {
-      return getParent().Define_boolean_reportUnreachable(this, caller);
-    }
-  }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:486
+    if (!getExpr().type().isReferenceType() || getExpr().type().isNull()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getExpr().type().isReferenceType() || getExpr().type().isNull()) {
+      collection.add(error("*** The type of the expression must be a reference"));
+    }
   }
 }

@@ -1,61 +1,35 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * A resource declaration in a try with resources statement.
  * @ast node
- * @declaredat extendj/java7/grammar/TryWithResources.ast:9
- * @production ResourceDeclaration : {@link VariableDeclaration};
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/TryWithResources.ast:9
+ * @production ResourceDeclaration : {@link VariableDeclarator} ::= <span class="component">{@link ResourceModifiers}</span> <span class="component">ResourceType:{@link Access}</span>;
 
  */
-public class ResourceDeclaration extends VariableDeclaration implements Cloneable {
-  /**
-   * Type checking for TWR.
-   * @aspect TryWithResources
-   * @declaredat extendj/java7/frontend/TryWithResources.jrag:45
-   */
-  public void typeCheck() {
-    TypeDecl typeAutoCloseable = lookupType("java.lang", "AutoCloseable");
-    if (typeAutoCloseable.isUnknown()) {
-      error("java.lang.AutoCloseable not found");
-    } else if (!getTypeAccess().type().instanceOf(typeAutoCloseable)) {
-      error("Resource specification must declare an AutoCloseable resource");
-    }
-  }
-  /**
-   * @aspect TryWithResources
-   * @declaredat extendj/java7/frontend/TryWithResources.jrag:195
-   */
-  public void nameCheck() {
-    // Special name check for resource specification
-    if (resourcePreviouslyDeclared(name())) {
-      errorf("A resource with the name %s has already been declared in this try statement.",
-          name());
-    }
-
-    // Do regular name check for variable declaration
-    super.nameCheck();
-  }
+public class ResourceDeclaration extends VariableDeclarator implements Cloneable {
   /**
    * @declaredat ASTNode:1
    */
@@ -70,79 +44,72 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    * @declaredat ASTNode:10
    */
   public void init$Children() {
-    children = new ASTNode[3];
-    setChild(new Opt(), 2);
+    children = new ASTNode[5];
+    setChild(new List(), 0);
+    setChild(new Opt(), 1);
   }
   /**
-   * @declaredat ASTNode:14
+   * @declaredat ASTNode:15
    */
-  public ResourceDeclaration(Modifiers p0, Access p1, String p2, Opt<Expr> p3) {
-    setChild(p0, 0);
-    setChild(p1, 1);
-    setID(p2);
+  public ResourceDeclaration(String p0, List<Dims> p1, Opt<Expr> p2, ResourceModifiers p3, Access p4) {
+    setID(p0);
+    setChild(p1, 0);
+    setChild(p2, 1);
     setChild(p3, 2);
+    setChild(p4, 3);
   }
   /**
-   * @declaredat ASTNode:20
+   * @declaredat ASTNode:22
    */
-  public ResourceDeclaration(Modifiers p0, Access p1, beaver.Symbol p2, Opt<Expr> p3) {
-    setChild(p0, 0);
-    setChild(p1, 1);
-    setID(p2);
+  public ResourceDeclaration(beaver.Symbol p0, List<Dims> p1, Opt<Expr> p2, ResourceModifiers p3, Access p4) {
+    setID(p0);
+    setChild(p1, 0);
+    setChild(p2, 1);
     setChild(p3, 2);
+    setChild(p4, 3);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:29
+  /** @apilevel low-level 
+   * @declaredat ASTNode:30
    */
   protected int numChildren() {
-    return 3;
+    return 4;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:35
+   * @declaredat ASTNode:36
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    getModifiers_reset();
+    getTypeAccess_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:47
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:53
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:59
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public ResourceDeclaration clone() throws CloneNotSupportedException {
     ResourceDeclaration node = (ResourceDeclaration) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:66
+  /** @apilevel internal 
+   * @declaredat ASTNode:55
    */
   public ResourceDeclaration copy() {
     try {
       ResourceDeclaration node = (ResourceDeclaration) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -156,8 +123,9 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:74
    */
+  @Deprecated
   public ResourceDeclaration fullCopy() {
     return treeCopyNoTransform();
   }
@@ -166,14 +134,19 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:94
+   * @declaredat ASTNode:84
    */
   public ResourceDeclaration treeCopyNoTransform() {
     ResourceDeclaration tree = (ResourceDeclaration) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 4:
+          tree.children[i] = null;
+          continue;
+        }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -187,70 +160,31 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:114
+   * @declaredat ASTNode:109
    */
   public ResourceDeclaration treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ResourceDeclaration tree = (ResourceDeclaration) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 4:
+          tree.children[i] = null;
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:121
+  /** @apilevel internal 
+   * @declaredat ASTNode:128
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ResourceDeclaration)node).tokenString_ID);    
-  }
-  /**
-   * Replaces the Modifiers child.
-   * @param node The new node to replace the Modifiers child.
-   * @apilevel high-level
-   */
-  public void setModifiers(Modifiers node) {
-    setChild(node, 0);
-  }
-  /**
-   * Retrieves the Modifiers child.
-   * @return The current node used as the Modifiers child.
-   * @apilevel high-level
-   */
-  @ASTNodeAnnotation.Child(name="Modifiers")
-  public Modifiers getModifiers() {
-    return (Modifiers) getChild(0);
-  }
-  /**
-   * Retrieves the Modifiers child.
-   * <p><em>This method does not invoke AST transformations.</em></p>
-   * @return The current node used as the Modifiers child.
-   * @apilevel low-level
-   */
-  public Modifiers getModifiersNoTransform() {
-    return (Modifiers) getChildNoTransform(0);
-  }
-  /**
-   * Replaces the TypeAccess child.
-   * @param node The new node to replace the TypeAccess child.
-   * @apilevel high-level
-   */
-  public void setTypeAccess(Access node) {
-    setChild(node, 1);
-  }
-  /**
-   * Retrieves the TypeAccess child.
-   * @return The current node used as the TypeAccess child.
-   * @apilevel high-level
-   */
-  @ASTNodeAnnotation.Child(name="TypeAccess")
-  public Access getTypeAccess() {
-    return (Access) getChild(1);
-  }
-  /**
-   * Retrieves the TypeAccess child.
-   * <p><em>This method does not invoke AST transformations.</em></p>
-   * @return The current node used as the TypeAccess child.
-   * @apilevel low-level
-   */
-  public Access getTypeAccessNoTransform() {
-    return (Access) getChildNoTransform(1);
+    return super.is$Equal(node) && (tokenString_ID == ((ResourceDeclaration) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme ID.
@@ -266,7 +200,7 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -282,13 +216,123 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
     return tokenString_ID != null ? tokenString_ID : "";
   }
   /**
+   * Replaces the Dims list.
+   * @param list The new list node to be used as the Dims list.
+   * @apilevel high-level
+   */
+  public void setDimsList(List<Dims> list) {
+    setChild(list, 0);
+  }
+  /**
+   * Retrieves the number of children in the Dims list.
+   * @return Number of children in the Dims list.
+   * @apilevel high-level
+   */
+  public int getNumDims() {
+    return getDimsList().getNumChild();
+  }
+  /**
+   * Retrieves the number of children in the Dims list.
+   * Calling this method will not trigger rewrites.
+   * @return Number of children in the Dims list.
+   * @apilevel low-level
+   */
+  public int getNumDimsNoTransform() {
+    return getDimsListNoTransform().getNumChildNoTransform();
+  }
+  /**
+   * Retrieves the element at index {@code i} in the Dims list.
+   * @param i Index of the element to return.
+   * @return The element at position {@code i} in the Dims list.
+   * @apilevel high-level
+   */
+  public Dims getDims(int i) {
+    return (Dims) getDimsList().getChild(i);
+  }
+  /**
+   * Check whether the Dims list has any children.
+   * @return {@code true} if it has at least one child, {@code false} otherwise.
+   * @apilevel high-level
+   */
+  public boolean hasDims() {
+    return getDimsList().getNumChild() != 0;
+  }
+  /**
+   * Append an element to the Dims list.
+   * @param node The element to append to the Dims list.
+   * @apilevel high-level
+   */
+  public void addDims(Dims node) {
+    List<Dims> list = (parent == null) ? getDimsListNoTransform() : getDimsList();
+    list.addChild(node);
+  }
+  /** @apilevel low-level 
+   */
+  public void addDimsNoTransform(Dims node) {
+    List<Dims> list = getDimsListNoTransform();
+    list.addChild(node);
+  }
+  /**
+   * Replaces the Dims list element at index {@code i} with the new node {@code node}.
+   * @param node The new node to replace the old list element.
+   * @param i The list index of the node to be replaced.
+   * @apilevel high-level
+   */
+  public void setDims(Dims node, int i) {
+    List<Dims> list = getDimsList();
+    list.setChild(node, i);
+  }
+  /**
+   * Retrieves the Dims list.
+   * @return The node representing the Dims list.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.ListChild(name="Dims")
+  public List<Dims> getDimsList() {
+    List<Dims> list = (List<Dims>) getChild(0);
+    return list;
+  }
+  /**
+   * Retrieves the Dims list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the Dims list.
+   * @apilevel low-level
+   */
+  public List<Dims> getDimsListNoTransform() {
+    return (List<Dims>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Dims list without
+   * triggering rewrites.
+   */
+  public Dims getDimsNoTransform(int i) {
+    return (Dims) getDimsListNoTransform().getChildNoTransform(i);
+  }
+  /**
+   * Retrieves the Dims list.
+   * @return The node representing the Dims list.
+   * @apilevel high-level
+   */
+  public List<Dims> getDimss() {
+    return getDimsList();
+  }
+  /**
+   * Retrieves the Dims list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the Dims list.
+   * @apilevel low-level
+   */
+  public List<Dims> getDimssNoTransform() {
+    return getDimsListNoTransform();
+  }
+  /**
    * Replaces the optional node for the Init child. This is the <code>Opt</code>
    * node containing the child Init, not the actual child!
    * @param opt The new node to be used as the optional node for the Init child.
    * @apilevel low-level
    */
   public void setInitOpt(Opt<Expr> opt) {
-    setChild(opt, 2);
+    setChild(opt, 1);
   }
   /**
    * Replaces the (optional) Init child.
@@ -321,7 +365,7 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    */
   @ASTNodeAnnotation.OptChild(name="Init")
   public Opt<Expr> getInitOpt() {
-    return (Opt<Expr>) getChild(2);
+    return (Opt<Expr>) getChild(1);
   }
   /**
    * Retrieves the optional node for child Init. This is the <code>Opt</code> node containing the child Init, not the actual child!
@@ -330,37 +374,249 @@ public class ResourceDeclaration extends VariableDeclaration implements Cloneabl
    * @apilevel low-level
    */
   public Opt<Expr> getInitOptNoTransform() {
-    return (Opt<Expr>) getChildNoTransform(2);
+    return (Opt<Expr>) getChildNoTransform(1);
+  }
+  /**
+   * Replaces the ResourceModifiers child.
+   * @param node The new node to replace the ResourceModifiers child.
+   * @apilevel high-level
+   */
+  public void setResourceModifiers(ResourceModifiers node) {
+    setChild(node, 2);
+  }
+  /**
+   * Retrieves the ResourceModifiers child.
+   * @return The current node used as the ResourceModifiers child.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.Child(name="ResourceModifiers")
+  public ResourceModifiers getResourceModifiers() {
+    return (ResourceModifiers) getChild(2);
+  }
+  /**
+   * Retrieves the ResourceModifiers child.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The current node used as the ResourceModifiers child.
+   * @apilevel low-level
+   */
+  public ResourceModifiers getResourceModifiersNoTransform() {
+    return (ResourceModifiers) getChildNoTransform(2);
+  }
+  /**
+   * Replaces the ResourceType child.
+   * @param node The new node to replace the ResourceType child.
+   * @apilevel high-level
+   */
+  public void setResourceType(Access node) {
+    setChild(node, 3);
+  }
+  /**
+   * Retrieves the ResourceType child.
+   * @return The current node used as the ResourceType child.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.Child(name="ResourceType")
+  public Access getResourceType() {
+    return (Access) getChild(3);
+  }
+  /**
+   * Retrieves the ResourceType child.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The current node used as the ResourceType child.
+   * @apilevel low-level
+   */
+  public Access getResourceTypeNoTransform() {
+    return (Access) getChildNoTransform(3);
+  }
+  /**
+   * Retrieves the TypeAccess child.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The current node used as the TypeAccess child.
+   * @apilevel low-level
+   */
+  public Access getTypeAccessNoTransform() {
+    return (Access) getChildNoTransform(4);
+  }
+  /**
+   * Retrieves the child position of the optional child TypeAccess.
+   * @return The the child position of the optional child TypeAccess.
+   * @apilevel low-level
+   */
+  protected int getTypeAccessChildPosition() {
+    return 4;
+  }
+  /**
+   * Type checking for TWR.
+   * @attribute syn
+   * @aspect TryWithResources
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:47
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:47")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        TypeDecl typeAutoCloseable = lookupType("java.lang", "AutoCloseable");
+        if (typeAutoCloseable.isUnknown()) {
+          problems.add(error("java.lang.AutoCloseable not found"));
+        } else if (!getTypeAccess().type().instanceOf(typeAutoCloseable)) {
+          problems.add(error("Resource specification must declare an AutoCloseable resource"));
+        }
+        return problems;
+      }
+  }
+  /** @apilevel internal */
+  private void getModifiers_reset() {
+    getModifiers_computed = null;
+    getModifiers_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle getModifiers_computed = null;
+
+  /** @apilevel internal */
+  protected Modifiers getModifiers_value;
+
+  /** Modifiers are same as the parent declaration (e.g. VarDeclStmt). 
+   * @attribute syn
+   * @aspect VariableDeclarationTransformation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:130
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableDeclarationTransformation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:130")
+  public Modifiers getModifiers() {
+    ASTNode$State state = state();
+    if (getModifiers_computed == ASTNode$State.NON_CYCLE || getModifiers_computed == state().cycle()) {
+      return getModifiers_value;
+    }
+    getModifiers_value = getResourceModifiers();
+    if (state().inCircle()) {
+      getModifiers_computed = state().cycle();
+    
+    } else {
+      getModifiers_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return getModifiers_value;
+  }
+  /** @apilevel internal */
+  private void getTypeAccess_reset() {
+    getTypeAccess_computed = false;
+    
+    getTypeAccess_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean getTypeAccess_computed = false;
+
+  /** @apilevel internal */
+  protected Access getTypeAccess_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect TryWithResources
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:306
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:306")
+  public Access getTypeAccess() {
+    ASTNode$State state = state();
+    if (getTypeAccess_computed) {
+      return (Access) getChild(getTypeAccessChildPosition());
+    }
+    state().enterLazyAttribute();
+    getTypeAccess_value = getResourceType().treeCopyNoTransform();
+    setChild(getTypeAccess_value, getTypeAccessChildPosition());
+    getTypeAccess_computed = true;
+    state().leaveLazyAttribute();
+    Access node = (Access) this.getChild(getTypeAccessChildPosition());
+    return node;
   }
   /**
    * Inherit the lookupType attribute in ResourceDeclaration.
    * @attribute inh
    * @aspect TryWithResources
-   * @declaredat extendj/java7/frontend/TryWithResources.jrag:40
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:40
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:40")
   public TypeDecl lookupType(String packageName, String typeName) {
-    ASTNode$State state = state();
-    TypeDecl lookupType_String_String_value = getParent().Define_TypeDecl_lookupType(this, null, packageName, typeName);
-
+    TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
     return lookupType_String_String_value;
   }
   /**
-   * @declaredat extendj/java7/frontend/TryWithResources.jrag:35
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeAccessNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getResourceTypeNoTransform() != null && _callerNode == getResourceType()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:316
+      return NameType.TYPE_NAME;
+    }
+    else if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:35
       return NameType.TYPE_NAME;
     }
     else {
-      return super.Define_NameType_nameType(caller, child);
+      return super.Define_nameType(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:437
    * @apilevel internal
    */
+  public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    if (getResourceModifiersNoTransform() != null && _callerNode == getResourceModifiers()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:314
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeFinal(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:42
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:214
+    if (resourcePreviouslyDeclared(name())) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
+    if (resourcePreviouslyDeclared(name())) {
+      collection.add(errorf("A resource with the name %s has already been declared in this try statement.",
+                name()));
+    }
   }
 }

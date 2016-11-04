@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/GenericMethods.ast:12
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:15
  * @production RawConstructorDecl : {@link ParConstructorDecl};
 
  */
@@ -42,16 +43,17 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @declaredat ASTNode:10
    */
   public void init$Children() {
-    children = new ASTNode[7];
+    children = new ASTNode[8];
     setChild(new List(), 1);
     setChild(new List(), 2);
     setChild(new Opt(), 3);
     setChild(new List(), 5);
+    setChild(new List(), 6);
   }
   /**
-   * @declaredat ASTNode:17
+   * @declaredat ASTNode:18
    */
-  public RawConstructorDecl(Modifiers p0, String p1, List<ParameterDeclaration> p2, List<Access> p3, Opt<Stmt> p4, Block p5, List<Access> p6, GenericConstructorDecl p7) {
+  public RawConstructorDecl(Modifiers p0, String p1, List<ParameterDeclaration> p2, List<Access> p3, Opt<Stmt> p4, Block p5, List<Access> p6, GenericConstructorDecl p7, List<TypeVariable> p8, Parameterization p9) {
     setChild(p0, 0);
     setID(p1);
     setChild(p2, 1);
@@ -60,11 +62,13 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
     setChild(p5, 4);
     setChild(p6, 5);
     setGenericConstructorDecl(p7);
+    setChild(p8, 6);
+    setParameterization(p9);
   }
   /**
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:30
    */
-  public RawConstructorDecl(Modifiers p0, beaver.Symbol p1, List<ParameterDeclaration> p2, List<Access> p3, Opt<Stmt> p4, Block p5, List<Access> p6, GenericConstructorDecl p7) {
+  public RawConstructorDecl(Modifiers p0, beaver.Symbol p1, List<ParameterDeclaration> p2, List<Access> p3, Opt<Stmt> p4, Block p5, List<Access> p6, GenericConstructorDecl p7, List<TypeVariable> p8, Parameterization p9) {
     setChild(p0, 0);
     setID(p1);
     setChild(p2, 1);
@@ -73,59 +77,49 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
     setChild(p5, 4);
     setChild(p6, 5);
     setGenericConstructorDecl(p7);
+    setChild(p8, 6);
+    setParameterization(p9);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:40
+  /** @apilevel low-level 
+   * @declaredat ASTNode:43
    */
   protected int numChildren() {
-    return 6;
+    return 7;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:46
+   * @declaredat ASTNode:49
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:53
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:57
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:64
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:70
+  /** @apilevel internal 
+   * @declaredat ASTNode:61
    */
   public RawConstructorDecl clone() throws CloneNotSupportedException {
     RawConstructorDecl node = (RawConstructorDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:77
+  /** @apilevel internal 
+   * @declaredat ASTNode:66
    */
   public RawConstructorDecl copy() {
     try {
       RawConstructorDecl node = (RawConstructorDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -139,8 +133,9 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:96
+   * @declaredat ASTNode:85
    */
+  @Deprecated
   public RawConstructorDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -149,19 +144,19 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:95
    */
   public RawConstructorDecl treeCopyNoTransform() {
     RawConstructorDecl tree = (RawConstructorDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         switch (i) {
-        case 6:
+        case 7:
           tree.children[i] = null;
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -175,18 +170,31 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:130
+   * @declaredat ASTNode:120
    */
   public RawConstructorDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    RawConstructorDecl tree = (RawConstructorDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 7:
+          tree.children[i] = null;
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:137
+  /** @apilevel internal 
+   * @declaredat ASTNode:139
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((RawConstructorDecl)node).tokenString_ID) && (tokenGenericConstructorDecl_GenericConstructorDecl == ((RawConstructorDecl)node).tokenGenericConstructorDecl_GenericConstructorDecl);    
+    return super.is$Equal(node) && (tokenString_ID == ((RawConstructorDecl) node).tokenString_ID) && (tokenGenericConstructorDecl_GenericConstructorDecl == ((RawConstructorDecl) node).tokenGenericConstructorDecl_GenericConstructorDecl) && (tokenParameterization_Parameterization == ((RawConstructorDecl) node).tokenParameterization_Parameterization);    
   }
   /**
    * Replaces the Modifiers child.
@@ -228,7 +236,7 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -291,11 +299,10 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -319,7 +326,6 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -330,6 +336,13 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -396,11 +409,10 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -424,7 +436,6 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -435,6 +446,13 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -578,11 +596,10 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -606,7 +623,6 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(5);
-    list.getNumChild();
     return list;
   }
   /**
@@ -617,6 +633,13 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(5);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -653,13 +676,140 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
     return tokenGenericConstructorDecl_GenericConstructorDecl;
   }
   /**
+   * Replaces the TypeParameter list.
+   * @param list The new list node to be used as the TypeParameter list.
+   * @apilevel high-level
+   */
+  public void setTypeParameterList(List<TypeVariable> list) {
+    setChild(list, 6);
+  }
+  /**
+   * Retrieves the number of children in the TypeParameter list.
+   * @return Number of children in the TypeParameter list.
+   * @apilevel high-level
+   */
+  public int getNumTypeParameter() {
+    return getTypeParameterList().getNumChild();
+  }
+  /**
+   * Retrieves the number of children in the TypeParameter list.
+   * Calling this method will not trigger rewrites.
+   * @return Number of children in the TypeParameter list.
+   * @apilevel low-level
+   */
+  public int getNumTypeParameterNoTransform() {
+    return getTypeParameterListNoTransform().getNumChildNoTransform();
+  }
+  /**
+   * Retrieves the element at index {@code i} in the TypeParameter list.
+   * @param i Index of the element to return.
+   * @return The element at position {@code i} in the TypeParameter list.
+   * @apilevel high-level
+   */
+  public TypeVariable getTypeParameter(int i) {
+    return (TypeVariable) getTypeParameterList().getChild(i);
+  }
+  /**
+   * Check whether the TypeParameter list has any children.
+   * @return {@code true} if it has at least one child, {@code false} otherwise.
+   * @apilevel high-level
+   */
+  public boolean hasTypeParameter() {
+    return getTypeParameterList().getNumChild() != 0;
+  }
+  /**
+   * Append an element to the TypeParameter list.
+   * @param node The element to append to the TypeParameter list.
+   * @apilevel high-level
+   */
+  public void addTypeParameter(TypeVariable node) {
+    List<TypeVariable> list = (parent == null) ? getTypeParameterListNoTransform() : getTypeParameterList();
+    list.addChild(node);
+  }
+  /** @apilevel low-level 
+   */
+  public void addTypeParameterNoTransform(TypeVariable node) {
+    List<TypeVariable> list = getTypeParameterListNoTransform();
+    list.addChild(node);
+  }
+  /**
+   * Replaces the TypeParameter list element at index {@code i} with the new node {@code node}.
+   * @param node The new node to replace the old list element.
+   * @param i The list index of the node to be replaced.
+   * @apilevel high-level
+   */
+  public void setTypeParameter(TypeVariable node, int i) {
+    List<TypeVariable> list = getTypeParameterList();
+    list.setChild(node, i);
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * @return The node representing the TypeParameter list.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.ListChild(name="TypeParameter")
+  public List<TypeVariable> getTypeParameterList() {
+    List<TypeVariable> list = (List<TypeVariable>) getChild(6);
+    return list;
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the TypeParameter list.
+   * @apilevel low-level
+   */
+  public List<TypeVariable> getTypeParameterListNoTransform() {
+    return (List<TypeVariable>) getChildNoTransform(6);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeParameter list without
+   * triggering rewrites.
+   */
+  public TypeVariable getTypeParameterNoTransform(int i) {
+    return (TypeVariable) getTypeParameterListNoTransform().getChildNoTransform(i);
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * @return The node representing the TypeParameter list.
+   * @apilevel high-level
+   */
+  public List<TypeVariable> getTypeParameters() {
+    return getTypeParameterList();
+  }
+  /**
+   * Retrieves the TypeParameter list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the TypeParameter list.
+   * @apilevel low-level
+   */
+  public List<TypeVariable> getTypeParametersNoTransform() {
+    return getTypeParameterListNoTransform();
+  }
+  /**
+   * Replaces the lexeme Parameterization.
+   * @param value The new value for the lexeme Parameterization.
+   * @apilevel high-level
+   */
+  public void setParameterization(Parameterization value) {
+    tokenParameterization_Parameterization = value;
+  }
+  /**
+   * Retrieves the value for the lexeme Parameterization.
+   * @return The value for the lexeme Parameterization.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.Token(name="Parameterization")
+  public Parameterization getParameterization() {
+    return tokenParameterization_Parameterization;
+  }
+  /**
    * Retrieves the ImplicitConstructorInvocation child.
    * <p><em>This method does not invoke AST transformations.</em></p>
    * @return The current node used as the ImplicitConstructorInvocation child.
    * @apilevel low-level
    */
   public Stmt getImplicitConstructorInvocationNoTransform() {
-    return (Stmt) getChildNoTransform(6);
+    return (Stmt) getChildNoTransform(7);
   }
   /**
    * Retrieves the child position of the optional child ImplicitConstructorInvocation.
@@ -667,12 +817,14 @@ public class RawConstructorDecl extends ParConstructorDecl implements Cloneable 
    * @apilevel low-level
    */
   protected int getImplicitConstructorInvocationChildPosition() {
-    return 6;
+    return 7;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

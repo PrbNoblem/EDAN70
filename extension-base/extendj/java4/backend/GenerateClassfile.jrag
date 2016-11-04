@@ -1,4 +1,5 @@
 /* Copyright (c) 2005-2008, Torbjorn Ekman
+ *                    2016, Jesper Öqvist <jesper.oqvist@cs.lth.se>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,14 +41,12 @@ aspect GenerateClassfile {
     if (fromSource()) {
       for (int i = 0; i < getNumTypeDecl(); i++) {
         getTypeDecl(i).generateClassfile();
-        getTypeDecl(i).clear();
       }
     }
   }
 
   public void TypeDecl.generateClassfile() {
-    for (Iterator iter = nestedTypes.iterator(); iter.hasNext(); ) {
-      TypeDecl typeDecl = (TypeDecl) iter.next();
+    for (TypeDecl typeDecl : nestedTypes()) {
       typeDecl.generateClassfile();
     }
   }
@@ -65,7 +64,7 @@ aspect GenerateClassfile {
     try {
       ConstantPool cp = constantPool();
 
-      // force building of constant pool
+      // Force building of constant pool.
       cp.addClass(constantPoolName());
       if (hasSuperclass()) {
         cp.addClass(superclass().constantPoolName());
@@ -74,21 +73,23 @@ aspect GenerateClassfile {
       for (Iterator<TypeDecl> iter = interfacesIterator(); iter.hasNext(); numInterfaces++) {
         cp.addClass(iter.next().constantPoolName());
       }
-      for (Iterator iter = bcFields().iterator(); iter.hasNext(); ) {
-        FieldDeclaration field = (FieldDeclaration) iter.next();
+      for (FieldDeclarator field : fieldDeclarations()) {
         cp.addUtf8(field.name());
         cp.addUtf8(field.type().typeDescriptor());
         field.attributes();
+      }
+      // Add fields to store enclosing variables.
+      for (Variable var : enclosingVariables()) {
+        cp.addUtf8("val$" + var.name());
+        cp.addUtf8(var.type().typeDescriptor());
       }
       if (needsEnclosing()) {
         cp.addUtf8("this$0");
         cp.addUtf8(enclosing().typeDescriptor());
         cp.addUtf8("Synthetic");
       }
-
-      for (Iterator iter = bcMethods().iterator(); iter.hasNext(); ) {
-        BodyDecl decl = (BodyDecl) iter.next();
-        decl.touchMethod(cp);
+      for (BodyDecl method : methodsAndConstructors()) {
+        method.touchMethod(cp);
       }
       if (hasClinit()) {
         cp.addUtf8("<clinit>");
@@ -97,7 +98,7 @@ aspect GenerateClassfile {
       }
       attributes();
 
-      // Actual ClassFile generation
+      // Actual ClassFile generation.
       File dest = new File(fileName);
       File parentFile = dest.getParentFile();
       if (parentFile != null) {
@@ -121,50 +122,59 @@ aspect GenerateClassfile {
       for (Iterator<TypeDecl> iter = interfacesIterator(); iter.hasNext(); ) {
         out.writeChar(cp.addClass(iter.next().constantPoolName()));
       }
-      Collection fields = bcFields();
-      out.writeChar(fields.size() + (needsEnclosing() ? 1 : 0));
-      for (Iterator iter = fields.iterator(); iter.hasNext(); ) {
-        FieldDeclaration field = (FieldDeclaration) iter.next();
-        out.writeChar(field.flags());
-        out.writeChar(cp.addUtf8(field.name()));
-        out.writeChar(cp.addUtf8(field.type().typeDescriptor()));
-        out.writeChar(field.attributes().size());
-        for (Iterator itera = field.attributes().iterator(); itera.hasNext();) {
-          ((Attribute) itera.next()).emit(out);
-        }
-      }
+      generateFields(out, cp);
       if (needsEnclosing()) {
-        out.writeChar(0 /*Modifiers.ACC_PRIVATE*/);
+        out.writeChar(0);
         out.writeChar(cp.addUtf8("this$0"));
         out.writeChar(cp.addUtf8(enclosing().typeDescriptor()));
         out.writeChar(1);
         new SyntheticAttribute(cp).emit(out);
-
       }
 
-      Collection methods = bcMethods();
+      Collection<BodyDecl> methods = methodsAndConstructors();
       out.writeChar(methods.size() + (hasClinit() ? 1 : 0));
-      for (Iterator iter = methods.iterator(); iter.hasNext(); ) {
-        BodyDecl b = (BodyDecl) iter.next();
+      for (BodyDecl b : methods) {
         b.generateMethod(out, cp);
       }
+
       if (hasClinit()) {
         out.writeChar(Modifiers.ACC_STATIC);
         out.writeChar(cp.addUtf8("<clinit>"));
         out.writeChar(cp.addUtf8("()V"));
         out.writeChar(clinit_attributes().size());
-        for (Iterator itera = clinit_attributes().iterator(); itera.hasNext();) {
-          ((Attribute) itera.next()).emit(out);
+        for (Attribute attribute : clinit_attributes()) {
+          attribute.emit(out);
         }
       }
       out.writeChar(attributes().size());
-      for (Iterator itera = attributes().iterator(); itera.hasNext();) {
-        ((Attribute) itera.next()).emit(out);
+      for (Attribute attribute : attributes()) {
+        attribute.emit(out);
       }
-
       out.close();
     } catch (IOException e) {
       e.printStackTrace();
+    }
+  }
+
+  /** Generate bytecode attributes for the fields in this type. */
+  protected void TypeDecl.generateFields(DataOutputStream out, ConstantPool cp) throws IOException {
+    Collection<FieldDeclarator> fields = fieldDeclarations();
+    out.writeChar(fields.size() + (needsEnclosing() ? 1 : 0) + enclosingVariables().size());
+    for (FieldDeclarator field : fields) {
+      out.writeChar(field.flags());
+      out.writeChar(cp.addUtf8(field.name()));
+      out.writeChar(cp.addUtf8(field.type().typeDescriptor()));
+      out.writeChar(field.attributes().size());
+      for (Attribute attribute : field.attributes()) {
+        attribute.emit(out);
+      }
+    }
+    // Add fields to store enclosing variables.
+    for (Variable var : enclosingVariables()) {
+      out.writeChar(Modifiers.ACC_FINAL | Modifiers.ACC_SYNTHETIC);
+      out.writeChar(cp.addUtf8("val$" + var.name()));
+      out.writeChar(cp.addUtf8(var.type().typeDescriptor()));
+      out.writeChar(0);
     }
   }
 
@@ -176,25 +186,23 @@ aspect GenerateClassfile {
     }
     try {
       ConstantPool cp = constantPool();
-      // force building of constant pool
+      // Force building of constant pool.
       cp.addClass(constantPoolName());
       cp.addClass("java/lang/Object");
       for (int i = 0; i < getNumSuperInterface(); i++) {
         cp.addClass(getSuperInterface(i).type().constantPoolName());
       }
-      for (Iterator iter = bcFields().iterator(); iter.hasNext(); ) {
-        FieldDeclaration field = (FieldDeclaration) iter.next();
+      for (FieldDeclarator field : fieldDeclarations()) {
         cp.addUtf8(field.name());
         cp.addUtf8(field.type().typeDescriptor());
         field.attributes();
       }
-      for (Iterator iter = bcMethods().iterator(); iter.hasNext(); ) {
-        Object obj = iter.next();
+      for (BodyDecl obj : methodsAndConstructors()) {
         if (obj instanceof MethodDecl) {
-          MethodDecl m = (MethodDecl) obj;
-          cp.addUtf8(m.name());
-          cp.addUtf8(m.descName());
-          m.attributes();
+          MethodDecl method = (MethodDecl) obj;
+          cp.addUtf8(method.name());
+          cp.addUtf8(method.descName());
+          method.attributes();
         }
       }
       attributes();
@@ -205,7 +213,7 @@ aspect GenerateClassfile {
         clinit_attributes();
       }
 
-      // actual classfile generation
+      // Actual classfile generation.
       File dest = new File(fileName);
       File parentFile = dest.getParentFile();
       if (parentFile != null) {
@@ -239,22 +247,20 @@ aspect GenerateClassfile {
           out.writeChar(cp.addClass(typeDecl.constantPoolName()));
         }
       }
-      Collection fields = bcFields();
+      Collection<FieldDeclarator> fields = fieldDeclarations();
       out.writeChar(fields.size());
-      for (Iterator iter = fields.iterator(); iter.hasNext(); ) {
-        FieldDeclaration field = (FieldDeclaration) iter.next();
+      for (FieldDeclarator field : fields) {
         out.writeChar(field.flags());
         out.writeChar(cp.addUtf8(field.name()));
         out.writeChar(cp.addUtf8(field.type().typeDescriptor()));
         out.writeChar(field.attributes().size());
-        for (Iterator itera = field.attributes().iterator(); itera.hasNext();) {
-          ((Attribute) itera.next()).emit(out);
+        for (Attribute attribute : field.attributes()) {
+          attribute.emit(out);
         }
       }
-      Collection methods = bcMethods();
+      Collection<BodyDecl> methods = methodsAndConstructors();
       out.writeChar(methods.size() + (hasClinit() ? 1 : 0));
-      for (Iterator iter = methods.iterator(); iter.hasNext(); ) {
-        BodyDecl b = (BodyDecl) iter.next();
+      for (BodyDecl b : methods) {
         b.generateMethod(out, cp);
       }
       if (hasClinit()) {
@@ -262,40 +268,41 @@ aspect GenerateClassfile {
         out.writeChar(cp.addUtf8("<clinit>"));
         out.writeChar(cp.addUtf8("()V"));
         out.writeChar(clinit_attributes().size());
-        for (Iterator itera = clinit_attributes().iterator(); itera.hasNext();) {
-          ((Attribute) itera.next()).emit(out);
+        for (Attribute attribute : clinit_attributes()) {
+          attribute.emit(out);
         }
       }
       out.writeChar(attributes().size());
-      for (Iterator itera = attributes().iterator(); itera.hasNext();) {
-        ((Attribute) itera.next()).emit(out);
+      for (Attribute attribute : attributes()) {
+        attribute.emit(out);
       }
-
       out.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-
   public void BodyDecl.generateMethod(DataOutputStream out, ConstantPool cp) throws IOException {
   }
+
   public void MethodDecl.generateMethod(DataOutputStream out, ConstantPool cp) throws IOException {
     out.writeChar(flags());
     out.writeChar(cp.addUtf8(name()));
     out.writeChar(cp.addUtf8(descName()));
     out.writeChar(attributes().size());
-    for (Iterator itera = attributes().iterator(); itera.hasNext();) {
-      ((Attribute) itera.next()).emit(out);
+    for (Attribute attribute : attributes()) {
+      attribute.emit(out);
     }
   }
-  public void ConstructorDecl.generateMethod(DataOutputStream out, ConstantPool cp) throws IOException {
+
+  public void ConstructorDecl.generateMethod(DataOutputStream out, ConstantPool cp)
+      throws IOException {
     out.writeChar(flags());
     out.writeChar(cp.addUtf8("<init>"));
     out.writeChar(cp.addUtf8(descName()));
     out.writeChar(attributes().size());
-    for (Iterator itera = attributes().iterator(); itera.hasNext();) {
-      ((Attribute) itera.next()).emit(out);
+    for (Attribute attribute : attributes()) {
+      attribute.emit(out);
     }
   }
 
@@ -314,126 +321,132 @@ aspect GenerateClassfile {
     attributes();
   }
 
-  syn lazy Collection TypeDecl.bcFields() = new ArrayList();
-  eq ReferenceType.bcFields() {
-    ArrayList l = new ArrayList();
-    for (int i = 0; i < getNumBodyDecl(); i++) {
-      if (getBodyDecl(i).isBytecodeField()) {
-        l.add(getBodyDecl(i));
+  /** @return a collection of the fields declared in this type. */
+  syn lazy Collection<FieldDeclarator> TypeDecl.fieldDeclarations() = Collections.emptyList();
+
+  eq ReferenceType.fieldDeclarations() {
+    Collection<FieldDeclarator> fields = new ArrayList<FieldDeclarator>();
+    for (BodyDecl decl : getBodyDeclList()) {
+      if (decl.isField()) {
+        fields.addAll(decl.fieldDeclarations());
       }
     }
-    return l;
+    if (hasAssertStatement()) {
+      fields.add(assertionsDisabled());
+    }
+    return fields;
   }
 
-  syn Collection ReferenceType.bcMethods() {
-    ArrayList l = new ArrayList();
-    for (int i = 0; i < getNumBodyDecl(); i++) {
-      if (getBodyDecl(i).isBytecodeMethod()) {
-        l.add(getBodyDecl(i));
+  /**
+   * A collection of accessor methods and constructors that should be generated
+   * in this type declaration. Accessors are used by inner classes to
+   * read/write/call protected or private fields/methods/constructors in this
+   * type or its supertypes.
+   */
+  coll HashSet<BodyDecl> TypeDecl.accessors() root CompilationUnit;
+
+  VarAccess contributes
+      fieldQualifierType().fieldAccessor(decl())
+      when requiresFieldAccessor()
+      to TypeDecl.accessors()
+      for fieldQualifierType();
+
+  syn boolean VarAccess.requiresFieldAccessor() =
+      requiresAccessor() && isSource();
+
+  VarAccess contributes
+      fieldQualifierType().fieldWriteAccessor(decl())
+      when requiresFieldWriteAccessor()
+      to TypeDecl.accessors()
+      for fieldQualifierType();
+
+  syn boolean VarAccess.requiresFieldWriteAccessor() =
+      requiresAccessor() && isDest();
+
+  /**
+   * @return all fields declared in this body decl
+   */
+  syn Collection<FieldDeclarator> BodyDecl.fieldDeclarations() = Collections.emptyList();
+
+  eq FieldDecl.fieldDeclarations() {
+    Collection<FieldDeclarator> fields = new ArrayList<FieldDeclarator>();
+    for (FieldDeclarator decl : getDeclaratorList()) {
+      fields.add(decl);
+    }
+    return fields;
+  }
+
+  MethodAccess contributes
+      methodQualifierType().methodAccessor(decl())
+      when requiresAccessor()
+      to TypeDecl.accessors()
+      for methodQualifierType();
+
+  ConstructorAccess contributes
+      decl().createAccessor()
+      when decl().isPrivate() && type() != hostType()
+      to TypeDecl.accessors()
+      for decl().createAccessor().hostType();
+
+  ClassInstanceExpr contributes
+      decl().createAccessor()
+      when decl().isPrivate() && type() != hostType()
+      to TypeDecl.accessors()
+      for decl().createAccessor().hostType();
+
+  ClassDecl contributes nta getImplicitConstructorOpt() to TypeDecl.accessors();
+
+  Dot contributes
+      ((SuperAccess) leftSide()).superAccessorTarget()
+          .superAccessor(superAccessorTargetMethod())
+      when requiresSuperAccessor()
+      to TypeDecl.accessors()
+      for ((SuperAccess) leftSide()).superAccessorTarget();
+
+  /** @return {@code true} if this is a method call that requires a super accessor. */
+  syn boolean AbstractDot.requiresSuperAccessor() =
+      leftSide().isSuperAccess()
+      && rightSide().isInstanceMethodAccess()
+      && !hostType().instanceOf(leftSide().type());
+
+  syn MethodDecl AbstractDot.superAccessorTargetMethod() =
+      ((MethodAccess) rightSide()).decl();
+
+  /**
+   * @return {@code true} if this access is a method call of a non-static method.
+   */
+  syn boolean Access.isInstanceMethodAccess() = false;
+
+  eq MethodAccess.isInstanceMethodAccess() = !decl().isStatic();
+
+  /** @return a collection of the methods and constructors declared in this type. */
+  syn Collection<BodyDecl> ReferenceType.methodsAndConstructors() {
+    Collection<BodyDecl> methods = new ArrayList<BodyDecl>();
+    for (BodyDecl decl : getBodyDeclList()) {
+      if (decl.isMethodOrConstructor()) {
+        methods.add(decl);
       }
     }
-    return l;
+    methods.addAll(accessors());
+    return methods;
   }
 
-  eq ClassDecl.bcMethods() {
-    Collection c = new ArrayList();
+  eq ClassDecl.methodsAndConstructors() {
+    Collection<BodyDecl> methods = new ArrayList<BodyDecl>();
     if (hasImplicitConstructor()) {
-      c.add(getImplicitConstructor());
+      methods.add(getImplicitConstructor());
     }
-    c.addAll(super.bcMethods());
-    return c;
+    methods.addAll(super.methodsAndConstructors());
+    return methods;
   }
 
-  syn boolean BodyDecl.isBytecodeField() = false;
-  eq FieldDeclaration.isBytecodeField() = true;
+  syn boolean BodyDecl.isField() = false;
 
-  syn boolean BodyDecl.isBytecodeMethod() = false;
-  eq MethodDecl.isBytecodeMethod() = true;
-  eq ConstructorDecl.isBytecodeMethod() = true;
+  eq FieldDecl.isField() = true;
 
-  // Remove method bodies and cached attributes after the class file has been generated
-  public boolean ASTNode.clear() {
-    boolean empty = true;
-    for (int i = 0; i < getNumChild(); i++) {
-      ASTNode child = getChild(i);
-      if (!child.clear()) {
-        empty = false;
-      } else {
-        if (child instanceof List) {
-          ((ASTNode) this).setChild(new List(), i);
-        } else if (child instanceof Opt) {
-          ((ASTNode) this).setChild(new Opt(), i);
-        }
-        //setChild(null, i);
-      }
-    }
-    if (empty) {
-      setParent(null);
-    }
-    if (flush()) {
-      flushCache();
-    }
-    return empty;
-  }
+  syn boolean BodyDecl.isMethodOrConstructor() = false;
 
-  syn boolean ASTNode.flush() = true;
+  eq MethodDecl.isMethodOrConstructor() = true;
 
-  eq TypeDecl.flush() = false;
-  eq LocalClassDeclStmt.flush() = true;
-  eq AnonymousDecl.flush() = true;
-
-  eq MethodDecl.flush() = false;
-  eq FieldDeclaration.flush() = false;
-  eq ConstructorDecl.flush() = false;
-
-  public boolean TypeDecl.clear() {
-    bytecodes(constantPool()).clearCodeGeneration();
-    for (int i = 0; i < getNumBodyDecl(); i++) {
-      getBodyDecl(i).clear();
-    }
-    attributes_computed = false;
-    attributes_value = null;
-    clinit_attributes_computed = false;
-    clinit_attributes_value = null;
-    constantPool_computed = false;
-    constantPool_value = null;
-    bytecodes_ConstantPool_values = null;
-    return false;
-  }
-  public boolean LocalClassDeclStmt.clear() {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).clear();
-    }
-    setParent(null);
-    flushCache();
-    return true;
-  }
-  public boolean AnonymousDecl.clear() {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).clear();
-    }
-    setParent(null);
-    flushCache();
-    return true;
-  }
-
-  public boolean MethodDecl.clear() {
-    if (hasBlock()) {
-      getBlock().clear();
-      setBlock(new Block(new List()));
-    }
-    bytecodes_ConstantPool_values = null;
-    return false;
-  }
-
-  public boolean FieldDeclaration.clear() {
-    return false;
-  }
-
-  public boolean ConstructorDecl.clear() {
-    getBlock().clear();
-    setBlock(new Block(new List()));
-    bytecodes_ConstantPool_values = null;
-    return false;
-  }
+  eq ConstructorDecl.isMethodOrConstructor() = true;
 }

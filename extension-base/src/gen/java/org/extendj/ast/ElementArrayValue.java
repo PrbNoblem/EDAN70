@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Annotations.ast:13
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:13
  * @production ElementArrayValue : {@link ElementValue} ::= <span class="component">{@link ElementValue}*</span>;
 
  */
 public class ElementArrayValue extends ElementValue implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat extendj/java5/frontend/PrettyPrint.jadd:155
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:89
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("{ ");
@@ -65,58 +66,46 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
   public ElementArrayValue(List<ElementValue> p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public ElementArrayValue clone() throws CloneNotSupportedException {
     ElementArrayValue node = (ElementArrayValue) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public ElementArrayValue copy() {
     try {
       ElementArrayValue node = (ElementArrayValue) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -130,8 +119,9 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public ElementArrayValue fullCopy() {
     return treeCopyNoTransform();
   }
@@ -140,14 +130,14 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public ElementArrayValue treeCopyNoTransform() {
     ElementArrayValue tree = (ElementArrayValue) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -161,15 +151,23 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public ElementArrayValue treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ElementArrayValue tree = (ElementArrayValue) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -222,11 +220,10 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
    * @apilevel high-level
    */
   public void addElementValue(ElementValue node) {
-    List<ElementValue> list = (parent == null || state == null) ? getElementValueListNoTransform() : getElementValueList();
+    List<ElementValue> list = (parent == null) ? getElementValueListNoTransform() : getElementValueList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addElementValueNoTransform(ElementValue node) {
     List<ElementValue> list = getElementValueListNoTransform();
@@ -250,7 +247,6 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="ElementValue")
   public List<ElementValue> getElementValueList() {
     List<ElementValue> list = (List<ElementValue>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -261,6 +257,13 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
    */
   public List<ElementValue> getElementValueListNoTransform() {
     return (List<ElementValue>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the ElementValue list without
+   * triggering rewrites.
+   */
+  public ElementValue getElementValueNoTransform(int i) {
+    return (ElementValue) getElementValueListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the ElementValue list.
@@ -282,12 +285,12 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:80
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:111
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:111")
   public boolean validTarget(Annotation a) {
-    ASTNode$State state = state();
-    try {
+    {
         for (int i = 0;  i < getNumElementValue(); i++) {
           if (getElementValue(i).validTarget(a)) {
             return true;
@@ -295,18 +298,16 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
         }
         return false;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:228
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:285
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:285")
   public ElementValue definesElementTypeValue(String name) {
-    ASTNode$State state = state();
-    try {
+    {
         for (int i = 0; i < getNumElementValue(); i++) {
           if (getElementValue(i).definesElementTypeValue(name) != null) {
             return getElementValue(i).definesElementTypeValue(name);
@@ -314,18 +315,16 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
         }
         return null;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:370
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:451
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:451")
   public boolean hasValue(String annot) {
-    ASTNode$State state = state();
-    try {
+    {
         for (int i = 0;  i < getNumElementValue(); i++) {
           if (getElementValue(i).hasValue(annot)) {
             return true;
@@ -333,18 +332,16 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
         }
         return false;
       }
-    finally {
-    }
   }
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:583
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:693
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:693")
   public boolean commensurateWithArrayDecl(ArrayDecl type) {
-    ASTNode$State state = state();
-    try {
+    {
         for (int i = 0; i < getNumElementValue(); i++) {
           if (!type.componentType().commensurateWith(getElementValue(i))) {
             return false;
@@ -352,36 +349,41 @@ public class ElementArrayValue extends ElementValue implements Cloneable {
         }
         return true;
       }
-    finally {
-    }
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:225
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:278
    * @apilevel internal
    */
-  public ElementValue Define_ElementValue_lookupElementTypeValue(ASTNode caller, ASTNode child, String name) {
-    if (caller == getElementValueListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public ElementValue Define_lookupElementTypeValue(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getElementValueListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:280
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return definesElementTypeValue(name);
     }
     else {
-      return getParent().Define_ElementValue_lookupElementTypeValue(this, caller, name);
+      return getParent().Define_lookupElementTypeValue(this, _callerNode, name);
     }
   }
-  /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:604
-   * @apilevel internal
-   */
-  public TypeDecl Define_TypeDecl_declType(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return declType().elementType();
-    }
+  protected boolean canDefine_lookupElementTypeValue(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
   }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:713
    * @apilevel internal
    */
+  public TypeDecl Define_declType(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return declType().elementType();
+  }
+  protected boolean canDefine_declType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

@@ -1,48 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:155
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:157
  * @production AddExpr : {@link AdditiveExpr};
 
  */
 public class AddExpr extends AdditiveExpr implements Cloneable {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:204
-   */
-  public void typeCheck() {
-    TypeDecl left = getLeftOperand().type();
-    TypeDecl right = getRightOperand().type();
-    if (!left.isString() && !right.isString()) {
-      super.typeCheck();
-    } else if (left.isVoid()) {
-      error("The type void of the left hand side is not numeric");
-    } else if (right.isVoid()) {
-      error("The type void of the right hand side is not numeric");
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -66,59 +52,47 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public AddExpr clone() throws CloneNotSupportedException {
     AddExpr node = (AddExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public AddExpr copy() {
     try {
       AddExpr node = (AddExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -132,8 +106,9 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:61
    */
+  @Deprecated
   public AddExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -142,14 +117,14 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:86
+   * @declaredat ASTNode:71
    */
   public AddExpr treeCopyNoTransform() {
     AddExpr tree = (AddExpr) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -163,15 +138,23 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:106
+   * @declaredat ASTNode:91
    */
   public AddExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    AddExpr tree = (AddExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:113
+  /** @apilevel internal 
+   * @declaredat ASTNode:105
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -228,57 +211,62 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
   public Expr getRightOperandNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
   public Constant constant() {
-    ASTNode$State state = state();
     Constant constant_value = type().add(getLeftOperand().constant(), getRightOperand().constant());
-
     return constant_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /** The operator string used for pretty printing this expression. 
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242")
   public String printOp() {
-    ASTNode$State state = state();
     String printOp_value = "+";
-
     return printOp_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = type_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl type_compute() {
       TypeDecl left = getLeftOperand().type();
       TypeDecl right = getRightOperand().type();
@@ -293,61 +281,103 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
       }
     }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:53
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:221
    */
-  public TypeDecl Define_TypeDecl_targetType(ASTNode caller, ASTNode child) {
-    if (caller == getRightOperandNoTransform()){
-    if (getRightOperand().stringContext()) {
-      return getLeftOperand().type();
-    } else if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
-      return type();
-    } else {
-      return targetType();
-    }
-  }
-    else if (caller == getLeftOperandNoTransform()){
-    if (getLeftOperand().stringContext()) {
-      return getRightOperand().type();
-    } else if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
-      return type();
-    } else {
-      return targetType();
-    }
-  }
-    else {
-      return super.Define_TypeDecl_targetType(caller, child);
-    }
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:221")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        TypeDecl left = getLeftOperand().type();
+        TypeDecl right = getRightOperand().type();
+        if (!left.isString() && !right.isString()) {
+          return super.typeProblems();
+        } else if (left.isVoid()) {
+          problems.add(error("The type void of the left hand side is not numeric"));
+        } else if (right.isVoid()) {
+          problems.add(error("The type void of the right hand side is not numeric"));
+        }
+        return problems;
+      }
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:234
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
    * @apilevel internal
    */
-  public boolean Define_boolean_stringContext(ASTNode caller, ASTNode child) {
-    if (caller == getRightOperandNoTransform()){
-    if (!getRightOperand().isPolyExpression() && !getLeftOperand().isPolyExpression()) {
-      if (getLeftOperand().type().isString() && !getRightOperand().type().isString()) {
-        return true;
-      }
+  public TypeDecl Define_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:52
+      {
+          if (getRightOperand().stringContext()) {
+            return getLeftOperand().type();
+          } else if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
+            return type();
+          } else {
+            return targetType();
+          }
+        }
     }
-    return false;
-  }
-    else if (caller == getLeftOperandNoTransform()){
-    if (!getRightOperand().isPolyExpression() && !getLeftOperand().isPolyExpression()) {
-      if (getRightOperand().type().isString() && !getLeftOperand().type().isString()) {
-        return true;
-      }
+    else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:43
+      {
+          if (getLeftOperand().stringContext()) {
+            return getRightOperand().type();
+          } else if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
+            return type();
+          } else {
+            return targetType();
+          }
+        }
     }
-    return false;
-  }
     else {
-      return super.Define_boolean_stringContext(caller, child);
+      return super.Define_targetType(_callerNode, _childNode);
     }
+  }
+  protected boolean canDefine_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
+  public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:233
+      {
+          if (!getRightOperand().isPolyExpression() && !getLeftOperand().isPolyExpression()) {
+            if (getLeftOperand().type().isString() && !getRightOperand().type().isString()) {
+              return true;
+            }
+          }
+          return false;
+        }
+    }
+    else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:225
+      {
+          if (!getRightOperand().isPolyExpression() && !getLeftOperand().isPolyExpression()) {
+            if (getRightOperand().type().isString() && !getLeftOperand().type().isString()) {
+              return true;
+            }
+          }
+          return false;
+        }
+    }
+    else {
+      return super.Define_stringContext(_callerNode, _childNode);
+    }
+  }
+  protected boolean canDefine_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

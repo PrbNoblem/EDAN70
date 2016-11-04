@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:67
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:67
  * @production AnonymousDecl : {@link ClassDecl} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">[SuperClass:{@link Access}]</span> <span class="component">Implements:{@link Access}*</span> <span class="component">{@link BodyDecl}*</span>;
 
  */
@@ -64,23 +65,21 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
     setID(p1);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:30
+  /** @apilevel low-level 
+   * @declaredat ASTNode:28
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:36
+   * @declaredat ASTNode:34
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -89,37 +88,27 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
     getImplementsList_reset();
     getImplicitConstructorOpt_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:58
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:64
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public AnonymousDecl clone() throws CloneNotSupportedException {
     AnonymousDecl node = (AnonymousDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:71
+  /** @apilevel internal 
+   * @declaredat ASTNode:55
    */
   public AnonymousDecl copy() {
     try {
       AnonymousDecl node = (AnonymousDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -133,8 +122,9 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:90
+   * @declaredat ASTNode:74
    */
+  @Deprecated
   public AnonymousDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -143,7 +133,7 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:99
+   * @declaredat ASTNode:84
    */
   public AnonymousDecl treeCopyNoTransform() {
     AnonymousDecl tree = (AnonymousDecl) copy();
@@ -159,7 +149,7 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -173,18 +163,35 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:128
+   * @declaredat ASTNode:113
    */
   public AnonymousDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    AnonymousDecl tree = (AnonymousDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 2:
+        case 3:
+          tree.children[i] = new Opt();
+          continue;
+        case 4:
+          tree.children[i] = new List();
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:135
+  /** @apilevel internal 
+   * @declaredat ASTNode:136
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((AnonymousDecl)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((AnonymousDecl) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -226,7 +233,7 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -289,11 +296,10 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -317,7 +323,6 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -328,6 +333,13 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -486,11 +498,10 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addImplements(Access node) {
-    List<Access> list = (parent == null || state == null) ? getImplementsListNoTransform() : getImplementsList();
+    List<Access> list = (parent == null) ? getImplementsListNoTransform() : getImplementsList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addImplementsNoTransform(Access node) {
     List<Access> list = getImplementsListNoTransform();
@@ -524,6 +535,13 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
     return (List<Access>) getChildNoTransform(4);
   }
   /**
+   * @return the element at index {@code i} in the Implements list without
+   * triggering rewrites.
+   */
+  public Access getImplementsNoTransform(int i) {
+    return (Access) getImplementsListNoTransform().getChildNoTransform(i);
+  }
+  /**
    * Retrieves the Implements list.
    * @return The node representing the Implements list.
    * @apilevel high-level
@@ -542,7 +560,7 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
   }
   /**
    * @aspect VariableArityParameters
-   * @declaredat extendj/java5/frontend/VariableArityParameters.jrag:127
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:132
    */
    
   protected List constructorParameterList(ConstructorDecl decl) {
@@ -567,126 +585,89 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
 
     return parameterList;
   }
-  /**
-   * @apilevel internal
-   */
-  protected int isCircular_visited = -1;
-  /**
-   * @apilevel internal
-   */
+/** @apilevel internal */
+protected ASTNode$State.Cycle isCircular_cycle = null;
+  /** @apilevel internal */
   private void isCircular_reset() {
     isCircular_computed = false;
     isCircular_initialized = false;
-    isCircular_visited = -1;
+    isCircular_cycle = null;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   protected boolean isCircular_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isCircular_initialized = false;
-  /**
-   * @apilevel internal
-   */
+
+  /** @apilevel internal */
   protected boolean isCircular_value;
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean isCircular_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="Circularity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:718")
   public boolean isCircular() {
-    if(isCircular_computed) {
+    if (isCircular_computed) {
       return isCircular_value;
     }
     ASTNode$State state = state();
-    boolean new_isCircular_value;
     if (!isCircular_initialized) {
       isCircular_initialized = true;
       isCircular_value = true;
     }
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
       do {
-        isCircular_visited = state.CIRCLE_INDEX;
-        state.CHANGE = false;
-        new_isCircular_value = false;
+        isCircular_cycle = state.nextCycle();
+        boolean new_isCircular_value = false;
         if (new_isCircular_value != isCircular_value) {
-          state.CHANGE = true;
+          state.setChangeInCycle();
         }
         isCircular_value = new_isCircular_value;
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        isCircular_computed = true;
-      } else {
-        state.RESET_CYCLE = true;
-        boolean $tmp = false;
-        state.RESET_CYCLE = false;
-        isCircular_computed = false;
-        isCircular_initialized = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
-      return isCircular_value;
-    }
-    if(isCircular_visited != state.CIRCLE_INDEX) {
-      isCircular_visited = state.CIRCLE_INDEX;
-      if (state.RESET_CYCLE) {
-        isCircular_computed = false;
-        isCircular_initialized = false;
-        isCircular_visited = -1;
-        return isCircular_value;
-      }
-      new_isCircular_value = false;
+      } while (state.testAndClearChangeInCycle());
+      isCircular_computed = true;
+
+      state.leaveCircle();
+    } else if (isCircular_cycle != state.cycle()) {
+      isCircular_cycle = state.cycle();
+      boolean new_isCircular_value = false;
       if (new_isCircular_value != isCircular_value) {
-        state.CHANGE = true;
+        state.setChangeInCycle();
       }
       isCircular_value = new_isCircular_value;
-      state.INTERMEDIATE_VALUE = true;
-      return isCircular_value;
-    }
-    state.INTERMEDIATE_VALUE = true;
-    return isCircular_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getSuperClassOpt_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Opt getSuperClassOpt_value;
-  /**
-   * @apilevel internal
-   */
-  private void getSuperClassOpt_reset() {
-    getSuperClassOpt_computed = false;
-    getSuperClassOpt_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public Opt getSuperClassOpt() {
-    if(getSuperClassOpt_computed) {
-      return (Opt) getChild(getSuperClassOptChildPosition());
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    getSuperClassOpt_value = getSuperClassOpt_compute();
-    setChild(getSuperClassOpt_value, getSuperClassOptChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getSuperClassOpt_computed = true;
     } else {
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
+    return isCircular_value;
+  }
+  /** @apilevel internal */
+  private void getSuperClassOpt_reset() {
+    getSuperClassOpt_computed = false;
+    
+    getSuperClassOpt_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean getSuperClassOpt_computed = false;
 
+  /** @apilevel internal */
+  protected Opt getSuperClassOpt_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect AnonymousClasses
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:56
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:56")
+  public Opt getSuperClassOpt() {
+    ASTNode$State state = state();
+    if (getSuperClassOpt_computed) {
+      return (Opt) getChild(getSuperClassOptChildPosition());
+    }
+    state().enterLazyAttribute();
+    getSuperClassOpt_value = getSuperClassOpt_compute();
+    setChild(getSuperClassOpt_value, getSuperClassOptChildPosition());
+    getSuperClassOpt_computed = true;
+    state().leaveLazyAttribute();
     Opt node = (Opt) this.getChild(getSuperClassOptChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Opt getSuperClassOpt_compute() {
       if (superType().isInterfaceDecl()) {
         return new Opt(typeObject().createQualifiedAccess());
@@ -694,45 +675,39 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
         return new Opt(superType().createBoundAccess());
       }
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getImplementsList_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected List getImplementsList_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void getImplementsList_reset() {
     getImplementsList_computed = false;
+    
     getImplementsList_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean getImplementsList_computed = false;
+
+  /** @apilevel internal */
+  protected List getImplementsList_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect AnonymousClasses
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:64
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:64")
   public List getImplementsList() {
-    if(getImplementsList_computed) {
+    ASTNode$State state = state();
+    if (getImplementsList_computed) {
       return (List) getChild(getImplementsListChildPosition());
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     getImplementsList_value = getImplementsList_compute();
     setChild(getImplementsList_value, getImplementsListChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getImplementsList_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    getImplementsList_computed = true;
+    state().leaveLazyAttribute();
     List node = (List) this.getChild(getImplementsListChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private List getImplementsList_compute() {
       if (superType().isInterfaceDecl()) {
         return new List().add(superType().createBoundAccess());
@@ -740,49 +715,43 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
         return new List();
       }
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean getImplicitConstructorOpt_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Opt<ConstructorDecl> getImplicitConstructorOpt_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void getImplicitConstructorOpt_reset() {
     getImplicitConstructorOpt_computed = false;
+    
     getImplicitConstructorOpt_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected boolean getImplicitConstructorOpt_computed = false;
+
+  /** @apilevel internal */
+  protected Opt<ConstructorDecl> getImplicitConstructorOpt_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect ImplicitConstructor
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:274
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="ImplicitConstructor", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:274")
   public Opt<ConstructorDecl> getImplicitConstructorOpt() {
-    if(getImplicitConstructorOpt_computed) {
+    ASTNode$State state = state();
+    if (getImplicitConstructorOpt_computed) {
       return (Opt<ConstructorDecl>) getChild(getImplicitConstructorOptChildPosition());
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    state().enterLazyAttribute();
     getImplicitConstructorOpt_value = getImplicitConstructorOpt_compute();
     setChild(getImplicitConstructorOpt_value, getImplicitConstructorOptChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getImplicitConstructorOpt_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    getImplicitConstructorOpt_computed = true;
+    state().leaveLazyAttribute();
     Opt<ConstructorDecl> node = (Opt<ConstructorDecl>) this.getChild(getImplicitConstructorOptChildPosition());
     return node;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Opt<ConstructorDecl> getImplicitConstructorOpt_compute() {
       if (needsImplicitConstructor()) {
         ConstructorDecl decl = constructorDecl();
-        Modifiers modifiers = (Modifiers) decl.getModifiers().treeCopyNoTransform();
+        Modifiers modifiers = new Modifiers();
         String anonName = "Anonymous" + nextAnonymousIndex();
   
         ConstructorDecl constructor = new ConstructorDecl(modifiers, anonName,
@@ -801,29 +770,30 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
           )
         );
   
-        HashSet set = new HashSet();
+        Collection<TypeDecl> set = new HashSet<TypeDecl>();
   
-        // add initializer and field declaration exceptions
+        // Add initializer and field declaration exceptions.
         for (int i = 0; i < getNumBodyDecl(); i++) {
           if (getBodyDecl(i) instanceof InstanceInitializer) {
             InstanceInitializer init = (InstanceInitializer) getBodyDecl(i);
             set.addAll(init.exceptions());
-          } else if (getBodyDecl(i) instanceof FieldDeclaration) {
-            FieldDeclaration f = (FieldDeclaration) getBodyDecl(i);
-            if (f.isInstanceVariable()) {
-              set.addAll(f.exceptions());
+          } else if (getBodyDecl(i) instanceof FieldDecl) {
+            FieldDecl f = (FieldDecl) getBodyDecl(i);
+            for (FieldDeclarator field : f.getDeclaratorList()) {
+              if (field.isInstanceVariable()) {
+                set.addAll(field.exceptions());
+              }
             }
           }
         }
   
-        // add superconstructor exceptions
+        // Add superconstructor exceptions.
         for (int i = 0; i < decl.getNumException(); ++i) {
           set.add(decl.getException(i).type());
         }
   
-        List exceptionList = new List();
-        for (Iterator iter = set.iterator(); iter.hasNext(); ) {
-          TypeDecl exceptionType = (TypeDecl) iter.next();
+        List<Access> exceptionList = new List<Access>();
+        for (TypeDecl exceptionType : set) {
           if (exceptionType.isNull()) {
             exceptionType = typeNullPointerException();
           }
@@ -838,43 +808,42 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AnonymousClasses
-   * @declaredat extendj/java4/frontend/AnonymousClasses.jrag:33
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:33
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:33")
   public TypeDecl superType() {
-    ASTNode$State state = state();
-    TypeDecl superType_value = getParent().Define_TypeDecl_superType(this, null);
-
+    TypeDecl superType_value = getParent().Define_superType(this, null);
     return superType_value;
   }
   /**
    * @attribute inh
    * @aspect AnonymousClasses
-   * @declaredat extendj/java4/frontend/AnonymousClasses.jrag:37
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:39
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:39")
   public ConstructorDecl constructorDecl() {
-    ASTNode$State state = state();
-    ConstructorDecl constructorDecl_value = getParent().Define_ConstructorDecl_constructorDecl(this, null);
-
+    ConstructorDecl constructorDecl_value = getParent().Define_constructorDecl(this, null);
     return constructorDecl_value;
   }
   /**
    * @attribute inh
    * @aspect AnonymousClasses
-   * @declaredat extendj/java4/frontend/AnonymousClasses.jrag:95
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:95
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:95")
   public TypeDecl typeNullPointerException() {
-    ASTNode$State state = state();
-    TypeDecl typeNullPointerException_value = getParent().Define_TypeDecl_typeNullPointerException(this, null);
-
+    TypeDecl typeNullPointerException_value = getParent().Define_typeNullPointerException(this, null);
     return typeNullPointerException_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

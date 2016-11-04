@@ -1,41 +1,42 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/ConstructorReference.ast:6
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:6
  * @production ParConstructorReferenceAccess : {@link ParClassInstanceExpr};
 
  */
 public class ParConstructorReferenceAccess extends ParClassInstanceExpr implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:400
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:406
    */
   private FunctionDescriptor targetDescriptor;
   /**
    * @aspect Synthetics
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:401
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:407
    */
   public ParConstructorReferenceAccess(Access access,
       List<Expr> args, Opt<TypeDecl> optDecl, List<Access> typeArgs, FunctionDescriptor f) {
@@ -70,59 +71,47 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
     setChild(p2, 2);
     setChild(p3, 3);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:25
+  /** @apilevel low-level 
+   * @declaredat ASTNode:23
    */
   protected int numChildren() {
     return 4;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:31
+   * @declaredat ASTNode:29
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     targetType_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:44
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:50
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public ParConstructorReferenceAccess clone() throws CloneNotSupportedException {
     ParConstructorReferenceAccess node = (ParConstructorReferenceAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:47
    */
   public ParConstructorReferenceAccess copy() {
     try {
       ParConstructorReferenceAccess node = (ParConstructorReferenceAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -136,8 +125,9 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:82
+   * @declaredat ASTNode:66
    */
+  @Deprecated
   public ParConstructorReferenceAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -146,14 +136,14 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:76
    */
   public ParConstructorReferenceAccess treeCopyNoTransform() {
     ParConstructorReferenceAccess tree = (ParConstructorReferenceAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -167,15 +157,23 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:111
+   * @declaredat ASTNode:96
    */
   public ParConstructorReferenceAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ParConstructorReferenceAccess tree = (ParConstructorReferenceAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:118
+  /** @apilevel internal 
+   * @declaredat ASTNode:110
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -254,11 +252,10 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -282,7 +279,6 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -293,6 +289,13 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -410,11 +413,10 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -438,7 +440,6 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -449,6 +450,13 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -467,44 +475,45 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
   public List<Access> getTypeArgumentsNoTransform() {
     return getTypeArgumentListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean targetType_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl targetType_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void targetType_reset() {
-    targetType_computed = false;
+    targetType_computed = null;
     targetType_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle targetType_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl targetType_value;
+
+  /**
+   * @attribute syn
+   * @aspect TargetType
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:185
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:185")
   public TypeDecl targetType() {
-    if(targetType_computed) {
+    ASTNode$State state = state();
+    if (targetType_computed == ASTNode$State.NON_CYCLE || targetType_computed == state().cycle()) {
       return targetType_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     targetType_value = targetDescriptor.method.type();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetType_computed = true;
+    if (state().inCircle()) {
+      targetType_computed = state().cycle();
+    
     } else {
+      targetType_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return targetType_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

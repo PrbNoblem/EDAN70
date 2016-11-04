@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/BoundNames.ast:8
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/BoundNames.ast:8
  * @production BoundTypeAccess : {@link TypeAccess} ::= <span class="component">&lt;TypeDecl:TypeDecl&gt;</span>;
 
  */
 public class BoundTypeAccess extends TypeAccess implements Cloneable {
   /**
    * @aspect GenericsTypeAnalysis
-   * @declaredat extendj/java5/frontend/Generics.jrag:412
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:405
    */
   public boolean isRaw() {
     return getTypeDecl().isRawType();
@@ -66,59 +67,46 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
     setID(p1);
     setTypeDecl(p2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:25
+  /** @apilevel low-level 
+   * @declaredat ASTNode:23
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:31
+   * @declaredat ASTNode:29
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    decls_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:44
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:50
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public BoundTypeAccess clone() throws CloneNotSupportedException {
     BoundTypeAccess node = (BoundTypeAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public BoundTypeAccess copy() {
     try {
       BoundTypeAccess node = (BoundTypeAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -132,8 +120,9 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:82
+   * @declaredat ASTNode:65
    */
+  @Deprecated
   public BoundTypeAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -142,14 +131,14 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:75
    */
   public BoundTypeAccess treeCopyNoTransform() {
     BoundTypeAccess tree = (BoundTypeAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -163,18 +152,26 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:111
+   * @declaredat ASTNode:95
    */
   public BoundTypeAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    BoundTypeAccess tree = (BoundTypeAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:118
+  /** @apilevel internal 
+   * @declaredat ASTNode:109
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_Package == ((BoundTypeAccess)node).tokenString_Package) && (tokenString_ID == ((BoundTypeAccess)node).tokenString_ID) && (tokenTypeDecl_TypeDecl == ((BoundTypeAccess)node).tokenTypeDecl_TypeDecl);    
+    return super.is$Equal(node) && (tokenString_Package == ((BoundTypeAccess) node).tokenString_Package) && (tokenString_ID == ((BoundTypeAccess) node).tokenString_ID) && (tokenTypeDecl_TypeDecl == ((BoundTypeAccess) node).tokenTypeDecl_TypeDecl);    
   }
   /**
    * Replaces the lexeme Package.
@@ -190,7 +187,7 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
    * @apilevel internal
    */
   public void setPackage(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackage is only valid for String lexemes");
     tokenString_Package = (String)symbol.value;
     Packagestart = symbol.getStart();
@@ -219,7 +216,7 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -242,8 +239,7 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
   public void setTypeDecl(TypeDecl value) {
     tokenTypeDecl_TypeDecl = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected TypeDecl tokenTypeDecl_TypeDecl;
   /**
@@ -256,50 +252,36 @@ public class BoundTypeAccess extends TypeAccess implements Cloneable {
     return tokenTypeDecl_TypeDecl;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:298
    */
-  protected boolean decls_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected SimpleSet decls_value;
-  /**
-   * @apilevel internal
-   */
-  private void decls_reset() {
-    decls_computed = false;
-    decls_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet decls() {
-    if(decls_computed) {
-      return decls_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    decls_value = SimpleSet.emptySet.add(getTypeDecl());
-    if (isFinal && num == state().boundariesCrossed) {
-      decls_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:298")
+  public SimpleSet<TypeDecl> decls() {
+    SimpleSet<TypeDecl> decls_value = getTypeDecl();
     return decls_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * WARNING: this attribute is not the same as TypeDecl.isWildcard,
+   * which returns true for any wildcard type (even bounded wildcard types).
+   * @return {@code true} if this is an unbounded wildcard access
+   * @attribute syn
+   * @aspect ReifiableTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106")
   public boolean isWildcard() {
-    ASTNode$State state = state();
     boolean isWildcard_value = getTypeDecl() instanceof WildcardType;
-
     return isWildcard_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

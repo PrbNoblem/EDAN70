@@ -36,8 +36,7 @@ aspect TargetType {
   eq AbstractDot.getRight().targetType() = targetType();
   eq ParExpr.getExpr().targetType() = targetType();
   eq AssignExpr.getSource().targetType() = getDest().type();
-  eq VariableDeclaration.getInit().targetType() = getTypeAccess().type();
-  eq FieldDeclaration.getInit().targetType() = getTypeAccess().type();
+  eq Declarator.getInit().targetType() = getTypeAccess().type();
   eq ReturnStmt.getResult().targetType() = returnType();
   eq CastExpr.getExpr().targetType() = type();
 
@@ -130,7 +129,7 @@ aspect TargetType {
     } else if (!(decl instanceof InterfaceDecl)) {
       return unknownType();
     } else {
-      InterfaceDecl iDecl = (InterfaceDecl)decl;
+      InterfaceDecl iDecl = (InterfaceDecl) decl;
       if (!iDecl.isFunctional()) {
         return unknownType();
       } else {
@@ -145,7 +144,7 @@ aspect TargetType {
     } else if (!(targetType() instanceof InterfaceDecl)) {
       return null;
     } else {
-      return (InterfaceDecl)targetType();
+      return (InterfaceDecl) targetType();
     }
   }
 
@@ -165,7 +164,7 @@ aspect TargetType {
     } else if (!(targetType() instanceof InterfaceDecl)) {
       return null;
     } else {
-      return (InterfaceDecl)targetType();
+      return (InterfaceDecl) targetType();
     }
   }
 
@@ -261,19 +260,11 @@ aspect Contexts {
   eq ConditionalExpr.getCondition().numericContext() = false;
   eq ConditionalExpr.getCondition().stringContext() = false;
 
-
-  eq ConditionalExpr.getTrueExpr().assignmentContext() =
-      isPolyExpression() ? assignmentContext() : false;
-  eq ConditionalExpr.getTrueExpr().invocationContext() =
-      isPolyExpression() ? invocationContext() : false;
   // 15.25.3
   eq ConditionalExpr.getTrueExpr().castContext() = false;
   eq ConditionalExpr.getTrueExpr().stringContext() = false;
   eq ConditionalExpr.getTrueExpr().numericContext() = false;
-  eq ConditionalExpr.getFalseExpr().assignmentContext() =
-      isPolyExpression() ? assignmentContext() : false;
-  eq ConditionalExpr.getFalseExpr().invocationContext() =
-      isPolyExpression() ? invocationContext() : false;
+
   // 15.25.3
   eq ConditionalExpr.getFalseExpr().castContext() = false;
   eq ConditionalExpr.getFalseExpr().stringContext() = false;
@@ -285,12 +276,6 @@ aspect Contexts {
   eq ArrayAccess.getExpr().stringContext() = false;
   eq ArrayAccess.getExpr().numericContext() = false;
 
-  eq AbstractDot.getRight().assignmentContext() = assignmentContext();
-  eq AbstractDot.getRight().invocationContext() = invocationContext();
-  eq AbstractDot.getRight().castContext() = castContext();
-  eq AbstractDot.getRight().stringContext() = stringContext();
-  eq AbstractDot.getRight().numericContext() = numericContext();
-
   eq AbstractDot.getLeft().assignmentContext() = false;
   eq AbstractDot.getLeft().invocationContext() = false;
   eq AbstractDot.getLeft().castContext() = false;
@@ -298,12 +283,6 @@ aspect Contexts {
   eq AbstractDot.getLeft().numericContext() = false;
 
   // 15.8.5
-  eq ParExpr.getExpr().assignmentContext() = assignmentContext();
-  eq ParExpr.getExpr().invocationContext() = invocationContext();
-  eq ParExpr.getExpr().castContext() = castContext();
-  eq ParExpr.getExpr().stringContext() = stringContext();
-  eq ParExpr.getExpr().numericContext() = numericContext();
-
   eq CastExpr.getExpr().assignmentContext() = false;
   eq CastExpr.getExpr().invocationContext() = false;
   eq CastExpr.getExpr().castContext() = true;
@@ -346,35 +325,23 @@ aspect Contexts {
   eq ArrayInit.getInit().stringContext() = false;
   eq ArrayInit.getInit().numericContext() = false;
 
-  eq VariableDeclaration.getInit().assignmentContext() = true;
-  eq VariableDeclaration.getInit().invocationContext() = false;
-  eq VariableDeclaration.getInit().castContext() = false;
-  eq VariableDeclaration.getInit().numericContext() = false;
-  eq VariableDeclaration.getInit().stringContext() = false;
-
   eq ReturnStmt.getResult().assignmentContext() = true;
   eq ReturnStmt.getResult().invocationContext() = false;
   eq ReturnStmt.getResult().castContext() = false;
   eq ReturnStmt.getResult().stringContext() = false;
   eq ReturnStmt.getResult().numericContext() = false;
 
-  eq VariableDecl.getInit().assignmentContext() = true;
-  eq VariableDecl.getInit().invocationContext() = false;
-  eq VariableDecl.getInit().castContext() = false;
-  eq VariableDecl.getInit().stringContext() = false;
-  eq VariableDecl.getInit().numericContext() = false;
+  eq Declarator.getInit().assignmentContext() = true;
+  eq Declarator.getInit().invocationContext() = false;
+  eq Declarator.getInit().castContext() = false;
+  eq Declarator.getInit().stringContext() = false;
+  eq Declarator.getInit().numericContext() = false;
 
   eq ArrayTypeWithSizeAccess.getExpr().assignmentContext() = false;
   eq ArrayTypeWithSizeAccess.getExpr().invocationContext() = false;
   eq ArrayTypeWithSizeAccess.getExpr().castContext() = false;
   eq ArrayTypeWithSizeAccess.getExpr().stringContext() = false;
   eq ArrayTypeWithSizeAccess.getExpr().numericContext() = false;
-
-  eq FieldDeclaration.getInit().assignmentContext() = true;
-  eq FieldDeclaration.getInit().invocationContext() = false;
-  eq FieldDeclaration.getInit().castContext() = false;
-  eq FieldDeclaration.getInit().stringContext() = false;
-  eq FieldDeclaration.getInit().numericContext() = false;
 
   eq Dims.getExpr().assignmentContext() = false;
   eq Dims.getExpr().invocationContext() = false;
@@ -400,4 +367,3 @@ aspect Contexts {
   eq ConstructorReference.getTypeAccess().stringContext() = false;
   eq ConstructorReference.getTypeAccess().numericContext() = false;
 }
-

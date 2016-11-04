@@ -1,175 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/MethodReference.ast:1
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:1
  * @production MethodReference : {@link Expr} ::= <span class="component">TypeArgument:{@link Access}*</span> <span class="component">&lt;ID:String&gt;</span>;
 
  */
 public abstract class MethodReference extends Expr implements Cloneable {
-  /**
-   * @aspect Java8NameCheck
-   * @declaredat extendj/java8/frontend/NameCheck.jrag:512
-   */
-  public void nameCheck() {
-    for (int i = 0; i < getNumTypeArgument(); i++) {
-      if (getTypeArgument(i) instanceof AbstractWildcard) {
-        error("Wildcard not allowed in method reference type argument lists");
-        break;
-      }
-    }
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java8/frontend/TypeCheck.jrag:227
-   */
-  public void typeCheck() {
-    // 15.13.1
-    if (!assignmentContext() && !castContext() && !invocationContext()) {
-      error("Method references must target a functional interface");
-      return;
-    }
-
-    // This means there was an error in the overload resolution, will be reported elsewhere.
-    if (invocationContext() && targetType() == unknownType()) {
-      return;
-    }
-
-    if (!targetType().isFunctionalInterface()) {
-      error("Method references must target a functional interface");
-      return;
-    }
-
-    InterfaceDecl iDecl = targetInterface();
-
-    if (!iDecl.isFunctional()) {
-      errorf("Interface %s is not functional and can therefore not be targeted by a method reference",
-          iDecl.typeName());
-      return;
-    }
-
-    MethodDecl found = null;
-    FunctionDescriptor f = iDecl.functionDescriptor();
-    // Lookup method here and check that one most specific can be found
-    if (this instanceof ExprMethodReference) {
-      ExprMethodReference ref = (ExprMethodReference)this;
-      found = ref.targetMethod(f);
-      if (unknownMethod() == found) {
-        // 15.13.1
-        errorf("No method %s that is compatible with the method %s in the interface %s was found",
-            name(), iDecl.functionDescriptor().method.fullSignature(), iDecl.typeName());
-      } else if (found.isStatic()) {
-        errorf("The method %s in type %s must be accessed in a static way",
-            found.fullSignature(), found.hostType().typeName());
-      } else if (ref.getExpr() instanceof Access && ((Access)ref.getExpr()).lastAccess() instanceof SuperAccess) {
-        // 15.13.2
-        if (found.isAbstract()) {
-          errorf("Cannot directly invoke the abstract method %s in type %s",
-              found.fullSignature(), found.hostType().typeName());
-        }
-
-        SuperAccess superAccess = (SuperAccess)((Access)ref.getExpr()).lastAccess();
-        if (superAccess.isQualified() && superAccess.decl() instanceof InterfaceDecl) {
-          if (hostType().isClassDecl()) {
-            ClassDecl classDecl = (ClassDecl)hostType();
-            if (classDecl.hasOverridingMethodInSuper(found)) {
-              errorf("Cannot make a super reference to method %s, there is a more specific override",
-                  found.fullSignature());
-            }
-          } else if (hostType().isInterfaceDecl()) {
-            InterfaceDecl interfaceDecl = (InterfaceDecl)hostType();
-            if (interfaceDecl.hasOverridingMethodInSuper(found)) {
-              errorf("Cannot make a super reference to method %s, there is a more specific override",
-                  found.fullSignature());
-            }
-          }
-        }
-
-      }
-    } else if (this instanceof TypeMethodReference) {
-      TypeMethodReference ref = (TypeMethodReference) this;
-      MethodDecl staticMethod = ref.targetStaticMethod(f);
-      MethodDecl instanceMethod = ref.targetInstanceMethod(f);
-      if (ref.validStaticMethod(f) && ref.validInstanceMethod(f)) {
-        errorf("Ambiguity error: two possible methods %s was found", staticMethod.name());
-        return;
-      } else if (unknownMethod() == staticMethod && unknownMethod() == instanceMethod) {
-        errorf("No method %s that is compatible with the method %s in the interface %s was found",
-            name(), iDecl.functionDescriptor().method.fullSignature(), iDecl.typeName());
-         return;
-      } else if (ref.validStaticMethod(f)) {
-        if (ref.getTypeAccess() instanceof ParTypeAccess) {
-          error("Parameterized qualifier is not allowed for static method references");
-        } else {
-          found = staticMethod;
-        }
-      } else if (ref.validInstanceMethod(f)) {
-        found = instanceMethod;
-      } else if (unknownMethod() != staticMethod && !staticMethod.isStatic()) {
-        errorf("Cannot make a static reference to the non-static method %s in type %s",
-            staticMethod.fullSignature(), staticMethod.hostType().typeName());
-        return;
-      } else if (instanceMethod.isStatic()) {
-        errorf("The method %s in type %s must be accessed in a static way",
-            instanceMethod.fullSignature(), instanceMethod.hostType().typeName());
-        return;
-      }
-    }
-
-    if (found != null && unknownMethod() != found) {
-      // Check that found is compatible with the function descriptor
-      if (!iDecl.functionDescriptor().method.type().isVoid()) {
-        // 15.13.1
-        if (found.type().isVoid()
-            || !found.type().assignConversionTo(iDecl.functionDescriptor().method.type(), null)) {
-          errorf("Return type of referenced method %s is not compatible with method %s in interface %s",
-              found.fullSignature(), iDecl.functionDescriptor().method.fullSignature(),
-              iDecl.typeName());
-        }
-      }
-
-      for (int i = 0; i < found.getNumException(); i++) {
-        TypeDecl exception = found.getException(i).type();
-        if (exception.isUncheckedException()) {
-          continue;
-        }
-
-        boolean legalException = false;
-        for (TypeDecl descriptorThrows : iDecl.functionDescriptor().throwsList) {
-          if (exception.strictSubtype(descriptorThrows)) {
-            legalException = true;
-            break;
-          }
-        }
-        if (!legalException) {
-          // 15.13.1
-          errorf("Referenced method %s throws unhandled exception type %s",
-              found.name(), exception.typeName());
-        }
-      }
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -201,23 +60,21 @@ public abstract class MethodReference extends Expr implements Cloneable {
     setChild(p0, 0);
     setID(p1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:25
+  /** @apilevel low-level 
+   * @declaredat ASTNode:23
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:31
+   * @declaredat ASTNode:29
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -229,26 +86,17 @@ public abstract class MethodReference extends Expr implements Cloneable {
     potentiallyCompatible_TypeDecl_BodyDecl_reset();
     isPolyExpression_reset();
     assignConversionTo_TypeDecl_reset();
-    targetInterface_reset();
     type_reset();
+    targetInterface_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:47
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:59
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:65
+  /** @apilevel internal 
+   * @declaredat ASTNode:51
    */
   public MethodReference clone() throws CloneNotSupportedException {
     MethodReference node = (MethodReference) super.clone();
@@ -260,15 +108,16 @@ public abstract class MethodReference extends Expr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:62
    */
+  @Deprecated
   public abstract MethodReference fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:83
+   * @declaredat ASTNode:70
    */
   public abstract MethodReference treeCopyNoTransform();
   /**
@@ -277,7 +126,7 @@ public abstract class MethodReference extends Expr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:78
    */
   public abstract MethodReference treeCopy();
   /**
@@ -328,11 +177,10 @@ public abstract class MethodReference extends Expr implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -356,7 +204,6 @@ public abstract class MethodReference extends Expr implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -367,6 +214,13 @@ public abstract class MethodReference extends Expr implements Cloneable {
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -393,8 +247,7 @@ public abstract class MethodReference extends Expr implements Cloneable {
   public void setID(String value) {
     tokenString_ID = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected String tokenString_ID;
   /**
@@ -409,7 +262,7 @@ public abstract class MethodReference extends Expr implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -427,88 +280,98 @@ public abstract class MethodReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:212
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218")
   public abstract boolean congruentTo(FunctionDescriptor f);
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:253
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259")
   public abstract ArrayList<MethodDecl> potentiallyApplicableMethods(FunctionDescriptor f);
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:308
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314")
   public abstract MethodDecl exactCompileTimeDeclaration();
-  /**
-   * @apilevel internal
-   */
-  protected boolean isExact_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isExact_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isExact_reset() {
-    isExact_computed = false;
+    isExact_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isExact_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isExact_value;
+
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:313
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:313")
   public boolean isExact() {
-    if(isExact_computed) {
+    ASTNode$State state = state();
+    if (isExact_computed == ASTNode$State.NON_CYCLE || isExact_computed == state().cycle()) {
       return isExact_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isExact_value = exactCompileTimeDeclaration() != unknownMethod();
-    if (isFinal && num == state().boundariesCrossed) {
-      isExact_computed = true;
+    if (state().inCircle()) {
+      isExact_computed = state().cycle();
+    
     } else {
+      isExact_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isExact_value;
   }
-  protected java.util.Map compatibleStrictContext_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void compatibleStrictContext_TypeDecl_reset() {
+    compatibleStrictContext_TypeDecl_computed = new java.util.HashMap(4);
     compatibleStrictContext_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map compatibleStrictContext_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map compatibleStrictContext_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32")
   public boolean compatibleStrictContext(TypeDecl type) {
     Object _parameters = type;
-    if (compatibleStrictContext_TypeDecl_values == null) compatibleStrictContext_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(compatibleStrictContext_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)compatibleStrictContext_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (compatibleStrictContext_TypeDecl_computed == null) compatibleStrictContext_TypeDecl_computed = new java.util.HashMap(4);
+    if (compatibleStrictContext_TypeDecl_values == null) compatibleStrictContext_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean compatibleStrictContext_TypeDecl_value = compatibleStrictContext_compute(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      compatibleStrictContext_TypeDecl_values.put(_parameters, Boolean.valueOf(compatibleStrictContext_TypeDecl_value));
-    } else {
+    if (compatibleStrictContext_TypeDecl_values.containsKey(_parameters) && compatibleStrictContext_TypeDecl_computed != null
+        && compatibleStrictContext_TypeDecl_computed.containsKey(_parameters)
+        && (compatibleStrictContext_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || compatibleStrictContext_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) compatibleStrictContext_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean compatibleStrictContext_TypeDecl_value = compatibleStrictContext_compute(type);
+    if (state().inCircle()) {
+      compatibleStrictContext_TypeDecl_values.put(_parameters, compatibleStrictContext_TypeDecl_value);
+      compatibleStrictContext_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      compatibleStrictContext_TypeDecl_values.put(_parameters, compatibleStrictContext_TypeDecl_value);
+      compatibleStrictContext_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return compatibleStrictContext_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean compatibleStrictContext_compute(TypeDecl type) {
       if (!type.isFunctionalInterface()) {
         return false;
@@ -516,68 +379,86 @@ public abstract class MethodReference extends Expr implements Cloneable {
       InterfaceDecl iDecl = (InterfaceDecl) type;
       return congruentTo(iDecl.functionDescriptor());
     }
-  protected java.util.Map compatibleLooseContext_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void compatibleLooseContext_TypeDecl_reset() {
+    compatibleLooseContext_TypeDecl_computed = new java.util.HashMap(4);
     compatibleLooseContext_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map compatibleLooseContext_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map compatibleLooseContext_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76")
   public boolean compatibleLooseContext(TypeDecl type) {
     Object _parameters = type;
-    if (compatibleLooseContext_TypeDecl_values == null) compatibleLooseContext_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(compatibleLooseContext_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)compatibleLooseContext_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (compatibleLooseContext_TypeDecl_computed == null) compatibleLooseContext_TypeDecl_computed = new java.util.HashMap(4);
+    if (compatibleLooseContext_TypeDecl_values == null) compatibleLooseContext_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean compatibleLooseContext_TypeDecl_value = compatibleStrictContext(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      compatibleLooseContext_TypeDecl_values.put(_parameters, Boolean.valueOf(compatibleLooseContext_TypeDecl_value));
-    } else {
+    if (compatibleLooseContext_TypeDecl_values.containsKey(_parameters) && compatibleLooseContext_TypeDecl_computed != null
+        && compatibleLooseContext_TypeDecl_computed.containsKey(_parameters)
+        && (compatibleLooseContext_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || compatibleLooseContext_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) compatibleLooseContext_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean compatibleLooseContext_TypeDecl_value = compatibleStrictContext(type);
+    if (state().inCircle()) {
+      compatibleLooseContext_TypeDecl_values.put(_parameters, compatibleLooseContext_TypeDecl_value);
+      compatibleLooseContext_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      compatibleLooseContext_TypeDecl_values.put(_parameters, compatibleLooseContext_TypeDecl_value);
+      compatibleLooseContext_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return compatibleLooseContext_TypeDecl_value;
   }
-  protected java.util.Map pertinentToApplicability_Expr_BodyDecl_int_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void pertinentToApplicability_Expr_BodyDecl_int_reset() {
+    pertinentToApplicability_Expr_BodyDecl_int_computed = new java.util.HashMap(4);
     pertinentToApplicability_Expr_BodyDecl_int_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map pertinentToApplicability_Expr_BodyDecl_int_values;
+  /** @apilevel internal */
+  protected java.util.Map pertinentToApplicability_Expr_BodyDecl_int_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104")
   public boolean pertinentToApplicability(Expr access, BodyDecl decl, int argIndex) {
     java.util.List _parameters = new java.util.ArrayList(3);
     _parameters.add(access);
     _parameters.add(decl);
-    _parameters.add(Integer.valueOf(argIndex));
-    if (pertinentToApplicability_Expr_BodyDecl_int_values == null) pertinentToApplicability_Expr_BodyDecl_int_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(pertinentToApplicability_Expr_BodyDecl_int_values.containsKey(_parameters)) {
-      return ((Boolean)pertinentToApplicability_Expr_BodyDecl_int_values.get(_parameters)).booleanValue();
-    }
+    _parameters.add(argIndex);
+    if (pertinentToApplicability_Expr_BodyDecl_int_computed == null) pertinentToApplicability_Expr_BodyDecl_int_computed = new java.util.HashMap(4);
+    if (pertinentToApplicability_Expr_BodyDecl_int_values == null) pertinentToApplicability_Expr_BodyDecl_int_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean pertinentToApplicability_Expr_BodyDecl_int_value = pertinentToApplicability_compute(access, decl, argIndex);
-    if (isFinal && num == state().boundariesCrossed) {
-      pertinentToApplicability_Expr_BodyDecl_int_values.put(_parameters, Boolean.valueOf(pertinentToApplicability_Expr_BodyDecl_int_value));
-    } else {
+    if (pertinentToApplicability_Expr_BodyDecl_int_values.containsKey(_parameters) && pertinentToApplicability_Expr_BodyDecl_int_computed != null
+        && pertinentToApplicability_Expr_BodyDecl_int_computed.containsKey(_parameters)
+        && (pertinentToApplicability_Expr_BodyDecl_int_computed.get(_parameters) == ASTNode$State.NON_CYCLE || pertinentToApplicability_Expr_BodyDecl_int_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) pertinentToApplicability_Expr_BodyDecl_int_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean pertinentToApplicability_Expr_BodyDecl_int_value = pertinentToApplicability_compute(access, decl, argIndex);
+    if (state().inCircle()) {
+      pertinentToApplicability_Expr_BodyDecl_int_values.put(_parameters, pertinentToApplicability_Expr_BodyDecl_int_value);
+      pertinentToApplicability_Expr_BodyDecl_int_computed.put(_parameters, state().cycle());
+    
+    } else {
+      pertinentToApplicability_Expr_BodyDecl_int_values.put(_parameters, pertinentToApplicability_Expr_BodyDecl_int_value);
+      pertinentToApplicability_Expr_BodyDecl_int_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return pertinentToApplicability_Expr_BodyDecl_int_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean pertinentToApplicability_compute(Expr access, BodyDecl decl, int argIndex) {
       if (!isExact()) {
         return false;
@@ -609,39 +490,51 @@ public abstract class MethodReference extends Expr implements Cloneable {
       }
       return true;
     }
-  protected java.util.Map moreSpecificThan_TypeDecl_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void moreSpecificThan_TypeDecl_TypeDecl_reset() {
+    moreSpecificThan_TypeDecl_TypeDecl_computed = new java.util.HashMap(4);
     moreSpecificThan_TypeDecl_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map moreSpecificThan_TypeDecl_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map moreSpecificThan_TypeDecl_TypeDecl_computed;
+  /**
+   * Computes which type is more specific for a specific argument, as defined in 15.12.2.5
+   * @param type1
+   * @param type2
+   * @return {@code true} if type1 is more specific than type2, {@code false} otherwise
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230")
   public boolean moreSpecificThan(TypeDecl type1, TypeDecl type2) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type1);
     _parameters.add(type2);
-    if (moreSpecificThan_TypeDecl_TypeDecl_values == null) moreSpecificThan_TypeDecl_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(moreSpecificThan_TypeDecl_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)moreSpecificThan_TypeDecl_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (moreSpecificThan_TypeDecl_TypeDecl_computed == null) moreSpecificThan_TypeDecl_TypeDecl_computed = new java.util.HashMap(4);
+    if (moreSpecificThan_TypeDecl_TypeDecl_values == null) moreSpecificThan_TypeDecl_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean moreSpecificThan_TypeDecl_TypeDecl_value = moreSpecificThan_compute(type1, type2);
-    if (isFinal && num == state().boundariesCrossed) {
-      moreSpecificThan_TypeDecl_TypeDecl_values.put(_parameters, Boolean.valueOf(moreSpecificThan_TypeDecl_TypeDecl_value));
-    } else {
+    if (moreSpecificThan_TypeDecl_TypeDecl_values.containsKey(_parameters) && moreSpecificThan_TypeDecl_TypeDecl_computed != null
+        && moreSpecificThan_TypeDecl_TypeDecl_computed.containsKey(_parameters)
+        && (moreSpecificThan_TypeDecl_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || moreSpecificThan_TypeDecl_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) moreSpecificThan_TypeDecl_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean moreSpecificThan_TypeDecl_TypeDecl_value = moreSpecificThan_compute(type1, type2);
+    if (state().inCircle()) {
+      moreSpecificThan_TypeDecl_TypeDecl_values.put(_parameters, moreSpecificThan_TypeDecl_TypeDecl_value);
+      moreSpecificThan_TypeDecl_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      moreSpecificThan_TypeDecl_TypeDecl_values.put(_parameters, moreSpecificThan_TypeDecl_TypeDecl_value);
+      moreSpecificThan_TypeDecl_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return moreSpecificThan_TypeDecl_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean moreSpecificThan_compute(TypeDecl type1, TypeDecl type2) {
       if (super.moreSpecificThan(type1, type2)) {
         return true;
@@ -694,39 +587,47 @@ public abstract class MethodReference extends Expr implements Cloneable {
   
       return false;
     }
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
+    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
     potentiallyCompatible_TypeDecl_BodyDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
   public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type);
     _parameters.add(candidateDecl);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters)) {
-      return ((Boolean)potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters)).booleanValue();
-    }
+    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, Boolean.valueOf(potentiallyCompatible_TypeDecl_BodyDecl_value));
-    } else {
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
+        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
+        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
+    if (state().inCircle()) {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return potentiallyCompatible_TypeDecl_BodyDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
       if (type.isTypeVariable()) {
         if (candidateDecl.isGeneric()) {
@@ -749,70 +650,77 @@ public abstract class MethodReference extends Expr implements Cloneable {
       }
       return true;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isPolyExpression_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isPolyExpression_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isPolyExpression_reset() {
-    isPolyExpression_computed = false;
+    isPolyExpression_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isPolyExpression_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isPolyExpression_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86")
   public boolean isPolyExpression() {
-    if(isPolyExpression_computed) {
+    ASTNode$State state = state();
+    if (isPolyExpression_computed == ASTNode$State.NON_CYCLE || isPolyExpression_computed == state().cycle()) {
       return isPolyExpression_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isPolyExpression_value = true;
-    if (isFinal && num == state().boundariesCrossed) {
-      isPolyExpression_computed = true;
+    if (state().inCircle()) {
+      isPolyExpression_computed = state().cycle();
+    
     } else {
+      isPolyExpression_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isPolyExpression_value;
   }
-  protected java.util.Map assignConversionTo_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void assignConversionTo_TypeDecl_reset() {
+    assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
     assignConversionTo_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map assignConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map assignConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149")
   public boolean assignConversionTo(TypeDecl type) {
     Object _parameters = type;
-    if (assignConversionTo_TypeDecl_values == null) assignConversionTo_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(assignConversionTo_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)assignConversionTo_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (assignConversionTo_TypeDecl_computed == null) assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (assignConversionTo_TypeDecl_values == null) assignConversionTo_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean assignConversionTo_TypeDecl_value = assignConversionTo_compute(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      assignConversionTo_TypeDecl_values.put(_parameters, Boolean.valueOf(assignConversionTo_TypeDecl_value));
-    } else {
+    if (assignConversionTo_TypeDecl_values.containsKey(_parameters) && assignConversionTo_TypeDecl_computed != null
+        && assignConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (assignConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || assignConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) assignConversionTo_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean assignConversionTo_TypeDecl_value = assignConversionTo_compute(type);
+    if (state().inCircle()) {
+      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
+      assignConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
+      assignConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return assignConversionTo_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean assignConversionTo_compute(TypeDecl type) {
       if (!type.isFunctionalInterface()) {
         return false;
@@ -820,96 +728,58 @@ public abstract class MethodReference extends Expr implements Cloneable {
       FunctionDescriptor f = ((InterfaceDecl) type).functionDescriptor();
       return congruentTo(f);
     }
-  @ASTNodeAnnotation.Attribute
-  public String name() {
-    ASTNode$State state = state();
-    String name_value = getID();
-
-    return name_value;
-  }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Java8NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:505
    */
-  protected boolean targetInterface_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected InterfaceDecl targetInterface_value;
-  /**
-   * @apilevel internal
-   */
-  private void targetInterface_reset() {
-    targetInterface_computed = false;
-    targetInterface_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public InterfaceDecl targetInterface() {
-    if(targetInterface_computed) {
-      return targetInterface_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    targetInterface_value = targetInterface_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetInterface_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return targetInterface_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private InterfaceDecl targetInterface_compute() {
-      if (targetType().isNull()) {
-        return null;
-      } else if (!(targetType() instanceof InterfaceDecl)) {
-        return null;
-      } else {
-        return (InterfaceDecl) targetType();
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:505")
+  public Collection<Problem> nameProblems() {
+    {
+        for (int i = 0; i < getNumTypeArgument(); i++) {
+          if (getTypeArgument(i) instanceof AbstractWildcard) {
+            return Collections.singletonList(
+                error("Wildcard not allowed in method reference type argument lists"));
+          }
+        }
+        return Collections.emptyList();
       }
-    }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  }
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:76
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:76")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = type_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl type_compute() {
       // 15.13.1
       if (!assignmentContext() && !castContext() && !invocationContext()) {
@@ -931,34 +801,265 @@ public abstract class MethodReference extends Expr implements Cloneable {
       }
     }
   /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:234
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:234")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        // 15.13.1
+        if (!assignmentContext() && !castContext() && !invocationContext()) {
+          problems.add(error("Method references must target a functional interface"));
+          return problems;
+        }
+    
+        // This means there was an error in the overload resolution, will be reported elsewhere.
+        if (invocationContext() && targetType() == unknownType()) {
+          return Collections.emptyList();
+        }
+    
+        if (!targetType().isFunctionalInterface()) {
+          problems.add(error("Method references must target a functional interface"));
+          return problems;
+        }
+    
+        InterfaceDecl iDecl = targetInterface();
+    
+        if (!iDecl.isFunctional()) {
+          problems.add(errorf("Interface %s is not functional and can therefore not be targeted by a method reference",
+              iDecl.typeName()));
+          return problems;
+        }
+    
+        MethodDecl found = null;
+        FunctionDescriptor f = iDecl.functionDescriptor();
+        // Lookup method here and check that one most specific can be found
+        if (this instanceof ExprMethodReference) {
+          ExprMethodReference ref = (ExprMethodReference) this;
+          found = ref.targetMethod(f);
+          if (unknownMethod() == found) {
+            // 15.13.1
+            problems.add(errorf("No method %s that is compatible with the method %s in the interface %s was found",
+                name(), iDecl.functionDescriptor().method.fullSignature(), iDecl.typeName()));
+          } else if (found.isStatic()) {
+            problems.add(errorf("The method %s in type %s must be accessed in a static way",
+                found.fullSignature(), found.hostType().typeName()));
+          } else if (ref.getExpr() instanceof Access && ((Access) ref.getExpr()).lastAccess() instanceof SuperAccess) {
+            // 15.13.2
+            if (found.isAbstract()) {
+              problems.add(errorf("Cannot directly invoke the abstract method %s in type %s",
+                  found.fullSignature(), found.hostType().typeName()));
+            }
+    
+            SuperAccess superAccess = (SuperAccess)((Access) ref.getExpr()).lastAccess();
+            if (superAccess.isQualified() && superAccess.decl() instanceof InterfaceDecl) {
+              if (hostType().isClassDecl()) {
+                ClassDecl classDecl = (ClassDecl) hostType();
+                if (classDecl.hasOverridingMethodInSuper(found)) {
+                  problems.add(errorf(
+                      "Cannot make a super reference to method %s, there is a more specific override",
+                      found.fullSignature()));
+                }
+              } else if (hostType().isInterfaceDecl()) {
+                InterfaceDecl interfaceDecl = (InterfaceDecl) hostType();
+                if (interfaceDecl.hasOverridingMethodInSuper(found)) {
+                  problems.add(errorf(
+                      "Cannot make a super reference to method %s, there is a more specific override",
+                      found.fullSignature()));
+                }
+              }
+            }
+    
+          }
+        } else if (this instanceof TypeMethodReference) {
+          TypeMethodReference ref = (TypeMethodReference) this;
+          MethodDecl staticMethod = ref.targetStaticMethod(f);
+          MethodDecl instanceMethod = ref.targetInstanceMethod(f);
+          if (ref.validStaticMethod(f) && ref.validInstanceMethod(f)) {
+            problems.add(errorf("Ambiguity error: two possible methods %s was found",
+                staticMethod.name()));
+            return problems;
+          } else if (unknownMethod() == staticMethod && unknownMethod() == instanceMethod) {
+            problems.add(errorf(
+                "No method %s that is compatible with the method %s in the interface %s was found",
+                name(), iDecl.functionDescriptor().method.fullSignature(), iDecl.typeName()));
+             return problems;
+          } else if (ref.validStaticMethod(f)) {
+            if (ref.getTypeAccess() instanceof ParTypeAccess) {
+              problems.add(
+                  error("Parameterized qualifier is not allowed for static method references"));
+            } else {
+              found = staticMethod;
+            }
+          } else if (ref.validInstanceMethod(f)) {
+            found = instanceMethod;
+          } else if (unknownMethod() != staticMethod && !staticMethod.isStatic()) {
+            problems.add(errorf("Cannot make a static reference to the non-static method %s in type %s",
+                staticMethod.fullSignature(), staticMethod.hostType().typeName()));
+            return problems;
+          } else if (instanceMethod.isStatic()) {
+            problems.add(errorf("The method %s in type %s must be accessed in a static way",
+                instanceMethod.fullSignature(), instanceMethod.hostType().typeName()));
+            return problems;
+          }
+        }
+    
+        if (found != null && unknownMethod() != found) {
+          // Check that found is compatible with the function descriptor
+          if (!iDecl.functionDescriptor().method.type().isVoid()) {
+            // 15.13.1
+            if (found.type().isVoid()
+                || !found.type().assignConversionTo(iDecl.functionDescriptor().method.type(), null)) {
+              problems.add(errorf("Return type of referenced method %s is not compatible with method %s in interface %s",
+                  found.fullSignature(), iDecl.functionDescriptor().method.fullSignature(),
+                  iDecl.typeName()));
+            }
+          }
+    
+          for (int i = 0; i < found.getNumException(); i++) {
+            TypeDecl exception = found.getException(i).type();
+            if (exception.isUncheckedException()) {
+              continue;
+            }
+    
+            boolean legalException = false;
+            for (TypeDecl descriptorThrows : iDecl.functionDescriptor().throwsList) {
+              if (exception.strictSubtype(descriptorThrows)) {
+                legalException = true;
+                break;
+              }
+            }
+            if (!legalException) {
+              // 15.13.1
+              problems.add(errorf("Referenced method %s throws unhandled exception type %s",
+                  found.name(), exception.typeName()));
+            }
+          }
+        }
+        return problems;
+      }
+  }
+  /** @apilevel internal */
+  private void targetInterface_reset() {
+    targetInterface_computed = null;
+    targetInterface_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle targetInterface_computed = null;
+
+  /** @apilevel internal */
+  protected InterfaceDecl targetInterface_value;
+
+  /**
+   * @attribute syn
+   * @aspect TargetType
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:151
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:151")
+  public InterfaceDecl targetInterface() {
+    ASTNode$State state = state();
+    if (targetInterface_computed == ASTNode$State.NON_CYCLE || targetInterface_computed == state().cycle()) {
+      return targetInterface_value;
+    }
+    targetInterface_value = targetInterface_compute();
+    if (state().inCircle()) {
+      targetInterface_computed = state().cycle();
+    
+    } else {
+      targetInterface_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return targetInterface_value;
+  }
+  /** @apilevel internal */
+  private InterfaceDecl targetInterface_compute() {
+      if (targetType().isNull()) {
+        return null;
+      } else if (!(targetType() instanceof InterfaceDecl)) {
+        return null;
+      } else {
+        return (InterfaceDecl) targetType();
+      }
+    }
+  /**
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/QualifiedNames.jrag:30
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/QualifiedNames.jrag:30")
+  public String name() {
+    String name_value = getID();
+    return name_value;
+  }
+  /**
    * @attribute inh
    * @aspect MethodReference
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:30
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:30")
   public MethodDecl unknownMethod() {
-    ASTNode$State state = state();
-    MethodDecl unknownMethod_value = getParent().Define_MethodDecl_unknownMethod(this, null);
-
+    MethodDecl unknownMethod_value = getParent().Define_unknownMethod(this, null);
     return unknownMethod_value;
   }
   /**
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:194
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeArgumentListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeArgumentListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:194
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:503
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:232
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
+    for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
   }
 }

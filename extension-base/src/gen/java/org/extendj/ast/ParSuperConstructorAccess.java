@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/GenericMethods.ast:18
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:21
  * @production ParSuperConstructorAccess : {@link SuperConstructorAccess} ::= <span class="component">TypeArgument:{@link Access}*</span>;
 
  */
 public class ParSuperConstructorAccess extends SuperConstructorAccess implements Cloneable {
   /**
    * @aspect GenericMethodsPrettyPrint
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:239
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:270
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("<");
@@ -77,58 +78,46 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
     setChild(p1, 0);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:28
+  /** @apilevel low-level 
+   * @declaredat ASTNode:26
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:34
+   * @declaredat ASTNode:32
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:46
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:52
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public ParSuperConstructorAccess clone() throws CloneNotSupportedException {
     ParSuperConstructorAccess node = (ParSuperConstructorAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:65
+  /** @apilevel internal 
+   * @declaredat ASTNode:49
    */
   public ParSuperConstructorAccess copy() {
     try {
       ParSuperConstructorAccess node = (ParSuperConstructorAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -142,8 +131,9 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:84
+   * @declaredat ASTNode:68
    */
+  @Deprecated
   public ParSuperConstructorAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -152,14 +142,14 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:93
+   * @declaredat ASTNode:78
    */
   public ParSuperConstructorAccess treeCopyNoTransform() {
     ParSuperConstructorAccess tree = (ParSuperConstructorAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -173,18 +163,26 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:113
+   * @declaredat ASTNode:98
    */
   public ParSuperConstructorAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ParSuperConstructorAccess tree = (ParSuperConstructorAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:120
+  /** @apilevel internal 
+   * @declaredat ASTNode:112
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ParSuperConstructorAccess)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((ParSuperConstructorAccess) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme ID.
@@ -200,7 +198,7 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -263,11 +261,10 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -291,7 +288,6 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -302,6 +298,13 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -368,11 +371,10 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -396,7 +398,6 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -407,6 +408,13 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -426,35 +434,45 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
     return getTypeArgumentListNoTransform();
   }
   /**
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:193
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeArgumentListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeArgumentListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:220
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
     else {
-      return super.Define_NameType_nameType(caller, child);
+      return super.Define_nameType(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:194
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
-  public SimpleSet Define_SimpleSet_lookupType(ASTNode caller, ASTNode child, String name) {
-    if (caller == getTypeArgumentListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getTypeArgumentListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:221
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return unqualifiedScope().lookupType(name);
     }
     else {
-      return super.Define_SimpleSet_lookupType(caller, child, name);
+      return super.Define_lookupType(_callerNode, _childNode, name);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

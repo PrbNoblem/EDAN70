@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/Lambda.ast:9
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:9
  * @production DeclaredLambdaParameters : {@link LambdaParameters} ::= <span class="component">Parameter:{@link ParameterDeclaration}*</span>;
 
  */
 public class DeclaredLambdaParameters extends LambdaParameters implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat extendj/java8/frontend/PrettyPrint.jadd:41
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:57
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("(");
@@ -43,17 +44,11 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
     out.print(")");
   }
   /**
-   * @aspect Java8NameCheck
-   * @declaredat extendj/java8/frontend/NameCheck.jrag:549
+   * @aspect LambdaToClass
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:101
    */
-  public void nameCheck() {
-    for (int i = 0; i < getNumParameter(); i++) {
-      if (getParameter(i).name().equals("_")) {
-        // 15.27.1
-        error("Underscore is not a valid identifier for a lambda parameter");
-        return;
-      }
-    }
+  protected List<ParameterDeclaration> toParameterList() {
+    return getParameterList().treeCopyNoTransform();
   }
   /**
    * @declaredat ASTNode:1
@@ -78,61 +73,49 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
   public DeclaredLambdaParameters(List<ParameterDeclaration> p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    parameterDeclaration_String_reset();
     numParameters_reset();
     congruentTo_FunctionDescriptor_reset();
-    parameterDeclaration_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:41
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:47
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:53
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public DeclaredLambdaParameters clone() throws CloneNotSupportedException {
     DeclaredLambdaParameters node = (DeclaredLambdaParameters) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:60
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public DeclaredLambdaParameters copy() {
     try {
       DeclaredLambdaParameters node = (DeclaredLambdaParameters) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -146,8 +129,9 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:79
+   * @declaredat ASTNode:63
    */
+  @Deprecated
   public DeclaredLambdaParameters fullCopy() {
     return treeCopyNoTransform();
   }
@@ -156,14 +140,14 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:88
+   * @declaredat ASTNode:73
    */
   public DeclaredLambdaParameters treeCopyNoTransform() {
     DeclaredLambdaParameters tree = (DeclaredLambdaParameters) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -177,15 +161,23 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:108
+   * @declaredat ASTNode:93
    */
   public DeclaredLambdaParameters treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    DeclaredLambdaParameters tree = (DeclaredLambdaParameters) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:115
+  /** @apilevel internal 
+   * @declaredat ASTNode:107
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -238,11 +230,10 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -266,7 +257,6 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -277,6 +267,13 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -296,163 +293,230 @@ public class DeclaredLambdaParameters extends LambdaParameters implements Clonea
     return getParameterListNoTransform();
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Java8NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:547
    */
-  protected boolean numParameters_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected int numParameters_value;
-  /**
-   * @apilevel internal
-   */
-  private void numParameters_reset() {
-    numParameters_computed = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:547")
+  public Collection<Problem> nameProblems() {
+    {
+        for (int i = 0; i < getNumParameter(); i++) {
+          if (getParameter(i).name().equals("_")) {
+            // 15.27.1
+            return Collections.singletonList(
+                error("Underscore is not a valid identifier for a lambda parameter"));
+          }
+        }
+        return Collections.emptyList();
+      }
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  private void parameterDeclaration_String_reset() {
+    parameterDeclaration_String_computed = new java.util.HashMap(4);
+    parameterDeclaration_String_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map parameterDeclaration_String_values;
+  /** @apilevel internal */
+  protected java.util.Map parameterDeclaration_String_computed;
+  /**
+   * @attribute syn
+   * @aspect VariableScope
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:38
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:38")
+  public SimpleSet<Variable> parameterDeclaration(String name) {
+    Object _parameters = name;
+    if (parameterDeclaration_String_computed == null) parameterDeclaration_String_computed = new java.util.HashMap(4);
+    if (parameterDeclaration_String_values == null) parameterDeclaration_String_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (parameterDeclaration_String_values.containsKey(_parameters) && parameterDeclaration_String_computed != null
+        && parameterDeclaration_String_computed.containsKey(_parameters)
+        && (parameterDeclaration_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || parameterDeclaration_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) parameterDeclaration_String_values.get(_parameters);
+    }
+    SimpleSet<Variable> parameterDeclaration_String_value = parameterDeclaration_compute(name);
+    if (state().inCircle()) {
+      parameterDeclaration_String_values.put(_parameters, parameterDeclaration_String_value);
+      parameterDeclaration_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      parameterDeclaration_String_values.put(_parameters, parameterDeclaration_String_value);
+      parameterDeclaration_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return parameterDeclaration_String_value;
+  }
+  /** @apilevel internal */
+  private SimpleSet<Variable> parameterDeclaration_compute(String name) {
+      for (ParameterDeclaration param : getParameterList()) {
+        if (param.name().equals(name)) {
+          return param;
+        }
+      }
+      return emptySet();
+    }
+  /** @apilevel internal */
+  private void numParameters_reset() {
+    numParameters_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle numParameters_computed = null;
+
+  /** @apilevel internal */
+  protected int numParameters_value;
+
+  /**
+   * @attribute syn
+   * @aspect LambdaExpr
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42")
   public int numParameters() {
-    if(numParameters_computed) {
+    ASTNode$State state = state();
+    if (numParameters_computed == ASTNode$State.NON_CYCLE || numParameters_computed == state().cycle()) {
       return numParameters_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     numParameters_value = getNumParameter();
-    if (isFinal && num == state().boundariesCrossed) {
-      numParameters_computed = true;
+    if (state().inCircle()) {
+      numParameters_computed = state().cycle();
+    
     } else {
+      numParameters_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return numParameters_value;
   }
-  protected java.util.Map congruentTo_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void congruentTo_FunctionDescriptor_reset() {
+    congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
     congruentTo_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect LambdaExpr
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
-    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(congruentTo_FunctionDescriptor_values.containsKey(_parameters)) {
-      return ((Boolean)congruentTo_FunctionDescriptor_values.get(_parameters)).booleanValue();
-    }
+    if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      congruentTo_FunctionDescriptor_values.put(_parameters, Boolean.valueOf(congruentTo_FunctionDescriptor_value));
-    } else {
+    if (congruentTo_FunctionDescriptor_values.containsKey(_parameters) && congruentTo_FunctionDescriptor_computed != null
+        && congruentTo_FunctionDescriptor_computed.containsKey(_parameters)
+        && (congruentTo_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || congruentTo_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) congruentTo_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
+    if (state().inCircle()) {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return congruentTo_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean congruentTo_compute(FunctionDescriptor f) {
       if (numParameters() != f.method.getNumParameter()) {
         return false;
       }
       for (int i = 0; i < numParameters(); i++) {
-        //Lambdas can't declare type variables so that doesn't need to be taken into account
-        if (getParameter(i).type() != f.method.getParameter(i).type()) {
+        // Lambdas can't declare type variables so that doesn't need to be taken into account.
+        if (getParameter(i).type() != f.method.getParameter(i).type() &&
+            getParameter(i).type() != f.method.getParameter(i).type().erasure()) {
           return false;
         }
       }
       return true;
     }
-  protected java.util.Map parameterDeclaration_String_values;
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46
    * @apilevel internal
    */
-  private void parameterDeclaration_String_reset() {
-    parameterDeclaration_String_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet parameterDeclaration(String name) {
-    Object _parameters = name;
-    if (parameterDeclaration_String_values == null) parameterDeclaration_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(parameterDeclaration_String_values.containsKey(_parameters)) {
-      return (SimpleSet)parameterDeclaration_String_values.get(_parameters);
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet parameterDeclaration_String_value = parameterDeclaration_compute(name);
-    if (isFinal && num == state().boundariesCrossed) {
-      parameterDeclaration_String_values.put(_parameters, parameterDeclaration_String_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return parameterDeclaration_String_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet parameterDeclaration_compute(String name) {
-      for (int i = 0; i < getNumParameter(); i++) {
-        if (getParameter(i).name().equals(name)) {
-          return (ParameterDeclaration) getParameter(i);
-        }
-      }
-      return SimpleSet.emptySet;
-    }
-  /**
-   * @declaredat extendj/java8/frontend/EffectivelyFinal.jrag:35
-   * @apilevel internal
-   */
-  public boolean Define_boolean_inhModifiedInScope(ASTNode caller, ASTNode child, Variable var) {
-    if (caller == getParameterListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return inhModifiedInScope(var);
-    }
-    else {
-      return getParent().Define_boolean_inhModifiedInScope(this, caller, var);
-    }
-  }
-  /**
-   * @declaredat extendj/java8/frontend/LookupVariable.jrag:33
-   * @apilevel internal
-   */
-  public SimpleSet Define_SimpleSet_lookupVariable(ASTNode caller, ASTNode child, String name) {
-    if (caller == getParameterListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return parameterDeclaration(name);
-    }
-    else {
-      return getParent().Define_SimpleSet_lookupVariable(this, caller, name);
-    }
-  }
-  /**
-   * @declaredat extendj/java8/frontend/VariableArityParameters.jrag:30
-   * @apilevel internal
-   */
-  public boolean Define_boolean_variableArityValid(ASTNode caller, ASTNode child) {
-    if (caller == getParameterListNoTransform()) {
-      int i = caller.getIndexOfChild(child);
+  public boolean Define_variableArityValid(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/VariableArityParameters.jrag:30
+      int i = _callerNode.getIndexOfChild(_childNode);
       return i == getNumParameter() - 1;
     }
     else {
-      return getParent().Define_boolean_variableArityValid(this, caller);
+      return getParent().Define_variableArityValid(this, _callerNode);
     }
   }
+  protected boolean canDefine_variableArityValid(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:33
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return parameterDeclaration(name);
+    }
+    else {
+      return getParent().Define_lookupVariable(this, _callerNode, name);
+    }
+  }
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
+   * @apilevel internal
+   */
+  public boolean Define_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:35
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return inhModifiedInScope(var);
+    }
+    else {
+      return getParent().Define_inhModifiedInScope(this, _callerNode, var);
+    }
+  }
+  protected boolean canDefine_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:545
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

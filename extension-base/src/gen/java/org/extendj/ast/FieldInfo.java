@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect BytecodeDescriptor
- * @declaredat extendj/java5/frontend/BytecodeDescriptor.jrag:57
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/BytecodeDescriptor.jrag:55
  */
  class FieldInfo extends java.lang.Object {
   
@@ -59,40 +61,47 @@ import java.io.DataInputStream;
   
 
     public BodyDecl bodyDecl() {
-      FieldDeclaration f;
       if ((flags & Flags.ACC_ENUM) != 0) {
-        //EnumConstant : FieldDeclaration ::= Modifiers <ID:String> Arg:Expr* BodyDecl* /TypeAccess:Access/ /[Init:Expr]/;
-        f = new EnumConstant(
+        EnumConstant constant = new EnumConstant(
             AbstractClassfileParser.modifiers(flags),
             name,
             new List(),
-            new List()
-            );
+            new List());
+        if (attributes.constantValue() != null) {
+          if (fieldDescriptor.isBoolean()) {
+            constant.setInit(attributes.constantValue().exprAsBoolean());
+          } else {
+            constant.setInit(attributes.constantValue().expr());
+          }
+        }
+        if (attributes.annotations != null) {
+          for (Annotation annotation : attributes.annotations) {
+            constant.getModifiersNoTransform().addModifier(annotation);
+          }
+        }
+        return constant;
       } else {
         Signatures.FieldSignature s = attributes.fieldSignature;
         Access type = s != null ? s.fieldTypeAccess() : fieldDescriptor.type();
-        f = new FieldDeclaration(
+        FieldDeclarator decl = new FieldDeclarator(name, new List<Dims>(), new Opt<Expr>());
+        FieldDecl f = new FieldDecl(
             AbstractClassfileParser.modifiers(flags),
             type,
-            name,
-            new Opt()
-            );
-      }
-      if (attributes.constantValue() != null) {
-        if (fieldDescriptor.isBoolean()) {
-          f.setInit(attributes.constantValue().exprAsBoolean());
-        } else {
-          f.setInit(attributes.constantValue().expr());
+            new List<FieldDeclarator>(decl));
+        if (attributes.constantValue() != null) {
+          if (fieldDescriptor.isBoolean()) {
+            decl.setInit(attributes.constantValue().exprAsBoolean());
+          } else {
+            decl.setInit(attributes.constantValue().expr());
+          }
         }
-      }
-
-      if (attributes.annotations != null) {
-        for (Iterator iter = attributes.annotations.iterator(); iter.hasNext(); ) {
-          f.getModifiersNoTransform().addModifier((Modifier) iter.next());
+        if (attributes.annotations != null) {
+          for (Annotation annotation : attributes.annotations) {
+            f.getModifiersNoTransform().addModifier(annotation);
+          }
         }
+        return f;
       }
-
-      return f;
     }
 
   

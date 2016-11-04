@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Annotations.ast:6
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:6
  * @production Annotation : {@link Modifier} ::= <span class="component">&lt;ID:String&gt;</span> <span class="component">{@link Access}</span> <span class="component">{@link ElementValuePair}*</span>;
 
  */
 public class Annotation extends Modifier implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat extendj/java5/frontend/PrettyPrint.jadd:311
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:35
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("@");
@@ -45,69 +46,6 @@ public class Annotation extends Modifier implements Cloneable {
       });
       out.print(")");
     }
-  }
-  /**
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:63
-   */
-  public void checkModifiers() {
-    super.checkModifiers();
-    if (decl() instanceof AnnotationDecl) {
-      AnnotationDecl T = (AnnotationDecl) decl();
-      Annotation m = T.annotation(lookupType("java.lang.annotation", "Target"));
-      if (m != null && m.getNumElementValuePair() == 1 && m.getElementValuePair(0).getName().equals("value")) {
-        ElementValue v = m.getElementValuePair(0).getElementValue();
-        //System.out.println("ElementValue: \n" + v.dumpTree());
-        //System.out.println("Annotation: \n" + dumpTree());
-        if (!v.validTarget(this)) {
-          errorf("annotation type %s is not applicable to this kind of declaration", T.typeName());
-        }
-      }
-    }
-  }
-  /**
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:460
-   */
-  public void typeCheck() {
-    if (!decl().isAnnotationDecl()) {
-      /* TypeName names the annotation type corresponding to the annotation. It is a
-      compile-time error if TypeName does not name an annotation type.*/
-      if (!decl().isUnknown()) {
-        errorf("%s is not an annotation type", decl().typeName());
-      }
-    } else {
-      TypeDecl typeDecl = decl();
-      /* It is a compile-time error if a declaration is annotated with more than one
-      annotation for a given annotation type.*/
-      if (lookupAnnotation(typeDecl) != this) {
-        errorf("duplicate annotation %s", typeDecl.typeName());
-      }
-      /* Annotations must contain an element-value pair for every element of the
-      corresponding annotation type, except for those elements with default
-      values, or a compile-time error occurs. Annotations may, but are not
-      required to, contain element-value pairs for elements with default values.*/
-      for (int i = 0; i < typeDecl.getNumBodyDecl(); i++) {
-        if (typeDecl.getBodyDecl(i) instanceof MethodDecl) {
-          MethodDecl decl = (MethodDecl) typeDecl.getBodyDecl(i);
-          if (elementValueFor(decl.name()) == null && (!(decl instanceof AnnotationMethodDecl) || !((AnnotationMethodDecl) decl).hasDefaultValue())) {
-            errorf("missing value for %s", decl.name());
-          }
-        }
-      }
-      /* The Identifier in an ElementValuePair must be the simple name of one of the
-      elements of the annotation type identified by TypeName in the containing
-      annotation. Otherwise, a compile-time error occurs. (In other words, the
-      identifier in an element-value pair must also be a method name in the interface
-      identified by TypeName.) */
-      for (int i = 0; i < getNumElementValuePair(); i++) {
-        ElementValuePair pair = getElementValuePair(i);
-        if (typeDecl.memberMethods(pair.getName()).isEmpty()) {
-          errorf("can not find element named %s in %s", pair.getName(), typeDecl.typeName());
-        }
-      }
-    }
-    checkOverride();
   }
   /**
    * @declaredat ASTNode:1
@@ -142,59 +80,47 @@ public class Annotation extends Modifier implements Cloneable {
     setChild(p1, 0);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:27
+  /** @apilevel low-level 
+   * @declaredat ASTNode:25
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:33
+   * @declaredat ASTNode:31
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     decl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:46
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:52
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public Annotation clone() throws CloneNotSupportedException {
     Annotation node = (Annotation) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:65
+  /** @apilevel internal 
+   * @declaredat ASTNode:49
    */
   public Annotation copy() {
     try {
       Annotation node = (Annotation) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -208,8 +134,9 @@ public class Annotation extends Modifier implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:84
+   * @declaredat ASTNode:68
    */
+  @Deprecated
   public Annotation fullCopy() {
     return treeCopyNoTransform();
   }
@@ -218,14 +145,14 @@ public class Annotation extends Modifier implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:93
+   * @declaredat ASTNode:78
    */
   public Annotation treeCopyNoTransform() {
     Annotation tree = (Annotation) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -239,18 +166,26 @@ public class Annotation extends Modifier implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:113
+   * @declaredat ASTNode:98
    */
   public Annotation treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    Annotation tree = (Annotation) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:120
+  /** @apilevel internal 
+   * @declaredat ASTNode:112
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((Annotation)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((Annotation) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme ID.
@@ -266,7 +201,7 @@ public class Annotation extends Modifier implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -355,11 +290,10 @@ public class Annotation extends Modifier implements Cloneable {
    * @apilevel high-level
    */
   public void addElementValuePair(ElementValuePair node) {
-    List<ElementValuePair> list = (parent == null || state == null) ? getElementValuePairListNoTransform() : getElementValuePairList();
+    List<ElementValuePair> list = (parent == null) ? getElementValuePairListNoTransform() : getElementValuePairList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addElementValuePairNoTransform(ElementValuePair node) {
     List<ElementValuePair> list = getElementValuePairListNoTransform();
@@ -383,7 +317,6 @@ public class Annotation extends Modifier implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="ElementValuePair")
   public List<ElementValuePair> getElementValuePairList() {
     List<ElementValuePair> list = (List<ElementValuePair>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -394,6 +327,13 @@ public class Annotation extends Modifier implements Cloneable {
    */
   public List<ElementValuePair> getElementValuePairListNoTransform() {
     return (List<ElementValuePair>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the ElementValuePair list without
+   * triggering rewrites.
+   */
+  public ElementValuePair getElementValuePairNoTransform(int i) {
+    return (ElementValuePair) getElementValuePairListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the ElementValuePair list.
@@ -413,84 +353,172 @@ public class Annotation extends Modifier implements Cloneable {
     return getElementValuePairListNoTransform();
   }
   /**
+   * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java6/frontend/Override.jrag:45
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:71
    */
-   
-  public void checkOverride() {
-    if (decl().fullName().equals("java.lang.Override") &&
-        enclosingBodyDecl() instanceof MethodDecl) {
-
-      MethodDecl method = (MethodDecl)enclosingBodyDecl();
-      TypeDecl host = method.hostType();
-      SimpleSet ancestors = host.ancestorMethods(method.signature());
-      boolean found = false;
-      for (Iterator iter = ancestors.iterator(); iter.hasNext(); ) {
-        MethodDecl decl = (MethodDecl)iter.next();
-        if (method.overrides(decl)) {
-          found = true;
-          break;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:71")
+  public Collection<Problem> modifierProblems() {
+    {
+        if (inComplexAnnotation()) {
+          return Collections.emptyList();
         }
+        if (decl() instanceof AnnotationDecl) {
+          AnnotationDecl T = (AnnotationDecl) decl();
+          Annotation m = T.annotation(lookupType("java.lang.annotation", "Target"));
+          if (m != null && m.getNumElementValuePair() == 1
+              && m.getElementValuePair(0).getName().equals("value")) {
+            ElementValue v = m.getElementValuePair(0).getElementValue();
+            if (!v.validTarget(this)) {
+              return Collections.singletonList(errorf(
+                  "annotation type %s is not applicable to this kind of declaration",
+                  T.typeName()));
+            }
+          }
+        }
+        return Collections.emptyList();
       }
-      if (!found) {
-        TypeDecl typeObject = lookupType("java.lang", "Object");
-        SimpleSet overrides = typeObject.localMethodsSignature(method.signature());
-        if (overrides.isEmpty() ||
-            !((MethodDecl) overrides.iterator().next()).isPublic())
-          error("method does not override a method from a supertype");
-      }
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:342
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:342")
   public boolean isAnnotation(String packageName, String name) {
-    ASTNode$State state = state();
     boolean isAnnotation_String_String_value = decl().isType(packageName, name);
-
     return isAnnotation_String_String_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:371
    */
-  protected boolean decl_computed = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:371")
+  public Collection<Problem> overrideProblems() {
+    {
+        if (decl().fullName().equals("java.lang.Override")
+            && enclosingBodyDecl() instanceof MethodDecl) {
+          MethodDecl method = (MethodDecl) enclosingBodyDecl();
+          TypeDecl host = method.hostType();
+          SimpleSet<MethodDecl> ancestors = host.ancestorMethods(method.signature());
+          boolean found = false;
+          for (MethodDecl decl : ancestors) {
+            if (method.overrides(decl)) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            TypeDecl typeObject = lookupType("java.lang", "Object");
+            SimpleSet<MethodDecl> overrides = typeObject.localMethodsSignature(method.signature());
+            if (overrides.isEmpty() || !overrides.iterator().next().isPublic()) {
+              return Collections.singletonList(
+                  error("method does not override a method from a supertype"));
+            }
+          }
+        }
+        return Collections.emptyList();
+      }
+  }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:555
    */
-  protected TypeDecl decl_value;
-  /**
-   * @apilevel internal
-   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:555")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (!decl().isAnnotationDecl()) {
+          /* TypeName names the annotation type corresponding to the annotation. It is a
+          compile-time error if TypeName does not name an annotation type.*/
+          if (!decl().isUnknown()) {
+            problems.add(errorf("%s is not an annotation type", decl().typeName()));
+          }
+        } else {
+          TypeDecl typeDecl = decl();
+          /* It is a compile-time error if a declaration is annotated with more than one
+          annotation for a given annotation type.*/
+          if (lookupAnnotation(typeDecl) != this) {
+            problems.add(errorf("duplicate annotation %s", typeDecl.typeName()));
+          }
+          /* Annotations must contain an element-value pair for every element of the
+          corresponding annotation type, except for those elements with default
+          values, or a compile-time error occurs. Annotations may, but are not
+          required to, contain element-value pairs for elements with default values.*/
+          for (int i = 0; i < typeDecl.getNumBodyDecl(); i++) {
+            if (typeDecl.getBodyDecl(i) instanceof MethodDecl) {
+              MethodDecl decl = (MethodDecl) typeDecl.getBodyDecl(i);
+              if (elementValueFor(decl.name()) == null
+                  && (!(decl instanceof AnnotationMethodDecl)
+                      || !((AnnotationMethodDecl) decl).hasDefaultValue())) {
+                problems.add(errorf("missing value for %s", decl.name()));
+              }
+            }
+          }
+          /* The Identifier in an ElementValuePair must be the simple name of one of the
+          elements of the annotation type identified by TypeName in the containing
+          annotation. Otherwise, a compile-time error occurs. (In other words, the
+          identifier in an element-value pair must also be a method name in the interface
+          identified by TypeName.) */
+          for (int i = 0; i < getNumElementValuePair(); i++) {
+            ElementValuePair pair = getElementValuePair(i);
+            if (typeDecl.memberMethods(pair.getName()).isEmpty()) {
+              problems.add(errorf("can not find element named %s in %s",
+                  pair.getName(), typeDecl.typeName()));
+            }
+          }
+        }
+        return problems;
+      }
+  }
+  /** @apilevel internal */
   private void decl_reset() {
-    decl_computed = false;
+    decl_computed = null;
     decl_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle decl_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl decl_value;
+
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:600
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:600")
   public TypeDecl decl() {
-    if(decl_computed) {
+    ASTNode$State state = state();
+    if (decl_computed == ASTNode$State.NON_CYCLE || decl_computed == state().cycle()) {
       return decl_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     decl_value = getAccess().type();
-    if (isFinal && num == state().boundariesCrossed) {
-      decl_computed = true;
+    if (state().inCircle()) {
+      decl_computed = state().cycle();
+    
     } else {
+      decl_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return decl_value;
   }
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:513
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:615
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:615")
   public ElementValue elementValueFor(String name) {
-    ASTNode$State state = state();
-    try {
+    {
         for (int i = 0; i < getNumElementValuePair(); i++) {
           ElementValuePair pair = getElementValuePair(i);
           if (pair.getName().equals(name)) {
@@ -499,112 +527,189 @@ public class Annotation extends Modifier implements Cloneable {
         }
         return null;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:727
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:727")
   public TypeDecl type() {
-    ASTNode$State state = state();
     TypeDecl type_value = getAccess().type();
-
     return type_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:757
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:757")
   public boolean isMetaAnnotation() {
-    ASTNode$State state = state();
     boolean isMetaAnnotation_value = hostType().isAnnotationDecl();
-
     return isMetaAnnotation_value;
+  }
+  /**
+   * @return {@code true} if this annotation is used inside another annotation, i.e. it is
+   * used in a complex annoation.
+   * @attribute inh
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95")
+  public boolean inComplexAnnotation() {
+    boolean inComplexAnnotation_value = getParent().Define_inComplexAnnotation(this, null);
+    return inComplexAnnotation_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:78
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:107
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:107")
   public TypeDecl lookupType(String packageName, String typeName) {
-    ASTNode$State state = state();
-    TypeDecl lookupType_String_String_value = getParent().Define_TypeDecl_lookupType(this, null, packageName, typeName);
-
+    TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
     return lookupType_String_String_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:96
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:131
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:131")
   public boolean mayUseAnnotationTarget(String name) {
-    ASTNode$State state = state();
-    boolean mayUseAnnotationTarget_String_value = getParent().Define_boolean_mayUseAnnotationTarget(this, null, name);
-
+    boolean mayUseAnnotationTarget_String_value = getParent().Define_mayUseAnnotationTarget(this, null, name);
     return mayUseAnnotationTarget_String_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:330
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:393
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:393")
   public BodyDecl enclosingBodyDecl() {
-    ASTNode$State state = state();
-    BodyDecl enclosingBodyDecl_value = getParent().Define_BodyDecl_enclosingBodyDecl(this, null);
-
+    BodyDecl enclosingBodyDecl_value = getParent().Define_enclosingBodyDecl(this, null);
     return enclosingBodyDecl_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:503
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:602
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:602")
   public Annotation lookupAnnotation(TypeDecl typeDecl) {
-    ASTNode$State state = state();
-    Annotation lookupAnnotation_TypeDecl_value = getParent().Define_Annotation_lookupAnnotation(this, null, typeDecl);
-
+    Annotation lookupAnnotation_TypeDecl_value = getParent().Define_lookupAnnotation(this, null, typeDecl);
     return lookupAnnotation_TypeDecl_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:641
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:759
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:759")
   public TypeDecl hostType() {
-    ASTNode$State state = state();
-    TypeDecl hostType_value = getParent().Define_TypeDecl_hostType(this, null);
-
+    TypeDecl hostType_value = getParent().Define_hostType(this, null);
     return hostType_value;
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:545
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_enclosingAnnotationDecl(ASTNode caller, ASTNode child) {
-    if (caller == getElementValuePairListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public boolean Define_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return true;
+  }
+  protected boolean canDefine_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:648
+   * @apilevel internal
+   */
+  public TypeDecl Define_enclosingAnnotationDecl(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getElementValuePairListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:650
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return decl();
     }
     else {
-      return getParent().Define_TypeDecl_enclosingAnnotationDecl(this, caller);
+      return getParent().Define_enclosingAnnotationDecl(this, _callerNode);
     }
   }
+  protected boolean canDefine_enclosingAnnotationDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:646
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:766
       return NameType.TYPE_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:65
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:369
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:553
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : modifierProblems()) {
+      collection.add(value);
+    }
+    for (Problem value : overrideProblems()) {
+      collection.add(value);
+    }
+    for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
   }
 }

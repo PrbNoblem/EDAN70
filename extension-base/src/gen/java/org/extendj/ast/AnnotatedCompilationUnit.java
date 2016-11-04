@@ -1,50 +1,41 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Annotations.ast:16
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:16
  * @production AnnotatedCompilationUnit : {@link CompilationUnit} ::= <span class="component">{@link Modifiers}</span>;
 
  */
 public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneable {
   /**
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:42
-   */
-  public void nameCheck() {
-    super.nameCheck();
-    if (!relativeName().endsWith("package-info.java")) {
-      error("package annotations should be in a file package-info.java");
-    }
-  }
-  /**
    * @aspect AnnotationPrettyPrinting
-   * @declaredat extendj/java5/frontend/Annotations.jrag:658
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:777
    */
   public void prettyPrint(PrettyPrinter out) {
-      out.print(getModifiers());
-      super.prettyPrint(out);
+    out.print(getModifiers());
+    super.prettyPrint(out);
   }
   /**
    * @declaredat ASTNode:1
@@ -82,58 +73,46 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:30
+  /** @apilevel low-level 
+   * @declaredat ASTNode:28
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:36
+   * @declaredat ASTNode:34
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:48
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:54
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:60
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public AnnotatedCompilationUnit clone() throws CloneNotSupportedException {
     AnnotatedCompilationUnit node = (AnnotatedCompilationUnit) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:67
+  /** @apilevel internal 
+   * @declaredat ASTNode:51
    */
   public AnnotatedCompilationUnit copy() {
     try {
       AnnotatedCompilationUnit node = (AnnotatedCompilationUnit) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -147,8 +126,9 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:86
+   * @declaredat ASTNode:70
    */
+  @Deprecated
   public AnnotatedCompilationUnit fullCopy() {
     return treeCopyNoTransform();
   }
@@ -157,14 +137,14 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:95
+   * @declaredat ASTNode:80
    */
   public AnnotatedCompilationUnit treeCopyNoTransform() {
     AnnotatedCompilationUnit tree = (AnnotatedCompilationUnit) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -178,18 +158,26 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:115
+   * @declaredat ASTNode:100
    */
   public AnnotatedCompilationUnit treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    AnnotatedCompilationUnit tree = (AnnotatedCompilationUnit) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:122
+  /** @apilevel internal 
+   * @declaredat ASTNode:114
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_PackageDecl == ((AnnotatedCompilationUnit)node).tokenString_PackageDecl);    
+    return super.is$Equal(node) && (tokenString_PackageDecl == ((AnnotatedCompilationUnit) node).tokenString_PackageDecl);    
   }
   /**
    * Replaces the lexeme PackageDecl.
@@ -205,7 +193,7 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    * @apilevel internal
    */
   public void setPackageDecl(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackageDecl is only valid for String lexemes");
     tokenString_PackageDecl = (String)symbol.value;
     PackageDeclstart = symbol.getStart();
@@ -268,11 +256,10 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    * @apilevel high-level
    */
   public void addImportDecl(ImportDecl node) {
-    List<ImportDecl> list = (parent == null || state == null) ? getImportDeclListNoTransform() : getImportDeclList();
+    List<ImportDecl> list = (parent == null) ? getImportDeclListNoTransform() : getImportDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addImportDeclNoTransform(ImportDecl node) {
     List<ImportDecl> list = getImportDeclListNoTransform();
@@ -296,7 +283,6 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
   @ASTNodeAnnotation.ListChild(name="ImportDecl")
   public List<ImportDecl> getImportDeclList() {
     List<ImportDecl> list = (List<ImportDecl>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -307,6 +293,13 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    */
   public List<ImportDecl> getImportDeclListNoTransform() {
     return (List<ImportDecl>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the ImportDecl list without
+   * triggering rewrites.
+   */
+  public ImportDecl getImportDeclNoTransform(int i) {
+    return (ImportDecl) getImportDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the ImportDecl list.
@@ -373,11 +366,10 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    * @apilevel high-level
    */
   public void addTypeDecl(TypeDecl node) {
-    List<TypeDecl> list = (parent == null || state == null) ? getTypeDeclListNoTransform() : getTypeDeclList();
+    List<TypeDecl> list = (parent == null) ? getTypeDeclListNoTransform() : getTypeDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeDeclNoTransform(TypeDecl node) {
     List<TypeDecl> list = getTypeDeclListNoTransform();
@@ -401,7 +393,6 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
   @ASTNodeAnnotation.ListChild(name="TypeDecl")
   public List<TypeDecl> getTypeDeclList() {
     List<TypeDecl> list = (List<TypeDecl>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -412,6 +403,13 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
    */
   public List<TypeDecl> getTypeDeclListNoTransform() {
     return (List<TypeDecl>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeDecl list without
+   * triggering rewrites.
+   */
+  public TypeDecl getTypeDeclNoTransform(int i) {
+    return (TypeDecl) getTypeDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeDecl list.
@@ -457,33 +455,63 @@ public class AnnotatedCompilationUnit extends CompilationUnit implements Cloneab
     return (Modifiers) getChildNoTransform(2);
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:98
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:131
    * @apilevel internal
    */
-  public boolean Define_boolean_mayUseAnnotationTarget(ASTNode caller, ASTNode child, String name) {
-    if (caller == getModifiersNoTransform()) {
+  public boolean Define_mayUseAnnotationTarget(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:134
       return name.equals("PACKAGE");
     }
     else {
-      return getParent().Define_boolean_mayUseAnnotationTarget(this, caller, name);
+      return getParent().Define_mayUseAnnotationTarget(this, _callerNode, name);
     }
   }
+  protected boolean canDefine_mayUseAnnotationTarget(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:649
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:633
    * @apilevel internal
    */
-  public String Define_String_hostPackage(ASTNode caller, ASTNode child) {
-    if (caller == getModifiersNoTransform()) {
+  public String Define_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:770
       return packageName();
     }
     else {
-      return super.Define_String_hostPackage(caller, child);
+      return super.Define_hostPackage(_callerNode, _childNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:51
+    if (!relativeName().endsWith("package-info.java")) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!relativeName().endsWith("package-info.java")) {
+      collection.add(error("package annotations should be in a file package-info.java"));
+    }
   }
 }

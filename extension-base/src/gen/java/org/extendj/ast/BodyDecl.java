@@ -1,55 +1,56 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:69
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:69
  * @production BodyDecl : {@link ASTNode};
 
  */
 public abstract class BodyDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @aspect DocumentationComments
-   * @declaredat extendj/java4/frontend/DocumentationComments.jadd:36
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DocumentationComments.jadd:36
    */
   public String docComment = "";
   /**
+   * Copies the signature of this body decl. The type and name and parameters
+   * are copied where applicable, but the body or initializer is not copied.
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1361
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1281
    */
-  public BodyDecl substitutedBodyDecl(Parameterization parTypeDecl) {
-    throw new Error("Operation substitutedBodyDecl not supported for " + getClass().getName());
+  public BodyDecl signatureCopy() {
+    throw new Error("Can not susbtitute type parameters in body decl of type "
+        + getClass().getSimpleName());
   }
   /**
-   * We must report illegal uses of the SafeVarargs annotation.
-   * It is only allowed on variable arity method and constructor declarations.
-   * @aspect SafeVarargs
-   * @declaredat extendj/java7/frontend/SafeVarargs.jrag:108
+   * Creates an erased copy of the signature of this body declaration.
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1383
    */
-  public void checkWarnings() {
-    if (hasIllegalAnnotationSafeVarargs()) {
-      error("@SafeVarargs is only allowed for variable arity method and constructor declarations");
-    }
+  public BodyDecl erasedCopy() {
+    throw new Error("Can not erase types in body decl of type " + getClass().getSimpleName());
   }
   /**
    * @declaredat ASTNode:1
@@ -66,50 +67,38 @@ public abstract class BodyDecl extends ASTNode<ASTNode> implements Cloneable {
    */
   public void init$Children() {
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:15
+  /** @apilevel low-level 
+   * @declaredat ASTNode:13
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:21
+   * @declaredat ASTNode:19
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:27
+  /** @apilevel internal 
+   * @declaredat ASTNode:23
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    isDAafter_Variable_reset();
-    isDAbefore_Variable_reset();
-    isDUafter_Variable_reset();
-    isDUbefore_Variable_reset();
+    assignedAfter_Variable_reset();
+    assignedBefore_Variable_reset();
+    unassignedAfter_Variable_reset();
     typeThrowable_reset();
     lookupVariable_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public BodyDecl clone() throws CloneNotSupportedException {
     BodyDecl node = (BodyDecl) super.clone();
@@ -121,15 +110,16 @@ public abstract class BodyDecl extends ASTNode<ASTNode> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:62
+   * @declaredat ASTNode:47
    */
+  @Deprecated
   public abstract BodyDecl fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:69
+   * @declaredat ASTNode:55
    */
   public abstract BodyDecl treeCopyNoTransform();
   /**
@@ -138,189 +128,283 @@ public abstract class BodyDecl extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:63
    */
   public abstract BodyDecl treeCopy();
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect DocumentationComments
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DocumentationComments.jadd:42
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DocumentationComments", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DocumentationComments.jadd:42")
   public String docComment() {
-    ASTNode$State state = state();
     String docComment_value = docComment;
-
     return docComment_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect DocumentationComments
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DocumentationComments.jadd:46
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DocumentationComments", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DocumentationComments.jadd:46")
   public boolean hasDocComment() {
-    ASTNode$State state = state();
     boolean hasDocComment_value = !docComment.isEmpty();
-
     return hasDocComment_value;
   }
-  protected java.util.Map isDAafter_Variable_values;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect Modifiers
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:249
    */
-  private void isDAafter_Variable_reset() {
-    isDAafter_Variable_values = null;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:249")
+  public boolean isSynthetic() {
+    boolean isSynthetic_value = false;
+    return isSynthetic_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafter(Variable v) {
-    Object _parameters = v;
-    if (isDAafter_Variable_values == null) isDAafter_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDAafter_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDAafter_Variable_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDAafter_Variable_value = true;
-    if (isFinal && num == state().boundariesCrossed) {
-      isDAafter_Variable_values.put(_parameters, Boolean.valueOf(isDAafter_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return isDAafter_Variable_value;
-  }
-  protected java.util.Map isDAbefore_Variable_values;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:292
    */
-  private void isDAbefore_Variable_reset() {
-    isDAbefore_Variable_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAbefore(Variable v) {
-    Object _parameters = v;
-    if (isDAbefore_Variable_values == null) isDAbefore_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDAbefore_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDAbefore_Variable_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDAbefore_Variable_value = isDAbefore(v, this);
-    if (isFinal && num == state().boundariesCrossed) {
-      isDAbefore_Variable_values.put(_parameters, Boolean.valueOf(isDAbefore_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return isDAbefore_Variable_value;
-  }
-  protected java.util.Map isDUafter_Variable_values;
-  /**
-   * @apilevel internal
-   */
-  private void isDUafter_Variable_reset() {
-    isDUafter_Variable_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafter(Variable v) {
-    Object _parameters = v;
-    if (isDUafter_Variable_values == null) isDUafter_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDUafter_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDUafter_Variable_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDUafter_Variable_value = true;
-    if (isFinal && num == state().boundariesCrossed) {
-      isDUafter_Variable_values.put(_parameters, Boolean.valueOf(isDUafter_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return isDUafter_Variable_value;
-  }
-  protected java.util.Map isDUbefore_Variable_values;
-  /**
-   * @apilevel internal
-   */
-  private void isDUbefore_Variable_reset() {
-    isDUbefore_Variable_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUbefore(Variable v) {
-    Object _parameters = v;
-    if (isDUbefore_Variable_values == null) isDUbefore_Variable_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(isDUbefore_Variable_values.containsKey(_parameters)) {
-      return ((Boolean)isDUbefore_Variable_values.get(_parameters)).booleanValue();
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean isDUbefore_Variable_value = isDUbefore(v, this);
-    if (isFinal && num == state().boundariesCrossed) {
-      isDUbefore_Variable_values.put(_parameters, Boolean.valueOf(isDUbefore_Variable_value));
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return isDUbefore_Variable_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean declaresType(String name) {
-    ASTNode$State state = state();
-    boolean declaresType_String_value = false;
-
-    return declaresType_String_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl type(String name) {
-    ASTNode$State state = state();
-    TypeDecl type_String_value = null;
-
-    return type_String_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:292")
   public boolean isVoid() {
-    ASTNode$State state = state();
     boolean isVoid_value = false;
-
     return isVoid_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean hasAnnotationSuppressWarnings(String annot) {
+  /** @apilevel internal */
+  private void assignedAfter_Variable_reset() {
+    assignedAfter_Variable_values = null;
+  }
+  protected java.util.Map assignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:272")
+  public boolean assignedAfter(Variable v) {
+    Object _parameters = v;
+    if (assignedAfter_Variable_values == null) assignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (assignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = assignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      assignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
     ASTNode$State state = state();
-    boolean hasAnnotationSuppressWarnings_String_value = false;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_assignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_assignedAfter_Variable_value = true;
+        if (new_assignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_assignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      assignedAfter_Variable_values.put(_parameters, new_assignedAfter_Variable_value);
 
+      state.leaveCircle();
+      return new_assignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_assignedAfter_Variable_value = true;
+      if (new_assignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_assignedAfter_Variable_value;
+      }
+      return new_assignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /** @apilevel internal */
+  private void assignedBefore_Variable_reset() {
+    assignedBefore_Variable_values = null;
+  }
+  protected java.util.Map assignedBefore_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:278")
+  public boolean assignedBefore(Variable v) {
+    Object _parameters = v;
+    if (assignedBefore_Variable_values == null) assignedBefore_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (assignedBefore_Variable_values.containsKey(_parameters)) {
+      Object _cache = assignedBefore_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      assignedBefore_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_assignedBefore_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_assignedBefore_Variable_value = assignedBefore(v, this);
+        if (new_assignedBefore_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_assignedBefore_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      assignedBefore_Variable_values.put(_parameters, new_assignedBefore_Variable_value);
+
+      state.leaveCircle();
+      return new_assignedBefore_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_assignedBefore_Variable_value = assignedBefore(v, this);
+      if (new_assignedBefore_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_assignedBefore_Variable_value;
+      }
+      return new_assignedBefore_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /** @apilevel internal */
+  private void unassignedAfter_Variable_reset() {
+    unassignedAfter_Variable_values = null;
+  }
+  protected java.util.Map unassignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:915")
+  public boolean unassignedAfter(Variable v) {
+    Object _parameters = v;
+    if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfter_Variable_value = true;
+        if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfter_Variable_values.put(_parameters, new_unassignedAfter_Variable_value);
+
+      state.leaveCircle();
+      return new_unassignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfter_Variable_value = true;
+      if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfter_Variable_value;
+      }
+      return new_unassignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /**
+   * @attribute syn
+   * @aspect DefiniteUnassignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:921
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:921")
+  public boolean unassignedBefore(Variable v) {
+    boolean unassignedBefore_Variable_value = unassignedBefore(v, this);
+    return unassignedBefore_Variable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608")
+  public boolean declaresType(String name) {
+    boolean declaresType_String_value = false;
+    return declaresType_String_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610")
+  public TypeDecl type(String name) {
+    TypeDecl type_String_value = null;
+    return type_String_value;
+  }
+  /** @return {@code true} if the field declaration is inside this node. 
+   * @attribute syn
+   * @aspect DeclareBeforeUse
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:46
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DeclareBeforeUse", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:46")
+  public boolean declaredIn(Variable decl) {
+    boolean declaredIn_Variable_value = declaredBefore(decl);
+    return declaredIn_Variable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428")
+  public boolean hasAnnotationSuppressWarnings(String annot) {
+    boolean hasAnnotationSuppressWarnings_String_value = false;
     return hasAnnotationSuppressWarnings_String_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:489
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:489")
   public boolean isDeprecated() {
-    ASTNode$State state = state();
     boolean isDeprecated_value = false;
-
     return isDeprecated_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isEnumConstant() {
-    ASTNode$State state = state();
-    boolean isEnumConstant_value = false;
-
-    return isEnumConstant_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean visibleTypeParameters() {
-    ASTNode$State state = state();
-    boolean visibleTypeParameters_value = true;
-
-    return visibleTypeParameters_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return {@code true} if this is a generic method or constructor, or a
+   * substitued generic method or constructor.
+   * @attribute syn
+   * @aspect MethodSignature15
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325")
   public boolean isGeneric() {
-    ASTNode$State state = state();
     boolean isGeneric_value = false;
-
     return isGeneric_value;
   }
   /**
@@ -329,315 +413,460 @@ public abstract class BodyDecl extends ASTNode<ASTNode> implements Cloneable {
    * @return type parameters for this declaration.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat extendj/java5/frontend/MethodSignature.jrag:408
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
   public List<TypeVariable> typeParameters() {
-    ASTNode$State state = state();
-    try {
+    {
         throw new Error("can not evaulate type parameters for non-generic declaration");
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect GenericsParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98")
+  public boolean visibleTypeParameters() {
+    boolean visibleTypeParameters_value = true;
+    return visibleTypeParameters_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1563
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1563")
+  public boolean isSubstitutable() {
+    boolean isSubstitutable_value = false;
+    return isSubstitutable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Enums
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:50
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Enums", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:50")
+  public boolean isEnumConstant() {
+    boolean isEnumConstant_value = false;
+    return isEnumConstant_value;
+  }
+  /**
+   * @return true if the modifier list includes the SafeVarargs annotation
+   * @attribute syn
+   * @aspect SafeVarargs
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41")
   public boolean hasAnnotationSafeVarargs() {
-    ASTNode$State state = state();
     boolean hasAnnotationSafeVarargs_value = false;
-
     return hasAnnotationSafeVarargs_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * It is an error if the SafeVarargs annotation is used on something
+   * that is not a variable arity method or constructor.
+   * @attribute syn
+   * @aspect SafeVarargs
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:72
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:72")
   public boolean hasIllegalAnnotationSafeVarargs() {
-    ASTNode$State state = state();
     boolean hasIllegalAnnotationSafeVarargs_value = hasAnnotationSafeVarargs();
-
     return hasIllegalAnnotationSafeVarargs_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect PreciseRethrow
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
   public boolean modifiedInScope(Variable var) {
-    ASTNode$State state = state();
     boolean modifiedInScope_Variable_value = false;
-
     return modifiedInScope_Variable_value;
   }
   /**
    * @attribute inh
-   * @aspect DA
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:272
-   */
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAbefore(Variable v, BodyDecl b) {
-    ASTNode$State state = state();
-    boolean isDAbefore_Variable_BodyDecl_value = getParent().Define_boolean_isDAbefore(this, null, v, b);
-
-    return isDAbefore_Variable_BodyDecl_value;
-  }
-  /**
-   * @attribute inh
-   * @aspect DU
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:804
-   */
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUbefore(Variable v, BodyDecl b) {
-    ASTNode$State state = state();
-    boolean isDUbefore_Variable_BodyDecl_value = getParent().Define_boolean_isDUbefore(this, null, v, b);
-
-    return isDUbefore_Variable_BodyDecl_value;
-  }
-  /**
-   * @attribute inh
-   * @aspect ExceptionHandling
-   * @declaredat extendj/java4/frontend/ExceptionHandling.jrag:49
-   */
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl typeThrowable() {
-    if(typeThrowable_computed) {
-      return typeThrowable_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    typeThrowable_value = getParent().Define_TypeDecl_typeThrowable(this, null);
-    if (isFinal && num == state().boundariesCrossed) {
-      typeThrowable_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return typeThrowable_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeThrowable_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl typeThrowable_value;
-  /**
-   * @apilevel internal
-   */
-  private void typeThrowable_reset() {
-    typeThrowable_computed = false;
-    typeThrowable_value = null;
-  }
-  /**
-   * @attribute inh
    * @aspect LookupMethod
-   * @declaredat extendj/java4/frontend/LookupMethod.jrag:47
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:54
    */
-  @ASTNodeAnnotation.Attribute
-  public Collection lookupMethod(String name) {
-    ASTNode$State state = state();
-    Collection lookupMethod_String_value = getParent().Define_Collection_lookupMethod(this, null, name);
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:54")
+  public Collection<MethodDecl> lookupMethod(String name) {
+    Collection<MethodDecl> lookupMethod_String_value = getParent().Define_lookupMethod(this, null, name);
     return lookupMethod_String_value;
   }
   /**
    * @attribute inh
-   * @aspect LookupFullyQualifiedTypes
-   * @declaredat extendj/java4/frontend/LookupType.jrag:131
+   * @aspect ExceptionHandling
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:60
    */
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl lookupType(String packageName, String typeName) {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:60")
+  public TypeDecl typeThrowable() {
     ASTNode$State state = state();
-    TypeDecl lookupType_String_String_value = getParent().Define_TypeDecl_lookupType(this, null, packageName, typeName);
-
-    return lookupType_String_String_value;
+    if (typeThrowable_computed == ASTNode$State.NON_CYCLE || typeThrowable_computed == state().cycle()) {
+      return typeThrowable_value;
+    }
+    typeThrowable_value = getParent().Define_typeThrowable(this, null);
+    if (state().inCircle()) {
+      typeThrowable_computed = state().cycle();
+    
+    } else {
+      typeThrowable_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return typeThrowable_value;
   }
-  /**
-   * @attribute inh
-   * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:338
-   */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet lookupType(String name) {
-    ASTNode$State state = state();
-    SimpleSet lookupType_String_value = getParent().Define_SimpleSet_lookupType(this, null, name);
-
-    return lookupType_String_value;
+  /** @apilevel internal */
+  private void typeThrowable_reset() {
+    typeThrowable_computed = null;
+    typeThrowable_value = null;
   }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle typeThrowable_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl typeThrowable_value;
+
   /**
    * @attribute inh
    * @aspect VariableScope
-   * @declaredat extendj/java4/frontend/LookupVariable.jrag:36
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:39
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet lookupVariable(String name) {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:39")
+  public SimpleSet<Variable> lookupVariable(String name) {
     Object _parameters = name;
-    if (lookupVariable_String_values == null) lookupVariable_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(lookupVariable_String_values.containsKey(_parameters)) {
-      return (SimpleSet)lookupVariable_String_values.get(_parameters);
-    }
+    if (lookupVariable_String_computed == null) lookupVariable_String_computed = new java.util.HashMap(4);
+    if (lookupVariable_String_values == null) lookupVariable_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet lookupVariable_String_value = getParent().Define_SimpleSet_lookupVariable(this, null, name);
-    if (isFinal && num == state().boundariesCrossed) {
-      lookupVariable_String_values.put(_parameters, lookupVariable_String_value);
-    } else {
+    if (lookupVariable_String_values.containsKey(_parameters) && lookupVariable_String_computed != null
+        && lookupVariable_String_computed.containsKey(_parameters)
+        && (lookupVariable_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || lookupVariable_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) lookupVariable_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<Variable> lookupVariable_String_value = getParent().Define_lookupVariable(this, null, name);
+    if (state().inCircle()) {
+      lookupVariable_String_values.put(_parameters, lookupVariable_String_value);
+      lookupVariable_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      lookupVariable_String_values.put(_parameters, lookupVariable_String_value);
+      lookupVariable_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return lookupVariable_String_value;
   }
-  protected java.util.Map lookupVariable_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void lookupVariable_String_reset() {
+    lookupVariable_String_computed = new java.util.HashMap(4);
     lookupVariable_String_values = null;
   }
+  /** @apilevel internal */
+  protected java.util.Map lookupVariable_String_values;
+  /** @apilevel internal */
+  protected java.util.Map lookupVariable_String_computed;
   /**
    * @attribute inh
    * @aspect NestedTypes
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:621
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:631
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:631")
   public String hostPackage() {
-    ASTNode$State state = state();
-    String hostPackage_value = getParent().Define_String_hostPackage(this, null);
-
+    String hostPackage_value = getParent().Define_hostPackage(this, null);
     return hostPackage_value;
   }
   /**
    * @attribute inh
    * @aspect NestedTypes
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:637
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:648
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:648")
   public TypeDecl hostType() {
-    ASTNode$State state = state();
-    TypeDecl hostType_value = getParent().Define_TypeDecl_hostType(this, null);
-
+    TypeDecl hostType_value = getParent().Define_hostType(this, null);
     return hostType_value;
   }
   /**
    * @attribute inh
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:341
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:280
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:280")
+  public boolean assignedBefore(Variable v, BodyDecl b) {
+    boolean assignedBefore_Variable_BodyDecl_value = getParent().Define_assignedBefore(this, null, v, b);
+    return assignedBefore_Variable_BodyDecl_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect DefiniteUnassignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:923
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:923")
+  public boolean unassignedBefore(Variable v, BodyDecl b) {
+    boolean unassignedBefore_Variable_BodyDecl_value = getParent().Define_unassignedBefore(this, null, v, b);
+    return unassignedBefore_Variable_BodyDecl_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect LookupFullyQualifiedTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:129
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:129")
+  public TypeDecl lookupType(String packageName, String typeName) {
+    TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
+    return lookupType_String_String_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:352
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:352")
+  public SimpleSet<TypeDecl> lookupType(String name) {
+    SimpleSet<TypeDecl> lookupType_String_value = getParent().Define_lookupType(this, null, name);
+    return lookupType_String_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:405
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:405")
   public boolean withinSuppressWarnings(String annot) {
-    ASTNode$State state = state();
-    boolean withinSuppressWarnings_String_value = getParent().Define_boolean_withinSuppressWarnings(this, null, annot);
-
+    boolean withinSuppressWarnings_String_value = getParent().Define_withinSuppressWarnings(this, null, annot);
     return withinSuppressWarnings_String_value;
   }
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:449
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:536
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:536")
   public boolean withinDeprecatedAnnotation() {
-    ASTNode$State state = state();
-    boolean withinDeprecatedAnnotation_value = getParent().Define_boolean_withinDeprecatedAnnotation(this, null);
-
+    boolean withinDeprecatedAnnotation_value = getParent().Define_withinDeprecatedAnnotation(this, null);
     return withinDeprecatedAnnotation_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/BranchTarget.jrag:229
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
-  public Stmt Define_Stmt_branchTarget(ASTNode caller, ASTNode child, Stmt branch) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-{
-    throw new Error("Found no branch targets for " + branch.getClass().getName());
+  public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
   }
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/BranchTarget.jrag:264
-   * @apilevel internal
-   */
-  public FinallyHost Define_FinallyHost_enclosingFinally(ASTNode caller, ASTNode child, Stmt branch) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return null;
-    }
+  protected boolean canDefine_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:268
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
    * @apilevel internal
    */
-  public boolean Define_boolean_isDAbefore(ASTNode caller, ASTNode child, Variable v) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return isDAbefore(v, this);
-    }
+  public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:800
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
    * @apilevel internal
    */
-  public boolean Define_boolean_isDUbefore(ASTNode caller, ASTNode child, Variable v) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return isDUbefore(v, this);
-    }
+  public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return prevExprError();
+  }
+  protected boolean canDefine_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:527
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
    * @apilevel internal
    */
-  public SimpleSet Define_SimpleSet_otherLocalClassDecls(ASTNode caller, ASTNode child, String name) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return SimpleSet.emptySet;
-    }
+  public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return nextAccessError();
+  }
+  protected boolean canDefine_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java4/frontend/TypeAnalysis.jrag:565
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:601
    * @apilevel internal
    */
-  public BodyDecl Define_BodyDecl_enclosingBodyDecl(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return this;
-    }
+  public SimpleSet<TypeDecl> Define_otherLocalClassDecls(ASTNode _callerNode, ASTNode _childNode, String name) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return emptySet();
+  }
+  protected boolean canDefine_otherLocalClassDecls(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:344
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:30
    * @apilevel internal
    */
-  public boolean Define_boolean_withinSuppressWarnings(ASTNode caller, ASTNode child, String annot) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return hasAnnotationSuppressWarnings(annot) || hasAnnotationSuppressWarnings(annot)
-      || withinSuppressWarnings(annot);
-    }
+  public BodyDecl Define_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return this;
+  }
+  protected boolean canDefine_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:451
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
    * @apilevel internal
    */
-  public boolean Define_boolean_withinDeprecatedAnnotation(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return isDeprecated() || isDeprecated() || withinDeprecatedAnnotation();
-    }
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return assignedBefore(v, this);
+  }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
   }
   /**
-   * @declaredat extendj/java7/frontend/TryWithResources.jrag:192
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
    * @apilevel internal
    */
-  public boolean Define_boolean_resourcePreviouslyDeclared(ASTNode caller, ASTNode child, String name) {
-     {
-      int i = this.getIndexOfChild(caller);
-      return false;
-    }
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return unassignedBefore(v, this);
+  }
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
   }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:230
    * @apilevel internal
    */
+  public Stmt Define_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    {
+        throw new Error("Found no branch targets for " + branch.getClass().getName());
+      }
+  }
+  protected boolean canDefine_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:273
+   * @apilevel internal
+   */
+  public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95
+   * @apilevel internal
+   */
+  public boolean Define_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:37
+   * @apilevel internal
+   */
+  public boolean Define_withinSuppressWarnings(ASTNode _callerNode, ASTNode _childNode, String annot) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return hasAnnotationSuppressWarnings(annot)
+          || hasAnnotationSuppressWarnings(annot)
+          || withinSuppressWarnings(annot);
+  }
+  protected boolean canDefine_withinSuppressWarnings(ASTNode _callerNode, ASTNode _childNode, String annot) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:536
+   * @apilevel internal
+   */
+  public boolean Define_withinDeprecatedAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return isDeprecated() || isDeprecated() || withinDeprecatedAnnotation();
+  }
+  protected boolean canDefine_withinDeprecatedAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:130
+   * @apilevel internal
+   */
+  public boolean Define_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:94
+   * @apilevel internal
+   */
+  public ClassInstanceExpr Define_getClassInstanceExpr(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_getClassInstanceExpr(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:198
+   * @apilevel internal
+   */
+  public boolean Define_resourcePreviouslyDeclared(ASTNode _callerNode, ASTNode _childNode, String name) {
+    int i = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_resourcePreviouslyDeclared(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:110
+    if (hasIllegalAnnotationSafeVarargs()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (hasIllegalAnnotationSafeVarargs()) {
+      collection.add(error("@SafeVarargs is only allowed for variable arity method and constructor declarations"));
+    }
   }
 }

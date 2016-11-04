@@ -1,55 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:105
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:107
  * @production AssignSimpleExpr : {@link AssignExpr};
 
  */
 public class AssignSimpleExpr extends AssignExpr implements Cloneable {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:67
-   */
-  public void typeCheck() {
-    if (!getDest().isVariable()) {
-      error("left hand side is not a variable");
-    } else if (!getSource().type().assignConversionTo(getDest().type(), getSource())
-        && !getSource().type().isUnknown()) {
-      errorf("can not assign %s of type %s a value of type %s",
-          getDest().prettyPrint(), getDest().type().typeName(), getSource().type().typeName());
-    }
-  }
-  /**
-   * @aspect UncheckedConversion
-   * @declaredat extendj/java7/frontend/UncheckedConversion.jrag:53
-   */
-  public void checkWarnings() {
-    if (!withinSuppressWarnings("unchecked")) {
-      checkUncheckedConversion(getSource().type(), getDest().type());
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -73,58 +52,46 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public AssignSimpleExpr clone() throws CloneNotSupportedException {
     AssignSimpleExpr node = (AssignSimpleExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public AssignSimpleExpr copy() {
     try {
       AssignSimpleExpr node = (AssignSimpleExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -138,8 +105,9 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public AssignSimpleExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -148,14 +116,14 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public AssignSimpleExpr treeCopyNoTransform() {
     AssignSimpleExpr tree = (AssignSimpleExpr) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -169,15 +137,23 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public AssignSimpleExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    AssignSimpleExpr tree = (AssignSimpleExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -234,65 +210,124 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
   public Expr getSourceNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  @ASTNodeAnnotation.Attribute
+  /** The operator string used for pretty printing this expression. 
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:264
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:264")
   public String printOp() {
-    ASTNode$State state = state();
     String printOp_value = "=";
-
     return printOp_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:77
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:77")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (!getDest().isVariable()) {
+          problems.add(error("left hand side is not a variable"));
+        } else if (!getSource().type().assignConversionTo(getDest().type(), getSource())
+            && !getSource().type().isUnknown()) {
+          problems.add(errorf("can not assign %s of type %s a value of type %s",
+              getDest().prettyPrint(), getDest().type().typeName(), getSource().type().typeName()));
+        }
+        return problems;
+      }
   }
   /**
    * @attribute inh
    * @aspect SuppressWarnings
-   * @declaredat extendj/java7/frontend/SuppressWarnings.jrag:37
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:36
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:36")
   public boolean withinSuppressWarnings(String annot) {
-    ASTNode$State state = state();
-    boolean withinSuppressWarnings_String_value = getParent().Define_boolean_withinSuppressWarnings(this, null, annot);
-
+    boolean withinSuppressWarnings_String_value = getParent().Define_withinSuppressWarnings(this, null, annot);
     return withinSuppressWarnings_String_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:39
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
    * @apilevel internal
    */
-  public boolean Define_boolean_isDest(ASTNode caller, ASTNode child) {
-    if (caller == getDestNoTransform()) {
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    if (getDestNoTransform() != null && _callerNode == getDest()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:36
       return true;
     }
     else {
-      return super.Define_boolean_isDest(caller, child);
+      return super.Define_isDest(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/DefiniteAssignment.jrag:49
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
    * @apilevel internal
    */
-  public boolean Define_boolean_isSource(ASTNode caller, ASTNode child) {
-    if (caller == getDestNoTransform()) {
+  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    if (getDestNoTransform() != null && _callerNode == getDest()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:46
       return false;
     }
     else {
-      return super.Define_boolean_isSource(caller, child);
+      return super.Define_isSource(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/GenericMethodsInference.jrag:61
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:65
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_assignConvertedType(ASTNode caller, ASTNode child) {
-    if (caller == getSourceNoTransform()) {
+  public TypeDecl Define_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getSourceNoTransform() != null && _callerNode == getSource()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:67
       return getDest().type();
     }
     else {
-      return getParent().Define_TypeDecl_assignConvertedType(this, caller);
+      return getParent().Define_assignConvertedType(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/UncheckedConversion.jrag:51
+    if (!withinSuppressWarnings("unchecked")) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!withinSuppressWarnings("unchecked")) {
+      for (Problem value : uncheckedConversionWarnings(getSource().type(), getDest().type())) {
+        collection.add(value);
+      }
+    }
   }
 }

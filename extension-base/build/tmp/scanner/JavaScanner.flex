@@ -55,7 +55,7 @@ WhiteSpace = [ ] | \t | \f | {LineTerminator}
 /* 3.7 Comments */
 Comment = {TraditionalComment} | {EndOfLineComment}
 
-DocumentationComment = "/**" ~"*/"
+DocumentationComment = "/**" ([^*/] | "*"+ [^*/]) ([^*] | "*"+ [^*/])* "*"+ "/"
 TraditionalComment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
 EndOfLineComment = "//" {InputCharacter}* {LineTerminator}?
 
@@ -109,7 +109,7 @@ ZeroToThree = [0-3]
 
 /* 3.7 Comments */
 <YYINITIAL> {
-  {DocumentationComment} { return sym(Terminals.DOC_COMMENT); }
+  {DocumentationComment} { return sym(Terminals.DOCUMENTATION_COMMENT); }
   {Comment} { }
 }
 

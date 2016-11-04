@@ -5,24 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
- * @declaredat extendj/java4/frontend/Options.jadd:43
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:45
  */
 public class Options extends java.lang.Object {
   public  Collection<String> files() {
@@ -37,35 +39,40 @@ public class Options extends java.lang.Object {
 
   public  void addKeyOption(String name) {
     if (optionDescriptions.containsKey(name)) {
-      throw new Error("Command line definition error: option description for " + name + " is multiply declared");
+      throw new Error("Command line definition error: option description for "
+          + name + " is multiply declared");
     }
     optionDescriptions.put(name, new Option(name, false, false));
   }
 
   public  void addKeyValueOption(String name) {
     if (optionDescriptions.containsKey(name)) {
-      throw new Error("Command line definition error: option description for " + name + " is multiply declared");
+      throw new Error("Command line definition error: option description for "
+          + name + " is multiply declared");
     }
     optionDescriptions.put(name, new Option(name, true, false));
   }
 
   public  void addKeyCollectionOption(String name) {
     if (optionDescriptions.containsKey(name)) {
-      throw new Error("Command line definition error: option description for " + name + " is multiply declared");
+      throw new Error("Command line definition error: option description for "
+          + name + " is multiply declared");
     }
     optionDescriptions.put(name, new Option(name, true, true));
   }
 
   public  void addOptionDescription(String name, boolean value) {
     if (optionDescriptions.containsKey(name)) {
-      throw new Error("Command line definition error: option description for " + name + " is multiply declared");
+      throw new Error("Command line definition error: option description for "
+          + name + " is multiply declared");
     }
     optionDescriptions.put(name, new Option(name, value, false));
   }
 
   public  void addOptionDescription(String name, boolean value, boolean isCollection) {
     if (optionDescriptions.containsKey(name)) {
-      throw new Error("Command line definition error: option description for " + name + " is multiply declared");
+      throw new Error("Command line definition error: option description for "
+          + name + " is multiply declared");
     }
     optionDescriptions.put(name, new Option(name, value, isCollection));
   }
@@ -73,17 +80,18 @@ public class Options extends java.lang.Object {
   public  void addOptions(String[] args) {
     java.util.List<String> argList = new ArrayList<String>();
 
-    // expand argument files
+    // Expand argument files.
     for (int i = 0; i < args.length; i++) {
       String arg = args[i];
       if (arg.length() > 1 && arg.startsWith("@")) {
         if (arg.startsWith("@@")) {
-          // escape the double at
+          // Escape the double at.
           argList.add(arg.substring(1));
         } else {
           String fileName = arg.substring(1);
           try {
-            java.io.StreamTokenizer tokenizer = new java.io.StreamTokenizer(new java.io.FileReader(fileName));
+            java.io.StreamTokenizer tokenizer = new java.io.StreamTokenizer(
+                new java.io.FileReader(fileName));
             tokenizer.resetSyntax();
             tokenizer.whitespaceChars(' ',' ');
             tokenizer.whitespaceChars('\t','\t');
@@ -174,11 +182,11 @@ public class Options extends java.lang.Object {
     options.put(option, value);
   }
 
-  public  Collection getValueCollectionForOption(String name) {
+  public  Collection<String> getValueCollectionForOption(String name) {
     if (!hasValueForOption(name)) {
       throw new Error("Command line argument error: key " + name + " does not have a value");
     }
-    return (Collection) options.get(name);
+    return (Collection<String>) options.get(name);
   }
 
   public  boolean verbose() {
@@ -187,8 +195,11 @@ public class Options extends java.lang.Object {
 
   static  class Option {
     public String name;
+
     public boolean hasValue;
+
     public boolean isCollection;
+
     public Option(String name, boolean hasValue, boolean isCollection) {
       this.name = name;
       this.hasValue = hasValue;

@@ -82,31 +82,33 @@ aspect MultiCatch {
   }
 
   refine GenericsCodegen
-  public void VarAccess.createBCode(CodeGeneration gen) {
-    Variable v = decl();
+  protected void Access.emitLoadVariable(CodeGeneration gen, Variable v) {
     if (v instanceof CatchParameterDeclaration) {
       CatchParameterDeclaration decl = (CatchParameterDeclaration) v;
       if (decl.hostType() == hostType()) {
         decl.type().emitLoadLocal(gen, decl.localNum());
       } else {
-        emitLoadLocalInNestedClass(gen, decl);
+        emitLoadLocalInNestedClass(gen, v);
       }
     } else {
-      refined(gen);
+      refined(gen, v);
     }
   }
 
   eq BasicTWR.getBlock().lookupVariable(String name) = localLookup(name);
-  syn lazy SimpleSet BasicTWR.localLookup(String name) {
-    VariableDeclaration v = localVariableDeclaration(name);
+
+  syn lazy SimpleSet<Variable> BasicTWR.localLookup(String name) {
+    VariableDeclarator v = localVariableDeclaration(name);
     if (v != null) {
       return v;
     }
     return lookupVariable(name);
   }
-  syn lazy VariableDeclaration BasicTWR.localVariableDeclaration(String name) =
+
+  syn lazy VariableDeclarator BasicTWR.localVariableDeclaration(String name) =
       getResource().declaresVariable(name) ? getResource() : null;
 
   BasicTWR implements VariableScope;
-  inh lazy SimpleSet BasicTWR.lookupVariable(String name);
+
+  inh lazy SimpleSet<Variable> BasicTWR.lookupVariable(String name);
 }

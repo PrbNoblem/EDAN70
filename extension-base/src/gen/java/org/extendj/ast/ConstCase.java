@@ -1,51 +1,42 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:200
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:202
  * @production ConstCase : {@link Case} ::= <span class="component">Value:{@link Expr}</span>;
 
  */
 public class ConstCase extends Case implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:272
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:253
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("case ");
     out.print(getValue());
     out.print(":");
-  }
-  /**
-   * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:483
-   */
-  public void nameCheck() {
-    if (getValue().isConstant() && bind(this) != this) {
-      errorf("constant expression %s is multiply declared in two case statements",
-          getValue().prettyPrint());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -69,58 +60,46 @@ public class ConstCase extends Case implements Cloneable {
   public ConstCase(Expr p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:43
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:49
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public ConstCase clone() throws CloneNotSupportedException {
     ConstCase node = (ConstCase) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public ConstCase copy() {
     try {
       ConstCase node = (ConstCase) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -134,8 +113,9 @@ public class ConstCase extends Case implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:75
+   * @declaredat ASTNode:59
    */
+  @Deprecated
   public ConstCase fullCopy() {
     return treeCopyNoTransform();
   }
@@ -144,14 +124,14 @@ public class ConstCase extends Case implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:84
+   * @declaredat ASTNode:69
    */
   public ConstCase treeCopyNoTransform() {
     ConstCase tree = (ConstCase) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -165,15 +145,23 @@ public class ConstCase extends Case implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:104
+   * @declaredat ASTNode:89
    */
   public ConstCase treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ConstCase tree = (ConstCase) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:111
+  /** @apilevel internal 
+   * @declaredat ASTNode:103
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -205,61 +193,23 @@ public class ConstCase extends Case implements Cloneable {
     return (Expr) getChildNoTransform(0);
   }
   /**
-   * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:579
-   */
-    public void refined_Enums_ConstCase_typeCheck() {
-    boolean isEnumConstant = getValue().isEnumConstant();
-    if (switchType().isEnumDecl() && !isEnumConstant) {
-      error("Unqualified enumeration constant required");
-    } else {
-      TypeDecl switchType = switchType();
-      TypeDecl type = getValue().type();
-      if (!type.assignConversionTo(switchType, getValue())) {
-        error("Constant expression must be assignable to Expression");
-      }
-      if (!getValue().isConstant() && !getValue().type().isUnknown() &&
-          !isEnumConstant)
-        error("Switch expression must be constant");
-    }
-  }
-  /**
-   * Improve the type checking error messages given for case labels.
-   * @aspect StringsInSwitch
-   * @declaredat extendj/java7/frontend/StringsInSwitch.jrag:91
-   */
-    public void typeCheck() {
-    boolean isEnumConstant = getValue().isEnumConstant();
-    TypeDecl switchType = switchType();
-    TypeDecl type = getValue().type();
-    if (switchType.isEnumDecl() && !isEnumConstant) {
-      error("Unqualified enumeration constant required");
-    }
-    if (!type.assignConversionTo(switchType, getValue())) {
-      errorf("Case label has incompatible type %s, expected type compatible with %s",
-          switchType.name(), type.name());
-    }
-    if (!getValue().isConstant() && !getValue().type().isUnknown() && !isEnumConstant) {
-      error("Case label must have constant expression");
-    }
-  }
-  /**
    * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:513
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:588
    */
   private boolean refined_NameCheck_ConstCase_constValue_Case(Case c)
 {
     if (!(c instanceof ConstCase) || !getValue().isConstant()) {
       return false;
     }
-    if (!getValue().type().assignableToInt() || !((ConstCase) c).getValue().type().assignableToInt()) {
+    if (!getValue().type().assignableToInt()
+        || !((ConstCase) c).getValue().type().assignableToInt()) {
       return false;
     }
     return getValue().constant().intValue() == ((ConstCase) c).getValue().constant().intValue();
   }
   /**
    * @aspect Enums
-   * @declaredat extendj/java5/frontend/Enums.jrag:594
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:671
    */
   private boolean refined_Enums_ConstCase_constValue_Case(Case c)
 {
@@ -275,12 +225,29 @@ public class ConstCase extends Case implements Cloneable {
   /**
    * @attribute syn
    * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:512
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:555
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:555")
+  public Collection<Problem> nameProblems() {
+    {
+        if (getValue().isConstant() && bind(this) != this) {
+          return Collections.singletonList(errorf(
+              "constant expression %s is multiply declared in two case statements",
+              getValue().prettyPrint()));
+        }
+        return Collections.emptyList();
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:586
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:586")
   public boolean constValue(Case c) {
-    ASTNode$State state = state();
-    try {
+    {
         if (isDefaultCase() || c.isDefaultCase()) {
           return isDefaultCase() && c.isDefaultCase();
         }
@@ -301,25 +268,87 @@ public class ConstCase extends Case implements Cloneable {
     
         return refined_Enums_ConstCase_constValue_Case(c);
       }
-    finally {
-    }
   }
   /**
-   * @declaredat extendj/java5/frontend/Enums.jrag:573
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:470
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:470")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        boolean isEnumConstant = getValue().isEnumConstant();
+        TypeDecl switchType = switchType();
+        TypeDecl type = getValue().type();
+        if (switchType.isEnumDecl() && !isEnumConstant) {
+          problems.add(error("Unqualified enumeration constant required"));
+        }
+        if (!type.assignConversionTo(switchType, getValue())) {
+          problems.add(errorf("Case label has incompatible type %s, expected type compatible with %s",
+              switchType.name(), type.name()));
+        }
+        if (!getValue().isConstant() && !getValue().type().isUnknown() && !isEnumConstant) {
+          problems.add(error("Case label must have constant expression"));
+        }
+        return problems;
+      }
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
-  public SimpleSet Define_SimpleSet_lookupVariable(ASTNode caller, ASTNode child, String name) {
-    if (caller == getValueNoTransform()) {
-      return switchType().isEnumDecl() ? switchType().memberFields(name) : lookupVariable(name);
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (getValueNoTransform() != null && _callerNode == getValue()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:643
+      return switchType().isEnumDecl()
+            ? switchType().memberFields(name)
+            : lookupVariable(name);
     }
     else {
-      return getParent().Define_SimpleSet_lookupVariable(this, caller, name);
+      return getParent().Define_lookupVariable(this, _callerNode, name);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:553
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:468
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
+    for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
   }
 }

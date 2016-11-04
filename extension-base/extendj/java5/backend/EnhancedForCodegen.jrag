@@ -29,16 +29,18 @@
  */
 
 aspect EnhancedForToBytecode {
-  // Code generation
+  // Code generation.
   syn lazy int EnhancedForStmt.cond_label() = hostType().constantPool().newLabel();
   syn lazy int EnhancedForStmt.update_label() = hostType().constantPool().newLabel();
   syn lazy int EnhancedForStmt.end_label() = hostType().constantPool().newLabel();
 
   syn lazy int EnhancedForStmt.extraLocalIndex() = localNum();
-  eq EnhancedForStmt.getVariableDeclaration().localNum() = localNum() + (getExpr().type().isArrayDecl() ? 2 : 1);
-  eq EnhancedForStmt.getStmt().localNum() = getVariableDeclaration().localNum() + getVariableDeclaration().type().size();
+  eq EnhancedForStmt.getVariableDecl().localNum() =
+      localNum() + (getExpr().type().isArrayDecl() ? 2 : 1);
+  eq EnhancedForStmt.getStmt().localNum() =
+      getVariableDecl().localNum() + getTypeAccess().type().size();
 
-   // EnhancedForStmt can be both break and continue target
+  // EnhancedForStmt can be both break and continue target.
   eq EnhancedForStmt.break_label() = end_label();
   eq EnhancedForStmt.continue_label() = update_label();
 
@@ -46,8 +48,9 @@ aspect EnhancedForToBytecode {
       gen.variableScopeLabel();
 
   public void EnhancedForStmt.createBCode(CodeGeneration gen) {
-    VariableDeclaration decl = getVariableDeclaration();
-    gen.addLocalVariableEntryAtCurrentPC(decl.name(), decl.type().typeDescriptor(), extraLocalIndex(), variableScopeEndLabel(gen));
+    VariableDeclarator decl = getVariableDecl();
+    gen.addLocalVariableEntryAtCurrentPC(decl.name(), decl.type().typeDescriptor(),
+        extraLocalIndex(), variableScopeEndLabel(gen));
     if (getExpr().type().isArrayDecl()) {
       getExpr().createBCode(gen);
       gen.emitStoreReference(extraLocalIndex());
@@ -61,8 +64,8 @@ aspect EnhancedForToBytecode {
       gen.emitLoadReference(extraLocalIndex());
       gen.emit(Bytecode.ILOAD).add(extraLocalIndex()+1);
       gen.emit(getExpr().type().componentType().arrayLoad());
-      getExpr().type().componentType().emitCastTo(gen, getVariableDeclaration().type());
-      getVariableDeclaration().type().emitStoreLocal(gen, getVariableDeclaration().localNum());
+      getExpr().type().componentType().emitCastTo(gen, getTypeAccess().type());
+      getTypeAccess().type().emitStoreLocal(gen, getVariableDecl().localNum());
       getStmt().createBCode(gen);
       gen.addLabel(update_label());
       gen.emit(Bytecode.IINC).add(extraLocalIndex()+1).add(1);
@@ -83,7 +86,7 @@ aspect EnhancedForToBytecode {
       gen.emitCompare(Bytecode.IFEQ, end_label());
       gen.emitLoadReference(extraLocalIndex());
       nextMethod.emitInvokeMethod(gen, typeIterator);
-      VariableDeclaration obj = getVariableDeclaration();
+      VariableDeclarator obj = getVariableDecl();
       if (!obj.type().boxed().isUnknown()) {
         gen.emitCheckCast(obj.type().boxed());
         obj.type().boxed().emitCastTo(gen, obj.type());
@@ -109,7 +112,7 @@ aspect EnhancedForToBytecode {
    */
   protected static MethodDecl ASTNode.getMethod(TypeDecl type, String name) {
     Collection<MethodDecl> methods = (Collection<MethodDecl>) type.memberMethods(name);
-    for (MethodDecl method: methods) {
+    for (MethodDecl method : methods) {
       if (method.getNumParameter() == 0) {
         return method;
       }

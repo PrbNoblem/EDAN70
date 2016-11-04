@@ -1,33 +1,40 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/Lambda.ast:11
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:11
  * @production LambdaBody : {@link ASTNode};
 
  */
 public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
+  /**
+   * Copies the method block for the lambda body.
+   * @aspect LambdaToClass
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:77
+   */
+  protected abstract Block toBlock();
   /**
    * @declaredat ASTNode:1
    */
@@ -43,46 +50,35 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
    */
   public void init$Children() {
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:15
+  /** @apilevel low-level 
+   * @declaredat ASTNode:13
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:21
+   * @declaredat ASTNode:19
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:27
+  /** @apilevel internal 
+   * @declaredat ASTNode:23
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     enclosingLambda_reset();
     lookupVariable_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:35
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:41
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:47
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public LambdaBody clone() throws CloneNotSupportedException {
     LambdaBody node = (LambdaBody) super.clone();
@@ -94,15 +90,16 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:58
+   * @declaredat ASTNode:44
    */
+  @Deprecated
   public abstract LambdaBody fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:65
+   * @declaredat ASTNode:52
    */
   public abstract LambdaBody treeCopyNoTransform();
   /**
@@ -111,125 +108,129 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:73
+   * @declaredat ASTNode:60
    */
   public abstract LambdaBody treeCopy();
   /**
    * @attribute syn
    * @aspect PreciseRethrow
-   * @declaredat extendj/java8/frontend/EffectivelyFinal.jrag:43
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:43
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:43")
   public abstract boolean modifiedInScope(Variable var);
   /**
    * @attribute syn
-   * @aspect LambdaBody
-   * @declaredat extendj/java8/frontend/LambdaBody.jrag:29
+   * @aspect LambdaExpr
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:72
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:72")
+  public abstract boolean congruentTo(FunctionDescriptor f);
+  /**
+   * @attribute syn
+   * @aspect LambdaBody
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:29
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaBody", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:29")
   public abstract boolean isBlockBody();
   /**
    * @attribute syn
    * @aspect LambdaBody
-   * @declaredat extendj/java8/frontend/LambdaBody.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:30
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaBody", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:30")
   public abstract boolean isExprBody();
-  /**
-   * @attribute syn
-   * @aspect LambdaExpr
-   * @declaredat extendj/java8/frontend/LambdaExpr.jrag:71
-   */
-  @ASTNodeAnnotation.Attribute
-  public abstract boolean congruentTo(FunctionDescriptor f);
   /**
    * @attribute inh
    * @aspect EnclosingLambda
-   * @declaredat extendj/java8/frontend/EnclosingLambda.jrag:29
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="EnclosingLambda", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29")
   public LambdaExpr enclosingLambda() {
-    if(enclosingLambda_computed) {
+    ASTNode$State state = state();
+    if (enclosingLambda_computed == ASTNode$State.NON_CYCLE || enclosingLambda_computed == state().cycle()) {
       return enclosingLambda_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    enclosingLambda_value = getParent().Define_LambdaExpr_enclosingLambda(this, null);
-    if (isFinal && num == state().boundariesCrossed) {
-      enclosingLambda_computed = true;
+    enclosingLambda_value = getParent().Define_enclosingLambda(this, null);
+    if (state().inCircle()) {
+      enclosingLambda_computed = state().cycle();
+    
     } else {
+      enclosingLambda_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return enclosingLambda_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean enclosingLambda_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected LambdaExpr enclosingLambda_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void enclosingLambda_reset() {
-    enclosingLambda_computed = false;
+    enclosingLambda_computed = null;
     enclosingLambda_value = null;
   }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle enclosingLambda_computed = null;
+
+  /** @apilevel internal */
+  protected LambdaExpr enclosingLambda_value;
+
   /**
    * @attribute inh
    * @aspect VariableScope
-   * @declaredat extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet lookupVariable(String name) {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30")
+  public SimpleSet<Variable> lookupVariable(String name) {
     Object _parameters = name;
-    if (lookupVariable_String_values == null) lookupVariable_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(lookupVariable_String_values.containsKey(_parameters)) {
-      return (SimpleSet)lookupVariable_String_values.get(_parameters);
-    }
+    if (lookupVariable_String_computed == null) lookupVariable_String_computed = new java.util.HashMap(4);
+    if (lookupVariable_String_values == null) lookupVariable_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet lookupVariable_String_value = getParent().Define_SimpleSet_lookupVariable(this, null, name);
-    if (isFinal && num == state().boundariesCrossed) {
-      lookupVariable_String_values.put(_parameters, lookupVariable_String_value);
-    } else {
+    if (lookupVariable_String_values.containsKey(_parameters) && lookupVariable_String_computed != null
+        && lookupVariable_String_computed.containsKey(_parameters)
+        && (lookupVariable_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || lookupVariable_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) lookupVariable_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<Variable> lookupVariable_String_value = getParent().Define_lookupVariable(this, null, name);
+    if (state().inCircle()) {
+      lookupVariable_String_values.put(_parameters, lookupVariable_String_value);
+      lookupVariable_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      lookupVariable_String_values.put(_parameters, lookupVariable_String_value);
+      lookupVariable_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return lookupVariable_String_value;
   }
-  protected java.util.Map lookupVariable_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void lookupVariable_String_reset() {
+    lookupVariable_String_computed = new java.util.HashMap(4);
     lookupVariable_String_values = null;
   }
+  /** @apilevel internal */
+  protected java.util.Map lookupVariable_String_values;
+  /** @apilevel internal */
+  protected java.util.Map lookupVariable_String_computed;
   /**
    * @attribute inh
    * @aspect TypeCheck
-   * @declaredat extendj/java8/frontend/TypeCheck.jrag:31
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:32
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:32")
   public TypeDecl unknownType() {
-    ASTNode$State state = state();
-    TypeDecl unknownType_value = getParent().Define_TypeDecl_unknownType(this, null);
-
+    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
     return unknownType_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

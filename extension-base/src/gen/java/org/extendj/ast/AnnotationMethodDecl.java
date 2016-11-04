@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Annotations.ast:3
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:3
  * @production AnnotationMethodDecl : {@link MethodDecl} ::= <span class="component">[DefaultValue:{@link ElementValue}]</span>;
 
  */
 public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat extendj/java5/frontend/PrettyPrint.jadd:84
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:68
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasDocComment()) {
@@ -49,17 +50,6 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
       out.print(getDefaultValue());
     }
     out.print(";");
-  }
-  /**
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:203
-   */
-  public void typeCheck() {
-    super.typeCheck();
-    if (hasDefaultValue() && !type().commensurateWith(getDefaultValue())) {
-      errorf("%s is not commensurate with %s",
-          type().typeName(), getDefaultValue().type().typeName());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -105,58 +95,46 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
     setChild(p5, 4);
     setChild(p6, 5);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:38
+  /** @apilevel low-level 
+   * @declaredat ASTNode:36
    */
   protected int numChildren() {
     return 6;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:44
+   * @declaredat ASTNode:42
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:62
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:68
+  /** @apilevel internal 
+   * @declaredat ASTNode:54
    */
   public AnnotationMethodDecl clone() throws CloneNotSupportedException {
     AnnotationMethodDecl node = (AnnotationMethodDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:75
+  /** @apilevel internal 
+   * @declaredat ASTNode:59
    */
   public AnnotationMethodDecl copy() {
     try {
       AnnotationMethodDecl node = (AnnotationMethodDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -170,8 +148,9 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:94
+   * @declaredat ASTNode:78
    */
+  @Deprecated
   public AnnotationMethodDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -180,14 +159,14 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:103
+   * @declaredat ASTNode:88
    */
   public AnnotationMethodDecl treeCopyNoTransform() {
     AnnotationMethodDecl tree = (AnnotationMethodDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -201,18 +180,26 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:123
+   * @declaredat ASTNode:108
    */
   public AnnotationMethodDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    AnnotationMethodDecl tree = (AnnotationMethodDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:130
+  /** @apilevel internal 
+   * @declaredat ASTNode:122
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((AnnotationMethodDecl)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((AnnotationMethodDecl) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -280,7 +267,7 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -343,11 +330,10 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -371,7 +357,6 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -382,6 +367,13 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -448,11 +440,10 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -476,7 +467,6 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -487,6 +477,13 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -608,19 +605,43 @@ public class AnnotationMethodDecl extends MethodDecl implements Cloneable {
     return (Opt<ElementValue>) getChildNoTransform(5);
   }
   /**
-   * @declaredat extendj/java5/frontend/Annotations.jrag:605
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:713
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_declType(ASTNode caller, ASTNode child) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return type();
-    }
+  public TypeDecl Define_declType(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return type();
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_declType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:254
+    if (hasDefaultValue() && !type().commensurateWith(getDefaultValue())) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (hasDefaultValue() && !type().commensurateWith(getDefaultValue())) {
+      collection.add(errorf("%s is not commensurate with %s",
+                type().typeName(), getDefaultValue().type().typeName()));
+    }
   }
 }

@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:31
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:48
  * @production ConstructorDeclSubstituted : {@link ConstructorDecl} ::= <span class="component">&lt;Original:ConstructorDecl&gt;</span>;
 
  */
@@ -71,59 +72,47 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
     setChild(p5, 4);
     setOriginal(p6);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:37
+  /** @apilevel low-level 
+   * @declaredat ASTNode:35
    */
   protected int numChildren() {
     return 5;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:43
+   * @declaredat ASTNode:41
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:49
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     sourceConstructorDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:62
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:68
+  /** @apilevel internal 
+   * @declaredat ASTNode:54
    */
   public ConstructorDeclSubstituted clone() throws CloneNotSupportedException {
     ConstructorDeclSubstituted node = (ConstructorDeclSubstituted) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:75
+  /** @apilevel internal 
+   * @declaredat ASTNode:59
    */
   public ConstructorDeclSubstituted copy() {
     try {
       ConstructorDeclSubstituted node = (ConstructorDeclSubstituted) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -137,8 +126,9 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:94
+   * @declaredat ASTNode:78
    */
+  @Deprecated
   public ConstructorDeclSubstituted fullCopy() {
     return treeCopyNoTransform();
   }
@@ -147,7 +137,7 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:103
+   * @declaredat ASTNode:88
    */
   public ConstructorDeclSubstituted treeCopyNoTransform() {
     ConstructorDeclSubstituted tree = (ConstructorDeclSubstituted) copy();
@@ -159,7 +149,7 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -173,18 +163,31 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:128
+   * @declaredat ASTNode:113
    */
   public ConstructorDeclSubstituted treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ConstructorDeclSubstituted tree = (ConstructorDeclSubstituted) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 5:
+          tree.children[i] = null;
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:135
+  /** @apilevel internal 
+   * @declaredat ASTNode:132
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ConstructorDeclSubstituted)node).tokenString_ID) && (tokenConstructorDecl_Original == ((ConstructorDeclSubstituted)node).tokenConstructorDecl_Original);    
+    return super.is$Equal(node) && (tokenString_ID == ((ConstructorDeclSubstituted) node).tokenString_ID) && (tokenConstructorDecl_Original == ((ConstructorDeclSubstituted) node).tokenConstructorDecl_Original);    
   }
   /**
    * Replaces the Modifiers child.
@@ -226,7 +229,7 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -289,11 +292,10 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -317,7 +319,6 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -328,6 +329,13 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -394,11 +402,10 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -422,7 +429,6 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -433,6 +439,13 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -536,8 +549,7 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
   public void setOriginal(ConstructorDecl value) {
     tokenConstructorDecl_Original = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected ConstructorDecl tokenConstructorDecl_Original;
   /**
@@ -567,64 +579,58 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
     return 5;
   }
   /**
-   * @apilevel internal
+   * Note: isGeneric must be called first to check if this declaration is generic.
+   * Otherwise this attribute will throw an error!
+   * @return type parameters for this declaration.
+   * @attribute syn
+   * @aspect MethodSignature15
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
    */
-  protected boolean sourceConstructorDecl_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected ConstructorDecl sourceConstructorDecl_value;
-  /**
-   * @apilevel internal
-   */
-  private void sourceConstructorDecl_reset() {
-    sourceConstructorDecl_computed = false;
-    sourceConstructorDecl_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public ConstructorDecl sourceConstructorDecl() {
-    if(sourceConstructorDecl_computed) {
-      return sourceConstructorDecl_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    sourceConstructorDecl_value = getOriginal().sourceConstructorDecl();
-    if (isFinal && num == state().boundariesCrossed) {
-      sourceConstructorDecl_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return sourceConstructorDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isGeneric() {
-    ASTNode$State state = state();
-    boolean isGeneric_value = sourceConstructorDecl().isGeneric();
-
-    return isGeneric_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public GenericConstructorDecl genericDecl() {
-    ASTNode$State state = state();
-    GenericConstructorDecl genericDecl_value = sourceConstructorDecl().genericDecl();
-
-    return genericDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
   public List<TypeVariable> typeParameters() {
-    ASTNode$State state = state();
     List<TypeVariable> typeParameters_value = sourceConstructorDecl().typeParameters();
-
     return typeParameters_value;
   }
+  /** @apilevel internal */
+  private void sourceConstructorDecl_reset() {
+    sourceConstructorDecl_computed = null;
+    sourceConstructorDecl_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle sourceConstructorDecl_computed = null;
+
+  /** @apilevel internal */
+  protected ConstructorDecl sourceConstructorDecl_value;
+
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect SourceDeclarations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733")
+  public ConstructorDecl sourceConstructorDecl() {
+    ASTNode$State state = state();
+    if (sourceConstructorDecl_computed == ASTNode$State.NON_CYCLE || sourceConstructorDecl_computed == state().cycle()) {
+      return sourceConstructorDecl_value;
+    }
+    sourceConstructorDecl_value = getOriginal().sourceConstructorDecl();
+    if (state().inCircle()) {
+      sourceConstructorDecl_computed = state().cycle();
+    
+    } else {
+      sourceConstructorDecl_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return sourceConstructorDecl_value;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

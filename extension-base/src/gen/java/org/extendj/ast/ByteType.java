@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:53
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:53
  * @production ByteType : {@link IntegralType};
 
  */
 public class ByteType extends IntegralType implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:101
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:137
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("byte");
@@ -71,23 +72,21 @@ public class ByteType extends IntegralType implements Cloneable {
     setChild(p2, 1);
     setChild(p3, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:30
+  /** @apilevel low-level 
+   * @declaredat ASTNode:28
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:36
+   * @declaredat ASTNode:34
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -95,37 +94,27 @@ public class ByteType extends IntegralType implements Cloneable {
     unaryNumericPromotion_reset();
     boxed_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:57
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:49
    */
   public ByteType clone() throws CloneNotSupportedException {
     ByteType node = (ByteType) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:70
+  /** @apilevel internal 
+   * @declaredat ASTNode:54
    */
   public ByteType copy() {
     try {
       ByteType node = (ByteType) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -139,8 +128,9 @@ public class ByteType extends IntegralType implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:89
+   * @declaredat ASTNode:73
    */
+  @Deprecated
   public ByteType fullCopy() {
     return treeCopyNoTransform();
   }
@@ -149,14 +139,14 @@ public class ByteType extends IntegralType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:98
+   * @declaredat ASTNode:83
    */
   public ByteType treeCopyNoTransform() {
     ByteType tree = (ByteType) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -170,18 +160,26 @@ public class ByteType extends IntegralType implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:118
+   * @declaredat ASTNode:103
    */
   public ByteType treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ByteType tree = (ByteType) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:125
+  /** @apilevel internal 
+   * @declaredat ASTNode:117
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ByteType)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((ByteType) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -223,7 +221,7 @@ public class ByteType extends IntegralType implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -337,11 +335,10 @@ public class ByteType extends IntegralType implements Cloneable {
    * @apilevel high-level
    */
   public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addBodyDeclNoTransform(BodyDecl node) {
     List<BodyDecl> list = getBodyDeclListNoTransform();
@@ -365,7 +362,6 @@ public class ByteType extends IntegralType implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="BodyDecl")
   public List<BodyDecl> getBodyDeclList() {
     List<BodyDecl> list = (List<BodyDecl>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -376,6 +372,13 @@ public class ByteType extends IntegralType implements Cloneable {
    */
   public List<BodyDecl> getBodyDeclListNoTransform() {
     return (List<BodyDecl>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the BodyDecl list.
@@ -394,120 +397,138 @@ public class ByteType extends IntegralType implements Cloneable {
   public List<BodyDecl> getBodyDeclsNoTransform() {
     return getBodyDeclListNoTransform();
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:95
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:95")
   public Constant cast(Constant c) {
-    ASTNode$State state = state();
     Constant cast_Constant_value = Constant.create((byte) c.intValue());
-
     return cast_Constant_value;
   }
-  protected java.util.Map narrowingConversionTo_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void narrowingConversionTo_TypeDecl_reset() {
+    narrowingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
     narrowingConversionTo_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map narrowingConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map narrowingConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeConversion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39")
   public boolean narrowingConversionTo(TypeDecl type) {
     Object _parameters = type;
-    if (narrowingConversionTo_TypeDecl_values == null) narrowingConversionTo_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(narrowingConversionTo_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)narrowingConversionTo_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (narrowingConversionTo_TypeDecl_computed == null) narrowingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (narrowingConversionTo_TypeDecl_values == null) narrowingConversionTo_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean narrowingConversionTo_TypeDecl_value = type.isChar();
-    if (isFinal && num == state().boundariesCrossed) {
-      narrowingConversionTo_TypeDecl_values.put(_parameters, Boolean.valueOf(narrowingConversionTo_TypeDecl_value));
-    } else {
+    if (narrowingConversionTo_TypeDecl_values.containsKey(_parameters) && narrowingConversionTo_TypeDecl_computed != null
+        && narrowingConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (narrowingConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || narrowingConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) narrowingConversionTo_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean narrowingConversionTo_TypeDecl_value = type.isChar();
+    if (state().inCircle()) {
+      narrowingConversionTo_TypeDecl_values.put(_parameters, narrowingConversionTo_TypeDecl_value);
+      narrowingConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      narrowingConversionTo_TypeDecl_values.put(_parameters, narrowingConversionTo_TypeDecl_value);
+      narrowingConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return narrowingConversionTo_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean unaryNumericPromotion_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl unaryNumericPromotion_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void unaryNumericPromotion_reset() {
-    unaryNumericPromotion_computed = false;
+    unaryNumericPromotion_computed = null;
     unaryNumericPromotion_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle unaryNumericPromotion_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl unaryNumericPromotion_value;
+
+  /**
+   * @attribute syn
+   * @aspect NumericPromotion
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:160
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:160")
   public TypeDecl unaryNumericPromotion() {
-    if(unaryNumericPromotion_computed) {
+    ASTNode$State state = state();
+    if (unaryNumericPromotion_computed == ASTNode$State.NON_CYCLE || unaryNumericPromotion_computed == state().cycle()) {
       return unaryNumericPromotion_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     unaryNumericPromotion_value = typeInt();
-    if (isFinal && num == state().boundariesCrossed) {
-      unaryNumericPromotion_computed = true;
+    if (state().inCircle()) {
+      unaryNumericPromotion_computed = state().cycle();
+    
     } else {
+      unaryNumericPromotion_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return unaryNumericPromotion_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:199
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:199")
   public boolean isByte() {
-    ASTNode$State state = state();
     boolean isByte_value = true;
-
     return isByte_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean boxed_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl boxed_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void boxed_reset() {
-    boxed_computed = false;
+    boxed_computed = null;
     boxed_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle boxed_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl boxed_value;
+
+  /** Mapping between Primitive type and corresponding boxed Reference type. 
+   * @attribute syn
+   * @aspect AutoBoxing
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53")
   public TypeDecl boxed() {
-    if(boxed_computed) {
+    ASTNode$State state = state();
+    if (boxed_computed == ASTNode$State.NON_CYCLE || boxed_computed == state().cycle()) {
       return boxed_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     boxed_value = lookupType("java.lang", "Byte");
-    if (isFinal && num == state().boundariesCrossed) {
-      boxed_computed = true;
+    if (state().inCircle()) {
+      boxed_computed = state().cycle();
+    
     } else {
+      boxed_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return boxed_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

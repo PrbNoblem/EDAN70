@@ -1,41 +1,42 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/ConstructorReference.ast:5
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:5
  * @production ConstructorReferenceAccess : {@link ClassInstanceExpr};
 
  */
 public class ConstructorReferenceAccess extends ClassInstanceExpr implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:393
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:399
    */
   private FunctionDescriptor targetDescriptor;
   /**
    * @aspect Synthetics
-   * @declaredat extendj/java8/frontend/MethodReference.jrag:394
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:400
    */
   public ConstructorReferenceAccess(Access access,
       List<Expr> args, FunctionDescriptor f) {
@@ -68,59 +69,47 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
     setChild(p1, 1);
     setChild(p2, 2);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:23
+  /** @apilevel low-level 
+   * @declaredat ASTNode:21
    */
   protected int numChildren() {
     return 3;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:29
+   * @declaredat ASTNode:27
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:35
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     targetType_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:42
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:48
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:54
+  /** @apilevel internal 
+   * @declaredat ASTNode:40
    */
   public ConstructorReferenceAccess clone() throws CloneNotSupportedException {
     ConstructorReferenceAccess node = (ConstructorReferenceAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:45
    */
   public ConstructorReferenceAccess copy() {
     try {
       ConstructorReferenceAccess node = (ConstructorReferenceAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -134,8 +123,9 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:80
+   * @declaredat ASTNode:64
    */
+  @Deprecated
   public ConstructorReferenceAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -144,14 +134,14 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:89
+   * @declaredat ASTNode:74
    */
   public ConstructorReferenceAccess treeCopyNoTransform() {
     ConstructorReferenceAccess tree = (ConstructorReferenceAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -165,15 +155,23 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:109
+   * @declaredat ASTNode:94
    */
   public ConstructorReferenceAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ConstructorReferenceAccess tree = (ConstructorReferenceAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:116
+  /** @apilevel internal 
+   * @declaredat ASTNode:108
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -252,11 +250,10 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -280,7 +277,6 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(1);
-    list.getNumChild();
     return list;
   }
   /**
@@ -291,6 +287,13 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(1);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -360,56 +363,61 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
   public Opt<TypeDecl> getTypeDeclOptNoTransform() {
     return (Opt<TypeDecl>) getChildNoTransform(2);
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean targetType_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl targetType_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void targetType_reset() {
-    targetType_computed = false;
+    targetType_computed = null;
     targetType_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle targetType_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl targetType_value;
+
+  /**
+   * @attribute syn
+   * @aspect TargetType
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:182
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:182")
   public TypeDecl targetType() {
-    if(targetType_computed) {
+    ASTNode$State state = state();
+    if (targetType_computed == ASTNode$State.NON_CYCLE || targetType_computed == state().cycle()) {
       return targetType_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     targetType_value = targetDescriptor.method.type();
-    if (isFinal && num == state().boundariesCrossed) {
-      targetType_computed = true;
+    if (state().inCircle()) {
+      targetType_computed = state().cycle();
+    
     } else {
+      targetType_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return targetType_value;
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:189
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_targetType(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public TypeDecl Define_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:188
       return targetDescriptor.method.type();
     }
     else {
-      return super.Define_TypeDecl_targetType(caller, child);
+      return super.Define_targetType(_callerNode, _childNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

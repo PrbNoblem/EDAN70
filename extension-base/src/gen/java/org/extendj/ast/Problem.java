@@ -5,50 +5,48 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect ErrorCheck
- * @declaredat extendj/java4/frontend/ErrorCheck.jrag:95
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:105
  */
 public class Problem extends java.lang.Object implements Comparable {
   
-    public int compareTo(Object o) {
-      if (o instanceof Problem) {
-        Problem other = (Problem) o;
-        if (!fileName.equals(other.fileName)) {
-          return fileName.compareTo(other.fileName);
-        }
-        if (line != other.line) {
-          return line - other.line;
-        }
-        return message.compareTo(other.message);
-      }
-      return 0;
-    }
-
-  
     public static class Severity {
-      public static final Severity ERROR = new Severity();
-      public static final Severity WARNING = new Severity();
-      private Severity() { }
+      public static final Severity ERROR = new Severity("error");
+      public static final Severity WARNING = new Severity("warning");
+
+      private final String name;
+
+      private Severity(String name) {
+        this.name = name;
+      }
+
+      @Override
+      public String toString() {
+        return name;
+      }
     }
 
   
+
     public static class Kind {
       public static final Kind OTHER = new Kind();
       public static final Kind LEXICAL = new Kind();
@@ -58,94 +56,53 @@ public class Problem extends java.lang.Object implements Comparable {
     }
 
   
+
     protected int line = -1;
 
   
-    public int line() { return line; }
 
-  
     protected int column = -1;
 
   
-    public int column() { return column; }
 
-  
     protected int endLine = -1;
 
   
-    public int endLine() { return endLine; }
 
-  
     protected int endColumn = -1;
 
   
-    public int endColumn() { return endColumn; }
 
-  
     protected String fileName;
 
   
-    public String fileName() { return fileName; }
+
+    protected final String message;
 
   
-    public void setFileName(String fileName) { this.fileName = fileName; }
 
-  
-    protected String message;
-
-  
-    public String message() { return message; }
-
-  
     protected Severity severity = Severity.ERROR;
 
   
-    public Severity severity() { return severity; }
 
-  
     protected Kind kind = Kind.OTHER;
 
   
-    public Kind kind() { return kind; }
 
-  
-    public Problem(String fileName, String message) {
+    public Problem(String fileName, String message, int line, Severity severity, Kind kind) {
       this.fileName = fileName;
       this.message = message;
-    }
-
-  
-    public Problem(String fileName, String message, int line) {
-      this(fileName, message);
-      this.line = line;
-    }
-
-  
-    public Problem(String fileName, String message, int line, Severity severity) {
-      this(fileName, message);
-      this.line = line;
-      this.severity = severity;
-    }
-
-  
-    public Problem(String fileName, String message, int line, int column, Severity severity) {
-      this(fileName, message);
-      this.line = line;
-      this.column = column;
-      this.severity = severity;
-    }
-
-  
-    public Problem(String fileName, String message, int line, Severity severity, Kind kind) {
-      this(fileName, message);
       this.line = line;
       this.kind = kind;
       this.severity = severity;
     }
 
   
-    public Problem(String fileName, String message, int line, int column, Severity severity, Kind kind) {
-      this(fileName, message);
+
+    public Problem(String fileName, String message, int line, int column,
+        Severity severity, Kind kind) {
+      this.fileName = fileName;
+      this.message = message;
       this.line = line;
       this.column = column;
       this.kind = kind;
@@ -153,8 +110,11 @@ public class Problem extends java.lang.Object implements Comparable {
     }
 
   
-    public Problem(String fileName, String message, int line, int column, int endLine, int endColumn, Severity severity, Kind kind) {
-      this(fileName, message);
+
+    public Problem(String fileName, String message, int line, int column, int endLine,
+        int endColumn, Severity severity, Kind kind) {
+      this.fileName = fileName;
+      this.message = message;
       this.line = line;
       this.column = column;
       this.endLine = endLine;
@@ -164,6 +124,62 @@ public class Problem extends java.lang.Object implements Comparable {
     }
 
   
+
+    public int line() {
+      return line;
+    }
+
+  
+
+    public int column() {
+      return column;
+    }
+
+  
+
+    public int endLine() {
+      return endLine;
+    }
+
+  
+
+    public int endColumn() {
+      return endColumn;
+    }
+
+  
+
+    public String fileName() {
+      return fileName;
+    }
+
+  
+
+    public void setFileName(String fileName) {
+      this.fileName = fileName;
+    }
+
+  
+
+    public String message() {
+      return message;
+    }
+
+  
+
+    public Severity severity() {
+      return severity;
+    }
+
+  
+
+    public Kind kind() {
+      return kind;
+    }
+
+  
+
+    @Override
     public String toString() {
       String location = "";
       if (line != -1 && column != -1) {
@@ -171,15 +187,25 @@ public class Problem extends java.lang.Object implements Comparable {
       } else if (line != -1) {
         location = line + ":";
       }
-      String s = "";
-      if (this.kind == Kind.LEXICAL) {
-        s = "Lexical Error: ";
-      } else if (this.kind == Kind.SYNTACTIC) {
-        s = "Syntactic Error: ";
-      } else if (this.kind == Kind.SEMANTIC) {
-        s = "Semantic Error: ";
+      return String.format("%s:%s %s: %s", fileName, location, severity, message);
+    }
+
+  
+
+    @Override
+    public int compareTo(Object o) {
+      if (o instanceof Problem) {
+        Problem other = (Problem) o;
+        if (!fileName.equals(other.fileName)) {
+          return fileName.compareTo(other.fileName);
+        } else if (line != other.line) {
+          // Using Integer.compare(int, int) breaks Java 6 builds.
+          return Integer.valueOf(line).compareTo(other.line);
+        } else {
+          return message.compareTo(other.message);
+        }
       }
-      return fileName + ":" + location + "\n" + "  " + s + message;
+      return 0;
     }
 
 

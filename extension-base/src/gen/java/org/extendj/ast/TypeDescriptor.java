@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect BytecodeDescriptor
- * @declaredat extendj/java5/frontend/BytecodeDescriptor.jrag:272
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/BytecodeDescriptor.jrag:275
  */
  class TypeDescriptor extends java.lang.Object {
   
@@ -147,15 +149,18 @@ import java.io.DataInputStream;
         case 'L':
           int pos = s.indexOf(';');
           String s1 = s.substring(1, pos);
-          String s2 = s.substring(pos+1, s.length());
+          String s2 = s.substring(pos + 1, s.length());
           l.add(new ParameterDeclaration(new Modifiers(),
                 BytecodeParser.fromClassName(s1),
                 "p" + l.getNumChildNoTransform()));
           return s2;
         case '[':
           int i = 1;
-          while (s.charAt(i) == '[') i++;
-          ArrayTypeAccess bottom = new ArrayTypeAccess(new ParseName("")); // dummy name is replaced later
+          while (s.charAt(i) == '[') {
+            i++;
+          }
+          // Dummy name is replaced later.
+          ArrayTypeAccess bottom = new ArrayTypeAccess(new ParseName());
           ArrayTypeAccess top = bottom;
           for (int j = 0; j < i - 1; j++) {
             top = new ArrayTypeAccess(top);
@@ -200,7 +205,7 @@ import java.io.DataInputStream;
         case 'L':
           int pos = s.indexOf(';');
           String s1 = s.substring(1, pos);
-          String s2 = s.substring(pos+1, s.length());
+          String s2 = s.substring(pos + 1, s.length());
           typeAccess.setAccess(BytecodeParser.fromClassName(s1));
           return s2;
         default:

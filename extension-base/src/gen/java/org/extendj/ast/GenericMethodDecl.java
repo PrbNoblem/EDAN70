@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/GenericMethods.ast:2
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:1
  * @production GenericMethodDecl : {@link MethodDecl} ::= <span class="component">TypeParameter:{@link TypeVariable}*</span>;
 
  */
 public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat extendj/java5/frontend/PrettyPrint.jadd:237
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:289
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasDocComment()) {
@@ -77,18 +78,20 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   }
   /**
    * @aspect GenericMethods
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:59
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:64
    */
   public ParMethodDecl newParMethodDecl(Collection<TypeDecl> typeArguments) {
+    Parameterization parameterization = new Parameterization(getTypeParameterList(),
+        typeArguments);
     ParMethodDecl methodDecl = typeArguments.isEmpty() ? new RawMethodDecl() : new ParMethodDecl();
 
     // Adding a link to GenericMethodDecl to be used during substitution
     // instead of the not yet existing parent link.
-    methodDecl.setGenericMethodDecl(this);
+    methodDecl.setGenericMethodDecl(genericDecl());
 
     List<Access> list = new List<Access>();
     if (typeArguments.isEmpty()) {
-      GenericMethodDecl original = original();
+      GenericMethodDecl original = genericDecl();
       for (int i = 0; i < original.getNumTypeParameter(); i++) {
         list.add(original.getTypeParameter(i).erasure().createBoundAccess());
       }
@@ -98,18 +101,45 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
       }
     }
     methodDecl.setTypeArgumentList(list);
-    methodDecl.setModifiers((Modifiers) getModifiers().treeCopyNoTransform());
-    methodDecl.setTypeAccess(getTypeAccess().type().substituteReturnType(methodDecl));
+    methodDecl.setModifiers(getModifiers().treeCopy());
+    methodDecl.setTypeAccess(getTypeAccess().treeCopy());
     methodDecl.setID(getID());
-    methodDecl.setParameterList(getParameterList().substitute(methodDecl));
-    methodDecl.setExceptionList(getExceptionList().substitute(methodDecl));
+    methodDecl.setParameterList(getParameterList().treeCopy());
+    methodDecl.setExceptionList(getExceptionList().treeCopy());
+    methodDecl.setTypeParameterList(getTypeParameterList().treeCopy());
+    methodDecl.setParameterization(parameterization);
     return methodDecl;
   }
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat extendj/java5/frontend/Generics.jrag:1383
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1297
    */
-  public GenericMethodDecl original;
+  public BodyDecl signatureCopy() {
+    return new GenericMethodDeclSubstituted(
+        getModifiers().treeCopyNoTransform(),
+        getTypeAccessNoTransform().treeCopyNoTransform(),
+        getID(),
+        getParameterList().treeCopyNoTransform(),
+        getExceptionList().treeCopyNoTransform(),
+        new Opt<Block>(),
+        getTypeParameterList().treeCopyNoTransform(),
+        this);
+  }
+  /**
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1398
+   */
+  public BodyDecl erasedCopy() {
+    return new GenericMethodDeclErased(
+        getModifiers().treeCopyNoTransform(),
+        getTypeAccess().erasedCopy(),
+        getID(),
+        erasedParameterList(getParameterList()),
+        erasedAccessList(getExceptionList()),
+        new Opt<Block>(),
+        getTypeParameterList().treeCopyNoTransform(),
+        this);
+  }
   /**
    * @declaredat ASTNode:1
    */
@@ -154,66 +184,54 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     setChild(p5, 4);
     setChild(p6, 5);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:38
+  /** @apilevel low-level 
+   * @declaredat ASTNode:36
    */
   protected int numChildren() {
     return 6;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:44
+   * @declaredat ASTNode:42
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     rawMethodDecl_reset();
     lookupParMethodDecl_Collection_TypeDecl__reset();
+    typeVariableInReturn_reset();
     subsignatureTo_MethodDecl_reset();
     sameTypeParameters_GenericMethodDecl_reset();
     sameFormalParameters_GenericMethodDecl_reset();
     usesTypeVariable_reset();
-    typeVariableInReturn_reset();
     genericMethodLevel_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:64
+  /** @apilevel internal 
+   * @declaredat ASTNode:58
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:70
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:76
+  /** @apilevel internal 
+   * @declaredat ASTNode:62
    */
   public GenericMethodDecl clone() throws CloneNotSupportedException {
     GenericMethodDecl node = (GenericMethodDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:83
+  /** @apilevel internal 
+   * @declaredat ASTNode:67
    */
   public GenericMethodDecl copy() {
     try {
       GenericMethodDecl node = (GenericMethodDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -227,8 +245,9 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:102
+   * @declaredat ASTNode:86
    */
+  @Deprecated
   public GenericMethodDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -237,14 +256,14 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:111
+   * @declaredat ASTNode:96
    */
   public GenericMethodDecl treeCopyNoTransform() {
     GenericMethodDecl tree = (GenericMethodDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -258,18 +277,26 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:131
+   * @declaredat ASTNode:116
    */
   public GenericMethodDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    GenericMethodDecl tree = (GenericMethodDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:138
+  /** @apilevel internal 
+   * @declaredat ASTNode:130
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((GenericMethodDecl)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((GenericMethodDecl) node).tokenString_ID);    
   }
   /**
    * Replaces the Modifiers child.
@@ -337,7 +364,7 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -400,11 +427,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addParameter(ParameterDeclaration node) {
-    List<ParameterDeclaration> list = (parent == null || state == null) ? getParameterListNoTransform() : getParameterList();
+    List<ParameterDeclaration> list = (parent == null) ? getParameterListNoTransform() : getParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addParameterNoTransform(ParameterDeclaration node) {
     List<ParameterDeclaration> list = getParameterListNoTransform();
@@ -428,7 +454,6 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Parameter")
   public List<ParameterDeclaration> getParameterList() {
     List<ParameterDeclaration> list = (List<ParameterDeclaration>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -439,6 +464,13 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<ParameterDeclaration> getParameterListNoTransform() {
     return (List<ParameterDeclaration>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Parameter list without
+   * triggering rewrites.
+   */
+  public ParameterDeclaration getParameterNoTransform(int i) {
+    return (ParameterDeclaration) getParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Parameter list.
@@ -505,11 +537,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addException(Access node) {
-    List<Access> list = (parent == null || state == null) ? getExceptionListNoTransform() : getExceptionList();
+    List<Access> list = (parent == null) ? getExceptionListNoTransform() : getExceptionList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addExceptionNoTransform(Access node) {
     List<Access> list = getExceptionListNoTransform();
@@ -533,7 +564,6 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Exception")
   public List<Access> getExceptionList() {
     List<Access> list = (List<Access>) getChild(3);
-    list.getNumChild();
     return list;
   }
   /**
@@ -544,6 +574,13 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<Access> getExceptionListNoTransform() {
     return (List<Access>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the Exception list without
+   * triggering rewrites.
+   */
+  public Access getExceptionNoTransform(int i) {
+    return (Access) getExceptionListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Exception list.
@@ -661,11 +698,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeParameter(TypeVariable node) {
-    List<TypeVariable> list = (parent == null || state == null) ? getTypeParameterListNoTransform() : getTypeParameterList();
+    List<TypeVariable> list = (parent == null) ? getTypeParameterListNoTransform() : getTypeParameterList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeParameterNoTransform(TypeVariable node) {
     List<TypeVariable> list = getTypeParameterListNoTransform();
@@ -689,7 +725,6 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeParameter")
   public List<TypeVariable> getTypeParameterList() {
     List<TypeVariable> list = (List<TypeVariable>) getChild(5);
-    list.getNumChild();
     return list;
   }
   /**
@@ -700,6 +735,13 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    */
   public List<TypeVariable> getTypeParameterListNoTransform() {
     return (List<TypeVariable>) getChildNoTransform(5);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeParameter list without
+   * triggering rewrites.
+   */
+  public TypeVariable getTypeParameterNoTransform(int i) {
+    return (TypeVariable) getTypeParameterListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeParameter list.
@@ -719,181 +761,263 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     return getTypeParameterListNoTransform();
   }
   /**
-   * @apilevel internal
+   * @return {@code true} if this is a generic method or constructor, or a
+   * substitued generic method or constructor.
+   * @attribute syn
+   * @aspect MethodSignature15
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325
    */
-  protected boolean rawMethodDecl_computed = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325")
+  public boolean isGeneric() {
+    boolean isGeneric_value = true;
+    return isGeneric_value;
+  }
   /**
-   * @apilevel internal
+   * Note: isGeneric must be called first to check if this declaration is generic.
+   * Otherwise this attribute will throw an error!
+   * @return the original generic declaration of this method.
+   * @attribute syn
+   * @aspect MethodSignature15
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336
    */
-  protected MethodDecl rawMethodDecl_value;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336")
+  public GenericMethodDecl genericDecl() {
+    GenericMethodDecl genericDecl_value = this;
+    return genericDecl_value;
+  }
   /**
-   * @apilevel internal
+   * Note: isGeneric must be called first to check if this declaration is generic.
+   * Otherwise this attribute will throw an error!
+   * @return type parameters for this declaration.
+   * @attribute syn
+   * @aspect MethodSignature15
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
+  public List<TypeVariable> typeParameters() {
+    List<TypeVariable> typeParameters_value = getTypeParameterList();
+    return typeParameters_value;
+  }
+  /** @apilevel internal */
   private void rawMethodDecl_reset() {
-    rawMethodDecl_computed = false;
+    rawMethodDecl_computed = null;
     rawMethodDecl_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public MethodDecl rawMethodDecl() {
-    if(rawMethodDecl_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle rawMethodDecl_computed = null;
+
+  /** @apilevel internal */
+  protected ParMethodDecl rawMethodDecl_value;
+
+  /**
+   * @attribute syn
+   * @aspect GenericMethods
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:49
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:49")
+  public ParMethodDecl rawMethodDecl() {
+    ASTNode$State state = state();
+    if (rawMethodDecl_computed == ASTNode$State.NON_CYCLE || rawMethodDecl_computed == state().cycle()) {
       return rawMethodDecl_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     rawMethodDecl_value = lookupParMethodDecl(Collections.<TypeDecl>emptyList());
-    if (true) {
-      rawMethodDecl_computed = true;
+    if (state().inCircle()) {
+      rawMethodDecl_computed = state().cycle();
+    
     } else {
+      rawMethodDecl_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return rawMethodDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected java.util.Map lookupParMethodDecl_Collection_TypeDecl__values;
-  /**
-   * @apilevel internal
-   */
-  protected List lookupParMethodDecl_Collection_TypeDecl__list;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void lookupParMethodDecl_Collection_TypeDecl__reset() {
     lookupParMethodDecl_Collection_TypeDecl__values = null;
     lookupParMethodDecl_Collection_TypeDecl__list = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public MethodDecl lookupParMethodDecl(Collection<TypeDecl> typeArguments) {
+  /** @apilevel internal */
+  protected List lookupParMethodDecl_Collection_TypeDecl__list;
+  /** @apilevel internal */
+  protected java.util.Map lookupParMethodDecl_Collection_TypeDecl__values;
+
+  /**
+   * @attribute syn
+   * @aspect GenericMethods
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:57
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:57")
+  public ParMethodDecl lookupParMethodDecl(Collection<TypeDecl> typeArguments) {
     Object _parameters = typeArguments;
-    if (lookupParMethodDecl_Collection_TypeDecl__values == null) lookupParMethodDecl_Collection_TypeDecl__values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(lookupParMethodDecl_Collection_TypeDecl__values.containsKey(_parameters)) {
-      return (MethodDecl)lookupParMethodDecl_Collection_TypeDecl__values.get(_parameters);
-    }
+    if (lookupParMethodDecl_Collection_TypeDecl__values == null) lookupParMethodDecl_Collection_TypeDecl__values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    MethodDecl lookupParMethodDecl_Collection_TypeDecl__value = newParMethodDecl(typeArguments);
-    if(lookupParMethodDecl_Collection_TypeDecl__list == null) {
+    if (lookupParMethodDecl_Collection_TypeDecl__values.containsKey(_parameters)) {
+      return (ParMethodDecl) lookupParMethodDecl_Collection_TypeDecl__values.get(_parameters);
+    }
+    state().enterLazyAttribute();
+    ParMethodDecl lookupParMethodDecl_Collection_TypeDecl__value = newParMethodDecl(typeArguments);
+    if (lookupParMethodDecl_Collection_TypeDecl__list == null) {
       lookupParMethodDecl_Collection_TypeDecl__list = new List();
-      lookupParMethodDecl_Collection_TypeDecl__list.is$Final = true;
       lookupParMethodDecl_Collection_TypeDecl__list.setParent(this);
     }
     lookupParMethodDecl_Collection_TypeDecl__list.add(lookupParMethodDecl_Collection_TypeDecl__value);
-    if(lookupParMethodDecl_Collection_TypeDecl__value != null) {
-      lookupParMethodDecl_Collection_TypeDecl__value = (MethodDecl) lookupParMethodDecl_Collection_TypeDecl__list.getChild(lookupParMethodDecl_Collection_TypeDecl__list.numChildren-1);
-      lookupParMethodDecl_Collection_TypeDecl__value.is$Final = true;
+    if (lookupParMethodDecl_Collection_TypeDecl__value != null) {
+      lookupParMethodDecl_Collection_TypeDecl__value = (ParMethodDecl) lookupParMethodDecl_Collection_TypeDecl__list.getChild(lookupParMethodDecl_Collection_TypeDecl__list.numChildren - 1);
     }
-    if (true) {
-      lookupParMethodDecl_Collection_TypeDecl__values.put(_parameters, lookupParMethodDecl_Collection_TypeDecl__value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    lookupParMethodDecl_Collection_TypeDecl__values.put(_parameters, lookupParMethodDecl_Collection_TypeDecl__value);
+    state().leaveLazyAttribute();
     return lookupParMethodDecl_Collection_TypeDecl__value;
   }
   /**
    * @attribute syn
    * @aspect GenericMethodsNameAnalysis
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:181
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:205
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet localLookupType(String name) {
-    ASTNode$State state = state();
-    try {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsNameAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:205")
+  public SimpleSet<TypeDecl> localLookupType(String name) {
+    {
         for (int i = 0; i < getNumTypeParameter(); i++) {
           if (original().getTypeParameter(i).name().equals(name)) {
-            return SimpleSet.emptySet.add(original().getTypeParameter(i));
+            return original().getTypeParameter(i);
           }
         }
-        return SimpleSet.emptySet;
+        return emptySet();
       }
-    finally {
-    }
-  }
-  @ASTNodeAnnotation.Attribute
-  public GenericMethodDecl original() {
-    ASTNode$State state = state();
-    GenericMethodDecl original_value = original != null ? original : this;
-
-    return original_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isGeneric() {
-    ASTNode$State state = state();
-    boolean isGeneric_value = true;
-
-    return isGeneric_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public GenericMethodDecl genericDecl() {
-    ASTNode$State state = state();
-    GenericMethodDecl genericDecl_value = this;
-
-    return genericDecl_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public List<TypeVariable> typeParameters() {
-    ASTNode$State state = state();
-    List<TypeVariable> typeParameters_value = getTypeParameterList();
-
-    return typeParameters_value;
   }
   /**
    * @attribute syn
-   * @aspect FunctionalInterface
-   * @declaredat extendj/java8/frontend/FunctionalInterface.jrag:36
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1309
    */
-  @ASTNodeAnnotation.Attribute
-  public boolean sameSignature(MethodDecl m) {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1309")
+  public GenericMethodDecl original() {
+    GenericMethodDecl original_value = this;
+    return original_value;
+  }
+  /** @apilevel internal */
+  private void typeVariableInReturn_reset() {
+    typeVariableInReturn_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle typeVariableInReturn_computed = null;
+
+  /** @apilevel internal */
+  protected boolean typeVariableInReturn_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:117
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:117")
+  public boolean typeVariableInReturn() {
     ASTNode$State state = state();
-    try {
+    if (typeVariableInReturn_computed == ASTNode$State.NON_CYCLE || typeVariableInReturn_computed == state().cycle()) {
+      return typeVariableInReturn_value;
+    }
+    typeVariableInReturn_value = typeVariableInReturn_compute();
+    if (state().inCircle()) {
+      typeVariableInReturn_computed = state().cycle();
+    
+    } else {
+      typeVariableInReturn_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return typeVariableInReturn_value;
+  }
+  /** @apilevel internal */
+  private boolean typeVariableInReturn_compute() {
+      if (!getTypeAccess().usesTypeVariable()) {
+        return false;
+      }
+      ASTNode current = getTypeAccess();
+      LinkedList<ASTNode> list = new LinkedList<ASTNode>();
+      list.add(current);
+      boolean foundUse = false;
+      while (!list.isEmpty()) {
+        current = list.poll();
+        for (int i = 0; i < current.getNumChild(); i++) {
+          list.add(current.getChild(i));
+        }
+        if (current instanceof TypeAccess) {
+          TypeAccess typeAccess = (TypeAccess) current;
+          if (typeAccess.type().isTypeVariable()) {
+            for (int i = 0; i < getNumTypeParameter(); i++) {
+              if (typeAccess.type() == getTypeParameter(i)) {
+                foundUse = true;
+                break;
+              }
+            }
+            if (foundUse) {
+              break;
+            }
+          }
+        }
+      }
+      return foundUse;
+    }
+  /**
+   * @attribute syn
+   * @aspect FunctionalInterface
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:36
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:36")
+  public boolean sameSignature(MethodDecl m) {
+    {
         if (!m.isGeneric()) {
           return false;
         }
         GenericMethodDecl gm = m.genericDecl();
         return !(!name().equals(gm.name()) || !sameTypeParameters(gm) || !sameFormalParameters(gm));
       }
-    finally {
-    }
   }
-  protected java.util.Map subsignatureTo_MethodDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void subsignatureTo_MethodDecl_reset() {
+    subsignatureTo_MethodDecl_computed = new java.util.HashMap(4);
     subsignatureTo_MethodDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map subsignatureTo_MethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map subsignatureTo_MethodDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect FunctionalInterface
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:72
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:72")
   public boolean subsignatureTo(MethodDecl m) {
     Object _parameters = m;
-    if (subsignatureTo_MethodDecl_values == null) subsignatureTo_MethodDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(subsignatureTo_MethodDecl_values.containsKey(_parameters)) {
-      return ((Boolean)subsignatureTo_MethodDecl_values.get(_parameters)).booleanValue();
-    }
+    if (subsignatureTo_MethodDecl_computed == null) subsignatureTo_MethodDecl_computed = new java.util.HashMap(4);
+    if (subsignatureTo_MethodDecl_values == null) subsignatureTo_MethodDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean subsignatureTo_MethodDecl_value = subsignatureTo_compute(m);
-    if (isFinal && num == state().boundariesCrossed) {
-      subsignatureTo_MethodDecl_values.put(_parameters, Boolean.valueOf(subsignatureTo_MethodDecl_value));
-    } else {
+    if (subsignatureTo_MethodDecl_values.containsKey(_parameters) && subsignatureTo_MethodDecl_computed != null
+        && subsignatureTo_MethodDecl_computed.containsKey(_parameters)
+        && (subsignatureTo_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || subsignatureTo_MethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) subsignatureTo_MethodDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean subsignatureTo_MethodDecl_value = subsignatureTo_compute(m);
+    if (state().inCircle()) {
+      subsignatureTo_MethodDecl_values.put(_parameters, subsignatureTo_MethodDecl_value);
+      subsignatureTo_MethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      subsignatureTo_MethodDecl_values.put(_parameters, subsignatureTo_MethodDecl_value);
+      subsignatureTo_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return subsignatureTo_MethodDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean subsignatureTo_compute(MethodDecl m) {
       if (m.isGeneric()) {
         GenericMethodDecl gm = m.genericDecl();
@@ -906,37 +1030,45 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
         return false;
       }
     }
-  protected java.util.Map sameTypeParameters_GenericMethodDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void sameTypeParameters_GenericMethodDecl_reset() {
+    sameTypeParameters_GenericMethodDecl_computed = new java.util.HashMap(4);
     sameTypeParameters_GenericMethodDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map sameTypeParameters_GenericMethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map sameTypeParameters_GenericMethodDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect FunctionalInterface
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:108
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:108")
   public boolean sameTypeParameters(GenericMethodDecl gm) {
     Object _parameters = gm;
-    if (sameTypeParameters_GenericMethodDecl_values == null) sameTypeParameters_GenericMethodDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(sameTypeParameters_GenericMethodDecl_values.containsKey(_parameters)) {
-      return ((Boolean)sameTypeParameters_GenericMethodDecl_values.get(_parameters)).booleanValue();
-    }
+    if (sameTypeParameters_GenericMethodDecl_computed == null) sameTypeParameters_GenericMethodDecl_computed = new java.util.HashMap(4);
+    if (sameTypeParameters_GenericMethodDecl_values == null) sameTypeParameters_GenericMethodDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean sameTypeParameters_GenericMethodDecl_value = sameTypeParameters_compute(gm);
-    if (isFinal && num == state().boundariesCrossed) {
-      sameTypeParameters_GenericMethodDecl_values.put(_parameters, Boolean.valueOf(sameTypeParameters_GenericMethodDecl_value));
-    } else {
+    if (sameTypeParameters_GenericMethodDecl_values.containsKey(_parameters) && sameTypeParameters_GenericMethodDecl_computed != null
+        && sameTypeParameters_GenericMethodDecl_computed.containsKey(_parameters)
+        && (sameTypeParameters_GenericMethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || sameTypeParameters_GenericMethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) sameTypeParameters_GenericMethodDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean sameTypeParameters_GenericMethodDecl_value = sameTypeParameters_compute(gm);
+    if (state().inCircle()) {
+      sameTypeParameters_GenericMethodDecl_values.put(_parameters, sameTypeParameters_GenericMethodDecl_value);
+      sameTypeParameters_GenericMethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      sameTypeParameters_GenericMethodDecl_values.put(_parameters, sameTypeParameters_GenericMethodDecl_value);
+      sameTypeParameters_GenericMethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return sameTypeParameters_GenericMethodDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean sameTypeParameters_compute(GenericMethodDecl gm) {
       if (getNumTypeParameter() != gm.getNumTypeParameter()) {
         return false;
@@ -945,69 +1077,51 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
       for (int i = 0; i < getNumTypeParameter(); i++) {
         TypeVariable tv1 = getTypeParameter(i);
         TypeVariable tv2 = gm.getTypeParameter(i);
-        if (tv1.getNumTypeBound() != tv2.getNumTypeBound()) {
+        if (!tv1.sameType(tv2)) {
           return false;
-        }
-  
-        /* The bounds have to be the same in the way that a bound
-        that exists in type variable tv1 must exist exactly the same
-        number of times in tv2, but the order doesn't matter */
-  
-        boolean[] checkedBound = new boolean[tv1.getNumTypeBound()];
-  
-        for (int j = 0; j < tv1.getNumTypeBound(); j++) {
-          boolean found = false;
-          for (int k = 0; k < tv2.getNumTypeBound(); k++) {
-            if (checkedBound[k]) {
-              continue;
-            }
-            Access a1 = tv1.getTypeBound(j);
-            Access a2 = tv2.getTypeBound(k);
-  
-            if (a1.sameType(a2)) {
-              checkedBound[k] = true;
-              found = true;
-              break;
-            }
-          }
-          if (!found) {
-            return false;
-          }
         }
       }
       return true;
     }
-  protected java.util.Map sameFormalParameters_GenericMethodDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void sameFormalParameters_GenericMethodDecl_reset() {
+    sameFormalParameters_GenericMethodDecl_computed = new java.util.HashMap(4);
     sameFormalParameters_GenericMethodDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map sameFormalParameters_GenericMethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map sameFormalParameters_GenericMethodDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect FunctionalInterface
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:124
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:124")
   public boolean sameFormalParameters(GenericMethodDecl gm) {
     Object _parameters = gm;
-    if (sameFormalParameters_GenericMethodDecl_values == null) sameFormalParameters_GenericMethodDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(sameFormalParameters_GenericMethodDecl_values.containsKey(_parameters)) {
-      return ((Boolean)sameFormalParameters_GenericMethodDecl_values.get(_parameters)).booleanValue();
-    }
+    if (sameFormalParameters_GenericMethodDecl_computed == null) sameFormalParameters_GenericMethodDecl_computed = new java.util.HashMap(4);
+    if (sameFormalParameters_GenericMethodDecl_values == null) sameFormalParameters_GenericMethodDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean sameFormalParameters_GenericMethodDecl_value = sameFormalParameters_compute(gm);
-    if (isFinal && num == state().boundariesCrossed) {
-      sameFormalParameters_GenericMethodDecl_values.put(_parameters, Boolean.valueOf(sameFormalParameters_GenericMethodDecl_value));
-    } else {
+    if (sameFormalParameters_GenericMethodDecl_values.containsKey(_parameters) && sameFormalParameters_GenericMethodDecl_computed != null
+        && sameFormalParameters_GenericMethodDecl_computed.containsKey(_parameters)
+        && (sameFormalParameters_GenericMethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || sameFormalParameters_GenericMethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) sameFormalParameters_GenericMethodDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean sameFormalParameters_GenericMethodDecl_value = sameFormalParameters_compute(gm);
+    if (state().inCircle()) {
+      sameFormalParameters_GenericMethodDecl_values.put(_parameters, sameFormalParameters_GenericMethodDecl_value);
+      sameFormalParameters_GenericMethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      sameFormalParameters_GenericMethodDecl_values.put(_parameters, sameFormalParameters_GenericMethodDecl_value);
+      sameFormalParameters_GenericMethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return sameFormalParameters_GenericMethodDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean sameFormalParameters_compute(GenericMethodDecl gm) {
       if (getNumParameter() != gm.getNumParameter()) {
         return false;
@@ -1027,224 +1141,170 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
       }
       return true;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean usesTypeVariable_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean usesTypeVariable_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void usesTypeVariable_reset() {
-    usesTypeVariable_computed = false;
+    usesTypeVariable_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle usesTypeVariable_computed = null;
+
+  /** @apilevel internal */
+  protected boolean usesTypeVariable_value;
+
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179")
   public boolean usesTypeVariable() {
-    if(usesTypeVariable_computed) {
+    ASTNode$State state = state();
+    if (usesTypeVariable_computed == ASTNode$State.NON_CYCLE || usesTypeVariable_computed == state().cycle()) {
       return usesTypeVariable_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     usesTypeVariable_value = super.usesTypeVariable() || getTypeParameterList().usesTypeVariable();
-    if (isFinal && num == state().boundariesCrossed) {
-      usesTypeVariable_computed = true;
+    if (state().inCircle()) {
+      usesTypeVariable_computed = state().cycle();
+    
     } else {
+      usesTypeVariable_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return usesTypeVariable_value;
   }
   /**
-   * @apilevel internal
-   */
-  protected boolean typeVariableInReturn_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean typeVariableInReturn_value;
-  /**
-   * @apilevel internal
-   */
-  private void typeVariableInReturn_reset() {
-    typeVariableInReturn_computed = false;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean typeVariableInReturn() {
-    if(typeVariableInReturn_computed) {
-      return typeVariableInReturn_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    typeVariableInReturn_value = typeVariableInReturn_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      typeVariableInReturn_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return typeVariableInReturn_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private boolean typeVariableInReturn_compute() {
-      if (!getTypeAccess().usesTypeVariable()) {
-        return false;
-      }
-      ASTNode current = getTypeAccess();
-      LinkedList<ASTNode> list = new LinkedList<ASTNode>();
-      list.add(current);
-      boolean foundUse = false;
-      while (!list.isEmpty()) {
-        current = list.poll();
-        for (int i = 0; i < current.getNumChild(); i++) {
-          list.add(current.getChild(i));
-        }
-        if (current instanceof TypeAccess) {
-          TypeAccess typeAccess = (TypeAccess)current;
-          if (typeAccess.type().isTypeVariable()) {
-            for (int i = 0; i < getNumTypeParameter(); i++) {
-              if (typeAccess.type() == getTypeParameter(i)) {
-                foundUse = true;
-                break;
-              }
-            }
-            if (foundUse) {
-              break;
-            }
-          }
-        }
-      }
-      return foundUse;
-    }
-  /**
    * @attribute inh
    * @aspect GenericMethodsNameAnalysis
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:180
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:203
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet lookupType(String name) {
-    ASTNode$State state = state();
-    SimpleSet lookupType_String_value = getParent().Define_SimpleSet_lookupType(this, null, name);
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsNameAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:203")
+  public SimpleSet<TypeDecl> lookupType(String name) {
+    SimpleSet<TypeDecl> lookupType_String_value = getParent().Define_lookupType(this, null, name);
     return lookupType_String_value;
   }
   /**
    * @attribute inh
    * @aspect TypeVariablePositions
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:31
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31")
   public int genericMethodLevel() {
-    if(genericMethodLevel_computed) {
+    ASTNode$State state = state();
+    if (genericMethodLevel_computed == ASTNode$State.NON_CYCLE || genericMethodLevel_computed == state().cycle()) {
       return genericMethodLevel_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    genericMethodLevel_value = getParent().Define_int_genericMethodLevel(this, null);
-    if (isFinal && num == state().boundariesCrossed) {
-      genericMethodLevel_computed = true;
+    genericMethodLevel_value = getParent().Define_genericMethodLevel(this, null);
+    if (state().inCircle()) {
+      genericMethodLevel_computed = state().cycle();
+    
     } else {
+      genericMethodLevel_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return genericMethodLevel_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean genericMethodLevel_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected int genericMethodLevel_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void genericMethodLevel_reset() {
-    genericMethodLevel_computed = false;
+    genericMethodLevel_computed = null;
   }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle genericMethodLevel_computed = null;
+
+  /** @apilevel internal */
+  protected int genericMethodLevel_value;
+
   /**
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:178
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getTypeParameterListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:201
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
     else {
-      return super.Define_NameType_nameType(caller, child);
+      return super.Define_nameType(_callerNode, _childNode);
     }
   }
-  /**
-   * @declaredat extendj/java5/frontend/GenericMethods.jrag:189
-   * @apilevel internal
-   */
-  public SimpleSet Define_SimpleSet_lookupType(ASTNode caller, ASTNode child, String name) {
-     {
-      int childIndex = this.getIndexOfChild(caller);
-      return localLookupType(name).isEmpty() ? lookupType(name) : localLookupType(name);
-    }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
   }
   /**
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:37
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
-  public int Define_int_typeVarPosition(ASTNode caller, ASTNode child) {
-    if (caller == getTypeParameterListNoTransform()) {
-      int i = caller.getIndexOfChild(child);
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return localLookupType(name).isEmpty() ? lookupType(name) : localLookupType(name);
+  }
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
+   * @apilevel internal
+   */
+  public int Define_typeVarPosition(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:37
+      int i = _callerNode.getIndexOfChild(_childNode);
       return i;
     }
     else {
-      return getParent().Define_int_typeVarPosition(this, caller);
+      return getParent().Define_typeVarPosition(this, _callerNode);
     }
   }
+  protected boolean canDefine_typeVarPosition(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:38
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
    * @apilevel internal
    */
-  public boolean Define_boolean_typeVarInMethod(ASTNode caller, ASTNode child) {
-    if (caller == getTypeParameterListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public boolean Define_typeVarInMethod(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:38
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return true;
     }
     else {
-      return getParent().Define_boolean_typeVarInMethod(this, caller);
+      return getParent().Define_typeVarInMethod(this, _callerNode);
     }
   }
+  protected boolean canDefine_typeVarInMethod(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TypeVariablePositions.jrag:50
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30
    * @apilevel internal
    */
-  public int Define_int_genericMethodLevel(ASTNode caller, ASTNode child) {
-    if (caller == getBlockOptNoTransform()) {
+  public int Define_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getBlockOptNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:50
       return genericMethodLevel() + 1;
     }
-    else if (caller == getTypeParameterListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+    else if (_callerNode == getTypeParameterListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:49
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return genericMethodLevel() + 1;
     }
     else {
-      return getParent().Define_int_genericMethodLevel(this, caller);
+      return getParent().Define_genericMethodLevel(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

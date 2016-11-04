@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect BytecodeAttributes
- * @declaredat extendj/java5/frontend/BytecodeAttributes.jrag:34
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/BytecodeAttributes.jrag:35
  */
  class Attributes extends java.lang.Object {
   
@@ -83,13 +85,21 @@ import java.io.DataInputStream;
         case 'e':
           int type_name_index = p.u2();
           String type_name = p.getCONSTANT_Utf8_Info(type_name_index).string();
-          // remove inital L and trailing ;
+          // Remove inital L and trailing semicolon.
           Access typeAccess = BytecodeParser.fromClassName(
               type_name.substring(1, type_name.length() - 1));
           int const_name_index = p.u2();
           String const_name = p.getCONSTANT_Utf8_Info(const_name_index).string();
           return new ElementConstantValue(typeAccess.qualifiesAccess(new VarAccess(const_name)));
-        case 'B': case 'C': case 'D': case 'F': case 'I': case 'J': case 'S': case 'Z': case 's':
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'F':
+        case 'I':
+        case 'J':
+        case 'S':
+        case 'Z':
+        case 's':
           int const_value_index = p.u2();
           Expr e = p.getCONSTANT_Info(const_value_index).expr();
           return new ElementConstantValue(e);
@@ -132,7 +142,7 @@ import java.io.DataInputStream;
 
     public static class FieldAttributes extends Attributes {
       protected CONSTANT_Info constantValue;
-      public java.util.ArrayList annotations;
+      public ArrayList<Annotation> annotations;
       public Signatures.FieldSignature fieldSignature;
 
       public FieldAttributes(AbstractClassfileParser p) throws IOException {
@@ -148,7 +158,7 @@ import java.io.DataInputStream;
         } else if (attribute_name.equals("RuntimeVisibleAnnotations")) {
           int num_annotations = p.u2();
           if (annotations == null) {
-            annotations = new java.util.ArrayList();
+            annotations = new ArrayList<Annotation>();
           }
           for (int j = 0; j < num_annotations; j++) {
             annotations.add(readAnnotation());
@@ -156,7 +166,7 @@ import java.io.DataInputStream;
         } else if (attribute_name.equals("RuntimeInvisibleAnnotations")) {
           int num_annotations = p.u2();
           if (annotations == null) {
-            annotations = new java.util.ArrayList();
+            annotations = new ArrayList<Annotation>();
           }
           for (int j = 0; j < num_annotations; j++) {
             annotations.add(readAnnotation());
@@ -181,8 +191,8 @@ import java.io.DataInputStream;
       protected List exceptionList;
       protected ElementValue elementValue;
       public Signatures.MethodSignature methodSignature;
-      public java.util.ArrayList annotations;
-      public java.util.ArrayList[] parameterAnnotations;
+      public ArrayList<Annotation> annotations;
+      public ArrayList<Annotation>[] parameterAnnotations;
 
       public MethodAttributes(AbstractClassfileParser p) throws IOException {
         super(p);
@@ -202,7 +212,7 @@ import java.io.DataInputStream;
         } else if (attribute_name.equals("RuntimeVisibleAnnotations")) {
           int num_annotations = p.u2();
           if (annotations == null) {
-            annotations = new java.util.ArrayList();
+            annotations = new ArrayList<Annotation>();
           }
           for (int j = 0; j < num_annotations; j++) {
             annotations.add(readAnnotation());
@@ -210,7 +220,7 @@ import java.io.DataInputStream;
         } else if (attribute_name.equals("RuntimeInvisibleAnnotations")) {
           int num_annotations = p.u2();
           if (annotations == null) {
-            annotations = new java.util.ArrayList();
+            annotations = new ArrayList<Annotation>();
           }
           for (int j = 0; j < num_annotations; j++) {
             annotations.add(readAnnotation());
@@ -218,11 +228,11 @@ import java.io.DataInputStream;
         } else if (attribute_name.equals("RuntimeVisibleParameterAnnotations")) {
           int num_parameters = p.u1();
           if (parameterAnnotations == null) {
-            parameterAnnotations = new java.util.ArrayList[num_parameters];
+            parameterAnnotations = new ArrayList[num_parameters];
           }
           for (int i = 0; i < num_parameters; i++) {
             if (parameterAnnotations[i] == null) {
-              parameterAnnotations[i] = new java.util.ArrayList();
+              parameterAnnotations[i] = new ArrayList<Annotation>();
             }
             int num_annotations = p.u2();
             for (int j = 0; j < num_annotations; j++) {
@@ -232,11 +242,11 @@ import java.io.DataInputStream;
         } else if (attribute_name.equals("RuntimeInvisibleParameterAnnotations")) {
           int num_parameters = p.u1();
           if (parameterAnnotations == null) {
-            parameterAnnotations = new java.util.ArrayList[num_parameters];
+            parameterAnnotations = new ArrayList[num_parameters];
           }
           for (int i = 0; i < num_parameters; i++) {
             if (parameterAnnotations[i] == null) {
-              parameterAnnotations[i] = new java.util.ArrayList();
+              parameterAnnotations[i] = new ArrayList<Annotation>();
             }
             int num_annotations = p.u2();
             for (int j = 0; j < num_annotations; j++) {
@@ -311,14 +321,12 @@ import java.io.DataInputStream;
           typeDecl = typeDecl.makeGeneric(classSignature);
         } else if (attribute_name.equals("RuntimeVisibleAnnotations")) {
           int num_annotations = p.u2();
-          //System.out.println("RuntimeVisibleAnnotations: " + num_annotations);
           for (int j = 0; j < num_annotations; j++) {
             Annotation a = readAnnotation();
             typeDecl.getModifiers().addModifier(a);
           }
         } else if (attribute_name.equals("RuntimeInvisibleAnnotations")) {
           int num_annotations = p.u2();
-          //System.out.println("RuntimeInvisibleAnnotations: " + num_annotations);
           for (int j = 0; j < num_annotations; j++) {
             Annotation a = readAnnotation();
             typeDecl.getModifiers().addModifier(a);
@@ -342,31 +350,32 @@ import java.io.DataInputStream;
           int inner_name_index = p.u2();
           int inner_class_access_flags = p.u2();
           if (inner_class_info_index > 0) {
-            CONSTANT_Class_Info inner_class_info = p.getCONSTANT_Class_Info(inner_class_info_index);
+            CONSTANT_Class_Info inner_class_info = p.getCONSTANT_Class_Info(
+                inner_class_info_index);
             String inner_class_name = inner_class_info.name();
-            String inner_name = inner_class_name.substring(inner_class_name.lastIndexOf("$")+1);
+            String inner_name = inner_class_name.substring(inner_class_name.lastIndexOf("$") + 1);
             String outer_class_name;
             if (outer_class_info_index > 0) {
-              CONSTANT_Class_Info outer_class_info = p.getCONSTANT_Class_Info(outer_class_info_index);
+              CONSTANT_Class_Info outer_class_info = p.getCONSTANT_Class_Info(
+                  outer_class_info_index);
               if (inner_class_info == null || outer_class_info == null) {
                 System.out.println("Null");
               }
               outer_class_name = outer_class_info.name();
-
               if (AbstractClassfileParser.VERBOSE) {
                 p.println("      inner: " + inner_class_name + ", outer: " + outer_class_name);
               }
-
             } else {
-              //anonymous inner class; need to infer outer_class_name from inner_class_name
-              outer_class_name = inner_class_name.substring(0,inner_class_name.lastIndexOf("$"));
+              // Anonymous inner class; need to infer outer_class_name from inner_class_name.
+              outer_class_name = inner_class_name.substring(0, inner_class_name.lastIndexOf("$"));
             }
             if (inner_class_info.name().equals(p.classInfo.name())) {
               if (AbstractClassfileParser.VERBOSE) {
                 p.println("      Class " + inner_class_name + " is inner (" + inner_name + ")");
               }
               typeDecl.setID(inner_name);
-              typeDecl.setModifiers(AbstractClassfileParser.modifiers(inner_class_access_flags & 0x041f));
+              typeDecl.setModifiers(
+                  AbstractClassfileParser.modifiers(inner_class_access_flags & 0x041f));
               if (p.outerClassNameEquals(outer_class_name)) {
                 MemberTypeDecl m = null;
                 if (typeDecl instanceof ClassDecl) {
@@ -389,19 +398,20 @@ import java.io.DataInputStream;
                 p.println("Begin processing: " + inner_class_name);
               }
               try {
-                java.io.InputStream is=null;
+                InputStream is = null;
                 try {
                   is = classPath.getInputStream(inner_class_name);
                 } catch(Error e) {
                   if (e.getMessage().startsWith("Could not find nested type")) {
-                    //ignore
+                    // Ignore.
                   } else {
                     throw e;
                   }
                 }
                 if (is != null) {
                   BytecodeParser p2 = new BytecodeParser(is, p.name);
-                  p2.parse(typeDecl, outer_class_name, classPath, (inner_class_access_flags & Flags.ACC_STATIC) == 0);
+                  p2.parse(typeDecl, outer_class_name, classPath,
+                      (inner_class_access_flags & Flags.ACC_STATIC) == 0);
                   is.close();
                 } else {
                   p.println("Error: ClassFile " + inner_class_name
@@ -419,7 +429,6 @@ import java.io.DataInputStream;
               }
             }
           }
-
         }
         if (AbstractClassfileParser.VERBOSE) {
           p.println("    end");

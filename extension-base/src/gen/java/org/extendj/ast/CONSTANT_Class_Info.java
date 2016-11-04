@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect BytecodeCONSTANT
- * @declaredat extendj/java4/frontend/BytecodeCONSTANT.jrag:32
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BytecodeCONSTANT.jrag:32
  */
  class CONSTANT_Class_Info extends CONSTANT_Info {
   
@@ -38,6 +40,7 @@ import java.io.DataInputStream;
 
   
 
+    @Override
     public String toString() {
       return "ClassInfo: " + name();
     }
@@ -46,7 +49,6 @@ import java.io.DataInputStream;
 
     public String name() {
       String name = ((CONSTANT_Utf8_Info) p.constantPool[name_index]).string();
-      //name = name.replaceAll("\\/", ".");
       name = name.replace('/', '.');
       return name;
     }
@@ -55,7 +57,6 @@ import java.io.DataInputStream;
 
     public String simpleName() {
       String name = name();
-      //name = name.replace('$', '.');
       int pos = name.lastIndexOf('.');
       return name.substring(pos + 1, name.length());
     }
@@ -64,7 +65,6 @@ import java.io.DataInputStream;
 
     public String packageDecl() {
       String name = name();
-      //name = name.replace('$', '.');
       int pos = name.lastIndexOf('.');
       if (pos == -1) {
         return "";

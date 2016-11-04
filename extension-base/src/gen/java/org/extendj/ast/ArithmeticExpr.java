@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:149
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:151
  * @production ArithmeticExpr : {@link Binary};
 
  */
@@ -51,44 +52,33 @@ public abstract class ArithmeticExpr extends Binary implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public ArithmeticExpr clone() throws CloneNotSupportedException {
     ArithmeticExpr node = (ArithmeticExpr) super.clone();
@@ -100,15 +90,16 @@ public abstract class ArithmeticExpr extends Binary implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:61
+   * @declaredat ASTNode:47
    */
+  @Deprecated
   public abstract ArithmeticExpr fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:68
+   * @declaredat ASTNode:55
    */
   public abstract ArithmeticExpr treeCopyNoTransform();
   /**
@@ -117,7 +108,7 @@ public abstract class ArithmeticExpr extends Binary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:63
    */
   public abstract ArithmeticExpr treeCopy();
   /**
@@ -173,47 +164,63 @@ public abstract class ArithmeticExpr extends Binary implements Cloneable {
     return (Expr) getChildNoTransform(1);
   }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:71
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_targetType(ASTNode caller, ASTNode child) {
-    if (caller == getRightOperandNoTransform()){
-    if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
-      return type();
-    } else {
-      return targetType();
+  public TypeDecl Define_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:70
+      {
+          if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
+            return type();
+          } else {
+            return targetType();
+          }
+        }
     }
-  }
-    else if (caller == getLeftOperandNoTransform()){
-    if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
-      return type();
-    } else {
-      return targetType();
-    }
-  }
-    else {
-      return getParent().Define_TypeDecl_targetType(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:244
-   * @apilevel internal
-   */
-  public boolean Define_boolean_numericContext(ASTNode caller, ASTNode child) {
-    if (caller == getLeftOperandNoTransform()) {
-      return true;
-    }
-    else if (caller == getRightOperandNoTransform()) {
-      return true;
+    else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:62
+      {
+          if (!getLeftOperand().isPolyExpression() && !getRightOperand().isPolyExpression()) {
+            return type();
+          } else {
+            return targetType();
+          }
+        }
     }
     else {
-      return super.Define_boolean_numericContext(caller, child);
+      return getParent().Define_targetType(this, _callerNode);
     }
   }
+  protected boolean canDefine_targetType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
+  public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:243
+      return true;
+    }
+    else if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:242
+      return true;
+    }
+    else {
+      return super.Define_numericContext(_callerNode, _childNode);
+    }
+  }
+  protected boolean canDefine_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

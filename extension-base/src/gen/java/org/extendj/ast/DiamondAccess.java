@@ -1,37 +1,38 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Type access for a generic class with an empty type parameter list.
  * @ast node
- * @declaredat extendj/java7/grammar/Diamond.ast:4
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Diamond.ast:4
  * @production DiamondAccess : {@link Access} ::= <span class="component">TypeAccess:{@link Access}</span>;
 
  */
 public class DiamondAccess extends Access implements Cloneable {
   /**
    * @aspect Java7PrettyPrint
-   * @declaredat extendj/java7/frontend/PrettyPrint.jadd:35
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PrettyPrint.jadd:46
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getTypeAccess());
@@ -39,13 +40,14 @@ public class DiamondAccess extends Access implements Cloneable {
   }
   /**
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:94
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:100
    */
-  protected static SimpleSet mostSpecific(SimpleSet maxSpecific, MethodDecl decl) {
+  protected static SimpleSet<MethodDecl> mostSpecific(
+      SimpleSet<MethodDecl> maxSpecific, MethodDecl decl) {
     if (maxSpecific.isEmpty()) {
       maxSpecific = maxSpecific.add(decl);
     } else {
-      MethodDecl other = (MethodDecl) maxSpecific.iterator().next();
+      MethodDecl other = maxSpecific.iterator().next();
       if (decl.moreSpecificThan(other)) {
         maxSpecific = decl;
       } else if (!other.moreSpecificThan(decl)) {
@@ -55,12 +57,15 @@ public class DiamondAccess extends Access implements Cloneable {
     return maxSpecific;
   }
   /**
-   * Choose a constructor for the diamond operator using placeholder
-   * methods.
+   * Choose a constructor for the diamond operator using stand-in
+   * methods. One stand-in method is generated for each constructor
+   * of the generic type. Type inference is then used to select the
+   * type arguments for the method, which can be used as the type
+   * arguments of the generic type.
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:112
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:122
    */
-  protected SimpleSet chooseConstructor() {
+  protected SimpleSet<MethodDecl> chooseConstructor() {
     ClassInstanceExpr instanceExpr = getClassInstanceExpr();
     TypeDecl type = getTypeAccess().type();
 
@@ -71,7 +76,7 @@ public class DiamondAccess extends Access implements Cloneable {
 
     List<StandInMethodDecl> placeholderMethods = genericType.getStandInMethodList();
 
-    SimpleSet maxSpecific = SimpleSet.emptySet;
+    SimpleSet<MethodDecl> maxSpecific = emptySet();
     Collection<MethodDecl> potentiallyApplicable = potentiallyApplicable(placeholderMethods);
     for (MethodDecl candidate : potentiallyApplicable) {
       if (applicableBySubtyping(instanceExpr, candidate)
@@ -87,7 +92,7 @@ public class DiamondAccess extends Access implements Cloneable {
    * from a set of candidates.
    * Type inference is applied to the (potentially) applicable candidates.
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:238
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:246
    */
   protected Collection<MethodDecl> potentiallyApplicable(
       List<StandInMethodDecl> candidates) {
@@ -110,7 +115,7 @@ public class DiamondAccess extends Access implements Cloneable {
    * @param candidate candidate method
    * @return false if the candidate method is not applicable.
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:260
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:268
    */
   protected boolean potentiallyApplicable(
       GenericMethodDecl candidate) {
@@ -126,13 +131,13 @@ public class DiamondAccess extends Access implements Cloneable {
         candidate.getParameterList(),
         getClassInstanceExpr().getArgList(),
         candidate.getTypeParameterList());
-    Parameterization par = new SimpleParameterization(candidate.getTypeParameterList(), typeArgs);
     if (typeArgs.size() != 0) {
       if (candidate.getNumTypeParameter() != typeArgs.size()) {
         return false;
       }
+      ParMethodDecl parMethod = candidate.lookupParMethodDecl(typeArgs);
       for (int i = 0; i < candidate.getNumTypeParameter(); i++) {
-        if (!typeArgs.get(i).withinBounds(candidate.original().getTypeParameter(i), par)) {
+        if (!typeArgs.get(i).withinBounds(parMethod.getTypeParameter(i))) {
           return false;
         }
       }
@@ -142,7 +147,7 @@ public class DiamondAccess extends Access implements Cloneable {
   /**
    * @return true if the method is applicable by subtyping
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:291
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:299
    */
   protected boolean applicableBySubtyping(ClassInstanceExpr expr, MethodDecl method) {
     if (method.getNumParameter() != expr.getNumArg()) {
@@ -158,7 +163,7 @@ public class DiamondAccess extends Access implements Cloneable {
   /**
    * @return true if the method is applicable by method invocation conversion
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:306
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:314
    */
   protected boolean applicableByMethodInvocationConversion(
       ClassInstanceExpr expr, MethodDecl method) {
@@ -176,7 +181,7 @@ public class DiamondAccess extends Access implements Cloneable {
   /**
    * @return true if the method is applicable by variable arity
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:323
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:331
    */
   protected boolean applicableByVariableArity(
       ClassInstanceExpr expr, MethodDecl method) {
@@ -193,29 +198,6 @@ public class DiamondAccess extends Access implements Cloneable {
       }
     }
     return true;
-  }
-  /**
-   * Checks if this diamond access is legal.
-   * The diamond access is not legal if it either is part of an inner class
-   * declaration, if it is used to access a non-generic type, or if it is
-   * part of a call to a generic constructor with explicit type arguments.
-   * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:435
-   */
-  public void typeCheck() {
-    if (isAnonymousDecl()) {
-      error("the diamond operator can not be used with anonymous classes");
-    }
-    if (isExplicitGenericConstructorAccess()) {
-      error("the diamond operator may not be used with generic "
-          + "constructors with explicit type parameters");
-    }
-    if (getClassInstanceExpr() == null) {
-      error("the diamond operator can only be used in class instance expressions");
-    }
-    if (!(getTypeAccess().type() instanceof ParClassDecl)) {
-      error("the diamond operator can only be used to instantiate generic classes");
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -239,59 +221,47 @@ public class DiamondAccess extends Access implements Cloneable {
   public DiamondAccess(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public DiamondAccess clone() throws CloneNotSupportedException {
     DiamondAccess node = (DiamondAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public DiamondAccess copy() {
     try {
       DiamondAccess node = (DiamondAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -305,8 +275,9 @@ public class DiamondAccess extends Access implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public DiamondAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -315,14 +286,14 @@ public class DiamondAccess extends Access implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public DiamondAccess treeCopyNoTransform() {
     DiamondAccess tree = (DiamondAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -336,15 +307,23 @@ public class DiamondAccess extends Access implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public DiamondAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    DiamondAccess tree = (DiamondAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -375,43 +354,40 @@ public class DiamondAccess extends Access implements Cloneable {
   public Access getTypeAccessNoTransform() {
     return (Access) getChildNoTransform(0);
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = type_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private TypeDecl type_compute() {
       TypeDecl accessType = getTypeAccess().type();
   
@@ -432,45 +408,79 @@ public class DiamondAccess extends Access implements Cloneable {
         return accessType;
       }
   
-      SimpleSet maxSpecific = chooseConstructor();
+      SimpleSet<MethodDecl> maxSpecific = chooseConstructor();
   
       if (maxSpecific.isEmpty()) {
         return getTypeAccess().type();
       }
   
-      MethodDecl constructor = (MethodDecl) maxSpecific.iterator().next();
+      MethodDecl constructor = maxSpecific.iterator().next();
       return constructor.type();
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Diamond
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87")
   public boolean isDiamond() {
-    ASTNode$State state = state();
     boolean isDiamond_value = true;
-
     return isDiamond_value;
   }
   /**
+   * Checks if this diamond access is legal.
+   * The diamond access is not legal if it either is part of an inner class
+   * declaration, if it is used to access a non-generic type, or if it is
+   * part of a call to a generic constructor with explicit type arguments.
+   * @attribute syn
+   * @aspect Diamond
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:445
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:445")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (isAnonymousDecl()) {
+          problems.add(error("the diamond operator can not be used with anonymous classes"));
+        }
+        if (isExplicitGenericConstructorAccess()) {
+          problems.add(error("the diamond operator may not be used with generic "
+              + "constructors with explicit type parameters"));
+        }
+        if (getClassInstanceExpr() == null) {
+          problems.add(error("the diamond operator can only be used in class instance expressions"));
+        }
+        if (!(getTypeAccess().type() instanceof ParClassDecl)) {
+          problems.add(error("the diamond operator can only be used to instantiate generic classes"));
+        }
+        return problems;
+      }
+  }
+  /**
+   * @return the nearest enclosing class instance expression, or {@code null}
+   * if there is no enclosing class instance expression.
    * @attribute inh
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:90
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:94
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:94")
   public ClassInstanceExpr getClassInstanceExpr() {
-    ASTNode$State state = state();
-    ClassInstanceExpr getClassInstanceExpr_value = getParent().Define_ClassInstanceExpr_getClassInstanceExpr(this, null);
-
+    ClassInstanceExpr getClassInstanceExpr_value = getParent().Define_getClassInstanceExpr(this, null);
     return getClassInstanceExpr_value;
   }
   /**
    * @return true if this access is part of an anonymous class declaration
    * @attribute inh
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:401
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:409
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:409")
   public boolean isAnonymousDecl() {
-    ASTNode$State state = state();
-    boolean isAnonymousDecl_value = getParent().Define_boolean_isAnonymousDecl(this, null);
-
+    boolean isAnonymousDecl_value = getParent().Define_isAnonymousDecl(this, null);
     return isAnonymousDecl_value;
   }
   /**
@@ -478,19 +488,38 @@ public class DiamondAccess extends Access implements Cloneable {
    * with explicit type arguments
    * @attribute inh
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:417
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:425
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:425")
   public boolean isExplicitGenericConstructorAccess() {
-    ASTNode$State state = state();
-    boolean isExplicitGenericConstructorAccess_value = getParent().Define_boolean_isExplicitGenericConstructorAccess(this, null);
-
+    boolean isExplicitGenericConstructorAccess_value = getParent().Define_isExplicitGenericConstructorAccess(this, null);
     return isExplicitGenericConstructorAccess_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:437
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
   }
 }

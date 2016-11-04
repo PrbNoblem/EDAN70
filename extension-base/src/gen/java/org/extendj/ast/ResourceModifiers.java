@@ -1,24 +1,25 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -26,7 +27,7 @@ import java.io.DataInputStream;
  * This subclass is added as a convenient method of making resource
  * declarations implicitly final.
  * @ast node
- * @declaredat extendj/java7/grammar/TryWithResources.ast:16
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/TryWithResources.ast:16
  * @production ResourceModifiers : {@link Modifiers};
 
  */
@@ -54,59 +55,47 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
   public ResourceModifiers(List<Modifier> p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     isFinal_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public ResourceModifiers clone() throws CloneNotSupportedException {
     ResourceModifiers node = (ResourceModifiers) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public ResourceModifiers copy() {
     try {
       ResourceModifiers node = (ResourceModifiers) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -120,8 +109,9 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:61
    */
+  @Deprecated
   public ResourceModifiers fullCopy() {
     return treeCopyNoTransform();
   }
@@ -130,14 +120,14 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:86
+   * @declaredat ASTNode:71
    */
   public ResourceModifiers treeCopyNoTransform() {
     ResourceModifiers tree = (ResourceModifiers) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -151,15 +141,23 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:106
+   * @declaredat ASTNode:91
    */
   public ResourceModifiers treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ResourceModifiers tree = (ResourceModifiers) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:113
+  /** @apilevel internal 
+   * @declaredat ASTNode:105
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -212,11 +210,10 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
    * @apilevel high-level
    */
   public void addModifier(Modifier node) {
-    List<Modifier> list = (parent == null || state == null) ? getModifierListNoTransform() : getModifierList();
+    List<Modifier> list = (parent == null) ? getModifierListNoTransform() : getModifierList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addModifierNoTransform(Modifier node) {
     List<Modifier> list = getModifierListNoTransform();
@@ -240,7 +237,6 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="Modifier")
   public List<Modifier> getModifierList() {
     List<Modifier> list = (List<Modifier>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -251,6 +247,13 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
    */
   public List<Modifier> getModifierListNoTransform() {
     return (List<Modifier>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Modifier list without
+   * triggering rewrites.
+   */
+  public Modifier getModifierNoTransform(int i) {
+    return (Modifier) getModifierListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Modifier list.
@@ -269,43 +272,44 @@ public class ResourceModifiers extends Modifiers implements Cloneable {
   public List<Modifier> getModifiersNoTransform() {
     return getModifierListNoTransform();
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean isFinal_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected boolean isFinal_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void isFinal_reset() {
-    isFinal_computed = false;
+    isFinal_computed = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isFinal_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isFinal_value;
+
+  /**
+   * @attribute syn
+   * @aspect Modifiers
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:449
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:449")
   public boolean isFinal() {
-    if(isFinal_computed) {
+    ASTNode$State state = state();
+    if (isFinal_computed == ASTNode$State.NON_CYCLE || isFinal_computed == state().cycle()) {
       return isFinal_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     isFinal_value = true;
-    if (isFinal && num == state().boundariesCrossed) {
-      isFinal_computed = true;
+    if (state().inCircle()) {
+      isFinal_computed = state().cycle();
+    
     } else {
+      isFinal_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return isFinal_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

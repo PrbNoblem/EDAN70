@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java8/grammar/MethodReference.ast:3
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:3
  * @production ExprMethodReference : {@link MethodReference} ::= <span class="component">{@link Expr}</span>;
 
  */
 public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat extendj/java8/frontend/PrettyPrint.jadd:88
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:70
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getExpr());
@@ -46,18 +47,6 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
       out.print(">");
     }
     out.print(name());
-  }
-  /**
-   * @aspect Java8NameCheck
-   * @declaredat extendj/java8/frontend/NameCheck.jrag:521
-   */
-  public void nameCheck() {
-    super.nameCheck();
-    if (!getExpr().isSuperAccess()) {
-      if (!getExpr().type().isReferenceType()) {
-        error("Expression in a method reference must have reference type");
-      }
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -92,23 +81,21 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     setID(p1);
     setChild(p2, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:27
+  /** @apilevel low-level 
+   * @declaredat ASTNode:25
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:33
+   * @declaredat ASTNode:31
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -120,37 +107,27 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     exactCompileTimeDeclaration_reset();
     potentiallyCompatible_TypeDecl_BodyDecl_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:46
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:58
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:64
+  /** @apilevel internal 
+   * @declaredat ASTNode:50
    */
   public ExprMethodReference clone() throws CloneNotSupportedException {
     ExprMethodReference node = (ExprMethodReference) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:71
+  /** @apilevel internal 
+   * @declaredat ASTNode:55
    */
   public ExprMethodReference copy() {
     try {
       ExprMethodReference node = (ExprMethodReference) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -164,8 +141,9 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:90
+   * @declaredat ASTNode:74
    */
+  @Deprecated
   public ExprMethodReference fullCopy() {
     return treeCopyNoTransform();
   }
@@ -174,14 +152,14 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:99
+   * @declaredat ASTNode:84
    */
   public ExprMethodReference treeCopyNoTransform() {
     ExprMethodReference tree = (ExprMethodReference) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -195,18 +173,26 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:119
+   * @declaredat ASTNode:104
    */
   public ExprMethodReference treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ExprMethodReference tree = (ExprMethodReference) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:126
+  /** @apilevel internal 
+   * @declaredat ASTNode:118
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ExprMethodReference)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((ExprMethodReference) node).tokenString_ID);    
   }
   /**
    * Replaces the TypeArgument list.
@@ -256,11 +242,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
    * @apilevel high-level
    */
   public void addTypeArgument(Access node) {
-    List<Access> list = (parent == null || state == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
+    List<Access> list = (parent == null) ? getTypeArgumentListNoTransform() : getTypeArgumentList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addTypeArgumentNoTransform(Access node) {
     List<Access> list = getTypeArgumentListNoTransform();
@@ -284,7 +269,6 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   @ASTNodeAnnotation.ListChild(name="TypeArgument")
   public List<Access> getTypeArgumentList() {
     List<Access> list = (List<Access>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -295,6 +279,13 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
    */
   public List<Access> getTypeArgumentListNoTransform() {
     return (List<Access>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the TypeArgument list without
+   * triggering rewrites.
+   */
+  public Access getTypeArgumentNoTransform(int i) {
+    return (Access) getTypeArgumentListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the TypeArgument list.
@@ -327,7 +318,7 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -368,89 +359,87 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   public Expr getExprNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  protected java.util.Map targetMethod_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void targetMethod_FunctionDescriptor_reset() {
+    targetMethod_FunctionDescriptor_computed = new java.util.HashMap(4);
     targetMethod_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map targetMethod_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map targetMethod_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:32")
   public MethodDecl targetMethod(FunctionDescriptor f) {
     Object _parameters = f;
-    if (targetMethod_FunctionDescriptor_values == null) targetMethod_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(targetMethod_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (MethodDecl)targetMethod_FunctionDescriptor_values.get(_parameters);
-    }
+    if (targetMethod_FunctionDescriptor_computed == null) targetMethod_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (targetMethod_FunctionDescriptor_values == null) targetMethod_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    MethodDecl targetMethod_FunctionDescriptor_value = targetMethod_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      targetMethod_FunctionDescriptor_values.put(_parameters, targetMethod_FunctionDescriptor_value);
-    } else {
+    if (targetMethod_FunctionDescriptor_values.containsKey(_parameters) && targetMethod_FunctionDescriptor_computed != null
+        && targetMethod_FunctionDescriptor_computed.containsKey(_parameters)
+        && (targetMethod_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || targetMethod_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (MethodDecl) targetMethod_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    MethodDecl targetMethod_FunctionDescriptor_value = targetMethod_compute(f);
+    if (state().inCircle()) {
+      targetMethod_FunctionDescriptor_values.put(_parameters, targetMethod_FunctionDescriptor_value);
+      targetMethod_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      targetMethod_FunctionDescriptor_values.put(_parameters, targetMethod_FunctionDescriptor_value);
+      targetMethod_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return targetMethod_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private MethodDecl targetMethod_compute(FunctionDescriptor f) {
       return syntheticMethodAccess(f).decl();
     }
-  /**
-   * @apilevel internal
-   */
-  protected java.util.Map syntheticAccess_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
-  protected List syntheticAccess_FunctionDescriptor_list;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void syntheticAccess_FunctionDescriptor_reset() {
     syntheticAccess_FunctionDescriptor_values = null;
     syntheticAccess_FunctionDescriptor_list = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected List syntheticAccess_FunctionDescriptor_list;
+  /** @apilevel internal */
+  protected java.util.Map syntheticAccess_FunctionDescriptor_values;
+
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:36
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:36")
   public Access syntheticAccess(FunctionDescriptor f) {
     Object _parameters = f;
-    if (syntheticAccess_FunctionDescriptor_values == null) syntheticAccess_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(syntheticAccess_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (Access)syntheticAccess_FunctionDescriptor_values.get(_parameters);
-    }
+    if (syntheticAccess_FunctionDescriptor_values == null) syntheticAccess_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
+    if (syntheticAccess_FunctionDescriptor_values.containsKey(_parameters)) {
+      return (Access) syntheticAccess_FunctionDescriptor_values.get(_parameters);
+    }
+    state().enterLazyAttribute();
     Access syntheticAccess_FunctionDescriptor_value = syntheticAccess_compute(f);
-    if(syntheticAccess_FunctionDescriptor_list == null) {
+    if (syntheticAccess_FunctionDescriptor_list == null) {
       syntheticAccess_FunctionDescriptor_list = new List();
-      syntheticAccess_FunctionDescriptor_list.is$Final = true;
       syntheticAccess_FunctionDescriptor_list.setParent(this);
     }
     syntheticAccess_FunctionDescriptor_list.add(syntheticAccess_FunctionDescriptor_value);
-    if(syntheticAccess_FunctionDescriptor_value != null) {
-      syntheticAccess_FunctionDescriptor_value = (Access) syntheticAccess_FunctionDescriptor_list.getChild(syntheticAccess_FunctionDescriptor_list.numChildren-1);
-      syntheticAccess_FunctionDescriptor_value.is$Final = true;
+    if (syntheticAccess_FunctionDescriptor_value != null) {
+      syntheticAccess_FunctionDescriptor_value = (Access) syntheticAccess_FunctionDescriptor_list.getChild(syntheticAccess_FunctionDescriptor_list.numChildren - 1);
     }
-    if (true) {
-      syntheticAccess_FunctionDescriptor_values.put(_parameters, syntheticAccess_FunctionDescriptor_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    syntheticAccess_FunctionDescriptor_values.put(_parameters, syntheticAccess_FunctionDescriptor_value);
+    state().leaveLazyAttribute();
     return syntheticAccess_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private Access syntheticAccess_compute(FunctionDescriptor f) {
       List<Expr> arguments = new List<Expr>();
       for (int i = 0; i < f.method.getNumParameter(); i++) {
@@ -460,79 +449,95 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   
       if (!hasTypeArgument()) {
         MethodReferenceAccess mAccess = new MethodReferenceAccess(name(), arguments, f);
-        return ((Expr) getExpr().treeCopyNoTransform()).qualifiesAccess(mAccess);
+        return ((Expr) getExpr().treeCopy()).qualifiesAccess(mAccess);
       } else {
         ParMethodReferenceAccess pmAccess = new ParMethodReferenceAccess(name(), arguments,
-            (List<Access>) getTypeArgumentList().treeCopyNoTransform(), f);
-        return ((Expr) getExpr().treeCopyNoTransform()).qualifiesAccess(pmAccess);
+            (List<Access>) getTypeArgumentList().treeCopy(), f);
+        return ((Expr) getExpr().treeCopy()).qualifiesAccess(pmAccess);
       }
     }
-  protected java.util.Map syntheticMethodAccess_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void syntheticMethodAccess_FunctionDescriptor_reset() {
+    syntheticMethodAccess_FunctionDescriptor_computed = new java.util.HashMap(4);
     syntheticMethodAccess_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map syntheticMethodAccess_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map syntheticMethodAccess_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:53
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:53")
   public MethodAccess syntheticMethodAccess(FunctionDescriptor f) {
     Object _parameters = f;
-    if (syntheticMethodAccess_FunctionDescriptor_values == null) syntheticMethodAccess_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(syntheticMethodAccess_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (MethodAccess)syntheticMethodAccess_FunctionDescriptor_values.get(_parameters);
-    }
+    if (syntheticMethodAccess_FunctionDescriptor_computed == null) syntheticMethodAccess_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (syntheticMethodAccess_FunctionDescriptor_values == null) syntheticMethodAccess_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    MethodAccess syntheticMethodAccess_FunctionDescriptor_value = syntheticMethodAccess_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      syntheticMethodAccess_FunctionDescriptor_values.put(_parameters, syntheticMethodAccess_FunctionDescriptor_value);
-    } else {
+    if (syntheticMethodAccess_FunctionDescriptor_values.containsKey(_parameters) && syntheticMethodAccess_FunctionDescriptor_computed != null
+        && syntheticMethodAccess_FunctionDescriptor_computed.containsKey(_parameters)
+        && (syntheticMethodAccess_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || syntheticMethodAccess_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (MethodAccess) syntheticMethodAccess_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    MethodAccess syntheticMethodAccess_FunctionDescriptor_value = syntheticMethodAccess_compute(f);
+    if (state().inCircle()) {
+      syntheticMethodAccess_FunctionDescriptor_values.put(_parameters, syntheticMethodAccess_FunctionDescriptor_value);
+      syntheticMethodAccess_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      syntheticMethodAccess_FunctionDescriptor_values.put(_parameters, syntheticMethodAccess_FunctionDescriptor_value);
+      syntheticMethodAccess_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return syntheticMethodAccess_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private MethodAccess syntheticMethodAccess_compute(FunctionDescriptor f) {
       Access synAccess = syntheticAccess(f);
       return (MethodAccess) synAccess.lastAccess();
     }
-  protected java.util.Map congruentTo_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void congruentTo_FunctionDescriptor_reset() {
+    congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
     congruentTo_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
-    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(congruentTo_FunctionDescriptor_values.containsKey(_parameters)) {
-      return ((Boolean)congruentTo_FunctionDescriptor_values.get(_parameters)).booleanValue();
-    }
+    if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      congruentTo_FunctionDescriptor_values.put(_parameters, Boolean.valueOf(congruentTo_FunctionDescriptor_value));
-    } else {
+    if (congruentTo_FunctionDescriptor_values.containsKey(_parameters) && congruentTo_FunctionDescriptor_computed != null
+        && congruentTo_FunctionDescriptor_computed.containsKey(_parameters)
+        && (congruentTo_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || congruentTo_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) congruentTo_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean congruentTo_FunctionDescriptor_value = congruentTo_compute(f);
+    if (state().inCircle()) {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return congruentTo_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean congruentTo_compute(FunctionDescriptor f) {
       MethodDecl decl = targetMethod(f);
       if (unknownMethod() == decl) {
@@ -546,37 +551,45 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
       }
       return decl.type().assignConversionTo(f.method.type(), null);
     }
-  protected java.util.Map potentiallyApplicableMethods_FunctionDescriptor_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void potentiallyApplicableMethods_FunctionDescriptor_reset() {
+    potentiallyApplicableMethods_FunctionDescriptor_computed = new java.util.HashMap(4);
     potentiallyApplicableMethods_FunctionDescriptor_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map potentiallyApplicableMethods_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyApplicableMethods_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259")
   public ArrayList<MethodDecl> potentiallyApplicableMethods(FunctionDescriptor f) {
     Object _parameters = f;
-    if (potentiallyApplicableMethods_FunctionDescriptor_values == null) potentiallyApplicableMethods_FunctionDescriptor_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyApplicableMethods_FunctionDescriptor_values.containsKey(_parameters)) {
-      return (ArrayList<MethodDecl>)potentiallyApplicableMethods_FunctionDescriptor_values.get(_parameters);
-    }
+    if (potentiallyApplicableMethods_FunctionDescriptor_computed == null) potentiallyApplicableMethods_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (potentiallyApplicableMethods_FunctionDescriptor_values == null) potentiallyApplicableMethods_FunctionDescriptor_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    ArrayList<MethodDecl> potentiallyApplicableMethods_FunctionDescriptor_value = potentiallyApplicableMethods_compute(f);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyApplicableMethods_FunctionDescriptor_values.put(_parameters, potentiallyApplicableMethods_FunctionDescriptor_value);
-    } else {
+    if (potentiallyApplicableMethods_FunctionDescriptor_values.containsKey(_parameters) && potentiallyApplicableMethods_FunctionDescriptor_computed != null
+        && potentiallyApplicableMethods_FunctionDescriptor_computed.containsKey(_parameters)
+        && (potentiallyApplicableMethods_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyApplicableMethods_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (ArrayList<MethodDecl>) potentiallyApplicableMethods_FunctionDescriptor_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    ArrayList<MethodDecl> potentiallyApplicableMethods_FunctionDescriptor_value = potentiallyApplicableMethods_compute(f);
+    if (state().inCircle()) {
+      potentiallyApplicableMethods_FunctionDescriptor_values.put(_parameters, potentiallyApplicableMethods_FunctionDescriptor_value);
+      potentiallyApplicableMethods_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyApplicableMethods_FunctionDescriptor_values.put(_parameters, potentiallyApplicableMethods_FunctionDescriptor_value);
+      potentiallyApplicableMethods_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return potentiallyApplicableMethods_FunctionDescriptor_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private ArrayList<MethodDecl> potentiallyApplicableMethods_compute(FunctionDescriptor f) {
       Collection<MethodDecl> col = getExpr().type().memberMethods(name());
       ArrayList<MethodDecl> applicable = new ArrayList<MethodDecl>();
@@ -600,43 +613,40 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
       }
       return applicable;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean exactCompileTimeDeclaration_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected MethodDecl exactCompileTimeDeclaration_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void exactCompileTimeDeclaration_reset() {
-    exactCompileTimeDeclaration_computed = false;
+    exactCompileTimeDeclaration_computed = null;
     exactCompileTimeDeclaration_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle exactCompileTimeDeclaration_computed = null;
+
+  /** @apilevel internal */
+  protected MethodDecl exactCompileTimeDeclaration_value;
+
+  /**
+   * @attribute syn
+   * @aspect MethodReference
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314")
   public MethodDecl exactCompileTimeDeclaration() {
-    if(exactCompileTimeDeclaration_computed) {
+    ASTNode$State state = state();
+    if (exactCompileTimeDeclaration_computed == ASTNode$State.NON_CYCLE || exactCompileTimeDeclaration_computed == state().cycle()) {
       return exactCompileTimeDeclaration_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     exactCompileTimeDeclaration_value = exactCompileTimeDeclaration_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      exactCompileTimeDeclaration_computed = true;
+    if (state().inCircle()) {
+      exactCompileTimeDeclaration_computed = state().cycle();
+    
     } else {
+      exactCompileTimeDeclaration_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return exactCompileTimeDeclaration_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private MethodDecl exactCompileTimeDeclaration_compute() {
       Collection<MethodDecl> col = getExpr().type().memberMethods(name());
       int foundCompatible = 0;
@@ -663,39 +673,47 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
       }
       return latestDecl;
     }
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
+    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
     potentiallyCompatible_TypeDecl_BodyDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
   public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type);
     _parameters.add(candidateDecl);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters)) {
-      return ((Boolean)potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters)).booleanValue();
-    }
+    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
-    if (isFinal && num == state().boundariesCrossed) {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, Boolean.valueOf(potentiallyCompatible_TypeDecl_BodyDecl_value));
-    } else {
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
+        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
+        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
+    if (state().inCircle()) {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return potentiallyCompatible_TypeDecl_BodyDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
       if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
         return true;
@@ -716,69 +734,111 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
       return foundMethod;
     }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:385
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
    * @apilevel internal
    */
-  public boolean Define_boolean_assignmentContext(ASTNode caller, ASTNode child) {
-    if (caller == getExprNoTransform()) {
+  public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:352
       return false;
     }
     else {
-      return getParent().Define_boolean_assignmentContext(this, caller);
+      return getParent().Define_assignmentContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:386
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
    * @apilevel internal
    */
-  public boolean Define_boolean_invocationContext(ASTNode caller, ASTNode child) {
-    if (caller == getExprNoTransform()) {
+  public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:353
       return false;
     }
     else {
-      return getParent().Define_boolean_invocationContext(this, caller);
+      return getParent().Define_invocationContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:387
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
    * @apilevel internal
    */
-  public boolean Define_boolean_castContext(ASTNode caller, ASTNode child) {
-    if (caller == getExprNoTransform()) {
+  public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:354
       return false;
     }
     else {
-      return getParent().Define_boolean_castContext(this, caller);
+      return getParent().Define_castContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_castContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:388
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
-  public boolean Define_boolean_stringContext(ASTNode caller, ASTNode child) {
-    if (caller == getExprNoTransform()) {
+  public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:355
       return false;
     }
     else {
-      return getParent().Define_boolean_stringContext(this, caller);
+      return getParent().Define_stringContext(this, _callerNode);
     }
   }
+  protected boolean canDefine_stringContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java8/frontend/TargetType.jrag:389
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
-  public boolean Define_boolean_numericContext(ASTNode caller, ASTNode child) {
-    if (caller == getExprNoTransform()) {
+  public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:356
       return false;
     }
     else {
-      return getParent().Define_boolean_numericContext(this, caller);
+      return getParent().Define_numericContext(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_numericContext(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:515
+    if (!getExpr().isSuperAccess() && !getExpr().type().isReferenceType()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getExpr().isSuperAccess() && !getExpr().type().isReferenceType()) {
+      collection.add(error("Expression in a method reference must have reference type"));
+    }
   }
 }

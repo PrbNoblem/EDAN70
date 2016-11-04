@@ -1,30 +1,31 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * 7.5 Import Declarations
  * @ast node
- * @declaredat extendj/java5/grammar/StaticImports.ast:4
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/StaticImports.ast:4
  * @production StaticImportDecl : {@link ImportDecl};
 
  */
@@ -51,23 +52,21 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
   public StaticImportDecl(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
@@ -75,23 +74,14 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
     importedFields_String_reset();
     importedMethods_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:34
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:46
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:38
    */
   public StaticImportDecl clone() throws CloneNotSupportedException {
     StaticImportDecl node = (StaticImportDecl) super.clone();
@@ -103,15 +93,16 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:63
+   * @declaredat ASTNode:49
    */
+  @Deprecated
   public abstract StaticImportDecl fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:70
+   * @declaredat ASTNode:57
    */
   public abstract StaticImportDecl treeCopyNoTransform();
   /**
@@ -120,7 +111,7 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:78
+   * @declaredat ASTNode:65
    */
   public abstract StaticImportDecl treeCopy();
   /**
@@ -152,137 +143,190 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat extendj/java5/frontend/StaticImports.jrag:95
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98")
   public abstract TypeDecl type();
-  protected java.util.Map importedTypes_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedTypes_String_reset() {
     importedTypes_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes(String name) {
+  protected java.util.Map importedTypes_String_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:42")
+  public SimpleSet<TypeDecl> importedTypes(String name) {
     Object _parameters = name;
-    if (importedTypes_String_values == null) importedTypes_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedTypes_String_values.containsKey(_parameters)) {
-      return (SimpleSet)importedTypes_String_values.get(_parameters);
+    if (importedTypes_String_values == null) importedTypes_String_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (importedTypes_String_values.containsKey(_parameters)) {
+      Object _cache = importedTypes_String_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (SimpleSet<TypeDecl>) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      importedTypes_String_values.put(_parameters, _value);
+      _value.value = emptySet();
     }
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet importedTypes_String_value = importedTypes_compute(name);
-    if (isFinal && num == state().boundariesCrossed) {
-      importedTypes_String_values.put(_parameters, importedTypes_String_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      SimpleSet<TypeDecl> new_importedTypes_String_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_importedTypes_String_value = importedTypes_compute(name);
+        if ((new_importedTypes_String_value == null && ((SimpleSet<TypeDecl>)_value.value) != null) || (new_importedTypes_String_value != null && !new_importedTypes_String_value.equals(((SimpleSet<TypeDecl>)_value.value)))) {
+          state.setChangeInCycle();
+          _value.value = new_importedTypes_String_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      importedTypes_String_values.put(_parameters, new_importedTypes_String_value);
 
-    return importedTypes_String_value;
+      state.leaveCircle();
+      return new_importedTypes_String_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      SimpleSet<TypeDecl> new_importedTypes_String_value = importedTypes_compute(name);
+      if ((new_importedTypes_String_value == null && ((SimpleSet<TypeDecl>)_value.value) != null) || (new_importedTypes_String_value != null && !new_importedTypes_String_value.equals(((SimpleSet<TypeDecl>)_value.value)))) {
+        state.setChangeInCycle();
+        _value.value = new_importedTypes_String_value;
+      }
+      return new_importedTypes_String_value;
+    } else {
+      return (SimpleSet<TypeDecl>) _value.value;
+    }
   }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet importedTypes_compute(String name) {
-      SimpleSet set = SimpleSet.emptySet;
-      for (Iterator iter = type().memberTypes(name).iterator(); iter.hasNext(); ) {
-        TypeDecl decl = (TypeDecl) iter.next();
-        if (decl.isStatic() && decl.accessibleFromPackage(packageName())) {
+  /** @apilevel internal */
+  private SimpleSet<TypeDecl> importedTypes_compute(String name) {
+      SimpleSet<TypeDecl> set = emptySet();
+      for (TypeDecl type : type().memberTypes(name)) {
+        if (type.isStatic() && type.accessibleFromPackage(packageName())) {
+          set = set.add(type);
+        }
+      }
+      return set;
+    }
+  /** @apilevel internal */
+  private void importedFields_String_reset() {
+    importedFields_String_values = null;
+  }
+  protected java.util.Map importedFields_String_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:55")
+  public SimpleSet<Variable> importedFields(String name) {
+    Object _parameters = name;
+    if (importedFields_String_values == null) importedFields_String_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (importedFields_String_values.containsKey(_parameters)) {
+      Object _cache = importedFields_String_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (SimpleSet<Variable>) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      importedFields_String_values.put(_parameters, _value);
+      _value.value = emptySet();
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      SimpleSet<Variable> new_importedFields_String_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_importedFields_String_value = importedFields_compute(name);
+        if ((new_importedFields_String_value == null && ((SimpleSet<Variable>)_value.value) != null) || (new_importedFields_String_value != null && !new_importedFields_String_value.equals(((SimpleSet<Variable>)_value.value)))) {
+          state.setChangeInCycle();
+          _value.value = new_importedFields_String_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      importedFields_String_values.put(_parameters, new_importedFields_String_value);
+
+      state.leaveCircle();
+      return new_importedFields_String_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      SimpleSet<Variable> new_importedFields_String_value = importedFields_compute(name);
+      if ((new_importedFields_String_value == null && ((SimpleSet<Variable>)_value.value) != null) || (new_importedFields_String_value != null && !new_importedFields_String_value.equals(((SimpleSet<Variable>)_value.value)))) {
+        state.setChangeInCycle();
+        _value.value = new_importedFields_String_value;
+      }
+      return new_importedFields_String_value;
+    } else {
+      return (SimpleSet<Variable>) _value.value;
+    }
+  }
+  /** @apilevel internal */
+  private SimpleSet<Variable> importedFields_compute(String name) {
+      SimpleSet<Variable> set = emptySet();
+      for (Variable decl : type().memberFields(name)) {
+        if (decl.isStatic() && (decl.isPublic() || (!decl.isPrivate()
+            && decl.hostType().topLevelType().packageName().equals(packageName())))) {
           set = set.add(decl);
         }
       }
       return set;
     }
-  protected java.util.Map importedFields_String_values;
-  /**
-   * @apilevel internal
-   */
-  private void importedFields_String_reset() {
-    importedFields_String_values = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedFields(String name) {
-    Object _parameters = name;
-    if (importedFields_String_values == null) importedFields_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedFields_String_values.containsKey(_parameters)) {
-      return (SimpleSet)importedFields_String_values.get(_parameters);
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet importedFields_String_value = importedFields_compute(name);
-    if (isFinal && num == state().boundariesCrossed) {
-      importedFields_String_values.put(_parameters, importedFields_String_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return importedFields_String_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet importedFields_compute(String name) {
-      SimpleSet set = SimpleSet.emptySet;
-      for (Iterator iter = type().memberFields(name).iterator(); iter.hasNext(); ) {
-        FieldDeclaration decl = (FieldDeclaration) iter.next();
-        if (decl.isStatic() &&
-           (decl.isPublic() || (!decl.isPrivate() && decl.hostType().topLevelType().packageName().equals(packageName()))))
-          set = set.add(decl);
-      }
-      return set;
-    }
-  protected java.util.Map importedMethods_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedMethods_String_reset() {
+    importedMethods_String_computed = new java.util.HashMap(4);
     importedMethods_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Collection importedMethods(String name) {
+  /** @apilevel internal */
+  protected java.util.Map importedMethods_String_values;
+  /** @apilevel internal */
+  protected java.util.Map importedMethods_String_computed;
+  /**
+   * @attribute syn
+   * @aspect StaticImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76")
+  public Collection<MethodDecl> importedMethods(String name) {
     Object _parameters = name;
-    if (importedMethods_String_values == null) importedMethods_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedMethods_String_values.containsKey(_parameters)) {
-      return (Collection)importedMethods_String_values.get(_parameters);
-    }
+    if (importedMethods_String_computed == null) importedMethods_String_computed = new java.util.HashMap(4);
+    if (importedMethods_String_values == null) importedMethods_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    Collection importedMethods_String_value = importedMethods_compute(name);
-    if (isFinal && num == state().boundariesCrossed) {
-      importedMethods_String_values.put(_parameters, importedMethods_String_value);
-    } else {
+    if (importedMethods_String_values.containsKey(_parameters) && importedMethods_String_computed != null
+        && importedMethods_String_computed.containsKey(_parameters)
+        && (importedMethods_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || importedMethods_String_computed.get(_parameters) == state().cycle())) {
+      return (Collection<MethodDecl>) importedMethods_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    Collection<MethodDecl> importedMethods_String_value = importedMethods_compute(name);
+    if (state().inCircle()) {
+      importedMethods_String_values.put(_parameters, importedMethods_String_value);
+      importedMethods_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      importedMethods_String_values.put(_parameters, importedMethods_String_value);
+      importedMethods_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return importedMethods_String_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private Collection importedMethods_compute(String name) {
-      Collection set = new HashSet();
-      for (Iterator iter = type().memberMethods(name).iterator(); iter.hasNext(); ) {
-        MethodDecl decl = (MethodDecl) iter.next();
-        if (decl.isStatic() &&
-           (decl.isPublic() || (!decl.isPrivate() && decl.hostType().topLevelType().packageName().equals(packageName()))))
-          set.add(decl);
+  /** @apilevel internal */
+  private Collection<MethodDecl> importedMethods_compute(String name) {
+      Collection<MethodDecl> set = new HashSet<MethodDecl>();
+      for (MethodDecl method : type().memberMethods(name)) {
+        if (method.isStatic()
+            && (method.isPublic() || (!method.isPrivate()
+                && method.hostType().topLevelType().packageName().equals(packageName())))) {
+          set.add(method);
+        }
       }
       return set;
     }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

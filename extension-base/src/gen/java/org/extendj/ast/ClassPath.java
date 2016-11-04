@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect ClassPath
- * @declaredat extendj/java4/frontend/ClassPath.jrag:134
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:167
  */
 public class ClassPath extends java.lang.Object {
   
@@ -31,16 +33,18 @@ public class ClassPath extends java.lang.Object {
     /**
      * Tracks all currently available packages in the program classpath.
      */
-    private Set<String> packages = Collections.newSetFromMap(new HashMap<String,Boolean>());
+    private Set<String> packages = new HashSet<String>();
 
   
 
     private boolean pathsInitialized = false;
 
   
+
     private ArrayList<PathPart> classPath = new ArrayList<PathPart>();
 
   
+
     private ArrayList<PathPart> sourcePath = new ArrayList<PathPart>();
 
   
@@ -80,12 +84,14 @@ public class ClassPath extends java.lang.Object {
 
       String[] bootclasspaths;
       if (program.options().hasValueForOption("-bootclasspath")) {
-        bootclasspaths = program.options().getValueForOption("-bootclasspath").split(File.pathSeparator);
+        bootclasspaths = program.options().getValueForOption("-bootclasspath")
+            .split(File.pathSeparator);
       } else {
-        bootclasspaths = System.getProperty("sun.boot.class.path").split(File.pathSeparator);
+        bootclasspaths = System.getProperty("sun.boot.class.path")
+            .split(File.pathSeparator);
       }
-      for (int i = 0; i < bootclasspaths.length; i++) {
-        classPaths.add(bootclasspaths[i]);
+      for (String path : bootclasspaths) {
+        classPaths.add(path);
       }
 
       String[] extdirs;
@@ -94,8 +100,8 @@ public class ClassPath extends java.lang.Object {
       } else {
         extdirs = System.getProperty("java.ext.dirs").split(File.pathSeparator);
       }
-      for (int i = 0; i < extdirs.length; i++) {
-        classPaths.add(extdirs[i]);
+      for (String path : extdirs) {
+        classPaths.add(path);
       }
 
       String[] userClasses = null;
@@ -107,21 +113,21 @@ public class ClassPath extends java.lang.Object {
         userClasses = new String[] { "." };
       }
       if (!program.options().hasValueForOption("-sourcepath")) {
-        for (int i = 0; i < userClasses.length; i++) {
-          classPaths.add(userClasses[i]);
-          sourcePaths.add(userClasses[i]);
+        for (String path : userClasses) {
+          classPaths.add(path);
+          sourcePaths.add(path);
         }
       } else {
-        for (int i = 0; i < userClasses.length; i++) {
-          classPaths.add(userClasses[i]);
+        for (String path : userClasses) {
+          classPaths.add(path);
         }
         userClasses = program.options().getValueForOption("-sourcepath").split(File.pathSeparator);
-        for (int i = 0; i < userClasses.length; i++) {
-          sourcePaths.add(userClasses[i]);
+        for (String path : userClasses) {
+          sourcePaths.add(path);
         }
       }
 
-      for (String path: classPaths) {
+      for (String path : classPaths) {
         PathPart part = PathPart.createClassPath(path);
         if (part != null) {
           addClassPath(part);
@@ -129,7 +135,7 @@ public class ClassPath extends java.lang.Object {
           System.out.println("Warning: Could not use " + path + " as class path");
         }
       }
-      for (String path: sourcePaths) {
+      for (String path : sourcePaths) {
         PathPart part = PathPart.createSourcePath(path);
         if (part != null) {
           addSourcePath(part);
@@ -148,8 +154,7 @@ public class ClassPath extends java.lang.Object {
      */
     public synchronized InputStream getInputStream(String name) {
       try {
-        for (Iterator iter = classPath.iterator(); iter.hasNext(); ) {
-          PathPart part = (PathPart) iter.next();
+        for (PathPart part : classPath) {
           ClassSource source = part.findSource(name);
           if (source != ClassSource.NONE) {
             return source.openInputStream();
@@ -166,8 +171,8 @@ public class ClassPath extends java.lang.Object {
      * Load a compilation unit from disk based on a classname. A class file is parsed if one exists
      * matching the classname that is not older than a corresponding source file, otherwise the
      * source file is selected.
-     * <p>
-     * This method is called by the LibCompilationUnit NTA.  We rely on the result of this method
+     *
+     * <p>This method is called by the LibCompilationUnit NTA.  We rely on the result of this method
      * being cached because it will return a newly parsed compilation unit each time it is called.
      *
      * @return the loaded compilation unit, or the provided default compilation unit if no matching
@@ -179,21 +184,21 @@ public class ClassPath extends java.lang.Object {
         initPaths();
         ClassSource sourcePart = ClassSource.NONE;
         ClassSource classPart = ClassSource.NONE;
-        for (PathPart part: sourcePath) {
+        for (PathPart part : sourcePath) {
           sourcePart = part.findSource(typeName);
           if (sourcePart != ClassSource.NONE) {
             break;
           }
         }
-        for (PathPart part: classPath) {
+        for (PathPart part : classPath) {
           classPart = part.findSource(typeName);
           if (classPart != ClassSource.NONE) {
             break;
           }
         }
 
-        if (sourcePart != ClassSource.NONE && (classPart == ClassSource.NONE ||
-              classPart.lastModified() < sourcePart.lastModified())) {
+        if (sourcePart != ClassSource.NONE && (classPart == ClassSource.NONE
+              || classPart.lastModified() < sourcePart.lastModified())) {
           CompilationUnit unit = sourcePart.parseCompilationUnit(program);
           int index = typeName.lastIndexOf('.');
           if (index == -1) {
@@ -216,7 +221,7 @@ public class ClassPath extends java.lang.Object {
           }
         }
         return defaultCompilationUnit;
-      } catch(IOException e) {
+      } catch (IOException e) {
         // Attributes can't throw checked exceptions, so convert this to an Error.
         throw new Error(e);
       }
@@ -230,7 +235,7 @@ public class ClassPath extends java.lang.Object {
     public synchronized void addPackage(String packageName) {
       int end = packageName.length();
       while (end > 0 && packages.add(packageName.substring(0, end))) {
-        end = packageName.lastIndexOf('.', end-1);
+        end = packageName.lastIndexOf('.', end - 1);
       }
     }
 
@@ -264,13 +269,13 @@ public class ClassPath extends java.lang.Object {
       if (packages.contains(packageName)) {
         return true;
       }
-      for (PathPart part: classPath) {
+      for (PathPart part : classPath) {
         if (part.hasPackage(packageName)) {
           addPackage(packageName);
           return true;
         }
       }
-      for (PathPart part: sourcePath) {
+      for (PathPart part : sourcePath) {
         if (part.hasPackage(packageName)) {
           addPackage(packageName);
           return true;

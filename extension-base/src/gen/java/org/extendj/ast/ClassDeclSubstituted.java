@@ -1,30 +1,31 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java5/grammar/Generics.ast:41
- * @production ClassDeclSubstituted : {@link ClassDecl} ::= <span class="component">&lt;Original:TypeDecl&gt;</span> <span class="component">{@link BodyDecl}*</span>;
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:54
+ * @production ClassDeclSubstituted : {@link ClassDecl} ::= <span class="component">&lt;Original:TypeDecl&gt;</span>;
 
  */
 public class ClassDeclSubstituted extends ClassDecl implements Cloneable, MemberSubstitutor {
@@ -45,35 +46,36 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
     children = new ASTNode[5];
     setChild(new Opt(), 1);
     setChild(new List(), 2);
-    setChild(new Opt(), 3);
-    setChild(new List(), 4);
+    setChild(new List(), 3);
+    setChild(new Opt(), 4);
   }
   /**
    * @declaredat ASTNode:17
    */
-  public ClassDeclSubstituted(Modifiers p0, String p1, Opt<Access> p2, List<Access> p3, TypeDecl p4) {
+  public ClassDeclSubstituted(Modifiers p0, String p1, Opt<Access> p2, List<Access> p3, List<BodyDecl> p4, TypeDecl p5) {
     setChild(p0, 0);
     setID(p1);
     setChild(p2, 1);
     setChild(p3, 2);
-    setOriginal(p4);
+    setChild(p4, 3);
+    setOriginal(p5);
   }
   /**
-   * @declaredat ASTNode:24
+   * @declaredat ASTNode:25
    */
-  public ClassDeclSubstituted(Modifiers p0, beaver.Symbol p1, Opt<Access> p2, List<Access> p3, TypeDecl p4) {
+  public ClassDeclSubstituted(Modifiers p0, beaver.Symbol p1, Opt<Access> p2, List<Access> p3, List<BodyDecl> p4, TypeDecl p5) {
     setChild(p0, 0);
     setID(p1);
     setChild(p2, 1);
     setChild(p3, 2);
-    setOriginal(p4);
+    setChild(p4, 3);
+    setOriginal(p5);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    * @declaredat ASTNode:34
    */
   protected int numChildren() {
-    return 3;
+    return 4;
   }
   /**
    * @apilevel internal
@@ -82,13 +84,11 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:46
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    getBodyDeclList_reset();
     sourceTypeDecl_reset();
     instanceOf_TypeDecl_reset();
     subtype_TypeDecl_reset();
@@ -96,39 +96,28 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
     localMethodsSignatureMap_reset();
     localFields_String_reset();
     localTypeDecls_String_reset();
-    constructors_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:61
+  /** @apilevel internal 
+   * @declaredat ASTNode:55
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:67
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:73
+  /** @apilevel internal 
+   * @declaredat ASTNode:59
    */
   public ClassDeclSubstituted clone() throws CloneNotSupportedException {
     ClassDeclSubstituted node = (ClassDeclSubstituted) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:80
+  /** @apilevel internal 
+   * @declaredat ASTNode:64
    */
   public ClassDeclSubstituted copy() {
     try {
       ClassDeclSubstituted node = (ClassDeclSubstituted) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -142,8 +131,9 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:99
+   * @declaredat ASTNode:83
    */
+  @Deprecated
   public ClassDeclSubstituted fullCopy() {
     return treeCopyNoTransform();
   }
@@ -152,22 +142,19 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:108
+   * @declaredat ASTNode:93
    */
   public ClassDeclSubstituted treeCopyNoTransform() {
     ClassDeclSubstituted tree = (ClassDeclSubstituted) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         switch (i) {
-        case 3:
-          tree.children[i] = new Opt();
-          continue;
         case 4:
-          tree.children[i] = new List();
+          tree.children[i] = new Opt();
           continue;
         }
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -181,18 +168,31 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:136
+   * @declaredat ASTNode:118
    */
   public ClassDeclSubstituted treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    ClassDeclSubstituted tree = (ClassDeclSubstituted) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        switch (i) {
+        case 4:
+          tree.children[i] = new Opt();
+          continue;
+        }
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:143
+  /** @apilevel internal 
+   * @declaredat ASTNode:137
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((ClassDeclSubstituted)node).tokenString_ID) && (tokenTypeDecl_Original == ((ClassDeclSubstituted)node).tokenTypeDecl_Original);    
+    return super.is$Equal(node) && (tokenString_ID == ((ClassDeclSubstituted) node).tokenString_ID) && (tokenTypeDecl_Original == ((ClassDeclSubstituted) node).tokenTypeDecl_Original);    
   }
   /**
    * Replaces the Modifiers child.
@@ -234,7 +234,7 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -348,11 +348,10 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * @apilevel high-level
    */
   public void addImplements(Access node) {
-    List<Access> list = (parent == null || state == null) ? getImplementsListNoTransform() : getImplementsList();
+    List<Access> list = (parent == null) ? getImplementsListNoTransform() : getImplementsList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addImplementsNoTransform(Access node) {
     List<Access> list = getImplementsListNoTransform();
@@ -376,7 +375,6 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
   @ASTNodeAnnotation.ListChild(name="Implements")
   public List<Access> getImplementsList() {
     List<Access> list = (List<Access>) getChild(2);
-    list.getNumChild();
     return list;
   }
   /**
@@ -387,6 +385,13 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    */
   public List<Access> getImplementsListNoTransform() {
     return (List<Access>) getChildNoTransform(2);
+  }
+  /**
+   * @return the element at index {@code i} in the Implements list without
+   * triggering rewrites.
+   */
+  public Access getImplementsNoTransform(int i) {
+    return (Access) getImplementsListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Implements list.
@@ -406,6 +411,116 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
     return getImplementsListNoTransform();
   }
   /**
+   * Replaces the BodyDecl list.
+   * @param list The new list node to be used as the BodyDecl list.
+   * @apilevel high-level
+   */
+  public void setBodyDeclList(List<BodyDecl> list) {
+    setChild(list, 3);
+  }
+  /**
+   * Retrieves the number of children in the BodyDecl list.
+   * @return Number of children in the BodyDecl list.
+   * @apilevel high-level
+   */
+  public int getNumBodyDecl() {
+    return getBodyDeclList().getNumChild();
+  }
+  /**
+   * Retrieves the number of children in the BodyDecl list.
+   * Calling this method will not trigger rewrites.
+   * @return Number of children in the BodyDecl list.
+   * @apilevel low-level
+   */
+  public int getNumBodyDeclNoTransform() {
+    return getBodyDeclListNoTransform().getNumChildNoTransform();
+  }
+  /**
+   * Retrieves the element at index {@code i} in the BodyDecl list.
+   * @param i Index of the element to return.
+   * @return The element at position {@code i} in the BodyDecl list.
+   * @apilevel high-level
+   */
+  public BodyDecl getBodyDecl(int i) {
+    return (BodyDecl) getBodyDeclList().getChild(i);
+  }
+  /**
+   * Check whether the BodyDecl list has any children.
+   * @return {@code true} if it has at least one child, {@code false} otherwise.
+   * @apilevel high-level
+   */
+  public boolean hasBodyDecl() {
+    return getBodyDeclList().getNumChild() != 0;
+  }
+  /**
+   * Append an element to the BodyDecl list.
+   * @param node The element to append to the BodyDecl list.
+   * @apilevel high-level
+   */
+  public void addBodyDecl(BodyDecl node) {
+    List<BodyDecl> list = (parent == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
+    list.addChild(node);
+  }
+  /** @apilevel low-level 
+   */
+  public void addBodyDeclNoTransform(BodyDecl node) {
+    List<BodyDecl> list = getBodyDeclListNoTransform();
+    list.addChild(node);
+  }
+  /**
+   * Replaces the BodyDecl list element at index {@code i} with the new node {@code node}.
+   * @param node The new node to replace the old list element.
+   * @param i The list index of the node to be replaced.
+   * @apilevel high-level
+   */
+  public void setBodyDecl(BodyDecl node, int i) {
+    List<BodyDecl> list = getBodyDeclList();
+    list.setChild(node, i);
+  }
+  /**
+   * Retrieves the BodyDecl list.
+   * @return The node representing the BodyDecl list.
+   * @apilevel high-level
+   */
+  @ASTNodeAnnotation.ListChild(name="BodyDecl")
+  public List<BodyDecl> getBodyDeclList() {
+    List<BodyDecl> list = (List<BodyDecl>) getChild(3);
+    return list;
+  }
+  /**
+   * Retrieves the BodyDecl list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the BodyDecl list.
+   * @apilevel low-level
+   */
+  public List<BodyDecl> getBodyDeclListNoTransform() {
+    return (List<BodyDecl>) getChildNoTransform(3);
+  }
+  /**
+   * @return the element at index {@code i} in the BodyDecl list without
+   * triggering rewrites.
+   */
+  public BodyDecl getBodyDeclNoTransform(int i) {
+    return (BodyDecl) getBodyDeclListNoTransform().getChildNoTransform(i);
+  }
+  /**
+   * Retrieves the BodyDecl list.
+   * @return The node representing the BodyDecl list.
+   * @apilevel high-level
+   */
+  public List<BodyDecl> getBodyDecls() {
+    return getBodyDeclList();
+  }
+  /**
+   * Retrieves the BodyDecl list.
+   * <p><em>This method does not invoke AST transformations.</em></p>
+   * @return The node representing the BodyDecl list.
+   * @apilevel low-level
+   */
+  public List<BodyDecl> getBodyDeclsNoTransform() {
+    return getBodyDeclListNoTransform();
+  }
+  /**
    * Replaces the lexeme Original.
    * @param value The new value for the lexeme Original.
    * @apilevel high-level
@@ -413,8 +528,7 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
   public void setOriginal(TypeDecl value) {
     tokenTypeDecl_Original = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected TypeDecl tokenTypeDecl_Original;
   /**
@@ -457,7 +571,7 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * @apilevel low-level
    */
   public Opt<ConstructorDecl> getImplicitConstructorOptNoTransform() {
-    return (Opt<ConstructorDecl>) getChildNoTransform(3);
+    return (Opt<ConstructorDecl>) getChildNoTransform(4);
   }
   /**
    * Retrieves the child position of the optional child ImplicitConstructor.
@@ -465,632 +579,433 @@ public class ClassDeclSubstituted extends ClassDecl implements Cloneable, Member
    * @apilevel low-level
    */
   protected int getImplicitConstructorOptChildPosition() {
-    return 3;
-  }
-  /**
-   * This method should not be called. This method throws an exception due to
-   * the corresponding child being an NTA shadowing a non-NTA child.
-   * @param node
-   * @apilevel internal
-   */
-  public void setBodyDeclList(List<BodyDecl> node) {
-    throw new Error("Can not replace NTA child BodyDeclList in ClassDeclSubstituted!");
-  }
-  /**
-   * Retrieves the number of children in the BodyDecl list.
-   * @return Number of children in the BodyDecl list.
-   * @apilevel high-level
-   */
-  public int getNumBodyDecl() {
-    return getBodyDeclList().getNumChild();
-  }
-  /**
-   * Retrieves the number of children in the BodyDecl list.
-   * Calling this method will not trigger rewrites.
-   * @return Number of children in the BodyDecl list.
-   * @apilevel low-level
-   */
-  public int getNumBodyDeclNoTransform() {
-    return getBodyDeclListNoTransform().getNumChildNoTransform();
-  }
-  /**
-   * Retrieves the element at index {@code i} in the BodyDecl list.
-   * @param i Index of the element to return.
-   * @return The element at position {@code i} in the BodyDecl list.
-   * @apilevel high-level
-   */
-  public BodyDecl getBodyDecl(int i) {
-    return (BodyDecl) getBodyDeclList().getChild(i);
-  }
-  /**
-   * Check whether the BodyDecl list has any children.
-   * @return {@code true} if it has at least one child, {@code false} otherwise.
-   * @apilevel high-level
-   */
-  public boolean hasBodyDecl() {
-    return getBodyDeclList().getNumChild() != 0;
-  }
-  /**
-   * Append an element to the BodyDecl list.
-   * @param node The element to append to the BodyDecl list.
-   * @apilevel high-level
-   */
-  public void addBodyDecl(BodyDecl node) {
-    List<BodyDecl> list = (parent == null || state == null) ? getBodyDeclListNoTransform() : getBodyDeclList();
-    list.addChild(node);
-  }
-  /**
-   * @apilevel low-level
-   */
-  public void addBodyDeclNoTransform(BodyDecl node) {
-    List<BodyDecl> list = getBodyDeclListNoTransform();
-    list.addChild(node);
-  }
-  /**
-   * Replaces the BodyDecl list element at index {@code i} with the new node {@code node}.
-   * @param node The new node to replace the old list element.
-   * @param i The list index of the node to be replaced.
-   * @apilevel high-level
-   */
-  public void setBodyDecl(BodyDecl node, int i) {
-    List<BodyDecl> list = getBodyDeclList();
-    list.setChild(node, i);
-  }
-  /**
-   * Retrieves the child position of the BodyDecl list.
-   * @return The the child position of the BodyDecl list.
-   * @apilevel low-level
-   */
-  protected int getBodyDeclListChildPosition() {
     return 4;
   }
   /**
-   * Retrieves the BodyDecl list.
-   * <p><em>This method does not invoke AST transformations.</em></p>
-   * @return The node representing the BodyDecl list.
-   * @apilevel low-level
+   * @attribute syn
+   * @aspect NestedTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635
    */
-  public List<BodyDecl> getBodyDeclListNoTransform() {
-    return (List<BodyDecl>) getChildNoTransform(4);
-  }
-  /**
-   * Retrieves the BodyDecl list.
-   * @return The node representing the BodyDecl list.
-   * @apilevel high-level
-   */
-  public List<BodyDecl> getBodyDecls() {
-    return getBodyDeclList();
-  }
-  /**
-   * Retrieves the BodyDecl list.
-   * <p><em>This method does not invoke AST transformations.</em></p>
-   * @return The node representing the BodyDecl list.
-   * @apilevel low-level
-   */
-  public List<BodyDecl> getBodyDeclsNoTransform() {
-    return getBodyDeclListNoTransform();
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635")
   public TypeDecl hostType() {
-    ASTNode$State state = state();
     TypeDecl hostType_value = getOriginal();
-
     return hostType_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1530
    */
-  protected boolean getBodyDeclList_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected List getBodyDeclList_value;
-  /**
-   * @apilevel internal
-   */
-  private void getBodyDeclList_reset() {
-    getBodyDeclList_computed = false;
-    getBodyDeclList_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public List getBodyDeclList() {
-    if(getBodyDeclList_computed) {
-      return (List) getChild(getBodyDeclListChildPosition());
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    getBodyDeclList_value = new BodyDeclList();
-    setChild(getBodyDeclList_value, getBodyDeclListChildPosition());
-    if (isFinal && num == state().boundariesCrossed) {
-      getBodyDeclList_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    List node = (List) this.getChild(getBodyDeclListChildPosition());
-    return node;
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1530")
   public TypeDecl original() {
-    ASTNode$State state = state();
     TypeDecl original_value = getOriginal().original();
-
     return original_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean sourceTypeDecl_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl sourceTypeDecl_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void sourceTypeDecl_reset() {
-    sourceTypeDecl_computed = false;
+    sourceTypeDecl_computed = null;
     sourceTypeDecl_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle sourceTypeDecl_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl sourceTypeDecl_value;
+
+  /**
+   * @attribute syn
+   * @aspect SourceDeclarations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1722
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1722")
   public TypeDecl sourceTypeDecl() {
-    if(sourceTypeDecl_computed) {
+    ASTNode$State state = state();
+    if (sourceTypeDecl_computed == ASTNode$State.NON_CYCLE || sourceTypeDecl_computed == state().cycle()) {
       return sourceTypeDecl_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     sourceTypeDecl_value = original().sourceTypeDecl();
-    if (isFinal && num == state().boundariesCrossed) {
-      sourceTypeDecl_computed = true;
+    if (state().inCircle()) {
+      sourceTypeDecl_computed = state().cycle();
+    
     } else {
+      sourceTypeDecl_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return sourceTypeDecl_value;
   }
-  protected java.util.Map instanceOf_TypeDecl_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void instanceOf_TypeDecl_reset() {
+    instanceOf_TypeDecl_computed = new java.util.HashMap(4);
     instanceOf_TypeDecl_values = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected java.util.Map instanceOf_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map instanceOf_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeWideningAndIdentity
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
   public boolean instanceOf(TypeDecl type) {
     Object _parameters = type;
-    if (instanceOf_TypeDecl_values == null) instanceOf_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(instanceOf_TypeDecl_values.containsKey(_parameters)) {
-      return ((Boolean)instanceOf_TypeDecl_values.get(_parameters)).booleanValue();
-    }
+    if (instanceOf_TypeDecl_computed == null) instanceOf_TypeDecl_computed = new java.util.HashMap(4);
+    if (instanceOf_TypeDecl_values == null) instanceOf_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    boolean instanceOf_TypeDecl_value = subtype(type);
-    if (isFinal && num == state().boundariesCrossed) {
-      instanceOf_TypeDecl_values.put(_parameters, Boolean.valueOf(instanceOf_TypeDecl_value));
-    } else {
+    if (instanceOf_TypeDecl_values.containsKey(_parameters) && instanceOf_TypeDecl_computed != null
+        && instanceOf_TypeDecl_computed.containsKey(_parameters)
+        && (instanceOf_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || instanceOf_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) instanceOf_TypeDecl_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    boolean instanceOf_TypeDecl_value = subtype(type);
+    if (state().inCircle()) {
+      instanceOf_TypeDecl_values.put(_parameters, instanceOf_TypeDecl_value);
+      instanceOf_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      instanceOf_TypeDecl_values.put(_parameters, instanceOf_TypeDecl_value);
+      instanceOf_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return instanceOf_TypeDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void subtype_TypeDecl_reset() {
     subtype_TypeDecl_values = null;
   }
   protected java.util.Map subtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
-    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(subtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = subtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (subtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = subtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       subtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_subtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_subtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_subtype_TypeDecl_value = type.supertypeClassDeclSubstituted(this);
-        if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_subtype_TypeDecl_value);
+        if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_subtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
-      } else {
-        subtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.supertypeClassDeclSubstituted(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      subtype_TypeDecl_values.put(_parameters, new_subtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_subtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_subtype_TypeDecl_value = type.supertypeClassDeclSubstituted(this);
-      if (state.RESET_CYCLE) {
-        subtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_subtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_subtype_TypeDecl_value = type.supertypeClassDeclSubstituted(this);
+      if (new_subtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_subtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_subtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeClassDeclSubstituted(ClassDeclSubstituted type) {
-    ASTNode$State state = state();
-    boolean supertypeClassDeclSubstituted_ClassDeclSubstituted_value = original() == type.original() && type.enclosingType().subtype(enclosingType())
-          || super.supertypeClassDeclSubstituted(type);
-
-    return supertypeClassDeclSubstituted_ClassDeclSubstituted_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean supertypeClassDecl(ClassDecl type) {
-    ASTNode$State state = state();
-    boolean supertypeClassDecl_ClassDecl_value = super.supertypeClassDecl(type) || original().supertypeClassDecl(type);
-
-    return supertypeClassDecl_ClassDecl_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:592
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:592")
+  public boolean supertypeClassDeclSubstituted(ClassDeclSubstituted type) {
+    boolean supertypeClassDeclSubstituted_ClassDeclSubstituted_value = original() == type.original() && type.enclosingType().subtype(enclosingType())
+          || super.supertypeClassDeclSubstituted(type);
+    return supertypeClassDeclSubstituted_ClassDeclSubstituted_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
+  public boolean supertypeClassDecl(ClassDecl type) {
+    boolean supertypeClassDecl_ClassDecl_value = super.supertypeClassDecl(type) || original().supertypeClassDecl(type);
+    return supertypeClassDecl_ClassDecl_value;
+  }
+  /** @apilevel internal */
   private void strictSubtype_TypeDecl_reset() {
     strictSubtype_TypeDecl_values = null;
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
-    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(strictSubtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _o = strictSubtype_TypeDecl_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return ((Boolean)_o).booleanValue();
+    if (strictSubtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = strictSubtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       strictSubtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = Boolean.valueOf(true);
+      _value.value = true;
     }
     ASTNode$State state = state();
-    boolean new_strictSubtype_TypeDecl_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_strictSubtype_TypeDecl_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_strictSubtype_TypeDecl_value = type.strictSupertypeClassDeclSubstituted(this);
-        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-          state.CHANGE = true;
-          _value.value = Boolean.valueOf(new_strictSubtype_TypeDecl_value);
+        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_strictSubtype_TypeDecl_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (isFinal && num == state().boundariesCrossed) {
-        strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
-      } else {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        boolean $tmp = type.strictSupertypeClassDeclSubstituted(this);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
+
+      state.leaveCircle();
       return new_strictSubtype_TypeDecl_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_strictSubtype_TypeDecl_value = type.strictSupertypeClassDeclSubstituted(this);
-      if (state.RESET_CYCLE) {
-        strictSubtype_TypeDecl_values.remove(_parameters);
-      }
-      else if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value).booleanValue()) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_strictSubtype_TypeDecl_value = type.strictSupertypeClassDeclSubstituted(this);
+      if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
         _value.value = new_strictSubtype_TypeDecl_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_strictSubtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return ((Boolean)_value.value).booleanValue();
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:463
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:463")
   public boolean strictSupertypeClassDeclSubstituted(ClassDeclSubstituted type) {
-    ASTNode$State state = state();
     boolean strictSupertypeClassDeclSubstituted_ClassDeclSubstituted_value = original() == type.original() && type.enclosingType().strictSubtype(enclosingType())
           || super.strictSupertypeClassDeclSubstituted(type);
-
     return strictSupertypeClassDeclSubstituted_ClassDeclSubstituted_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
   public boolean strictSupertypeClassDecl(ClassDecl type) {
-    ASTNode$State state = state();
     boolean strictSupertypeClassDecl_ClassDecl_value = super.strictSupertypeClassDecl(type) || original().strictSupertypeClassDecl(type);
-
     return strictSupertypeClassDecl_ClassDecl_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean localMethodsSignatureMap_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Map<String,SimpleSet> localMethodsSignatureMap_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void localMethodsSignatureMap_reset() {
-    localMethodsSignatureMap_computed = false;
+    localMethodsSignatureMap_computed = null;
     localMethodsSignatureMap_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public Map<String,SimpleSet> localMethodsSignatureMap() {
-    if(localMethodsSignatureMap_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle localMethodsSignatureMap_computed = null;
+
+  /** @apilevel internal */
+  protected Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap_value;
+
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1211
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1211")
+  public Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap() {
+    ASTNode$State state = state();
+    if (localMethodsSignatureMap_computed == ASTNode$State.NON_CYCLE || localMethodsSignatureMap_computed == state().cycle()) {
       return localMethodsSignatureMap_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     localMethodsSignatureMap_value = localMethodsSignatureMap_compute();
-    if (true) {
-      localMethodsSignatureMap_computed = true;
+    if (state().inCircle()) {
+      localMethodsSignatureMap_computed = state().cycle();
+    
     } else {
+      localMethodsSignatureMap_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return localMethodsSignatureMap_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private Map<String,SimpleSet> localMethodsSignatureMap_compute() {
-      Map<String,SimpleSet> map = new HashMap<String,SimpleSet>();
+  /** @apilevel internal */
+  private Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap_compute() {
+      Map<String, SimpleSet<MethodDecl>> map = new HashMap<String, SimpleSet<MethodDecl>>();
       for (Iterator<MethodDecl> iter = original().localMethodsIterator(); iter.hasNext(); ) {
         MethodDecl decl = iter.next();
-  
-        if (!decl.isStatic() && (decl.usesTypeVariable() || isRawType())) {
-          BodyDecl copyDecl = ((BodyDeclList) getBodyDeclList()).localMethodSignatureCopy(decl, this);
-          decl = (MethodDecl) copyDecl;
+        if (!decl.isSubstitutable()) {
+          putSimpleSetElement(map, decl.signature(), decl);
         }
-        putSimpleSetElement(map, decl.signature(), decl);
-  
+      }
+      for (BodyDecl decl : getBodyDeclList()) {
+        if (decl instanceof MethodDecl) {
+          MethodDecl method = (MethodDecl) decl;
+          putSimpleSetElement(map, method.signature(), method);
+        }
       }
       return map;
     }
-  protected java.util.Map localFields_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void localFields_String_reset() {
+    localFields_String_computed = new java.util.HashMap(4);
     localFields_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet localFields(String name) {
+  /** @apilevel internal */
+  protected java.util.Map localFields_String_values;
+  /** @apilevel internal */
+  protected java.util.Map localFields_String_computed;
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1228
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1228")
+  public SimpleSet<Variable> localFields(String name) {
     Object _parameters = name;
-    if (localFields_String_values == null) localFields_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(localFields_String_values.containsKey(_parameters)) {
-      return (SimpleSet)localFields_String_values.get(_parameters);
-    }
+    if (localFields_String_computed == null) localFields_String_computed = new java.util.HashMap(4);
+    if (localFields_String_values == null) localFields_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet localFields_String_value = localFields_compute(name);
-    if (true) {
-      localFields_String_values.put(_parameters, localFields_String_value);
-    } else {
+    if (localFields_String_values.containsKey(_parameters) && localFields_String_computed != null
+        && localFields_String_computed.containsKey(_parameters)
+        && (localFields_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || localFields_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) localFields_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<Variable> localFields_String_value = localFields_compute(name);
+    if (state().inCircle()) {
+      localFields_String_values.put(_parameters, localFields_String_value);
+      localFields_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      localFields_String_values.put(_parameters, localFields_String_value);
+      localFields_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return localFields_String_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet localFields_compute(String name) {
-      SimpleSet set = SimpleSet.emptySet;
-      for (Iterator iter = original().localFields(name).iterator(); iter.hasNext(); ) {
-        FieldDeclaration f = (FieldDeclaration) iter.next();
-  
-        if (!f.isStatic() && (f.usesTypeVariable() || isRawType())) {
-          BodyDecl fCopy = ((BodyDeclList) getBodyDeclList()).localFieldCopy(f, this);
-          f = (FieldDeclaration) fCopy;
+  /** @apilevel internal */
+  private SimpleSet<Variable> localFields_compute(String name) {
+      SimpleSet<Variable> set = emptySet();
+      for (Variable field : original().localFields(name)) {
+        if (field.name().equals(name)
+            && field.fieldDecl() != null && !field.fieldDecl().isSubstitutable()) {
+          set = set.add(field);
         }
-        set = set.add(f);
-  
+      }
+      for (BodyDecl decl : getBodyDeclList()) {
+        if (decl instanceof FieldDecl) {
+          FieldDecl field = (FieldDecl) decl;
+          for (FieldDeclarator f : field.getDeclaratorList()) {
+            if (f.name().equals(name)) {
+              set = set.add(f);
+            }
+          }
+        }
       }
       return set;
     }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void localTypeDecls_String_reset() {
     localTypeDecls_String_values = null;
   }
   protected java.util.Map localTypeDecls_String_values;
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet localTypeDecls(String name) {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1259")
+  public SimpleSet<TypeDecl> localTypeDecls(String name) {
     Object _parameters = name;
-    if (localTypeDecls_String_values == null) localTypeDecls_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
+    if (localTypeDecls_String_values == null) localTypeDecls_String_values = new java.util.HashMap(4);
     ASTNode$State.CircularValue _value;
-    if(localTypeDecls_String_values.containsKey(_parameters)) {
-      Object _o = localTypeDecls_String_values.get(_parameters);
-      if(!(_o instanceof ASTNode$State.CircularValue)) {
-        return (SimpleSet)_o;
+    if (localTypeDecls_String_values.containsKey(_parameters)) {
+      Object _cache = localTypeDecls_String_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (SimpleSet<TypeDecl>) _cache;
       } else {
-        _value = (ASTNode$State.CircularValue) _o;
+        _value = (ASTNode$State.CircularValue) _cache;
       }
     } else {
       _value = new ASTNode$State.CircularValue();
       localTypeDecls_String_values.put(_parameters, _value);
-      _value.value = SimpleSet.emptySet;
+      _value.value = emptySet();
     }
     ASTNode$State state = state();
-    SimpleSet new_localTypeDecls_String_value;
-    if (!state.IN_CIRCLE) {
-      state.IN_CIRCLE = true;
-      int num = state.boundariesCrossed;
-      boolean isFinal = this.is$Final();
-      // TODO: fixme
-      // state().CIRCLE_INDEX = 1;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      SimpleSet<TypeDecl> new_localTypeDecls_String_value;
       do {
-        _value.visited = new Integer(state.CIRCLE_INDEX);
-        state.CHANGE = false;
+        _value.cycle = state.nextCycle();
         new_localTypeDecls_String_value = localTypeDecls_compute(name);
-        if ((new_localTypeDecls_String_value==null && (SimpleSet)_value.value!=null) || (new_localTypeDecls_String_value!=null && !new_localTypeDecls_String_value.equals((SimpleSet)_value.value))) {
-          state.CHANGE = true;
+        if ((new_localTypeDecls_String_value == null && ((SimpleSet<TypeDecl>)_value.value) != null) || (new_localTypeDecls_String_value != null && !new_localTypeDecls_String_value.equals(((SimpleSet<TypeDecl>)_value.value)))) {
+          state.setChangeInCycle();
           _value.value = new_localTypeDecls_String_value;
         }
-        state.CIRCLE_INDEX++;
-      } while (state.CHANGE);
-      if (true) {
-        localTypeDecls_String_values.put(_parameters, new_localTypeDecls_String_value);
-      } else {
-        localTypeDecls_String_values.remove(_parameters);
-        state.RESET_CYCLE = true;
-        SimpleSet $tmp = localTypeDecls_compute(name);
-        state.RESET_CYCLE = false;
-      }
-      state.IN_CIRCLE = false;
-      state.INTERMEDIATE_VALUE = false;
+      } while (state.testAndClearChangeInCycle());
+      localTypeDecls_String_values.put(_parameters, new_localTypeDecls_String_value);
+
+      state.leaveCircle();
       return new_localTypeDecls_String_value;
-    }
-    if (!new Integer(state.CIRCLE_INDEX).equals(_value.visited)) {
-      _value.visited = new Integer(state.CIRCLE_INDEX);
-      new_localTypeDecls_String_value = localTypeDecls_compute(name);
-      if (state.RESET_CYCLE) {
-        localTypeDecls_String_values.remove(_parameters);
-      }
-      else if ((new_localTypeDecls_String_value==null && (SimpleSet)_value.value!=null) || (new_localTypeDecls_String_value!=null && !new_localTypeDecls_String_value.equals((SimpleSet)_value.value))) {
-        state.CHANGE = true;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      SimpleSet<TypeDecl> new_localTypeDecls_String_value = localTypeDecls_compute(name);
+      if ((new_localTypeDecls_String_value == null && ((SimpleSet<TypeDecl>)_value.value) != null) || (new_localTypeDecls_String_value != null && !new_localTypeDecls_String_value.equals(((SimpleSet<TypeDecl>)_value.value)))) {
+        state.setChangeInCycle();
         _value.value = new_localTypeDecls_String_value;
       }
-      state.INTERMEDIATE_VALUE = true;
       return new_localTypeDecls_String_value;
+    } else {
+      return (SimpleSet<TypeDecl>) _value.value;
     }
-    state.INTERMEDIATE_VALUE = true;
-    return (SimpleSet)_value.value;
   }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet localTypeDecls_compute(String name) {
-      SimpleSet set = SimpleSet.emptySet;
-      for (Iterator iter = original().localTypeDecls(name).iterator(); iter.hasNext(); ) {
-        TypeDecl t = (TypeDecl) iter.next();
-  
-        if (t.isStatic()) {
-          set = set.add(t);
-        } else if (t instanceof ClassDecl) {
-          MemberClassDecl copy =
-            ((BodyDeclList) getBodyDeclList()).localClassDeclCopy((ClassDecl) t, this);
-          set = set.add(copy.getClassDecl());
-        } else if (t instanceof InterfaceDecl) {
-          MemberInterfaceDecl copy =
-            ((BodyDeclList) getBodyDeclList()).localInterfaceDeclCopy((InterfaceDecl) t, this);
-          set = set.add(copy.getInterfaceDecl());
+  /** @apilevel internal */
+  private SimpleSet<TypeDecl> localTypeDecls_compute(String name) {
+      SimpleSet<TypeDecl> set = emptySet();
+      for (TypeDecl type : original().localTypeDecls(name)) {
+        if (type.isStatic()) {
+          set = set.add(type);
+        }
+      }
+      for (BodyDecl decl : getBodyDeclList()) {
+        if (decl instanceof MemberClassDecl) {
+          ClassDecl typeDecl = ((MemberClassDecl) decl).getClassDecl();
+          if (typeDecl.name().equals(name)) {
+            set = set.add(typeDecl);
+          }
         }
       }
       return set;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean constructors_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected Collection<ConstructorDecl> constructors_value;
-  /**
-   * @apilevel internal
-   */
-  private void constructors_reset() {
-    constructors_computed = false;
-    constructors_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public Collection<ConstructorDecl> constructors() {
-    if(constructors_computed) {
-      return constructors_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    constructors_value = constructors_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      constructors_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return constructors_value;
-  }
-  /**
-   * @apilevel internal
-   */
-  private Collection<ConstructorDecl> constructors_compute() {
-      Collection<ConstructorDecl> constructors = new ArrayList<ConstructorDecl>();
-      for (Iterator iter = original().constructors().iterator(); iter.hasNext(); ) {
-        ConstructorDecl c = (ConstructorDecl) iter.next();
-  
-        ConstructorDecl b = ((BodyDeclList) getBodyDeclList()).constructorCopy(c, this);
-        constructors.add(b);
-      }
-      return constructors;
-    }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

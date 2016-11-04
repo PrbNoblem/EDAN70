@@ -1,51 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:178
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:180
  * @production EqualityExpr : {@link RelationalExpr};
 
  */
 public abstract class EqualityExpr extends RelationalExpr implements Cloneable {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:260
-   */
-  public void typeCheck() {
-    TypeDecl left = getLeftOperand().type();
-    TypeDecl right = getRightOperand().type();
-    if (left.isNumericType() && right.isNumericType()) {
-      return;
-    } else if (left.isBoolean() && right.isBoolean()) {
-      return;
-    } else if ((left.isReferenceType() || left.isNull()) && (right.isReferenceType() || right.isNull())) {
-      if (left.castingConversionTo(right) || right.castingConversionTo(left)) {
-        return;
-      }
-    }
-    errorf("%s can not be compared to %s", left.typeName(), right.typeName());
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -69,44 +52,33 @@ public abstract class EqualityExpr extends RelationalExpr implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public EqualityExpr clone() throws CloneNotSupportedException {
     EqualityExpr node = (EqualityExpr) super.clone();
@@ -118,15 +90,16 @@ public abstract class EqualityExpr extends RelationalExpr implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:61
+   * @declaredat ASTNode:47
    */
+  @Deprecated
   public abstract EqualityExpr fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:68
+   * @declaredat ASTNode:55
    */
   public abstract EqualityExpr treeCopyNoTransform();
   /**
@@ -135,7 +108,7 @@ public abstract class EqualityExpr extends RelationalExpr implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:63
    */
   public abstract EqualityExpr treeCopy();
   /**
@@ -191,9 +164,36 @@ public abstract class EqualityExpr extends RelationalExpr implements Cloneable {
     return (Expr) getChildNoTransform(1);
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:280
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:280")
+  public Collection<Problem> typeProblems() {
+    {
+        TypeDecl left = getLeftOperand().type();
+        TypeDecl right = getRightOperand().type();
+        if (left.isNumericType() && right.isNumericType()) {
+          return Collections.emptyList();
+        } else if (left.isBoolean() && right.isBoolean()) {
+          return Collections.emptyList();
+        } else if ((left.isReferenceType() || left.isNull())
+            && (right.isReferenceType() || right.isNull())) {
+          if (left.castingConversionTo(right) || right.castingConversionTo(left)) {
+            return Collections.emptyList();
+          }
+        }
+        return Collections.singletonList(errorf("%s can not be compared to %s",
+            left.typeName(), right.typeName()));
+      }
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

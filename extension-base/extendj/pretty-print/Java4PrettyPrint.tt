@@ -48,8 +48,8 @@ TypeImportOnDemandDecl [[import $Access.*;
 
 ## Accesses (Type etc.)
 
-## For parser debugging
-ParseName [[$ID]]
+## For parser debugging.
+ParseName [[#name]]
 
 AbstractDot [[
 $if(needsDot)
@@ -94,7 +94,8 @@ EmptyStmt [[;]]
 ExprStmt [[$Expr;]]
 
 SwitchStmt [[switch ($Expr) $Block]]
-LabeledStmt [[$Label:]]
+LabeledStmt [[$Label:
+$Stmt]]
 ConstCase [[case $Value:]]
 DefaultCase [[default:]]
 
@@ -119,7 +120,7 @@ LocalClassDeclStmt [[$ClassDecl]]
 ## Declarations
 
 InstanceInitializer [[$if(!blockIsEmpty)$Block$endif]]
-StaticInitializer [[static $if(!blockIsEmpty)$Block$endif]]
+StaticInitializer [[$if(!blockIsEmpty)static $Block$endif]]
 
 ClassDecl [[
 $if(hasDocComment)#docComment$endif
@@ -133,20 +134,24 @@ $(Modifiers)interface $ID$if(hasSuperInterface) extends $join(SuperInterfaceList
   $join(BodyDecls,"\n\n")
 }]]
 
-FieldDeclaration [[
+FieldDecl [[
+$if(!isSynthetic)
 $if(hasDocComment)#docComment$endif
-$Modifiers$TypeAccess $ID$if(hasInit) = $Init$endif;]]
+$Modifiers$TypeAccess $join($Declarators,", ");
+$endif]]
 
 VarDeclStmt [[
-$Modifiers$TypeAccess $join($VariableDecls,", ");]]
+$Modifiers$TypeAccess $join($DeclaratorList,", ");]]
 
-VariableDecl [[$ID$DimsList$if(hasInit) = $Init$endif]]
+Declarator [[$ID$DimsList$if(hasInit) = $Init$endif]]
 
 Dims [[[$ExprOpt$]]]
 
 MethodDecl [[
+$if(!isSynthetic)
 $if(hasDocComment)#docComment$endif
-$Modifiers$TypeAccess $ID($join(ParameterList,", "))$if(hasExceptions) throws $join(ExceptionList,", ")$endif$if(hasBlock) $Block$else;$endif]]
+$Modifiers$TypeAccess $ID($join(ParameterList,", "))$if(hasExceptions) throws $join(ExceptionList,", ")$endif$if(hasBlock) $Block$else;$endif
+$endif]]
 
 ConstructorDecl [[
 $if(!isImplicitConstructor)
@@ -189,10 +194,6 @@ ArrayCreationExpr [[new $TypeAccess$if(hasArrayInit) $ArrayInit$endif]]
 
 ClassInstanceExpr [[new $Access($join(ArgList,", "))$if(hasTypeDecl)$if(hasPrintableBodyDecl) {
   $join(#bodyDecls,"\n")}$else { }$endif$endif]]
-
-SynchronizedStmt [[
-synchronized $Expr $Block
-]]
 
 InstanceOfExpr [[$Expr instanceof $TypeAccess]]
 

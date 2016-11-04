@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect BytecodeReader
- * @declaredat extendj/java8/frontend/BytecodeReader.jrag:35
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/BytecodeReader.jrag:35
  */
 public class BytecodeParser extends AbstractClassfileParser implements Flags {
   
@@ -81,23 +83,7 @@ public class BytecodeParser extends AbstractClassfileParser implements Flags {
       cu.addTypeDecl(typeDecl);
       parseFields(typeDecl);
       parseMethods(typeDecl);
-      //parse attributes, and if we have an inner class, then execute the branch...
-      if (new Attributes.TypeAttributes(this, typeDecl, outerTypeDecl, program).isInnerClass()) {
-        //this is a workaround for the fact that JastAdd stores inner classes as members of
-        //their outer classes, even for inner classes that come from bytecode;
-        //to avoid having inner classes show up as top-level classes, we remove them here
-        //from the compilation unit again...
-
-        //first add the cu to the program, so that getTypeDecls() won't fail
-        program.addCompilationUnit(cu);
-        //then clear the cu
-        for (int i=0;i<cu.getTypeDecls().getNumChild();i++) {
-          cu.getTypeDecls().removeChild(i);
-        }
-        //and remove the cu from the program again
-        program.getCompilationUnits().removeChild(program.getCompilationUnits().getIndexOfChild(cu));
-      }
-
+      new Attributes.TypeAttributes(this, typeDecl, outerTypeDecl, program);
       return cu;
     }
 

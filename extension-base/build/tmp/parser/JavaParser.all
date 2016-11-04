@@ -68,7 +68,7 @@
   }
 
   protected static boolean canSkipToken(Symbol token) {
-    return token.getId() == Terminals.DOC_COMMENT;
+    return token.getId() == Terminals.DOCUMENTATION_COMMENT;
   }
 
   protected java.util.Collection errors = new ArrayList();
@@ -90,7 +90,7 @@
 %left OROR;
 %right QUESTION, COLON;
 %right EQ, PLUSEQ, MINUSEQ, MULTEQ, DIVEQ, MODEQ, ANDEQ,
-		XOREQ, OREQ, LSHIFTEQ, RSHIFTEQ, URSHIFTEQ;
+    XOREQ, OREQ, LSHIFTEQ, RSHIFTEQ, URSHIFTEQ;
 %left DOUBLECOLON, RARROW;
 
 %nonassoc BOTTOM;
@@ -148,7 +148,7 @@ Access interface_type =
   ;
 Access array_type =
     primitive_type.t dims @BOTTOM  {: return t.addArrayDims(dims); :}
-  | name dims     		  @BOTTOM  {: return name.addArrayDims(dims); :}
+  | name dims             @BOTTOM  {: return name.addArrayDims(dims); :}
   ;
 Access name =
     simple_name
@@ -161,8 +161,8 @@ Access qualified_name =
     name.n DOT simple_name.i   {: return n.qualifiesAccess(i); :}
   ;
 CompilationUnit compilation_unit =
-    package_with_comment.p import_declarations.i? type_declarations.t? {: return new CompilationUnit(p.getID(), i, t); :}
-  |                       import_declarations.i? type_declarations.t? {: return new CompilationUnit("", i, t); :}
+    package_with_comment.p import_declarations.i? type_declarations.t? doc_comment_list? {: return new CompilationUnit(p.getID(), i, t); :}
+  |                       import_declarations.i? type_declarations.t? doc_comment_list? {: return new CompilationUnit("", i, t); :}
   ;
 List import_declarations =
     import_with_comment.i                       {: return new List().add(i); :}
@@ -173,11 +173,14 @@ List type_declarations =
   | type_declarations.l type_with_comment.t     {: return !(t instanceof EmptyType) ? l.add(t) : l; :}
   ;
 String doc_comment =
-    DOC_COMMENT
-  | doc_comment DOC_COMMENT {: return DOC_COMMENT; :}
+    DOCUMENTATION_COMMENT.dc {: return new Symbol(Terminals.DOCUMENTATION_COMMENT, dc); :}
+  ;
+String doc_comment_list =
+    doc_comment
+  | doc_comment_list doc_comment.dc {: return new Symbol(Terminals.DOCUMENTATION_COMMENT, dc); :}
   ;
 IdUse package_with_comment =
-    doc_comment? package_declaration
+    doc_comment_list? package_declaration
   ;
 IdUse package_declaration =
     PACKAGE name_decl SEMICOLON {: return name_decl; :}
@@ -193,7 +196,7 @@ IdUse qualified_name_decl =
     name_decl.n DOT IDENTIFIER.i {: return new IdUse(n.getID() + "." + i); :}
   ;
 ImportDecl import_with_comment =
-  doc_comment? import_declaration
+  doc_comment_list? import_declaration
   ;
 ImportDecl import_declaration =
     single_type_import_declaration
@@ -207,7 +210,7 @@ ImportDecl type_import_on_demand_declaration =
   ;
 TypeDecl type_with_comment =
     type_declaration
-  | doc_comment.dc type_declaration.d
+  | doc_comment_list.dc type_declaration.d
     {:
       d.docComment = dc;
       return d;
@@ -250,7 +253,7 @@ List interface_type_list =
   | interface_type_list.l COMMA interface_type.i  {: return l.add(i); :}
   ;
 List class_body =
-    LBRACE class_body_declarations.c? RBRACE      {: return c; :}
+    LBRACE class_body_declarations.c? doc_comment_list? RBRACE      {: return c; :}
   ;
 List class_body_declarations =
     body_decl_with_comment.c                           {: return new List().add(c); :}
@@ -258,7 +261,7 @@ List class_body_declarations =
   ;
 BodyDecl body_decl_with_comment =
     class_body_declaration
-  | doc_comment.dc class_body_declaration.d
+  | doc_comment_list.dc class_body_declaration.d
     {:
       d.docComment = dc;
       return d;
@@ -278,18 +281,18 @@ BodyDecl class_member_declaration =
   | SEMICOLON                                  {: return new InstanceInitializer(new Block()); :}
   ;
 BodyDecl field_declaration =
-    modifiers.m? type.t variable_declarators.v SEMICOLON {: return new FieldDecl(new Modifiers(m), t, v); :}
+    modifiers.m? type.t field_declarators.v SEMICOLON {: return new FieldDecl(new Modifiers(m), t, v); :}
   ;
-List variable_declarators =
-    variable_declarator.v                              {: return new List().add(v); :}
-  | variable_declarators.l COMMA variable_declarator.v {: return l.add(v); :}
+List field_declarators =
+    field_declarator.v                              {: return new List().add(v); :}
+  | field_declarators.l COMMA field_declarator.v {: return l.add(v); :}
   ;
-VariableDecl variable_declarator =
-    variable_declarator_id
-  | variable_declarator_id.v EQ variable_initializer.i {: v.setInit(i); return v; :}
+FieldDeclarator field_declarator =
+    field_declarator_id
+  | field_declarator_id.v EQ variable_initializer.i {: v.setInit(i); return v; :}
   ;
-VariableDecl variable_declarator_id =
-    IDENTIFIER dims.d?                       {: return new VariableDecl(IDENTIFIER, d, new Opt()); :}
+FieldDeclarator field_declarator_id =
+    IDENTIFIER dims.d?                       {: return new FieldDeclarator(IDENTIFIER, d, new Opt()); :}
   ;
 Expr variable_initializer =
     expression
@@ -367,7 +370,7 @@ List extends_interfaces =
   ;
 
 List interface_body =
-    LBRACE interface_member_declarations.i? RBRACE  {: return i; :}
+    LBRACE interface_member_declarations.i? doc_comment_list? RBRACE  {: return i; :}
   ;
 List interface_member_declarations =
     interface_member_with_comment.i                                  {: return new List().add(i); :}
@@ -375,7 +378,7 @@ List interface_member_declarations =
   ;
 BodyDecl interface_member_with_comment =
     interface_member_declaration
-  | doc_comment.dc interface_member_declaration.d
+  | doc_comment_list.dc interface_member_declaration.d
     {:
       d.docComment = dc;
       return d;
@@ -418,6 +421,17 @@ VarDeclStmt local_variable_declaration_statement =
   ;
 VarDeclStmt local_variable_declaration =
   modifiers.m? type.t variable_declarators.l {: return new VarDeclStmt(new Modifiers(m), t, l); :}
+  ;
+List variable_declarators =
+    variable_declarator.v                              {: return new List().add(v); :}
+  | variable_declarators.l COMMA variable_declarator.v {: return l.add(v); :}
+  ;
+VariableDeclarator variable_declarator =
+    variable_declarator_id
+  | variable_declarator_id.v EQ variable_initializer.i {: v.setInit(i); return v; :}
+  ;
+VariableDeclarator variable_declarator_id =
+    IDENTIFIER dims.d?                       {: return new VariableDeclarator(IDENTIFIER, d, new Opt()); :}
   ;
 Stmt statement =
     statement_without_trailing_substatement
@@ -658,25 +672,11 @@ Access field_access =
   ;
 Access method_invocation =
   name LPAREN argument_list.l? RPAREN
-  {: if(name instanceof AbstractDot) {
-       AbstractDot d = (AbstractDot) name;
-       ParseName pn = (ParseName)d.extractLast();
-       MethodAccess m = new MethodAccess(pn.getID(), l);
-       m.setStart(pn.getStart()); // add location information
-       m.setEnd(RPAREN.getEnd()); // add location information
-       m.IDstart = pn.getStart();
-       m.IDend = pn.getStart() + pn.getID().length() - 1;
-       d.replaceLast(m);
-       return d;
-     } else {
-       ParseName pn = (ParseName) name;
-       MethodAccess m = new MethodAccess(pn.getID(), l);
-       m.setStart(pn.getStart()); // add location information
-       m.setEnd(RPAREN.getEnd()); // add location information
-       m.IDstart = pn.getStart();
-       m.IDend = pn.getStart() + pn.getID().length() - 1;
-       return m;
-     } :}
+  {:  Access result = name.buildMethodAccess(l);
+      result.setStart(name.getStart());
+      result.setEnd(RPAREN.getEnd());
+      return result;
+  :}
   | primary.p DOT IDENTIFIER LPAREN argument_list.l? RPAREN
   {: MethodAccess m = new MethodAccess(IDENTIFIER, l);
      m.setStart(IDENTIFIER.getStart()); // add location information
@@ -710,16 +710,10 @@ Access array_access =
      a.setStart(LBRACK.getStart());
      a.setEnd(RBRACK.getEnd());
      return p.qualifiesAccess(a); :}
-/*| array_creation_init.i LBRACK expression.e RBRACK
- *{: ArrayAccess a = new ArrayAccess(e);
- *   a.setStart(LBRACK.getStart());
- *   a.setEnd(RBRACK.getEnd());
- *   return i.qualifiesAccess(a); :}
- */
   ;
 Expr postfix_expression =
     primary @BOTTOM
-  | name @BOTTOM
+  | name    @BOTTOM
   | postincrement_expression
   | postdecrement_expression
   ;
@@ -749,8 +743,10 @@ Expr unary_expression_not_plus_minus =
   | cast_expression
   ;
 Expr cast_expression =
-    LPAREN primitive_type.t dims.d? RPAREN unary_expression.e  @CAST   {: return new CastExpr(t.addArrayDims(d), e); :}
-  | LPAREN name.t dims.d? RPAREN unary_expression_not_plus_minus.e @CAST {: return new CastExpr(t.addArrayDims(d), e); :}
+    LPAREN primitive_type.t dims.d? RPAREN unary_expression.e      @CAST
+  {: return new CastExpr(t.addArrayDims(d), e); :}
+  | LPAREN name.t dims.d? RPAREN unary_expression_not_plus_minus.e @CAST
+  {: return new CastExpr(t.addArrayDims(d), e); :}
   ;
 Expr multiplicative_expression =
     unary_expression
@@ -826,25 +822,24 @@ Expr assignment =
   ;
 Expr expression = assignment_expression;
 Expr constant_expression = expression;
-Stmt statement = enhanced_for_statement; 
+Stmt statement = enhanced_for_statement;
 
 Stmt statement_no_short_if = enhanced_for_statement_no_short_if;
 
 Stmt enhanced_for_statement =
-  FOR LPAREN enhanced_for_parameter.p COLON expression.e RPAREN statement.s
-  {:  return new EnhancedForStmt(p, e, s);  :}
+  FOR LPAREN modifiers.m? type.t enhanced_for_parameter.p COLON expression.e RPAREN statement.s
+  {:  return new EnhancedForStmt(new Modifiers(m), t, p, e, s);  :}
   ;
 
 Stmt enhanced_for_statement_no_short_if =
-  FOR LPAREN enhanced_for_parameter.p COLON expression.e RPAREN statement_no_short_if.s 
-  {: return new EnhancedForStmt(p, e, s);  :}
+  FOR LPAREN modifiers.m? type.t enhanced_for_parameter.p COLON expression.e RPAREN statement_no_short_if.s
+  {: return new EnhancedForStmt(new Modifiers(m), t, p, e, s);  :}
   ;
 
-VariableDeclaration enhanced_for_parameter = 
-  modifiers.m? type.t IDENTIFIER dims.d?
-  {: return new VariableDeclaration(new Modifiers(m), t.addArrayDims(d), IDENTIFIER, new Opt()); :}
+VariableDeclarator enhanced_for_parameter =
+  IDENTIFIER dims.d?
+  {: return new VariableDeclarator(IDENTIFIER, d, new Opt()); :}
   ;
-
 TypeDecl type_declaration = annotation_type_declaration;
 
 BodyDecl interface_member_declaration =
@@ -931,7 +926,7 @@ Annotation annotation =
   | single_element_annotation
   ;
 
-Modifier normal_annotation =
+Annotation normal_annotation =
   AT name LPAREN element_value_pairs? RPAREN
   {: Annotation a = new Annotation("annotation", name, element_value_pairs);
      a.setStart(AT.getStart());
@@ -974,11 +969,11 @@ List element_values =
   | element_values COMMA element_value {: return element_values.add(element_value); :}
   ;
 
-Modifier marker_annotation =
+Annotation marker_annotation =
   AT name {: return new Annotation("annotation", name, new List()); :}
   ;
 
-Modifier single_element_annotation =
+Annotation single_element_annotation =
   AT name LPAREN element_value RPAREN
   {: Annotation a = new Annotation("annotation", name, new List().add(new ElementValuePair("value", element_value)));
      a.setStart(AT.getStart());
@@ -1449,7 +1444,8 @@ BodyDecl enum_constant =
   ;
 
 List arguments =
-  LPAREN argument_list RPAREN {: return argument_list; :}
+    LPAREN argument_list RPAREN {: return argument_list; :}
+  | LPAREN RPAREN {: return new List(); :}
   ;
 
 List annotations =
@@ -1458,7 +1454,7 @@ List annotations =
   ;
 
 List enum_body_declarations =
-  SEMICOLON class_body_declarations? {: return class_body_declarations; :}
+  SEMICOLON class_body_declarations? doc_comment_list? {: return class_body_declarations; :}
   ;
 ParameterDeclaration formal_parameter =
   modifiers.m? type.t ELLIPSIS IDENTIFIER dims.d?
@@ -1519,15 +1515,10 @@ List resource_declarations =
   ;
 
 ResourceDeclaration resource_declaration =
-    resource_decl
-  | resource_decl.a EQ variable_initializer.b
-    {: a.setInit(b);
-       return a; :}
-  ;
-
-ResourceDeclaration resource_decl =
     modifiers.a? type.b IDENTIFIER
-    {: return new ResourceDeclaration(new ResourceModifiers(a), b, IDENTIFIER, new Opt()); :}
+    {: return new ResourceDeclaration(IDENTIFIER, new List(), new Opt(), new ResourceModifiers(a), b); :}
+  | modifiers.a? type.b IDENTIFIER EQ variable_initializer.i
+    {: return new ResourceDeclaration(IDENTIFIER, new List(), new Opt(i), new ResourceModifiers(a), b); :}
   ;
 Access class_or_interface_type =
   class_or_interface LT GT

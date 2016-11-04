@@ -5,25 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect ClassfileParser
- * @declaredat extendj/java4/frontend/ClassfileParser.jrag:34
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassfileParser.jrag:34
  */
 public abstract class AbstractClassfileParser extends java.lang.Object {
   
@@ -173,7 +175,6 @@ public abstract class AbstractClassfileParser extends java.lang.Object {
   
 
     public final void print(String s) {
-      //System.out.print(s);
     }
 
   
@@ -301,7 +302,8 @@ public abstract class AbstractClassfileParser extends java.lang.Object {
 
     private void checkLengthAndNull(int index) {
       if (index >= constantPool.length) {
-        throw new Error("Trying to access element " + index  + " in constant pool of length " + constantPool.length);
+        throw new Error("Trying to access element " + index  + " in constant pool of length "
+            + constantPool.length);
       }
       if (constantPool[index] == null) {
         throw new Error("Unexpected null element in constant pool at index " + index);
@@ -327,7 +329,8 @@ public abstract class AbstractClassfileParser extends java.lang.Object {
       checkLengthAndNull(index);
       CONSTANT_Info info = constantPool[index];
       if (!(info instanceof CONSTANT_Utf8_Info)) {
-        throw new Error("Expected CONSTANT_Utf8_info at " + index + " in constant pool but found " + info.getClass().getName());
+        throw new Error("Expected CONSTANT_Utf8_info at " + index + " in constant pool but found "
+            + info.getClass().getName());
       }
       return (CONSTANT_Utf8_Info) info;
     }
@@ -338,7 +341,8 @@ public abstract class AbstractClassfileParser extends java.lang.Object {
       checkLengthAndNull(index);
       CONSTANT_Info info = constantPool[index];
       if (!(info instanceof CONSTANT_Class_Info)) {
-        throw new Error("Expected CONSTANT_Class_info at " + index + " in constant pool but found " + info.getClass().getName());
+        throw new Error("Expected CONSTANT_Class_info at " + index + " in constant pool but found "
+            + info.getClass().getName());
       }
       return (CONSTANT_Class_Info) info;
     }
@@ -354,8 +358,9 @@ public abstract class AbstractClassfileParser extends java.lang.Object {
       for (int i = 1; i < count; i++) {
         parseConstantPoolEntry(i);
         if (constantPool[i] instanceof CONSTANT_Long_Info
-            || constantPool[i] instanceof CONSTANT_Double_Info)
+            || constantPool[i] instanceof CONSTANT_Double_Info) {
           i++;
+        }
       }
     }
 

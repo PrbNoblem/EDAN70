@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:22
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:22
  * @production TypeAccess : {@link Access} ::= <span class="component">&lt;Package:String&gt;</span> <span class="component">&lt;ID:String&gt;</span>;
 
  */
 public class TypeAccess extends Access implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:600
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:608
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasPackage()) {
@@ -40,44 +41,8 @@ public class TypeAccess extends Access implements Cloneable {
     out.print(getID());
   }
   /**
-   * @aspect AccessControl
-   * @declaredat extendj/java4/frontend/AccessControl.jrag:153
-   */
-  public void accessControl() {
-    super.accessControl();
-    TypeDecl hostType = hostType();
-    if (hostType != null && !hostType.isUnknown() && !type().accessibleFrom(hostType)) {
-      errorf("%s in %s can not access type %s",
-          this.prettyPrint(), hostType().fullName(), type().fullName());
-    } else if ((hostType == null || hostType.isUnknown())
-        && !type().accessibleFromPackage(hostPackage())) {
-      errorf("%s can not access type %s", this.prettyPrint(), type().fullName());
-    }
-  }
-  /**
-   * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:213
-   */
-  public void nameCheck() {
-    if (isQualified() && !qualifier().isTypeAccess() && !qualifier().isPackageAccess()) {
-      errorf("can not access the type named %s in this context", decl().typeName());
-    }
-    if (decls().isEmpty()) {
-      errorf("no visible type named %s", typeName());
-    }
-    if (decls().size() > 1) {
-      StringBuilder sb = new StringBuilder();
-      sb.append("several types named " + name() + ":");
-      for (Iterator iter = decls().iterator(); iter.hasNext(); ) {
-        TypeDecl t = (TypeDecl) iter.next();
-        sb.append(" " + t.typeName());
-      }
-      error(sb.toString());
-    }
-  }
-  /**
    * @aspect NodeConstructors
-   * @declaredat extendj/java4/frontend/NodeConstructors.jrag:44
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:46
    */
   public TypeAccess(String name, int start, int end) {
     this(name);
@@ -86,32 +51,16 @@ public class TypeAccess extends Access implements Cloneable {
   }
   /**
    * @aspect NodeConstructors
-   * @declaredat extendj/java4/frontend/NodeConstructors.jrag:55
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:58
    */
   public TypeAccess(String typeName) {
     this("", typeName);
   }
-  /**
-   * @aspect Annotations
-   * @declaredat extendj/java5/frontend/Annotations.jrag:404
-   */
-  public void checkModifiers() {
-    if (decl().isDeprecated() &&
-       !withinDeprecatedAnnotation() &&
-       (hostType() == null || hostType().topLevelType() != decl().topLevelType()) &&
-       !withinSuppressWarnings("deprecation"))
-      warning(decl().typeName() + " has been deprecated");
-  }
   /** This method assumes that the bound type is generic. 
    * @aspect GenericsTypeAnalysis
-   * @declaredat extendj/java5/frontend/Generics.jrag:369
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:375
    */
   public boolean isRaw() {
-    /*
-    if (hasNextAccess()) {
-      return false;
-    }
-    */
     ASTNode parent = getParent();
     while (parent instanceof AbstractDot) {
       parent = parent.getParent();
@@ -122,40 +71,18 @@ public class TypeAccess extends Access implements Cloneable {
     if (parent instanceof ImportDecl) {
       return false;
     }
-    /*
-    Access a = this;
-    while (a.isTypeAccess() && hasNextAccess()) {
-      a = a.nextAccess();
-    }
-    if (a.isThisAccess() || a.isSuperAccess()) {
-      return false;
-    }
-    */
     return true;
   }
   /**
-   * @aspect GenericsTypeCheck
-   * @declaredat extendj/java5/frontend/Generics.jrag:659
-   */
-  public void typeCheck() {
-    TypeDecl type = type();
-    if (type.isRawType() && type.isNestedType()
-        && type.enclosingType().isParameterizedType()
-        && !type.enclosingType().isRawType()) {
-      error("Can not access a member type of a paramterized type as a raw type");
-    }
-  }
-  /**
    * @aspect FunctionalInterface
-   * @declaredat extendj/java8/frontend/FunctionalInterface.jrag:196
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:204
    */
   public boolean sameType(TypeAccess t) {
-    /*
-    First, two type variables that are to be compared are checked to see if they are
-    both declared by methods and that one of the methods is not inside the scope of the other
-    method. If this is the case it is enough to simply check that the positions are equal.
-    Otherwise the types has to equal.
-    */
+    // First, two type variables that are to be compared are checked to see if
+    // they are both declared by methods and that one of the methods is not
+    // inside the scope of the other method. If this is the case it is enough
+    // to simply check that the positions are equal.  Otherwise the types has
+    // to equal.
 
     if (type() instanceof TypeVariable && t.type() instanceof TypeVariable) {
       TypeVariable t1 = (TypeVariable) type();
@@ -164,11 +91,30 @@ public class TypeAccess extends Access implements Cloneable {
           && t1.genericMethodLevel() == t2.genericMethodLevel()) {
         return t1.typeVarPosition() == t2.typeVarPosition();
       } else {
-        return t1 == t2;
+        if (t1.enclosingType() == t2.enclosingType()) {
+          return t1 == t2;
+        } else {
+          return t1.sameType(t2);
+        }
       }
-    } else if (type() instanceof TypeVariable && !(t.type() instanceof TypeVariable)
-        || t.type() instanceof TypeVariable && !(type() instanceof TypeVariable) ) {
-      return false;
+    } else if (type() instanceof TypeVariable && !(t.type() instanceof TypeVariable)) {
+      TypeVariable t1 = (TypeVariable) type();
+      TypeDecl t2 = t.type().erasure();
+      for (Access bound : t1.getTypeBoundList()) {
+        if (bound.type() != t2) {
+          return false;
+        }
+      }
+      return true;
+    } else if (t.type() instanceof TypeVariable && !(type() instanceof TypeVariable)) {
+      TypeDecl t1 = type().erasure();
+      TypeVariable t2 = (TypeVariable) t.type();
+      for (Access bound : t2.getTypeBoundList()) {
+        if (bound.type() != t1) {
+          return false;
+        }
+      }
+      return true;
     } else if (type() == t.type()) {
       return true;
     } else {
@@ -204,61 +150,46 @@ public class TypeAccess extends Access implements Cloneable {
     setPackage(p0);
     setID(p1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:23
+  /** @apilevel low-level 
+   * @declaredat ASTNode:21
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:29
+   * @declaredat ASTNode:27
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:35
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    decls_reset();
-    decl_reset();
-    type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:44
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:50
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public TypeAccess clone() throws CloneNotSupportedException {
     TypeAccess node = (TypeAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public TypeAccess copy() {
     try {
       TypeAccess node = (TypeAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -272,8 +203,9 @@ public class TypeAccess extends Access implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:82
+   * @declaredat ASTNode:63
    */
+  @Deprecated
   public TypeAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -282,14 +214,14 @@ public class TypeAccess extends Access implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:73
    */
   public TypeAccess treeCopyNoTransform() {
     TypeAccess tree = (TypeAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -303,18 +235,26 @@ public class TypeAccess extends Access implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:111
+   * @declaredat ASTNode:93
    */
   public TypeAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    TypeAccess tree = (TypeAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:118
+  /** @apilevel internal 
+   * @declaredat ASTNode:107
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_Package == ((TypeAccess)node).tokenString_Package) && (tokenString_ID == ((TypeAccess)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_Package == ((TypeAccess) node).tokenString_Package) && (tokenString_ID == ((TypeAccess) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme Package.
@@ -324,8 +264,7 @@ public class TypeAccess extends Access implements Cloneable {
   public void setPackage(String value) {
     tokenString_Package = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected String tokenString_Package;
   /**
@@ -340,7 +279,7 @@ public class TypeAccess extends Access implements Cloneable {
    * @apilevel internal
    */
   public void setPackage(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setPackage is only valid for String lexemes");
     tokenString_Package = (String)symbol.value;
     Packagestart = symbol.getStart();
@@ -363,8 +302,7 @@ public class TypeAccess extends Access implements Cloneable {
   public void setID(String value) {
     tokenString_ID = value;
   }
-  /**
-   * @apilevel internal
+  /** @apilevel internal 
    */
   protected String tokenString_ID;
   /**
@@ -379,7 +317,7 @@ public class TypeAccess extends Access implements Cloneable {
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -396,213 +334,224 @@ public class TypeAccess extends Access implements Cloneable {
   }
   /**
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:307
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:315
    */
   private TypeDecl refined_TypeScopePropagation_TypeAccess_decl()
 {
-    SimpleSet decls = decls();
-    if (decls.size() == 1) {
-      return (TypeDecl) decls.iterator().next();
+    SimpleSet<TypeDecl> decls = decls();
+    if (decls.isSingleton()) {
+      return decls.singletonValue();
     }
     return unknownType();
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeHierarchyCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:225
    */
-  protected boolean decls_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected SimpleSet decls_value;
-  /**
-   * @apilevel internal
-   */
-  private void decls_reset() {
-    decls_computed = false;
-    decls_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet decls() {
-    if(decls_computed) {
-      return decls_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    decls_value = packageName().equals("")
-          ? lookupType(name())
-          : lookupType(packageName(), name()).asSet();
-    if (isFinal && num == state().boundariesCrossed) {
-      decls_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return decls_value;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:225")
+  public boolean staticContextQualifier() {
+    boolean staticContextQualifier_value = true;
+    return staticContextQualifier_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect AccessTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:35
    */
-  protected boolean decl_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl decl_value;
-  /**
-   * @apilevel internal
-   */
-  private void decl_reset() {
-    decl_computed = false;
-    decl_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl decl() {
-    if(decl_computed) {
-      return decl_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    decl_value = decl_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      decl_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
-    return decl_value;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:35")
+  public boolean isTypeAccess() {
+    boolean isTypeAccess_value = true;
+    return isTypeAccess_value;
   }
   /**
-   * @apilevel internal
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
+   * @attribute syn
+   * @aspect SyntacticClassification
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
    */
-  private TypeDecl decl_compute() {
-      TypeDecl decl = refined_TypeScopePropagation_TypeAccess_decl();
-      if (decl instanceof GenericTypeDecl && isRaw()) {
-        return ((GenericTypeDecl) decl).lookupParTypeDecl(Collections.<TypeDecl>emptyList());
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.PACKAGE_OR_TYPE_NAME;
+    return predNameType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect AccessControl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:158
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessControl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:158")
+  public Collection<Problem> accessControlProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        TypeDecl hostType = hostType();
+        if (hostType != null && !hostType.isUnknown() && !type().accessibleFrom(hostType)) {
+          problems.add(errorf("%s in %s can not access type %s",
+              this.prettyPrint(), hostType().fullName(), type().fullName()));
+        } else if ((hostType == null || hostType.isUnknown())
+            && !type().accessibleFromPackage(hostPackage())) {
+          problems.add(errorf("%s can not access type %s", this.prettyPrint(), type().fullName()));
+        }
+        return problems;
       }
-      return decl;
-    }
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:241
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:241")
+  public Collection<Problem> nameProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (isQualified() && !qualifier().isTypeAccess() && !qualifier().isPackageAccess()) {
+          problems.add(errorf("can not access the type named %s in this context", decl().typeName()));
+        }
+        if (decls().isEmpty()) {
+          problems.add(errorf("no visible type named %s", typeName()));
+        }
+        if (decls().size() > 1) {
+          StringBuilder sb = new StringBuilder();
+          sb.append("several types named " + name() + ":");
+          for (TypeDecl t : decls()) {
+            sb.append(" " + t.typeName());
+          }
+          problems.add(error(sb.toString()));
+        }
+        return problems;
+      }
+  }
+  /**
+   * Has package name (not @primitive)
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:185
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:185")
+  public boolean hasPackage() {
+    boolean hasPackage_value = !getPackage().isEmpty() && decl().isReferenceType();
+    return hasPackage_value;
+  }
   /**
    * @attribute syn
    * @aspect VariableScope
-   * @declaredat extendj/java4/frontend/LookupVariable.jrag:237
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264
    */
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet qualifiedLookupVariable(String name) {
-    ASTNode$State state = state();
-    try {
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264")
+  public SimpleSet<Variable> qualifiedLookupVariable(String name) {
+    {
         if (type().accessibleFrom(hostType())) {
-          SimpleSet c = type().memberFields(name);
+          SimpleSet<Variable> c = type().memberFields(name);
           c = keepAccessibleFields(c);
-          if (type().isClassDecl() && c.size() == 1) {
+          if (type().isClassDecl() && c.isSingleton()) {
             c = removeInstanceVariables(c);
           }
           return c;
         }
-        return SimpleSet.emptySet;
+        return emptySet();
       }
-    finally {
-    }
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean hasPackage() {
-    ASTNode$State state = state();
-    boolean hasPackage_value = decl().isReferenceType() && !getPackage().isEmpty();
-
-    return hasPackage_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public String name() {
-    ASTNode$State state = state();
-    String name_value = getID();
-
-    return name_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public String packageName() {
-    ASTNode$State state = state();
-    String packageName_value = getPackage();
-
-    return packageName_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public String nameWithPackage() {
-    ASTNode$State state = state();
-    String nameWithPackage_value = getPackage().equals("") ? name() : (getPackage() + "." + name());
-
-    return nameWithPackage_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public String typeName() {
-    ASTNode$State state = state();
-    String typeName_value = isQualified() ? (qualifier().typeName() + "." + name()) : nameWithPackage();
-
-    return typeName_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isTypeAccess() {
-    ASTNode$State state = state();
-    boolean isTypeAccess_value = true;
-
-    return isTypeAccess_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public NameType predNameType() {
-    ASTNode$State state = state();
-    NameType predNameType_value = NameType.PACKAGE_OR_TYPE_NAME;
-
-    return predNameType_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:299
    */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
-  private void type_reset() {
-    type_computed = false;
-    type_value = null;
-  }
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:299")
   public TypeDecl type() {
-    if(type_computed) {
-      return type_value;
-    }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    type_value = decl();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    TypeDecl type_value = decl();
     return type_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean staticContextQualifier() {
-    ASTNode$State state = state();
-    boolean staticContextQualifier_value = true;
-
-    return staticContextQualifier_value;
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:298
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:298")
+  public SimpleSet<TypeDecl> decls() {
+    SimpleSet<TypeDecl> decls_value = packageName().equals("")
+          ? lookupType(name())
+          : lookupType(packageName(), name()).asSet();
+    return decls_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:315
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:315")
+  public TypeDecl decl() {
+    {
+        TypeDecl decl = refined_TypeScopePropagation_TypeAccess_decl();
+        if (decl instanceof GenericTypeDecl && isRaw()) {
+          return ((GenericTypeDecl) decl).lookupParTypeDecl(Collections.<TypeDecl>emptyList());
+        }
+        return decl;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:39")
+  public String name() {
+    String name_value = getID();
+    return name_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43")
+  public String packageName() {
+    String packageName_value = getPackage();
+    return packageName_value;
+  }
+  /** @return the qualified type name including the package name. 
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:57
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:57")
+  public String nameWithPackage() {
+    String nameWithPackage_value = getPackage().equals("") ? name() : (getPackage() + "." + name());
+    return nameWithPackage_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:73
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:73")
+  public String typeName() {
+    String typeName_value = isQualified() ? (qualifier().typeName() + "." + name()) : nameWithPackage();
+    return typeName_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1170
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1170")
   public boolean usesTypeVariable() {
-    ASTNode$State state = state();
     boolean usesTypeVariable_value = decl().usesTypeVariable() || super.usesTypeVariable();
-
     return usesTypeVariable_value;
   }
   /**
@@ -613,12 +562,12 @@ public class TypeAccess extends Access implements Cloneable {
    * @return the substituted Access node
    * @attribute syn
    * @aspect Diamond
-   * @declaredat extendj/java7/frontend/Diamond.jrag:361
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369")
   public Access substituted(Collection<TypeVariable> original, List<TypeVariable> substitution) {
-    ASTNode$State state = state();
-    try {
+    {
         TypeDecl decl = decl();
         int i = 0;
         for (TypeVariable typeVar : original) {
@@ -629,13 +578,81 @@ public class TypeAccess extends Access implements Cloneable {
         }
         return super.substituted(original, substitution);
       }
-    finally {
-    }
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:156
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:239
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:491
+    if (decl().isDeprecated()
+              && !withinDeprecatedAnnotation()
+              && (hostType() == null || hostType().topLevelType() != decl().topLevelType())
+              && !withinSuppressWarnings("deprecation")) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:653
+    if (type().isRawType() && type().isNestedType()
+              && type().enclosingType().isParameterizedType()
+              && !type().enclosingType().isRawType()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : accessControlProblems()) {
+      collection.add(value);
+    }
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
+    if (decl().isDeprecated()
+              && !withinDeprecatedAnnotation()
+              && (hostType() == null || hostType().topLevelType() != decl().topLevelType())
+              && !withinSuppressWarnings("deprecation")) {
+      collection.add(warning(decl().typeName() + " has been deprecated"));
+    }
+    if (type().isRawType() && type().isNestedType()
+              && type().enclosingType().isParameterizedType()
+              && !type().enclosingType().isRawType()) {
+      collection.add(error("Can not access a member type of a paramterized type as a raw type"));
+    }
   }
 }

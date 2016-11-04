@@ -39,21 +39,21 @@ aspect LocalNum {
 
   eq VarDeclStmt.localSize() {
     int size = 0;
-    for (VariableDeclaration decl: getSingleDeclList()) {
+    for (VariableDeclarator decl : getDeclaratorList()) {
       size += decl.localSize();
     }
     return size;
   }
 
-  syn lazy int VariableDeclaration.localSize() = type().variableSize();
+  syn lazy int VariableDeclarator.localSize() = type().variableSize();
 
-  inh lazy int VariableDeclaration.localNum();
+  inh lazy int VariableDeclarator.localNum();
 
-  eq VarDeclStmt.getSingleDecl(int index).localNum() {
+  eq VarDeclStmt.getDeclarator(int index).localNum() {
     if (index == 0) {
       return localNum();
     } else {
-      return getSingleDecl(index-1).localNum() + getSingleDecl(index-1).localSize();
+      return getDeclarator(index - 1).localNum() + getDeclarator(index - 1).localSize();
     }
   }
 
@@ -88,8 +88,7 @@ aspect LocalNum {
 
   eq InstanceInitializer.getBlock().localNum() {
     int localNum = 1;
-    for (Iterator iter = hostType().constructors().iterator(); iter.hasNext(); ) {
-      ConstructorDecl c = (ConstructorDecl)iter.next();
+    for (ConstructorDecl c : hostType().constructors()) {
       int num = c.offsetAfterParameters();
       if (num > localNum) {
         localNum = num;
@@ -99,7 +98,9 @@ aspect LocalNum {
   }
 
   inh lazy int ReturnStmt.resultSaveLocalNum();
+
   eq MethodDecl.getBlock().resultSaveLocalNum() = offsetAfterParameters();
+
   eq Program.getChild().resultSaveLocalNum() {
     throw new Error("Unsupported operation resultSaveLocalNum");
   }
@@ -121,42 +122,36 @@ aspect LocalNum {
 
   syn lazy int ConstructorDecl.offsetFirstEnclosingVariable() {
     int localIndex = offsetBeforeParameters();
-    Collection vars = hostType().enclosingVariables();
-    if (vars.isEmpty()) {
-      return localIndex;
-    }
-    String name = "val$" + ((Variable)vars.iterator().next()).name();
-    for (int i = 0; !getParameter(i).name().equals(name); i++) {
-      localIndex += getParameter(i).type().variableSize();
+    for (ParameterDeclaration param : getParameterList()) {
+      localIndex += param.type().variableSize();
     }
     return localIndex;
   }
 
-  syn int ConstructorDecl.localIndexOfEnclosingVariable(Variable v) {
+  syn lazy int ConstructorDecl.localIndexOfEnclosingVariable(Variable v) {
     int localIndex  = offsetFirstEnclosingVariable();
-    Iterator iter = hostType().enclosingVariables().iterator();
-    Variable varDecl = (Variable)iter.next();
-    while(varDecl != v && iter.hasNext()) {
+    Iterator<Variable> iter = hostType().enclosingVariables().iterator();
+    Variable varDecl = iter.next();
+    while (varDecl != v && iter.hasNext()) {
       localIndex += varDecl.type().variableSize();
-      varDecl = (Variable)iter.next();
+      varDecl = iter.next();
     }
     return localIndex;
   }
 
   syn lazy int ConstructorDecl.offsetAfterParameters() {
-    if (getNumParameter() == 0) {
-      return offsetBeforeParameters();
-    } else {
-      ParameterDeclaration last = getParameter(getNumParameter()-1);
-      return last.localNum() + last.type().variableSize();
+    int localIndex = offsetFirstEnclosingVariable();
+    for (Variable var : hostType().enclosingVariables()) {
+      localIndex += var.type().variableSize();
     }
+    return localIndex;
   }
 
   eq ConstructorDecl.getParameter(int index).localNum() {
     if (index == 0) {
       return offsetBeforeParameters();
     } else {
-      ParameterDeclaration last = getParameter(index-1);
+      ParameterDeclaration last = getParameter(index - 1);
       return last.localNum() + last.type().variableSize();
     }
   }
@@ -189,18 +184,27 @@ aspect LocalNum {
   }
 
   eq TryStmt.getChild().localNum() = localNum();
-  eq TryStmt.getFinally().localNum() = localNum();
-  eq TryStmt.getExceptionHandler().localNum() = localNum() + 1;// leave room for throwable stored by exceptionHandler
 
-  eq BasicCatch.getBlock().localNum() = getParameter().localNum() + getParameter().type().variableSize();
+  eq TryStmt.getFinally().localNum() = localNum();
+
+  // Leave room for throwable stored by exceptionHandler.
+  eq TryStmt.getExceptionHandler().localNum() = localNum() + 1;
+
+  eq BasicCatch.getBlock().localNum() =
+      getParameter().localNum() + getParameter().type().variableSize();
 
   eq SynchronizedStmt.getBlock().localNum() = localNum() + 3;
 
   syn int TypeDecl.variableSize() = 0;
+
   eq ReferenceType.variableSize() = 1;
+
   eq PrimitiveType.variableSize() = 1;
+
   eq LongType.variableSize() = 2;
+
   eq DoubleType.variableSize() = 2;
+
   eq NullType.variableSize() = 1;
 }
 

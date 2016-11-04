@@ -1,36 +1,37 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:16
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:16
  * @production Dot : {@link AbstractDot};
 
  */
 public class Dot extends AbstractDot implements Cloneable {
   /**
    * @aspect QualifiedNames
-   * @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:125
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:181
    */
   public Dot lastDot() {
     Dot node = this;
@@ -41,41 +42,28 @@ public class Dot extends AbstractDot implements Cloneable {
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:143
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:199
    */
-  public Dot qualifiesAccess(Access access) {
+  public Access qualifiesAccess(Access access) {
     Dot lastDot = lastDot();
-    Expr l = lastDot.getRightNoTransform();
-    Dot dot = new Dot(lastDot.getRightNoTransform(), access);
-    dot.setStart(l.getStart());
-    dot.setEnd(access.getEnd());
-    lastDot.setRight(dot);
+    Expr last = lastDot.getRightNoTransform();
+    Access qualified = last.qualifiesAccess(access);
+    qualified.setEnd(access.getEnd());
+    lastDot.setRight(qualified);
     return this;
   }
   /**
+   * Used when replacing pairs from a list to concatenate the result to the
+   * tail of the current location.
    * @aspect QualifiedNames
-   * @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:154
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:226
    */
   private Access qualifyTailWith(Access expr) {
-    if (getRight/*NoTransform*/() instanceof AbstractDot) {
-      AbstractDot dot = (AbstractDot) getRight/*NoTransform*/();
-      return expr.qualifiesAccess(dot.getRight/*NoTransform*/());
+    if (getRight() instanceof AbstractDot) {
+      AbstractDot dot = (AbstractDot) getRight();
+      return expr.qualifiesAccess(dot.getRight().treeCopyNoTransform());
     }
     return expr;
-  }
-  /**
-   * @aspect QualifiedNames
-   * @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:173
-   */
-  public Access extractLast() {
-    return lastDot().getRightNoTransform();
-  }
-  /**
-   * @aspect QualifiedNames
-   * @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:177
-   */
-  public void replaceLast(Access access) {
-    lastDot().setRight(access);
   }
   /**
    * @declaredat ASTNode:1
@@ -100,58 +88,46 @@ public class Dot extends AbstractDot implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
-    return true;
+    return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public Dot clone() throws CloneNotSupportedException {
     Dot node = (Dot) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public Dot copy() {
     try {
       Dot node = (Dot) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -165,8 +141,9 @@ public class Dot extends AbstractDot implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public Dot fullCopy() {
     return treeCopyNoTransform();
   }
@@ -175,14 +152,14 @@ public class Dot extends AbstractDot implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public Dot treeCopyNoTransform() {
     Dot tree = (Dot) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -196,15 +173,23 @@ public class Dot extends AbstractDot implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public Dot treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    Dot tree = (Dot) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -262,47 +247,103 @@ public class Dot extends AbstractDot implements Cloneable {
     return (Access) getChildNoTransform(1);
   }
   /**
-   * @apilevel internal
+   * Creates a copy of this access where parameterized types have been erased.
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
    */
-  public ASTNode rewriteTo() {
-    // Declared at @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:243
-    if (leftSide().isPackageAccess() && rightSide().isPackageAccess()) {
-      state().duringNameResolution++;
-      ASTNode result = rewriteRule0();
-      state().duringNameResolution--;
-      return result;
-    }
-    // Declared at @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:253
-    if (leftSide().isPackageAccess() && !((Access) leftSide()).hasPrevExpr() && rightSide() instanceof TypeAccess) {
-      state().duringNameResolution++;
-      ASTNode result = rewriteRule1();
-      state().duringNameResolution--;
-      return result;
-    }
-    return super.rewriteTo();
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
+  public Access erasedCopy() {
+    Access erasedCopy_value = new Dot(getLeft().erasedCopy(), getRight().erasedCopy());
+    return erasedCopy_value;
   }
   /**
-   * @declaredat @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:243
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
-  private Access rewriteRule0() {
-{
-      PackageAccess left = (PackageAccess) leftSide();
-      PackageAccess right = (PackageAccess) rightSide();
-      left.setPackage(left.getPackage() + "." + right.getPackage());
-      left.setEnd(right.end());
-      return qualifyTailWith(left);
-    }  }
+  public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightNoTransform() != null && _callerNode == getRight()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:82
+      return false;
+    }
+    else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:81
+      return true;
+    }
+    else {
+      return super.Define_isLeftChildOfDot(_callerNode, _childNode);
+    }
+  }
+  protected boolean canDefine_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat @declaredat extendj/java4/frontend/ResolveAmbiguousNames.jrag:253
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
    * @apilevel internal
    */
-  private Access rewriteRule1() {
-{
-      PackageAccess left = (PackageAccess) leftSide();
-      TypeAccess right = (TypeAccess) rightSide();
-      right.setPackage(left.getPackage());
-      right.setStart(left.start());
-      return qualifyTailWith(right);
-    }  }
+  public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightNoTransform() != null && _callerNode == getRight()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:97
+      return true;
+    }
+    else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:96
+      return isRightChildOfDot();
+    }
+    else {
+      return super.Define_isRightChildOfDot(_callerNode, _childNode);
+    }
+  }
+  protected boolean canDefine_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @apilevel internal
+   */
+  public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightNoTransform() != null && _callerNode == getRight()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:113
+      return getLeft();
+    }
+    else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:112
+      return prevExpr();
+    }
+    else {
+      return super.Define_prevExpr(_callerNode, _childNode);
+    }
+  }
+  protected boolean canDefine_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @apilevel internal
+   */
+  public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    if (getRightNoTransform() != null && _callerNode == getRight()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:137
+      return nextAccessError();
+    }
+    else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:136
+      return getRight();
+    }
+    else {
+      return super.Define_nextAccess(_callerNode, _childNode);
+    }
+  }
+  protected boolean canDefine_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
+  public ASTNode rewriteTo() {
+    return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
 }

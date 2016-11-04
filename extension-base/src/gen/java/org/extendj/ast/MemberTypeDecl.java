@@ -1,29 +1,30 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:95
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:97
  * @production MemberTypeDecl : {@link MemberDecl};
 
  */
@@ -43,44 +44,33 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
    */
   public void init$Children() {
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:15
+  /** @apilevel low-level 
+   * @declaredat ASTNode:13
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:21
+   * @declaredat ASTNode:19
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:27
+  /** @apilevel internal 
+   * @declaredat ASTNode:23
    */
   public void flushAttrCache() {
     super.flushAttrCache();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:39
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:45
+  /** @apilevel internal 
+   * @declaredat ASTNode:31
    */
   public MemberTypeDecl clone() throws CloneNotSupportedException {
     MemberTypeDecl node = (MemberTypeDecl) super.clone();
@@ -92,15 +82,16 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:56
+   * @declaredat ASTNode:42
    */
+  @Deprecated
   public abstract MemberTypeDecl fullCopy();
   /**
    * Create a deep copy of the AST subtree at this node.
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:63
+   * @declaredat ASTNode:50
    */
   public abstract MemberTypeDecl treeCopyNoTransform();
   /**
@@ -109,69 +100,101 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:71
+   * @declaredat ASTNode:58
    */
   public abstract MemberTypeDecl treeCopy();
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:604
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613")
   public abstract TypeDecl typeDecl();
-  @ASTNodeAnnotation.Attribute
-  public boolean declaresType(String name) {
-    ASTNode$State state = state();
-    boolean declaresType_String_value = typeDecl().name().equals(name);
-
-    return declaresType_String_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public TypeDecl type(String name) {
-    ASTNode$State state = state();
-    TypeDecl type_String_value = declaresType(name) ? typeDecl() : null;
-
-    return type_String_value;
-  }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Modifiers
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:257
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:257")
   public boolean isStatic() {
-    ASTNode$State state = state();
     boolean isStatic_value = typeDecl().isStatic();
-
     return isStatic_value;
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean hasAnnotationSuppressWarnings(String annot) {
-    ASTNode$State state = state();
-    boolean hasAnnotationSuppressWarnings_String_value = typeDecl().hasAnnotationSuppressWarnings(annot);
-
-    return hasAnnotationSuppressWarnings_String_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDeprecated() {
-    ASTNode$State state = state();
-    boolean isDeprecated_value = typeDecl().isDeprecated();
-
-    return isDeprecated_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean visibleTypeParameters() {
-    ASTNode$State state = state();
-    boolean visibleTypeParameters_value = !isStatic();
-
-    return visibleTypeParameters_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean hasAnnotationSafeVarargs() {
-    ASTNode$State state = state();
-    boolean hasAnnotationSafeVarargs_value = typeDecl().hasAnnotationSafeVarargs();
-
-    return hasAnnotationSafeVarargs_value;
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608")
+  public boolean declaresType(String name) {
+    boolean declaresType_String_value = typeDecl().name().equals(name);
+    return declaresType_String_value;
   }
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610")
+  public TypeDecl type(String name) {
+    TypeDecl type_String_value = declaresType(name) ? typeDecl() : null;
+    return type_String_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428")
+  public boolean hasAnnotationSuppressWarnings(String annot) {
+    boolean hasAnnotationSuppressWarnings_String_value = typeDecl().hasAnnotationSuppressWarnings(annot);
+    return hasAnnotationSuppressWarnings_String_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:483
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:483")
+  public boolean isDeprecated() {
+    boolean isDeprecated_value = typeDecl().isDeprecated();
+    return isDeprecated_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98")
+  public boolean visibleTypeParameters() {
+    boolean visibleTypeParameters_value = !isStatic();
+    return visibleTypeParameters_value;
+  }
+  /**
+   * @return true if the modifier list includes the SafeVarargs annotation
+   * @attribute syn
+   * @aspect SafeVarargs
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41")
+  public boolean hasAnnotationSafeVarargs() {
+    boolean hasAnnotationSafeVarargs_value = typeDecl().hasAnnotationSafeVarargs();
+    return hasAnnotationSafeVarargs_value;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
   }
 }

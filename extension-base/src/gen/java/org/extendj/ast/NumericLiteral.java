@@ -1,24 +1,25 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -26,41 +27,41 @@ import java.io.DataInputStream;
  * NumericLiterals are rewritten to the best matching concrete
  * numeric literal kind, or IllegalLiteral.
  * @ast node
- * @declaredat extendj/java7/grammar/Literals.ast:18
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:18
  * @production NumericLiteral : {@link Literal};
 
  */
 public class NumericLiteral extends Literal implements Cloneable {
   /**
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:360
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:351
    */
   public static final int DECIMAL = 0;
   /**
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:361
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:352
    */
   public static final int HEXADECIMAL = 1;
   /**
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:362
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:353
    */
   public static final int OCTAL = 2;
   /**
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:363
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:354
    */
   public static final int BINARY = 3;
   /**
    * The trimmed digits.
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:421
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:418
    */
   protected String digits = "";
   /**
    * Sets the trimmed digits of this literal.
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:426
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:423
    */
   public void setDigits(String digits) {
     this.digits = digits;
@@ -69,660 +70,17 @@ public class NumericLiteral extends Literal implements Cloneable {
    * The literal kind tells which kind of literal it is;
    * either a DECIMAL, HEXADECIMAL, OCTAL or BINARY literal.
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:440
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:437
    */
   protected int kind = NumericLiteral.DECIMAL;
   /**
    * Sets the literal kind.
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:445
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:442
    */
   public void setKind(int kind) {
     this.kind = kind;
   }
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:523
-   */
-  
-    private StringBuffer buf = new StringBuffer();
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:524
-   */
-  
-    private int idx = 0;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:525
-   */
-  
-    private boolean whole;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:526
-   */
-  // have whole part?
-    private boolean fraction;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:527
-   */
-  // have fraction part?
-    private boolean exponentSpecifier;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:528
-   */
-  // have exponent specifier?
-    private boolean exponent;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:529
-   */
-  // have exponent part?
-    private boolean floating;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:530
-   */
-  // is floating point?
-    private boolean isFloat;
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:531
-   */
-  
-    private boolean isLong;
-  /**
-   * @return a readable name to describe this literal.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:536
-   */
-  
-
-    /**
-     * @return a readable name to describe this literal.
-     */
-    private String name() {
-      String name;
-      switch (kind) {
-        case DECIMAL:
-          name = "decimal";
-          break;
-        case HEXADECIMAL:
-          name = "hexadecimal";
-          break;
-        case OCTAL:
-          name = "octal";
-          break;
-        case BINARY:
-        default:
-          name = "binary";
-          break;
-      }
-      if (floating) {
-        return name + " floating point";
-      } else {
-        return name;
-      }
-    }
-  /**
-   * The next character in the literal is a significant character;
-   * push it onto the buffer.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:564
-   */
-  
-
-    /**
-     * The next character in the literal is a significant character;
-     * push it onto the buffer.
-     */
-    private void pushChar() {
-      buf.append(getLITERAL().charAt(idx++));
-    }
-  /**
-   * Skip ahead n chracters in the literal.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:571
-   */
-  
-
-    /**
-     * Skip ahead n chracters in the literal.
-     */
-    private void skip(int n) {
-      idx += n;
-    }
-  /**
-   * @return true if there exists at least n more characters
-   * in the literal
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:579
-   */
-  
-
-    /**
-     * @return true if there exists at least n more characters
-     * in the literal
-     */
-    private boolean have(int n) {
-      return getLITERAL().length() >= idx + n;
-    }
-  /**
-   * Look at the n'th next character.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:586
-   */
-  
-
-    /**
-     * Look at the n'th next character.
-     */
-    private char peek(int n) {
-      return getLITERAL().charAt(idx + n);
-    }
-  /**
-   * @return true if the character c is a decimal digit
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:593
-   */
-  
-
-    /**
-     * @return true if the character c is a decimal digit
-     */
-    private static final boolean isDecimalDigit(char c) {
-      return c == '_' || c >= '0' && c <= '9';
-    }
-  /**
-   * @return true if the character c is a hexadecimal digit
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:600
-   */
-  
-
-    /**
-     * @return true if the character c is a hexadecimal digit
-     */
-    private static final boolean isHexadecimalDigit(char c) {
-      return c == '_' || c >= '0' && c <= '9' || c >= 'a' && c <= 'f' || c >= 'A' && c <= 'F';
-    }
-  /**
-   * @return true if the character c is a binary digit
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:607
-   */
-  
-
-    /**
-     * @return true if the character c is a binary digit
-     */
-    private static final boolean isBinaryDigit(char c) {
-      return c == '_' || c == '0' || c == '1';
-    }
-  /**
-   * @return true if the character c is an underscore
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:614
-   */
-  
-
-    /**
-     * @return true if the character c is an underscore
-     */
-    private static final boolean isUnderscore(char c) {
-      return c == '_';
-    }
-  /**
-   * Parse a literal. If there is a syntax error in the literal,
-   * an IllegalLiteral will be returned.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:622
-   */
-  
-
-    /**
-     * Parse a literal. If there is a syntax error in the literal,
-     * an IllegalLiteral will be returned.
-     */
-    public Literal parse() {
-      if (getLITERAL().length() == 0) {
-        throw new IllegalStateException("Empty NumericLiteral");
-      }
-
-      kind = classifyLiteral();
-
-      Literal literal;
-      if (!floating) {
-        literal = parseDigits();
-      } else {
-        literal = parseFractionPart();
-      }
-      literal.setStart(LITERALstart);
-      literal.setEnd(LITERALend);
-      return literal;
-    }
-  /**
-   * Classify the literal.
-   * 
-   * @return either DECIMAL, HEXADECIMAL or BINARY
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:645
-   */
-  
-
-    /**
-     * Classify the literal.
-     *
-     * @return either DECIMAL, HEXADECIMAL or BINARY
-     */
-    private int classifyLiteral() {
-      if (peek(0) == '.') {
-        floating = true;
-        return DECIMAL;
-      } else if (peek(0) == '0') {
-        if (!have(2)) {
-          // the only 1-length string that starts with 0 (obvious!)
-          return DECIMAL;
-        } else if (peek(1) == 'x' || peek(1) == 'X') {
-          skip(2);
-          return HEXADECIMAL;
-        } else if (peek(1) == 'b' || peek(1) == 'B') {
-          skip(2);
-          return BINARY;
-        } else {
-          return DECIMAL;
-        }
-      } else {
-        return DECIMAL;
-      }
-    }
-  /**
-   * If the current character is an underscore, the previous and next
-   * characters need to be valid digits or underscores.
-   * 
-   * @return true if the underscore is misplaced
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:673
-   */
-  
-
-    /**
-     * If the current character is an underscore, the previous and next
-     * characters need to be valid digits or underscores.
-     *
-     * @return true if the underscore is misplaced
-     */
-    private boolean misplacedUnderscore() {
-      // first and last characters are never allowed to be an underscore
-      if (idx == 0 || idx+1 == getLITERAL().length()) {
-        return true;
-      }
-
-      switch (kind) {
-        case DECIMAL:
-          return !(isDecimalDigit(peek(-1)) && isDecimalDigit(peek(1)));
-        case HEXADECIMAL:
-          return !(isHexadecimalDigit(peek(-1)) && isHexadecimalDigit(peek(1)));
-        case BINARY:
-          return !(isBinaryDigit(peek(-1)) && isBinaryDigit(peek(1)));
-      }
-      throw new IllegalStateException("Unexpected literal kind");
-    }
-  /**
-   * Report an illegal digit.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:693
-   */
-  
-
-    /**
-     * Report an illegal digit.
-     */
-    private Literal syntaxError(String msg) {
-      return new IllegalLiteral(
-          String.format("in %s literal \"%s\": %s", name(), getLITERAL(), msg));
-    }
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:698
-   */
-  
-
-    private Literal unexpectedCharacter(char c) {
-      return syntaxError("unexpected character '" + c + "'; not a valid digit");
-    }
-  /**
-   * Returns a string of only the lower case digits of the
-   * parsed numeric literal.
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:706
-   */
-  
-
-    /**
-     * Returns a string of only the lower case digits of the
-     * parsed numeric literal.
-     */
-    private String getLiteralString() {
-      return buf.toString().toLowerCase();
-    }
-  /**
-   * Parse and build an IntegerLiteral, LongLiteral,
-   * FloatingPointLiteral or DoubleLiteral. Returns an
-   * IllegalLiteral if the numeric literal can not be
-   * parsed.
-   * 
-   * Note: does not perform bounds checks.
-   * 
-   * @return a concrete literal on success, or an IllegalLiteral if there is a syntax error
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:720
-   */
-  
-
-    /**
-     * Parse and build an IntegerLiteral, LongLiteral,
-     * FloatingPointLiteral or DoubleLiteral. Returns an
-     * IllegalLiteral if the numeric literal can not be
-     * parsed.
-     *
-     * Note: does not perform bounds checks.
-     *
-     * @return a concrete literal on success, or an IllegalLiteral if there is a syntax error
-     */
-    private Literal buildLiteral() {
-      NumericLiteral literal;
-      setDigits(buf.toString().toLowerCase());
-
-      if (!floating) {
-        if (!whole) {
-          return syntaxError("at least one digit is required");
-        }
-
-        // check if the literal is octal, and if so report illegal digits
-        if (kind == DECIMAL) {
-          if (digits.charAt(0) == '0') {
-            kind = OCTAL;
-            for (int idx = 1; idx < digits.length(); ++idx) {
-              char c = digits.charAt(idx);
-              if (c < '0' || c > '7') {
-                return unexpectedCharacter(c);
-              }
-            }
-          }
-        }
-
-        if (isLong) {
-          literal = new LongLiteral(getLITERAL());
-        } else {
-          literal = new IntegerLiteral(getLITERAL());
-        }
-      } else {
-        if (kind == HEXADECIMAL && !exponent) {
-          return syntaxError("exponent is missing");
-        }
-
-        if (exponentSpecifier && !exponent) {
-          return syntaxError("expected exponent after exponent specifier");
-        }
-
-        if (!(whole || fraction)) {
-          return syntaxError("at least one digit is required in "
-              + "either the whole or fraction part");
-        }
-
-        if (kind == HEXADECIMAL) {
-          digits = "0x"+digits;// digits parsed with Float or Double
-        }
-
-        if (isFloat) {
-          literal = new FloatingPointLiteral(getLITERAL());
-        } else {
-          literal = new DoubleLiteral(getLITERAL());
-        }
-      }
-
-      literal.setDigits(getDigits());
-      literal.setKind(getKind());
-      return literal;
-    }
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:777
-   */
-  
-
-    private Literal parseDigits() {
-      // While we have at least one more character/digit
-      while (have(1)) {
-        char c = peek(0);
-        switch (c) {
-          case '_':
-            if (misplacedUnderscore()) {
-              return syntaxError("misplaced underscore - underscores may only "
-                  + "be used within sequences of digits");
-            }
-            skip(1);
-            continue;
-          case '.':
-            if (kind != DECIMAL && kind != HEXADECIMAL) {
-              return unexpectedCharacter(c);
-            }
-            return parseFractionPart();
-          case 'l':
-          case 'L':
-            if (have(2)) {
-              return syntaxError("extra digits/characters after suffix " + c);
-            }
-            isLong = true;
-            skip(1);
-            continue;
-          case 'f':
-          case 'F':
-            if (kind == BINARY) {
-              return unexpectedCharacter(c);
-            }
-            isFloat = true;
-          case 'd':
-          case 'D':
-            if (kind == BINARY) {
-              return unexpectedCharacter(c);
-            }
-            if (kind != HEXADECIMAL) {
-              if (have(2)) {
-                return syntaxError("extra digits/characters after type suffix " + c);
-              }
-              floating = true;
-              skip(1);
-            } else {
-              whole = true;
-              pushChar();
-            }
-            continue;
-        }
-
-        switch (kind) {
-          case DECIMAL:
-            if (c == 'e' || c == 'E') {
-              return parseExponentPart();
-
-            } else if (c == 'f' || c == 'F') {
-              if (have(2)) {
-                return syntaxError("extra digits/characters after type suffix " + c);
-              }
-              floating = true;
-              isFloat = true;
-              skip(1);
-            } else if (c == 'd' || c == 'D') {
-              if (have(2)) {
-                return syntaxError("extra digits/characters after type suffix " + c);
-              }
-              floating = true;
-              skip(1);
-            } else {
-              if (!isDecimalDigit(c)) {
-                return unexpectedCharacter(c);
-              }
-              whole = true;
-              pushChar();
-            }
-            continue;
-          case HEXADECIMAL:
-            if (c == 'p' || c == 'P') {
-              return parseExponentPart();
-            }
-
-            if (!isHexadecimalDigit(c)) {
-              return unexpectedCharacter(c);
-            }
-            whole = true;
-            pushChar();
-            continue;
-          case BINARY:
-            if (!isBinaryDigit(c)) {
-              return unexpectedCharacter(c);
-            }
-            whole = true;
-            pushChar();
-            continue;
-        }
-      }
-
-      return buildLiteral();
-    }
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:876
-   */
-  
-
-    private Literal parseFractionPart() {
-      floating = true;
-
-      // Current char is the decimal period.
-      pushChar();
-
-      // While we have at least one more character/digit.
-      while (have(1)) {
-        char c = peek(0);
-        switch (c) {
-          case '_':
-            if (misplacedUnderscore()) {
-              return syntaxError("misplaced underscore - underscores may only "
-                  + "be used as separators within sequences of valid digits");
-            }
-            skip(1);
-            continue;
-          case '.':
-            return syntaxError("multiple decimal periods are not allowed");
-        }
-
-        if (kind == DECIMAL) {
-          if (c == 'e' || c == 'E') {
-            return parseExponentPart();
-
-          } else if (c == 'f' || c == 'F') {
-            if (have(2)) {
-              return syntaxError("extra digits/characters after type suffix " + c);
-            }
-            floating = true;
-            isFloat = true;
-            skip(1);
-          } else if (c == 'd' || c == 'D') {
-            if (have(2)) {
-              return syntaxError("extra digits/characters after type suffix " + c);
-            }
-            floating = true;
-            skip(1);
-          } else {
-            if (!isDecimalDigit(c)) {
-              return unexpectedCharacter(c);
-            }
-            pushChar();
-            fraction = true;
-          }
-        } else { // kind == HEXADECIMAL
-          if (c == 'p' || c == 'P') {
-            return parseExponentPart();
-          }
-
-          if (!isHexadecimalDigit(c)) {
-            return unexpectedCharacter(c);
-          }
-          fraction = true;
-          pushChar();
-        }
-      }
-
-      return buildLiteral();
-    }
-  /**
-   * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:937
-   */
-  
-
-    private Literal parseExponentPart() {
-      floating = true;
-
-      // Current char is the exponent specifier char.
-      pushChar();
-
-      exponentSpecifier = true;
-
-      // Exponent sign.
-      if (have(1) && (peek(0) == '+' || peek(0) == '-')) {
-        pushChar();
-      }
-
-      // While we have at least one more character/digit.
-      while (have(1)) {
-        char c = peek(0);
-        switch (c) {
-          case '_':
-            if (misplacedUnderscore()) {
-              return syntaxError("misplaced underscore - underscores may only "
-                  + "be used as separators within sequences of valid digits");
-            }
-            skip(1);
-            continue;
-          case '-':
-          case '+':
-            return syntaxError("exponent sign character is only allowed as "
-                + "the first character of the exponent part of a "
-                + "floating point literal");
-          case '.':
-            return syntaxError("multiple decimal periods are not allowed");
-          case 'p':
-          case 'P':
-          case 'e':
-          case 'E':
-            return syntaxError("multiple exponent specifiers are not allowed");
-          case 'f':
-          case 'F':
-            isFloat = true;
-          case 'd':
-          case 'D':
-            if (have(2)) {
-              return syntaxError("extra digits/characters after type suffix " + c);
-            }
-            skip(1);
-            continue;
-        }
-
-        // Exponent is a signed integer.
-        if (!isDecimalDigit(c)) {
-          return unexpectedCharacter(c);
-        }
-        pushChar();
-        exponent = true;
-      }
-
-      return buildLiteral();
-    }
   /**
    * @declaredat ASTNode:1
    */
@@ -750,59 +108,48 @@ public class NumericLiteral extends Literal implements Cloneable {
   public NumericLiteral(beaver.Symbol p0) {
     setLITERAL(p0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:21
+  /** @apilevel low-level 
+   * @declaredat ASTNode:19
    */
   protected int numChildren() {
     return 0;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:27
+   * @declaredat ASTNode:25
    */
   public boolean mayHaveRewrite() {
     return true;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:33
+  /** @apilevel internal 
+   * @declaredat ASTNode:29
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    rewrittenNode_reset();
     type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:40
+  /** @apilevel internal 
+   * @declaredat ASTNode:35
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:46
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:52
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public NumericLiteral clone() throws CloneNotSupportedException {
     NumericLiteral node = (NumericLiteral) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:59
+  /** @apilevel internal 
+   * @declaredat ASTNode:44
    */
   public NumericLiteral copy() {
     try {
       NumericLiteral node = (NumericLiteral) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -816,8 +163,9 @@ public class NumericLiteral extends Literal implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:78
+   * @declaredat ASTNode:63
    */
+  @Deprecated
   public NumericLiteral fullCopy() {
     return treeCopyNoTransform();
   }
@@ -826,14 +174,14 @@ public class NumericLiteral extends Literal implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:87
+   * @declaredat ASTNode:73
    */
   public NumericLiteral treeCopyNoTransform() {
     NumericLiteral tree = (NumericLiteral) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -847,18 +195,26 @@ public class NumericLiteral extends Literal implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:107
+   * @declaredat ASTNode:93
    */
   public NumericLiteral treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    NumericLiteral tree = (NumericLiteral) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:114
+  /** @apilevel internal 
+   * @declaredat ASTNode:107
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_LITERAL == ((NumericLiteral)node).tokenString_LITERAL);    
+    return super.is$Equal(node) && (tokenString_LITERAL == ((NumericLiteral) node).tokenString_LITERAL);    
   }
   /**
    * Replaces the lexeme LITERAL.
@@ -874,7 +230,7 @@ public class NumericLiteral extends Literal implements Cloneable {
    * @apilevel internal
    */
   public void setLITERAL(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setLITERAL is only valid for String lexemes");
     tokenString_LITERAL = (String)symbol.value;
     LITERALstart = symbol.getStart();
@@ -901,12 +257,12 @@ public class NumericLiteral extends Literal implements Cloneable {
    * bounds requirements on the resulting parsed value.
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:241
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:232
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:232")
   public long parseLong() {
-    ASTNode$State state = state();
-    try {
+    {
         switch (getKind()) {
           case HEXADECIMAL:
             return parseLongHexadecimal();
@@ -919,8 +275,6 @@ public class NumericLiteral extends Literal implements Cloneable {
             return parseLongDecimal();
         }
       }
-    finally {
-    }
   }
   /**
    * Parse a hexadecimal long literal.
@@ -928,12 +282,12 @@ public class NumericLiteral extends Literal implements Cloneable {
    * @throws NumberFormatException if the literal is too large.
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:260
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:251
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:251")
   public long parseLongHexadecimal() {
-    ASTNode$State state = state();
-    try {
+    {
         long val = 0;
         if (digits.length() > 16) {
           for (int i = 0; i < digits.length()-16; i++)
@@ -952,8 +306,6 @@ public class NumericLiteral extends Literal implements Cloneable {
         }
         return val;
       }
-    finally {
-    }
   }
   /**
    * Parse an octal long literal.
@@ -961,12 +313,12 @@ public class NumericLiteral extends Literal implements Cloneable {
    * @throws NumberFormatException if the literal is too large.
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:285
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:276
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:276")
   public long parseLongOctal() {
-    ASTNode$State state = state();
-    try {
+    {
         long val = 0;
         if (digits.length() > 21) {
           for (int i = 0; i < digits.length() - 21; i++)
@@ -986,8 +338,6 @@ public class NumericLiteral extends Literal implements Cloneable {
         }
         return val;
       }
-    finally {
-    }
   }
   /**
    * Parse a binary long literal.
@@ -995,12 +345,12 @@ public class NumericLiteral extends Literal implements Cloneable {
    * @throws NumberFormatException if the literal is too large.
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:311
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:302
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:302")
   public long parseLongBinary() {
-    ASTNode$State state = state();
-    try {
+    {
         long val = 0;
         if (digits.length() > 64) {
           for (int i = 0; i < digits.length()-64; i++)
@@ -1015,20 +365,18 @@ public class NumericLiteral extends Literal implements Cloneable {
         }
         return val;
       }
-    finally {
-    }
   }
   /**
    * Parse a decimal long literal.
    * @throws NumberFormatException if the literal is too large.
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:331
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:322
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:322")
   public long parseLongDecimal() {
-    ASTNode$State state = state();
-    try {
+    {
         long val = 0;
         long prev = 0;
         for (int i = 0; i < digits.length(); i++) {
@@ -1056,35 +404,59 @@ public class NumericLiteral extends Literal implements Cloneable {
         }
         return isNegative() ? -val : val;
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * Utility attribute for literal rewriting.
+   * Any of the NumericLiteral subclasses have already
+   * been rewritten and/or parsed, and should not be
+   * rewritten again.
+   * 
+   * @return true if this literal is a "raw", not-yet-parsed NumericLiteral
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364")
   public boolean needsRewrite() {
-    ASTNode$State state = state();
     boolean needsRewrite_value = true;
-
     return needsRewrite_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:407
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:407")
   public boolean isNegative() {
-    ASTNode$State state = state();
     boolean isNegative_value = getLITERAL().charAt(0) == '-';
-
     return isNegative_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * Get the trimmed digits of this literal, excluding
+   * underscore, prefix and suffix.
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:413
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:413")
   public String getDigits() {
-    ASTNode$State state = state();
     String getDigits_value = digits;
-
     return getDigits_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * The literal kind tells which kind of literal it is;
+   * either a DECIMAL, HEXADECIMAL, OCTAL or BINARY literal.
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:431
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:431")
   public int getKind() {
-    ASTNode$State state = state();
     int getKind_value = kind;
-
     return getKind_value;
   }
   /**
@@ -1092,12 +464,12 @@ public class NumericLiteral extends Literal implements Cloneable {
    * @return 16 (hex), 10 (decimal), 8 (octal) or 2 (binary)
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat extendj/java7/frontend/Literals.jrag:453
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:450
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:450")
   public int getRadix() {
-    ASTNode$State state = state();
-    try {
+    {
         switch (kind) {
           case HEXADECIMAL:
             return 16;
@@ -1110,90 +482,174 @@ public class NumericLiteral extends Literal implements Cloneable {
             return 10;
         }
       }
-    finally {
-    }
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return true if the literal is a decimal literal
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:467
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:467")
   public boolean isDecimal() {
-    ASTNode$State state = state();
     boolean isDecimal_value = kind == DECIMAL;
-
     return isDecimal_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return true if the literal is a hexadecimal literal
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:472
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:472")
   public boolean isHex() {
-    ASTNode$State state = state();
     boolean isHex_value = kind == HEXADECIMAL;
-
     return isHex_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return true if the literal is an octal literal
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:477
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:477")
   public boolean isOctal() {
-    ASTNode$State state = state();
     boolean isOctal_value = kind == OCTAL;
-
     return isOctal_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @return true if the literal is a binary literal
+   * @attribute syn
+   * @aspect Java7Literals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:482
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:482")
   public boolean isBinary() {
-    ASTNode$State state = state();
     boolean isBinary_value = kind == BINARY;
-
     return isBinary_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = unknownType();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at @declaredat extendj/java7/frontend/Literals.jrag:404
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:397
     if (needsRewrite()) {
-      state().duringJava7Literals++;
-      ASTNode result = rewriteRule0();
-      state().duringJava7Literals--;
-      return result;
+      return rewriteRule0();
     }
     return super.rewriteTo();
   }
   /**
-   * @declaredat @declaredat extendj/java7/frontend/Literals.jrag:404
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:397
    * @apilevel internal
    */
   private Literal rewriteRule0() {
 {
-      return parse();
+      NumericLiteralParser parser = new NumericLiteralParser(getLITERAL());
+      Literal literal = parser.parse();
+      literal.setStart(LITERALstart);
+      literal.setEnd(LITERALend);
+      return literal;
     }  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:397
+    if (needsRewrite()) {
+      return true;
+    }
+    return false;
+  }
+  /** @apilevel internal */
+  private void rewrittenNode_reset() {
+    rewrittenNode_computed = false;
+    rewrittenNode_initialized = false;
+    rewrittenNode_value = null;
+    rewrittenNode_cycle = null;
+  }
+/** @apilevel internal */
+protected ASTNode$State.Cycle rewrittenNode_cycle = null;
+  /** @apilevel internal */
+  protected boolean rewrittenNode_computed = false;
+
+  /** @apilevel internal */
+  protected ASTNode rewrittenNode_value;
+  /** @apilevel internal */
+  protected boolean rewrittenNode_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="", declaredAt=":0")
+  public ASTNode rewrittenNode() {
+    if (rewrittenNode_computed) {
+      return rewrittenNode_value;
+    }
+    ASTNode$State state = state();
+    if (!rewrittenNode_initialized) {
+      rewrittenNode_initialized = true;
+      rewrittenNode_value = this;
+      if (rewrittenNode_value != null) {
+        rewrittenNode_value.setParent(getParent());
+      }
+    }
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      do {
+        rewrittenNode_cycle = state.nextCycle();
+        ASTNode new_rewrittenNode_value = rewrittenNode_value.rewriteTo();
+        if (new_rewrittenNode_value != rewrittenNode_value || new_rewrittenNode_value.canRewrite()) {
+          state.setChangeInCycle();
+        }
+        rewrittenNode_value = new_rewrittenNode_value;
+        if (rewrittenNode_value != null) {
+          rewrittenNode_value.setParent(getParent());
+        }
+      } while (state.testAndClearChangeInCycle());
+      rewrittenNode_computed = true;
+
+      state.leaveCircle();
+    } else if (rewrittenNode_cycle != state.cycle()) {
+      rewrittenNode_cycle = state.cycle();
+      ASTNode new_rewrittenNode_value = rewrittenNode_value.rewriteTo();
+      if (new_rewrittenNode_value != rewrittenNode_value || new_rewrittenNode_value.canRewrite()) {
+        state.setChangeInCycle();
+      }
+      rewrittenNode_value = new_rewrittenNode_value;
+      if (rewrittenNode_value != null) {
+        rewrittenNode_value.setParent(getParent());
+      }
+    } else {
+    }
+    return rewrittenNode_value;
+  }
 }

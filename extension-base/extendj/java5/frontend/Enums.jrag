@@ -1,4 +1,5 @@
 /* Copyright (c) 2005-2008, Torbjorn Ekman
+ *                    2016, Jesper Öqvist <jesper.oqvist@cs.lth.se>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,16 +38,20 @@ aspect Enums {
   syn boolean TypeDecl.isEnumDecl() = false;
   eq EnumDecl.isEnumDecl() = true;
 
-  refine NameCheck public void ClassInstanceExpr.nameCheck() {
+  refine NameCheck
+  eq ClassInstanceExpr.nameProblems() {
     if (getAccess().type().isEnumDecl() && !enclosingBodyDecl().isEnumConstant()) {
-      error("enum types may not be instantiated explicitly");
+      return Collections.singletonList(error("enum types may not be instantiated explicitly"));
     } else {
-      refined();
+      return refined();
     }
   }
 
   syn boolean BodyDecl.isEnumConstant() = false;
+
   eq EnumConstant.isEnumConstant() = true;
+
+  syn String EnumConstant.name() = getID();
 
   /*
     5) Enum types (�8.9) must not be declared abstract; doing so will result in a
@@ -65,32 +70,24 @@ aspect Enums {
     12) It is a compile-time error for an enum to declare a finalizer. An instance of
     an enum may never be finalized.
   */
-  public void EnumDecl.typeCheck() {
-    super.typeCheck();
-    for (Iterator iter = memberMethods("finalize").iterator(); iter.hasNext(); ) {
-      MethodDecl m = (MethodDecl) iter.next();
+  eq EnumDecl.typeProblems() {
+    Collection<Problem> problems = new LinkedList<Problem>(super.typeProblems());
+    for (MethodDecl m : memberMethods("finalize")) {
       if (m.getNumParameter() == 0 && m.hostType() == this) {
-        error("an enum may not declare a finalizer");
+        problems.add(error("an enum may not declare a finalizer"));
       }
     }
-    checkEnum(this);
+    return problems;
   }
 
   /*
     10) The direct superclass of an enum type named E is Enum<E>.
   */
 
-  syn lazy Opt EnumDecl.getSuperClassOpt() {
-    return new Opt(
-      new ParTypeAccess(
-        new TypeAccess(
-          "java.lang",
-          "Enum"
-        ),
-        new List().add(createQualifiedAccess())
-      )
-    );
-  }
+  syn lazy Opt<Access> EnumDecl.getSuperClassOpt() =
+      new Opt<Access>(new ParTypeAccess(
+          new TypeAccess("java.lang", "Enum"),
+          new List<Access>(createQualifiedAccess())));
 
   /*
     3b) If the enum type has no constructor declarations, a parameterless default
@@ -101,109 +98,99 @@ aspect Enums {
 
   eq ParameterDeclaration.getTypeAccess().nameType() = NameType.TYPE_NAME;
 
-  // TODO Remove
-  private boolean EnumDecl.done = false;
-  private boolean EnumDecl.done() {
-    if (done) {
-      return true;
-    }
-    done = true;
-    return false;
-  }
-
-  // TODO Remove
-  rewrite EnumDecl {
-    when (!done())
-    to EnumDecl {
-      transformEnumConstructors();
-      addValues(); // Add the values() and getValue(String s) methods
-      return this;
-    }
-  }
-
+  /**
+   * Implicit constructor for enum type.
+   */
   syn lazy Opt<ConstructorDecl> EnumDecl.getImplicitConstructorOpt() {
     if (needsImplicitConstructor()) {
-      List parameterList = new List();
-      parameterList.add(
-          new ParameterDeclaration(new TypeAccess("java.lang", "String"), "p0")
-      );
-      parameterList.add(
-          new ParameterDeclaration(new TypeAccess("int"), "p1")
-      );
+      List<ParameterDeclaration> parameters = new List<ParameterDeclaration>(
+          new ParameterDeclaration(new TypeAccess("java.lang", "String"), "p0"),
+          new ParameterDeclaration(new TypeAccess("int"), "p1"));
       ConstructorDecl constructor = new ConstructorDecl(
-          new Modifiers(new List()
-            .add(new Modifier("private"))
-            .add(new Modifier("synthetic"))
-            ),
+          new Modifiers(new List<Modifier>(new Modifier("synthetic"))),
           name(),
-          parameterList,
-          new List(),
-          new Opt(
-            new ExprStmt(
+          parameters,
+          new List<Access>(),
+          new Opt<Stmt>(new ExprStmt(
               new SuperConstructorAccess(
-                "super",
-                new List()
-                .add(new VarAccess("p0"))
-                .add(new VarAccess("p1"))
-                )
-              )
-            ),
-          new Block(new List())
-          );
+                  "super",
+                  new List<Expr>(
+                      new VarAccess("p0"),
+                      new VarAccess("p1"))))),
+          new Block());
       return new Opt<ConstructorDecl>(constructor);
     } else {
       return new Opt<ConstructorDecl>();
     }
   }
 
-  protected void ASTNode.transformEnumConstructors() {
-    for (int i = 0; i < getNumChildNoTransform(); i++) {
-      ASTNode child = getChildNoTransform(i);
-      if (child != null) {
-        child.transformEnumConstructors();
+  refine ErrorCheck eq ConstructorDecl.checkImplicitConstructorInvocation() =
+      !isOriginalEnumConstructor() && refined();
+
+  inh boolean ConstructorDecl.isOriginalEnumConstructor();
+
+  eq EnumDecl.getBodyDecl().isOriginalEnumConstructor() = true;
+
+  eq EnumDecl.getImplicitConstructor().isOriginalEnumConstructor() = false;
+
+  // The transformed constructor is a child of ConstructorDecl.
+  eq BodyDecl.getChild().isOriginalEnumConstructor() = false;
+
+  eq CompilationUnit.getChild().isOriginalEnumConstructor() = false;
+
+  syn lazy ConstructorDecl ConstructorDecl.transformed() {
+    if (isOriginalEnumConstructor()) {
+      return transformedEnumConstructor();
+    } else {
+      return this;
+    }
+  }
+
+  syn nta ConstructorDecl ConstructorDecl.transformedEnumConstructor() {
+    List<ParameterDeclaration> parameters = new List<ParameterDeclaration>();
+    parameters.add(new ParameterDeclaration(new TypeAccess("java.lang", "String"), "@p0"));
+    parameters.add(new ParameterDeclaration(new TypeAccess("int"), "@p1"));
+    for (ParameterDeclaration param : getParameterList()) {
+      parameters.add(param.treeCopyNoTransform());
+    }
+    ConstructorAccess constructorInvocation;
+    List<Expr> args = new List<Expr>();
+    args.add(new VarAccess("@p0"));
+    args.add(new VarAccess("@p1"));
+    if (hasParsedConstructorInvocation()) {
+      ExprStmt invocation = (ExprStmt) getParsedConstructorInvocation();
+      ConstructorAccess access = (ConstructorAccess) invocation.getExpr();
+      for (Expr arg : access.getArgList()) {
+        args.add(arg.treeCopyNoTransform());
       }
-    }
-  }
-
-  refine LookupConstructor
-  eq ConstructorDecl.getConstructorInvocation() {
-    if (!isSynthetic() && hostType().isEnumDecl()) {
-      return getImplicitConstructorInvocation();
-    }
-    return refined();
-  }
-
-  refine LookupConstructor
-  eq ConstructorDecl.getImplicitConstructorInvocation() {
-    if (hostType().isEnumDecl()) {
-      ConstructorAccess newAccess;
-      if (hasParsedConstructorInvocation()) {
-        ExprStmt stmt = (ExprStmt) getParsedConstructorInvocation();
-        ConstructorAccess access = (ConstructorAccess) stmt.getExpr();
-        newAccess = (ConstructorAccess) access.treeCopyNoTransform();
+      if (access instanceof SuperConstructorAccess) {
+        constructorInvocation = new SuperConstructorAccess("super", args);
       } else {
-        newAccess = new SuperConstructorAccess("super", new List());
+        constructorInvocation = new ConstructorAccess(access.getID(), args);
       }
-      if (!hostType().original().typeName().equals("java.lang.Enum")) {
-        // java.lang.Enum calls the java.lang.Object constructor, with no extra params
-        newAccess.getArgList().insertChild(new VarAccess("@p0"),0);
-        newAccess.getArgList().insertChild(new VarAccess("@p1"),1);
-      }
-      return new ExprStmt(newAccess);
+    } else {
+      constructorInvocation = new SuperConstructorAccess("super", args);
     }
-    return refined();
+    return new ConstructorDecl(
+        getModifiers().treeCopyNoTransform(),
+        getID(),
+        parameters,
+        getExceptionList().treeCopyNoTransform(),
+        new Opt<Stmt>(new ExprStmt(constructorInvocation)),
+        getBlock().treeCopyNoTransform());
   }
 
-  protected void ConstructorDecl.transformEnumConstructors() {
-    super.transformEnumConstructors();
-    getParameterList().insertChild(
-      new ParameterDeclaration(new TypeAccess("java.lang", "String"), "@p0"),
-      0
-    );
-    getParameterList().insertChild(
-      new ParameterDeclaration(new TypeAccess("int"), "@p1"),
-      1
-    );
+  // Refine to add transformed constructors to constructor lookup.
+  // Both the old and new implicit constructors need to be present.
+  refine LookupConstructor eq ClassDecl.constructors() {
+    Collection<ConstructorDecl> constructors = new ArrayList<ConstructorDecl>(refined());
+    Collection<ConstructorDecl> transformed = new ArrayList<ConstructorDecl>(constructors);
+    for (ConstructorDecl decl : constructors) {
+      if (decl.transformed() != decl) {
+        transformed.add(decl.transformed());
+      }
+    }
+    return transformed;
   }
 
   /*
@@ -218,15 +205,78 @@ aspect Enums {
     the corresponding field is initialized.
   */
 
-  eq EnumConstant.isPublic() = true;
-  eq EnumConstant.isStatic() = true;
-  eq EnumConstant.isFinal() = true;
+  EnumConstant implements Variable;
 
-  syn lazy Access EnumConstant.getTypeAccess() {
-    return hostType().createQualifiedAccess();
+  eq EnumConstant.getChild().inStaticContext() = isStatic();
+
+  syn boolean EnumConstant.isField() = true;
+
+  syn boolean EnumConstant.isPublic() = true;
+  syn boolean EnumConstant.isStatic() = true;
+  syn boolean EnumConstant.isFinal() = true;
+  syn boolean EnumConstant.isTransient() = getModifiers().isTransient();
+  syn boolean EnumConstant.isVolatile() = getModifiers().isVolatile();
+  syn boolean EnumConstant.isSynthetic() = getModifiers().isSynthetic();
+  syn boolean EnumConstant.isClassVariable() = true;
+  syn boolean EnumConstant.isInstanceVariable() = false;
+  syn boolean EnumConstant.isLocalVariable() = false;
+  syn boolean EnumConstant.isBlank() = !hasInit();
+  syn boolean EnumConstant.isParameter() = false;
+  syn boolean EnumConstant.isMethodParameter() = false;
+  syn boolean EnumConstant.isConstructorParameter() = false;
+  syn boolean EnumConstant.isExceptionHandlerParameter() = !hasInit();
+  syn lazy boolean EnumConstant.isEffectivelyFinal() = isFinal();
+
+  syn boolean EnumConstant.accessibleFrom(TypeDecl type) {
+    if (isPublic()) {
+      return true;
+    } else if (isProtected()) {
+      if (hostPackage().equals(type.hostPackage())) {
+        return true;
+      }
+      if (type.withinBodyThatSubclasses(hostType()) != null) {
+        return true;
+      }
+      return false;
+    } else if (isPrivate()) {
+      return hostType().topLevelType() == type.topLevelType();
+    } else {
+      return hostPackage().equals(type.hostPackage());
+    }
   }
 
-  public EnumConstant.EnumConstant(Modifiers mods, String name, List<Expr> args, List<BodyDecl> bds) {
+  syn boolean EnumConstant.isConstant() = true;
+
+  syn lazy Collection<TypeDecl> EnumConstant.throwTypes() {
+    Collection<TypeDecl> tts = new LinkedList<TypeDecl>();
+    tts.add(type());
+    return tts;
+  }
+
+  /**
+   * Adds enum constants as local fields.
+   */
+  eq EnumDecl.localFieldsMap() {
+    Map<String, SimpleSet<Variable>> map = new HashMap<String, SimpleSet<Variable>>(
+        super.localFieldsMap());
+    for (BodyDecl decl : getBodyDeclList()) {
+      if (decl instanceof EnumConstant) {
+        EnumConstant constant = (EnumConstant) decl;
+        putSimpleSetElement(map, constant.name(), constant);
+      }
+    }
+    putSimpleSetElement(map, "$VALUES", valuesFieldDeclarator());
+    return map;
+  }
+
+  syn TypeDecl EnumConstant.type() = hostType();
+
+  syn lazy Constant EnumConstant.constant() = type().cast(getInit().constant());
+
+  syn lazy Access EnumConstant.getTypeAccess() = hostType().createQualifiedAccess();
+
+  public EnumConstant.EnumConstant(Modifiers mods, String name, List<Expr> args,
+      List<BodyDecl> bds) {
     this(mods, name, args, new Opt<Expr>(new EnumInstanceExpr(createOptAnonymousDecl(bds))));
   }
 
@@ -244,7 +294,7 @@ aspect Enums {
 
   syn lazy List<Expr> EnumInstanceExpr.getArgList() {
     EnumConstant ec = (EnumConstant) getParent().getParent();
-    List<EnumConstant> ecs = (List<EnumConstant>)ec.getParent();
+    List<EnumConstant> ecs = (List<EnumConstant>) ec.getParent();
     int idx = ecs.getIndexOfChild(ec);
     if (idx == -1) {
       throw new Error("internal: cannot determine numeric value of enum constant");
@@ -280,7 +330,7 @@ aspect Enums {
     );
   }
 
-  // simulate list of body declarations
+  // Simulate list of body declarations.
   public int EnumConstant.getNumBodyDecl() {
     int cnt = 0;
     ClassInstanceExpr init = (ClassInstanceExpr) getInit();
@@ -309,6 +359,24 @@ aspect Enums {
     throw new ArrayIndexOutOfBoundsException(i);
   }
 
+  // Helper method for accessing the body decls of this enum constant.
+  public boolean EnumConstant.hasBodyDecl() {
+    ClassInstanceExpr init = (ClassInstanceExpr) getInit();
+    if (init.hasTypeDecl()) {
+      return init.getTypeDecl().hasBodyDecl();
+    }
+    return false;
+  }
+
+  // Helper method for accessing the body decls of this enum constant.
+  public List<BodyDecl> EnumConstant.getBodyDeclList() {
+    ClassInstanceExpr init = (ClassInstanceExpr) getInit();
+    if (init.hasTypeDecl()) {
+      return init.getTypeDecl().getBodyDeclList();
+    }
+    throw new Error("Enum has no body decl list.");
+  }
+
   /*
     7) It is a compile-time error for the class body of an enum constant to declare
     an abstract method.
@@ -323,8 +391,7 @@ aspect Enums {
   */
 
   eq EnumDecl.isFinal() {
-    for (Iterator iter = enumConstants().iterator(); iter.hasNext(); ) {
-      EnumConstant c = (EnumConstant) iter.next();
+    for (EnumConstant c : enumConstants()) {
       ClassInstanceExpr e = (ClassInstanceExpr) c.getInit();
       if (e.hasTypeDecl()) {
         return false;
@@ -332,16 +399,36 @@ aspect Enums {
     }
     return true;
   }
+
   eq EnumDecl.getModifiers().mayBeFinal() = false;
 
-  syn lazy ArrayList EnumDecl.enumConstants() {
-    ArrayList list = new ArrayList();
+  syn lazy Collection<EnumConstant> EnumDecl.enumConstants() {
+    Collection<EnumConstant> list = new ArrayList<EnumConstant>();
     for (int i = 0; i < getNumBodyDecl(); i++) {
       if (getBodyDecl(i).isEnumConstant()) {
-        list.add(getBodyDecl(i));
+        list.add((EnumConstant) getBodyDecl(i));
       }
     }
     return list;
+  }
+
+  /** Create an access to this field. */
+  public Access EnumConstant.createBoundAccess() {
+    if (isStatic()) {
+      return hostType().createQualifiedAccess().qualifiesAccess(new BoundEnumConstant(this));
+    } else {
+      return new ThisAccess("this").qualifiesAccess(new BoundEnumConstant(this));
+    }
+  }
+
+  eq BoundEnumConstant.decl() = getEnumConstant();
+
+  public boolean BoundEnumConstant.isExactVarAccess() {
+    return false;
+  }
+
+  public BoundEnumConstant.BoundEnumConstant(EnumConstant c) {
+    this(c.name(), c);
   }
 
   /*
@@ -351,46 +438,56 @@ aspect Enums {
       public static E valueOf(String name);
   */
 
-  private void EnumDecl.addValues() {
+  eq EnumDecl.methodsNameMap() {
+    Map<String, Collection<MethodDecl>> map = new HashMap<String, Collection<MethodDecl>>();
+    // Copy map entries manually to avoid aliasing the collections.
+    for (Map.Entry<String, Collection<MethodDecl>> entry : super.methodsNameMap().entrySet()) {
+      map.put(entry.getKey(), new ArrayList<MethodDecl>(entry.getValue()));
+    }
+    addMethodToMap(implicitValuesMethod(), map);
+    addMethodToMap(implicitValueOfMethod(), map);
+    return map;
+  }
+
+  syn lazy FieldDeclarator EnumDecl.valuesFieldDeclarator() =
+      implicitValuesField().getDeclarator(0);
+
+  syn nta FieldDecl EnumDecl.implicitValuesField() {
     int numConstants = enumConstants().size();
     List initValues = new List();
-    for (Iterator iter = enumConstants().iterator(); iter.hasNext(); ) {
-      EnumConstant c = (EnumConstant) iter.next();
-      initValues.add(c.createBoundFieldAccess());
+    for (EnumConstant c : enumConstants()) {
+      initValues.add(c.createBoundAccess());
     }
-    FieldDeclaration values = new FieldDeclaration(
-      new Modifiers(new List().add(
-        new Modifier("private")).add(
-        new Modifier("static")).add(
-        new Modifier("final")).add(
-        new Modifier("synthetic"))
-      ),
-      arrayType().createQualifiedAccess(),
-      "$VALUES",
-      new Opt(
-          new ArrayCreationExpr(
-            new ArrayTypeWithSizeAccess(
-              createQualifiedAccess(),
-              Literal.buildIntegerLiteral(enumConstants().size())
-            ),
-            new Opt(
-              new ArrayInit(
-                initValues
-              )
-            )
-          )
-      )
-    );
-    addBodyDecl(values);
-    // public static final Test[] values() { return (Test[])$VALUES.clone(); }
-    addBodyDecl(
+    FieldDeclarator values = new FieldDeclarator(
+        "$VALUES",
+        new List<Dims>(),
+        new Opt<Expr>(
+            new ArrayCreationExpr(
+              new ArrayTypeWithSizeAccess(
+                createQualifiedAccess(),
+                Literal.buildIntegerLiteral(enumConstants().size())),
+              new Opt(
+                new ArrayInit(
+                  initValues)))));
+    return new FieldDecl(
+        new Modifiers(new List<Modifier>(
+            new Modifier("private"),
+            new Modifier("static"),
+            new Modifier("final"),
+            new Modifier("synthetic"))),
+        arrayType().createQualifiedAccess(),
+        new List<FieldDeclarator>(values));
+  }
+
+  // public static final Test[] values() { return (Test[])$VALUES.clone(); }
+  syn nta MethodDecl EnumDecl.implicitValuesMethod() {
+    return
       new MethodDecl(
-        new Modifiers(new List().add(
-          new Modifier("public")).add(
-          new Modifier("static")).add(
-          new Modifier("final")).add(
-          new Modifier("synthetic"))
-        ),
+        new Modifiers(new List<Modifier>(
+          new Modifier("public"),
+          new Modifier("static"),
+          new Modifier("final"),
+          new Modifier("synthetic"))),
         arrayType().createQualifiedAccess(),
         "values",
         new List(),
@@ -402,37 +499,27 @@ aspect Enums {
                 new Opt(
                   new CastExpr(
                     arrayType().createQualifiedAccess(),
-                    values.createBoundFieldAccess().qualifiesAccess(
+                    valuesFieldDeclarator().createBoundAccess().qualifiesAccess(
                       new MethodAccess(
                         "clone",
-                        new List()
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    );
-    // public static Test valueOf(String s) { return (Test) java.lang.Enum.valueOf(Test.class, s); }
-    addBodyDecl(
+                        new List())))))))));
+  }
+
+  // public static Test valueOf(String s) { return (Test) java.lang.Enum.valueOf(Test.class, s); }
+  syn nta MethodDecl EnumDecl.implicitValueOfMethod() {
+    return
       new MethodDecl(
-        new Modifiers(new List().add(
-          new Modifier("public")).add(
-          new Modifier("static")).add(
-          new Modifier("synthetic"))
-        ),
+        new Modifiers(new List<Modifier>(
+            new Modifier("public"),
+            new Modifier("static"),
+            new Modifier("synthetic"))),
         createQualifiedAccess(),
         "valueOf",
         new List().add(
           new ParameterDeclaration(
             new Modifiers(new List()),
             typeString().createQualifiedAccess(),
-            "s"
-          )
-        ),
+            "s")),
         new List(),
         new Opt(
           new Block(
@@ -448,19 +535,7 @@ aspect Enums {
                           createQualifiedAccess().qualifiesAccess(new ClassAccess())
                         ).add(
                           new VarAccess(
-                            "s"
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-      )
-    );
+                            "s")))))))))));
   }
 
   inh TypeDecl EnumDecl.typeString();
@@ -487,56 +562,51 @@ aspect Enums {
     return false;
   }
 
-  protected void ASTNode.checkEnum(EnumDecl enumDecl) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).checkEnum(enumDecl);
-    }
-  }
+  /** Checks if this var access is inside an instance initializer for an enum type. */
+  inh boolean VarAccess.inEnumInitializer();
 
-  protected void EnumDecl.checkEnum(EnumDecl enumDecl) {
-    for (int i = 0; i < getNumBodyDecl(); i++) {
-      if (getBodyDecl(i) instanceof ConstructorDecl) {
-        getBodyDecl(i).checkEnum(enumDecl);
-      } else if (getBodyDecl(i) instanceof InstanceInitializer) {
-        getBodyDecl(i).checkEnum(enumDecl);
-      } else if (getBodyDecl(i) instanceof FieldDeclaration) {
-        FieldDeclaration f = (FieldDeclaration) getBodyDecl(i);
-        if (!f.isStatic() && f.hasInit()) {
-          f.checkEnum(enumDecl);
-        }
-      }
-    }
-  }
+  eq MethodDecl.getChild().inEnumInitializer() = false;
 
-  protected void TypeDecl.checkEnum(EnumDecl enumDecl) {
-    // non-EnumDecl TypeDecls should not check enum stuff
-  }
+  eq TypeDecl.getChild().inEnumInitializer() = false;
 
-  protected void VarAccess.checkEnum(EnumDecl enumDecl) {
-    super.checkEnum(enumDecl);
-    if (decl().isStatic() && decl().hostType() == enumDecl && !isConstant()) {
-      error("may not reference a static field of an enum type from here");
-    }
-  }
+  eq CompilationUnit.getChild().inEnumInitializer() = false;
+
+  eq ConstructorDecl.getChild().inEnumInitializer() = hostType().isEnumDecl();
+
+  eq InstanceInitializer.getChild().inEnumInitializer() = hostType().isEnumDecl();
+
+  eq FieldDecl.getChild().inEnumInitializer() = !isStatic() && hostType().isEnumDecl();
+
+  VarAccess contributes
+      error("may not reference a static field of an enum type from here")
+      when decl().isStatic()
+          && decl().hostType() == hostType()
+          && !isConstant()
+          && inEnumInitializer()
+      to CompilationUnit.problems();
+
+  ConstructorDecl contributes each enumProblems() to CompilationUnit.problems();
 
   /**
    * Check if the enum constructor has an incorrect access modifier
    */
-  protected void ConstructorDecl.checkEnum(EnumDecl enumDecl) {
-    super.checkEnum(enumDecl);
+  syn Collection<Problem> ConstructorDecl.enumProblems() {
+    Collection<Problem> problems = new LinkedList<Problem>();
+    if (hostType().isEnumDecl()) {
+      if (isPublic()) {
+        problems.add(error("enum constructors can not be declared public"));
+      } else if (isProtected()) {
+        problems.add(error("enum constructors can not be declared public"));
+      }
 
-    if (isPublic()) {
-      error("enum constructors can not be declared public");
-    } else if (isProtected()) {
-      error("enum constructors can not be declared public");
-    }
-
-    if (hasParsedConstructorInvocation()) {
-      ExprStmt invocation = (ExprStmt) getParsedConstructorInvocation();
-      if (invocation.getExpr() instanceof SuperConstructorAccess) {
-        error("can not call super() in enum constructor");
+      if (hasParsedConstructorInvocation()) {
+        ExprStmt invocation = (ExprStmt) getParsedConstructorInvocation();
+        if (invocation.getExpr() instanceof SuperConstructorAccess) {
+          problems.add(error("can not call super() in enum constructor"));
+        }
       }
     }
+    return problems;
   }
 
   /*
@@ -548,8 +618,6 @@ aspect Enums {
   traversal that checks for errors
   */
 
-
-
   // 8.9
 
   /* 2) An enum constant may be preceded by annotation (�9.7) modifiers. If an
@@ -560,38 +628,47 @@ aspect Enums {
   Comment: This is done in Annotations.jrag
   */
 
-
   eq EnumConstant.getTypeAccess().nameType() = NameType.TYPE_NAME;
 
-  refine TypeCheck public void SwitchStmt.typeCheck() {
-     TypeDecl type = getExpr().type();
+  refine TypeCheck
+  eq SwitchStmt.typeProblems() {
+    TypeDecl type = getExpr().type();
     if ((!type.isIntegralType() || type.isLong()) && !type.isEnumDecl()) {
-      error("Switch expression must be of char, byte, short, int, or enum type");
+      return Collections.singletonList(
+          error("Switch expression must be of char, byte, short, int, or enum type"));
     }
+    return Collections.emptyList();
   }
 
-  eq ConstCase.getValue().lookupVariable(String name)
-    = switchType().isEnumDecl() ? switchType().memberFields(name) : lookupVariable(name);
+  eq ConstCase.getValue().lookupVariable(String name) =
+      switchType().isEnumDecl()
+      ? switchType().memberFields(name)
+      : lookupVariable(name);
 
   syn boolean Expr.isEnumConstant() = false;
+
   eq VarAccess.isEnumConstant() = varDecl() instanceof EnumConstant;
 
-  refine TypeCheck public void ConstCase.typeCheck() {
+  refine TypeCheck
+  eq ConstCase.typeProblems() {
+    Collection<Problem> problems = new LinkedList<Problem>();
     boolean isEnumConstant = getValue().isEnumConstant();
     if (switchType().isEnumDecl() && !isEnumConstant) {
-      error("Unqualified enumeration constant required");
+      problems.add(error("Unqualified enumeration constant required"));
     } else {
-      TypeDecl switchType = switchType();
       TypeDecl type = getValue().type();
-      if (!type.assignConversionTo(switchType, getValue())) {
-        error("Constant expression must be assignable to Expression");
+      if (!type.assignConversionTo(switchType(), getValue())) {
+        problems.add(error("Constant expression must be assignable to Expression"));
       }
-      if (!getValue().isConstant() && !getValue().type().isUnknown() &&
-          !isEnumConstant)
-        error("Switch expression must be constant");
+      if (!getValue().isConstant() && !type.isUnknown() && !isEnumConstant) {
+        problems.add(error("Switch expression must be constant"));
+      }
     }
+    return problems;
   }
-  refine NameCheck eq ConstCase.constValue(Case c) {
+
+  refine NameCheck
+  eq ConstCase.constValue(Case c) {
     if (switchType().isEnumDecl()) {
       if (!(c instanceof ConstCase) || !getValue().isConstant()) {
         return false;
@@ -602,6 +679,10 @@ aspect Enums {
     }
   }
 
+  /**
+   * Not implemented using generated pretty-print code because we have to separate
+   * enum constants and enum body declarations.
+   */
   public void EnumDecl.prettyPrint(PrettyPrinter out) {
     if (!docComment.isEmpty()) {
       out.print(docComment);
@@ -618,43 +699,31 @@ aspect Enums {
       });
     }
     out.print(" {");
+    out.println();
+    out.indent(1);
+    out.pushIndentation();
+    boolean inConstantList = true;
     for (int i = 0; i < getNumBodyDecl(); i++) {
       BodyDecl d = getBodyDecl(i);
-      out.print(d);
       if (d instanceof EnumConstant) {
-        if (i + 1 < getNumBodyDecl() && !(getBodyDecl(i + 1) instanceof EnumConstant)) {
+        if (i > 0) {
+          out.print(",");
+          out.println();
+        }
+      } else if (!d.isSynthetic()) {
+        if (inConstantList) {
           out.println();
           out.print(";");
+          inConstantList = false;
         }
+        out.println();
+        out.println();
       }
+      out.print(d);
     }
+    out.popIndentation();
     out.println();
     out.print("}");
-  }
-
-  public void EnumConstant.prettyPrint(PrettyPrinter out) {
-    out.println();
-    out.print(getModifiers());
-    out.print(getID());
-    out.print("(");
-    if (getNumArg() > 0) {
-      out.join(getArgList(), new PrettyPrinter.Joiner() {
-        @Override
-        public void printSeparator(PrettyPrinter out) {
-          out.print(", ");
-        }
-      });
-    }
-    out.print(")");
-    if (getNumBodyDecl() > 0) {
-      out.print(" {");
-      for (int i=0; i < getNumBodyDecl(); i++) {
-        BodyDecl d = getBodyDecl(i);
-        out.print(d);
-      }
-      out.print("}");
-    }
-    out.print(",");
   }
 
   /**
@@ -668,17 +737,16 @@ aspect Enums {
     Collection<MethodDecl> methods = new LinkedList<MethodDecl>();
     for (Iterator iter = interfacesMethodsIterator(); iter.hasNext(); ) {
       MethodDecl method = (MethodDecl) iter.next();
-      SimpleSet set = (SimpleSet) localMethodsSignature(method.signature());
-      if (set.size() == 1) {
-        MethodDecl n = (MethodDecl) set.iterator().next();
+      SimpleSet<MethodDecl> set = localMethodsSignature(method.signature());
+      if (set.isSingleton()) {
+        MethodDecl n = set.singletonValue();
         if (!n.isAbstract()) {
           continue;
         }
       }
       boolean implemented = false;
-      set = (SimpleSet) ancestorMethods(method.signature());
-      for (Iterator i2 = set.iterator(); i2.hasNext(); ) {
-        MethodDecl n = (MethodDecl) i2.next();
+      set = ancestorMethods(method.signature());
+      for (MethodDecl n : set) {
         if (!n.isAbstract()) {
           implemented = true;
           break;
@@ -696,15 +764,15 @@ aspect Enums {
       }
     }
 
-    Collection unimplemented = new ArrayList();
+    Collection<MethodDecl> unimplemented = new ArrayList<MethodDecl>();
     for (MethodDecl method : methods) {
       if (enumConstants().isEmpty()) {
         unimplemented.add(method);
         continue;
       }
       boolean missing = false;
-      for (Iterator iter = enumConstants().iterator(); iter.hasNext(); ) {
-        if (!((EnumConstant) iter.next()).implementsMethod(method)) {
+      for (EnumConstant c : enumConstants()) {
+        if (!c.implementsMethod(method)) {
           missing = true;
           break;
         }
@@ -717,34 +785,36 @@ aspect Enums {
     return unimplemented;
   }
 
+  EnumDecl contributes each modifierProblems() to CompilationUnit.problems();
+
   /**
    * Check that the enum does not contain unimplemented abstract methods.
    */
-  public void EnumDecl.checkModifiers() {
-    super.checkModifiers();
+  syn Collection<Problem> EnumDecl.modifierProblems() {
     if (!unimplementedMethods().isEmpty()) {
       StringBuilder sb = new StringBuilder();
       sb.append("" + name() + " lacks implementations in one or more "
           + "enum constants for the following methods:\n");
-      for (Iterator iter = unimplementedMethods().iterator(); iter.hasNext(); ) {
-        MethodDecl m = (MethodDecl) iter.next();
+      for (MethodDecl m : unimplementedMethods()) {
         sb.append("  " + m.signature() + " in " + m.hostType().typeName() + "\n");
       }
-      error(sb.toString());
+      return Collections.singletonList(error(sb.toString()));
     }
+    return Collections.emptyList();
   }
 
-  syn SimpleSet EnumConstant.localMethodsSignature(String signature) {
-    SimpleSet set = localMethodsSignatureMap().get(signature);
+  syn SimpleSet<MethodDecl> EnumConstant.localMethodsSignature(String signature) {
+    SimpleSet<MethodDecl> set = localMethodsSignatureMap().get(signature);
     if (set != null) {
       return set;
     }
-    return SimpleSet.emptySet;
+    return emptySet();
   }
 
-  // signature -> method declaration
-  syn lazy Map<String,SimpleSet> EnumConstant.localMethodsSignatureMap() {
-    HashMap map = new HashMap(getNumBodyDecl());
+  /** Maps method signature to method declaration. */
+  syn lazy Map<String, SimpleSet<MethodDecl>> EnumConstant.localMethodsSignatureMap() {
+    Map<String, SimpleSet<MethodDecl>> map = new HashMap<String, SimpleSet<MethodDecl>>(
+        getNumBodyDecl());
     for (int i = 0; i < getNumBodyDecl(); i++) {
       if (getBodyDecl(i) instanceof MethodDecl) {
         MethodDecl decl = (MethodDecl) getBodyDecl(i);
@@ -754,10 +824,18 @@ aspect Enums {
     return map;
   }
 
+  eq EnumDecl.localMethodsSignatureMap() {
+    Map<String, SimpleSet<MethodDecl>> map = new HashMap<String, SimpleSet<MethodDecl>>(
+        super.localMethodsSignatureMap());
+    putSimpleSetElement(map, implicitValuesMethod().signature(), implicitValuesMethod());
+    putSimpleSetElement(map, implicitValueOfMethod().signature(), implicitValueOfMethod());
+    return map;
+  }
+
   syn boolean EnumConstant.implementsMethod(MethodDecl method) {
-    SimpleSet set = (SimpleSet) localMethodsSignature(method.signature());
-    if (set.size() == 1) {
-      MethodDecl n = (MethodDecl) set.iterator().next();
+    SimpleSet<MethodDecl> methods = localMethodsSignature(method.signature());
+    if (methods.isSingleton()) {
+      MethodDecl n = methods.singletonValue();
       if (!n.isAbstract()) {
         return true;
       }
@@ -765,61 +843,63 @@ aspect Enums {
     return false;
   }
 
-  refine Modifiers
-  public void MethodDecl.checkModifiers() {
-    super.checkModifiers();
+  refine Modifiers eq MethodDecl.modifierProblems() {
+    Collection<Problem> problems = new LinkedList<Problem>();
     if (hostType().isClassDecl()) {
       // 8.4.3.1
       if (!hostType().isEnumDecl() && isAbstract() && !hostType().isAbstract()) {
-        error("class must be abstract to include abstract methods");
+        problems.add(error("class must be abstract to include abstract methods"));
       }
       // 8.4.3.1
       if (isAbstract() && isPrivate()) {
-        error("method may not be abstract and private");
+        problems.add(error("method may not be abstract and private"));
       }
       // 8.4.3.1
       // 8.4.3.2
       if (isAbstract() && isStatic()) {
-        error("method may not be abstract and static");
+        problems.add(error("method may not be abstract and static"));
       }
       if (isAbstract() && isSynchronized()) {
-        error("method may not be abstract and synchronized");
+        problems.add(error("method may not be abstract and synchronized"));
       }
       // 8.4.3.4
       if (isAbstract() && isNative()) {
-        error("method may not be abstract and native");
+        problems.add(error("method may not be abstract and native"));
       }
       if (isAbstract() && isStrictfp()) {
-        error("method may not be abstract and strictfp");
+        problems.add(error("method may not be abstract and strictfp"));
       }
       if (isNative() && isStrictfp()) {
-        error("method may not be native and strictfp");
+        problems.add(error("method may not be native and strictfp"));
       }
     }
     if (hostType().isInterfaceDecl()) {
       // 9.4
       if (isStatic()) {
-        errorf("interface method %s in %s may not be static", signature(), hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be static", signature(), hostType().typeName()));
       }
       if (isStrictfp()) {
-        errorf("interface method %s in %s may not be strictfp", signature(), hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be strictfp", signature(), hostType().typeName()));
       }
       if (isNative()) {
-        errorf("interface method %s in %s may not be native", signature(), hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be native", signature(), hostType().typeName()));
       }
       if (isSynchronized()) {
-        errorf("interface method %s in %s may not be synchronized", signature(),
-            hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be synchronized", signature(),
+            hostType().typeName()));
       }
       if (isProtected()) {
-        errorf("interface method %s in %s may not be protected", signature(),
-            hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be protected", signature(),
+            hostType().typeName()));
       }
       if (isPrivate()) {
-        errorf("interface method %s in %s may not be private", signature(), hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be private", signature(), hostType().typeName()));
       } else if (isFinal()) {
-        errorf("interface method %s in %s may not be final", signature(), hostType().typeName());
+        problems.add(errorf("interface method %s in %s may not be final", signature(), hostType().typeName()));
       }
     }
+    return problems;
   }
+
+  eq EnumConstant.declaredIn(Variable decl) = this == decl || declaredBefore(decl);
 }

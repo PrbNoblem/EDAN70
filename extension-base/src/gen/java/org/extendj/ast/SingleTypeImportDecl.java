@@ -1,54 +1,43 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:10
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:10
  * @production SingleTypeImportDecl : {@link ImportDecl};
 
  */
 public class SingleTypeImportDecl extends ImportDecl implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:255
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:553
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("import ");
     out.print(getAccess());
     out.print(";");
     out.println();
-  }
-  /**
-   * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:43
-   */
-  public void nameCheck() {
-    if (!getAccess().type().typeName().equals(typeName()) && !getAccess().type().isUnknown()) {
-      errorf("Single-type import %s is not the canonical name of type %s",
-          typeName(), getAccess().type().typeName());
-    } else if (allImportedTypes(getAccess().type().name()).size() > 1) {
-      errorf("%s is imported multiple times", getAccess().type().name());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -72,60 +61,48 @@ public class SingleTypeImportDecl extends ImportDecl implements Cloneable {
   public SingleTypeImportDecl(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     importedTypes_String_reset();
     importedTypes_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public SingleTypeImportDecl clone() throws CloneNotSupportedException {
     SingleTypeImportDecl node = (SingleTypeImportDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public SingleTypeImportDecl copy() {
     try {
       SingleTypeImportDecl node = (SingleTypeImportDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -139,8 +116,9 @@ public class SingleTypeImportDecl extends ImportDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:61
    */
+  @Deprecated
   public SingleTypeImportDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -149,14 +127,14 @@ public class SingleTypeImportDecl extends ImportDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:86
+   * @declaredat ASTNode:71
    */
   public SingleTypeImportDecl treeCopyNoTransform() {
     SingleTypeImportDecl tree = (SingleTypeImportDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -170,15 +148,23 @@ public class SingleTypeImportDecl extends ImportDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:106
+   * @declaredat ASTNode:91
    */
   public SingleTypeImportDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    SingleTypeImportDecl tree = (SingleTypeImportDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:113
+  /** @apilevel internal 
+   * @declaredat ASTNode:105
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -209,95 +195,149 @@ public class SingleTypeImportDecl extends ImportDecl implements Cloneable {
   public Access getAccessNoTransform() {
     return (Access) getChildNoTransform(0);
   }
-  protected java.util.Map importedTypes_String_values;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:39
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:39")
+  public Collection<Problem> nameProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (!getAccess().type().typeName().equals(typeName()) && !getAccess().type().isUnknown()) {
+          problems.add(errorf("Single-type import %s is not the canonical name of type %s",
+              typeName(), getAccess().type().typeName()));
+        } else if (allImportedTypes(getAccess().type().name()).size() > 1) {
+          problems.add(errorf("%s is imported multiple times", getAccess().type().name()));
+        }
+        return problems;
+      }
+  }
+  /** @apilevel internal */
   private void importedTypes_String_reset() {
+    importedTypes_String_computed = new java.util.HashMap(4);
     importedTypes_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes(String name) {
+  /** @apilevel internal */
+  protected java.util.Map importedTypes_String_values;
+  /** @apilevel internal */
+  protected java.util.Map importedTypes_String_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434")
+  public SimpleSet<TypeDecl> importedTypes(String name) {
     Object _parameters = name;
-    if (importedTypes_String_values == null) importedTypes_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedTypes_String_values.containsKey(_parameters)) {
-      return (SimpleSet)importedTypes_String_values.get(_parameters);
-    }
+    if (importedTypes_String_computed == null) importedTypes_String_computed = new java.util.HashMap(4);
+    if (importedTypes_String_values == null) importedTypes_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet importedTypes_String_value = importedTypes_compute(name);
-    if (isFinal && num == state().boundariesCrossed) {
-      importedTypes_String_values.put(_parameters, importedTypes_String_value);
-    } else {
+    if (importedTypes_String_values.containsKey(_parameters) && importedTypes_String_computed != null
+        && importedTypes_String_computed.containsKey(_parameters)
+        && (importedTypes_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || importedTypes_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<TypeDecl>) importedTypes_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<TypeDecl> importedTypes_String_value = importedTypes_compute(name);
+    if (state().inCircle()) {
+      importedTypes_String_values.put(_parameters, importedTypes_String_value);
+      importedTypes_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      importedTypes_String_values.put(_parameters, importedTypes_String_value);
+      importedTypes_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return importedTypes_String_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet importedTypes_compute(String name) {
-      SimpleSet set = SimpleSet.emptySet;
+  /** @apilevel internal */
+  private SimpleSet<TypeDecl> importedTypes_compute(String name) {
+      SimpleSet<TypeDecl> result = emptySet();
       TypeDecl type = getAccess().type();
       if (type.name().equals(name)) {
-        set = set.add(type);
+        result = result.add(type);
       }
-      return set;
+      return result;
     }
-  /**
-   * @apilevel internal
-   */
-  protected boolean importedTypes_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected SimpleSet importedTypes_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void importedTypes_reset() {
-    importedTypes_computed = false;
+    importedTypes_computed = null;
     importedTypes_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes() {
-    if(importedTypes_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle importedTypes_computed = null;
+
+  /** @apilevel internal */
+  protected SimpleSet<TypeDecl> importedTypes_value;
+
+  /**
+   * For a single-import declaration this will return a SimpleSet
+   * containing the TypeDecl for the imported type. For dynamic
+   * import declarations this returns the empty set.
+   * @return TypeDecl of imported type wrapped in SimpleSet
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451")
+  public SimpleSet<TypeDecl> importedTypes() {
+    ASTNode$State state = state();
+    if (importedTypes_computed == ASTNode$State.NON_CYCLE || importedTypes_computed == state().cycle()) {
       return importedTypes_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    importedTypes_value = SimpleSet.emptySet.add(getAccess().type());
-    if (isFinal && num == state().boundariesCrossed) {
-      importedTypes_computed = true;
+    importedTypes_value = getAccess().type();
+    if (state().inCircle()) {
+      importedTypes_computed = state().cycle();
+    
     } else {
+      importedTypes_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return importedTypes_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/SyntacticClassification.jrag:99
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:96
       return NameType.TYPE_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:37
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

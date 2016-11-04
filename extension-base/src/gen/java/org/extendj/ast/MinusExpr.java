@@ -1,42 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:136
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:138
  * @production MinusExpr : {@link Unary};
 
  */
 public class MinusExpr extends Unary implements Cloneable {
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:324
-   */
-  public void typeCheck() {
-    if (!getOperand().type().isNumericType()) {
-      error("unary minus only operates on numeric types");
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -59,59 +51,48 @@ public class MinusExpr extends Unary implements Cloneable {
   public MinusExpr(Expr p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return true;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    rewrittenNode_reset();
     type_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public MinusExpr clone() throws CloneNotSupportedException {
     MinusExpr node = (MinusExpr) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public MinusExpr copy() {
     try {
       MinusExpr node = (MinusExpr) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -125,8 +106,9 @@ public class MinusExpr extends Unary implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:61
    */
+  @Deprecated
   public MinusExpr fullCopy() {
     return treeCopyNoTransform();
   }
@@ -135,14 +117,14 @@ public class MinusExpr extends Unary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:71
    */
   public MinusExpr treeCopyNoTransform() {
     MinusExpr tree = (MinusExpr) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -156,15 +138,23 @@ public class MinusExpr extends Unary implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:91
    */
   public MinusExpr treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    MinusExpr tree = (MinusExpr) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:105
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -195,85 +185,90 @@ public class MinusExpr extends Unary implements Cloneable {
   public Expr getOperandNoTransform() {
     return (Expr) getChildNoTransform(0);
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
   public Constant constant() {
-    ASTNode$State state = state();
     Constant constant_value = type().minus(getOperand().constant());
-
     return constant_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383")
   public boolean isConstant() {
-    ASTNode$State state = state();
     boolean isConstant_value = getOperand().isConstant();
-
     return isConstant_value;
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282")
   public String printPreOp() {
-    ASTNode$State state = state();
     String printPreOp_value = "-";
-
     return printPreOp_value;
   }
-  /**
-   * @apilevel internal
-   */
-  protected boolean type_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected TypeDecl type_value;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void type_reset() {
-    type_computed = false;
+    type_computed = null;
     type_value = null;
   }
-  @ASTNodeAnnotation.Attribute
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
-    if(type_computed) {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
       return type_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     type_value = getOperand().type().unaryNumericPromotion();
-    if (isFinal && num == state().boundariesCrossed) {
-      type_computed = true;
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
     } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return type_value;
   }
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at @declaredat extendj/java7/frontend/Literals.jrag:380
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:371
     if (getOperand() instanceof IntegerLiteral
-            && ((IntegerLiteral) getOperand()).isDecimal() && getOperand().isPositive()) {
-      state().duringJava7Literals++;
-      ASTNode result = rewriteRule0();
-      state().duringJava7Literals--;
-      return result;
+            && ((IntegerLiteral) getOperand()).isDecimal()
+            && getOperand().isPositive()) {
+      return rewriteRule0();
     }
-    // Declared at @declaredat extendj/java7/frontend/Literals.jrag:392
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:384
     if (getOperand() instanceof LongLiteral
-            && ((LongLiteral) getOperand()).isDecimal() && getOperand().isPositive()) {
-      state().duringJava7Literals++;
-      ASTNode result = rewriteRule1();
-      state().duringJava7Literals--;
-      return result;
+            && ((LongLiteral) getOperand()).isDecimal()
+            && getOperand().isPositive()) {
+      return rewriteRule1();
     }
     return super.rewriteTo();
   }
   /**
-   * @declaredat @declaredat extendj/java7/frontend/Literals.jrag:380
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:371
    * @apilevel internal
    */
   private IntegerLiteral rewriteRule0() {
@@ -285,7 +280,7 @@ public class MinusExpr extends Unary implements Cloneable {
       return literal;
     }  }
   /**
-   * @declaredat @declaredat extendj/java7/frontend/Literals.jrag:392
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:384
    * @apilevel internal
    */
   private LongLiteral rewriteRule1() {
@@ -296,4 +291,100 @@ public class MinusExpr extends Unary implements Cloneable {
       literal.setKind(original.getKind());
       return literal;
     }  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:371
+    if (getOperand() instanceof IntegerLiteral
+            && ((IntegerLiteral) getOperand()).isDecimal()
+            && getOperand().isPositive()) {
+      return true;
+    }
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:384
+    if (getOperand() instanceof LongLiteral
+            && ((LongLiteral) getOperand()).isDecimal()
+            && getOperand().isPositive()) {
+      return true;
+    }
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:383
+    if (!getOperand().type().isNumericType()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getOperand().type().isNumericType()) {
+      collection.add(error("unary minus only operates on numeric types"));
+    }
+  }
+  /** @apilevel internal */
+  private void rewrittenNode_reset() {
+    rewrittenNode_computed = false;
+    rewrittenNode_initialized = false;
+    rewrittenNode_value = null;
+    rewrittenNode_cycle = null;
+  }
+/** @apilevel internal */
+protected ASTNode$State.Cycle rewrittenNode_cycle = null;
+  /** @apilevel internal */
+  protected boolean rewrittenNode_computed = false;
+
+  /** @apilevel internal */
+  protected ASTNode rewrittenNode_value;
+  /** @apilevel internal */
+  protected boolean rewrittenNode_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="", declaredAt=":0")
+  public ASTNode rewrittenNode() {
+    if (rewrittenNode_computed) {
+      return rewrittenNode_value;
+    }
+    ASTNode$State state = state();
+    if (!rewrittenNode_initialized) {
+      rewrittenNode_initialized = true;
+      rewrittenNode_value = this;
+      if (rewrittenNode_value != null) {
+        rewrittenNode_value.setParent(getParent());
+      }
+    }
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      do {
+        rewrittenNode_cycle = state.nextCycle();
+        ASTNode new_rewrittenNode_value = rewrittenNode_value.rewriteTo();
+        if (new_rewrittenNode_value != rewrittenNode_value || new_rewrittenNode_value.canRewrite()) {
+          state.setChangeInCycle();
+        }
+        rewrittenNode_value = new_rewrittenNode_value;
+        if (rewrittenNode_value != null) {
+          rewrittenNode_value.setParent(getParent());
+        }
+      } while (state.testAndClearChangeInCycle());
+      rewrittenNode_computed = true;
+
+      state.leaveCircle();
+    } else if (rewrittenNode_cycle != state.cycle()) {
+      rewrittenNode_cycle = state.cycle();
+      ASTNode new_rewrittenNode_value = rewrittenNode_value.rewriteTo();
+      if (new_rewrittenNode_value != rewrittenNode_value || new_rewrittenNode_value.canRewrite()) {
+        state.setChangeInCycle();
+      }
+      rewrittenNode_value = new_rewrittenNode_value;
+      if (rewrittenNode_value != null) {
+        rewrittenNode_value.setParent(getParent());
+      }
+    } else {
+    }
+    return rewrittenNode_value;
+  }
 }

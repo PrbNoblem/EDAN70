@@ -1,53 +1,43 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:11
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:11
  * @production TypeImportOnDemandDecl : {@link ImportDecl};
 
  */
 public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:620
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:615
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("import ");
     out.print(getAccess());
     out.print(".*;");
     out.println();
-  }
-  /**
-   * @aspect NameCheck
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:55
-   */
-  public void nameCheck() {
-    if (getAccess().lastAccess().isTypeAccess()
-        && !getAccess().type().typeName().equals(typeName())) {
-      errorf("On demand type import %s.* is not the canonical name of type %s",
-          typeName(), getAccess().type().typeName());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -71,59 +61,47 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
   public TypeImportOnDemandDecl(Access p0) {
     setChild(p0, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:19
+  /** @apilevel low-level 
+   * @declaredat ASTNode:17
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:25
+   * @declaredat ASTNode:23
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:31
+  /** @apilevel internal 
+   * @declaredat ASTNode:27
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     importedTypes_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:38
+  /** @apilevel internal 
+   * @declaredat ASTNode:32
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:44
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:50
+  /** @apilevel internal 
+   * @declaredat ASTNode:36
    */
   public TypeImportOnDemandDecl clone() throws CloneNotSupportedException {
     TypeImportOnDemandDecl node = (TypeImportOnDemandDecl) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:57
+  /** @apilevel internal 
+   * @declaredat ASTNode:41
    */
   public TypeImportOnDemandDecl copy() {
     try {
       TypeImportOnDemandDecl node = (TypeImportOnDemandDecl) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -137,8 +115,9 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:60
    */
+  @Deprecated
   public TypeImportOnDemandDecl fullCopy() {
     return treeCopyNoTransform();
   }
@@ -147,14 +126,14 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:85
+   * @declaredat ASTNode:70
    */
   public TypeImportOnDemandDecl treeCopyNoTransform() {
     TypeImportOnDemandDecl tree = (TypeImportOnDemandDecl) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -168,15 +147,23 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:105
+   * @declaredat ASTNode:90
    */
   public TypeImportOnDemandDecl treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    TypeImportOnDemandDecl tree = (TypeImportOnDemandDecl) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:112
+  /** @apilevel internal 
+   * @declaredat ASTNode:104
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -207,94 +194,159 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
   public Access getAccessNoTransform() {
     return (Access) getChildNoTransform(0);
   }
-  protected java.util.Map importedTypes_String_values;
   /**
-   * @apilevel internal
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:56
    */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:56")
+  public Collection<Problem> nameProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (getAccess().lastAccess().isTypeAccess()
+            && !getAccess().type().typeName().equals(typeName())) {
+          problems.add(errorf("On demand type import %s.* is not the canonical name of type %s",
+              typeName(), getAccess().type().typeName()));
+        }
+        return problems;
+      }
+  }
+  /** @apilevel internal */
   private void importedTypes_String_reset() {
     importedTypes_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet importedTypes(String name) {
+  protected java.util.Map importedTypes_String_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:457")
+  public SimpleSet<TypeDecl> importedTypes(String name) {
     Object _parameters = name;
-    if (importedTypes_String_values == null) importedTypes_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(importedTypes_String_values.containsKey(_parameters)) {
-      return (SimpleSet)importedTypes_String_values.get(_parameters);
+    if (importedTypes_String_values == null) importedTypes_String_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (importedTypes_String_values.containsKey(_parameters)) {
+      Object _cache = importedTypes_String_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (SimpleSet<TypeDecl>) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      importedTypes_String_values.put(_parameters, _value);
+      _value.value = emptySet();
     }
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet importedTypes_String_value = importedTypes_compute(name);
-    if (isFinal && num == state().boundariesCrossed) {
-      importedTypes_String_values.put(_parameters, importedTypes_String_value);
-    } else {
-    }
-    state.INTERMEDIATE_VALUE |= intermediate;
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      SimpleSet<TypeDecl> new_importedTypes_String_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_importedTypes_String_value = importedTypes_compute(name);
+        if ((new_importedTypes_String_value == null && ((SimpleSet<TypeDecl>)_value.value) != null) || (new_importedTypes_String_value != null && !new_importedTypes_String_value.equals(((SimpleSet<TypeDecl>)_value.value)))) {
+          state.setChangeInCycle();
+          _value.value = new_importedTypes_String_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      importedTypes_String_values.put(_parameters, new_importedTypes_String_value);
 
-    return importedTypes_String_value;
+      state.leaveCircle();
+      return new_importedTypes_String_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      SimpleSet<TypeDecl> new_importedTypes_String_value = importedTypes_compute(name);
+      if ((new_importedTypes_String_value == null && ((SimpleSet<TypeDecl>)_value.value) != null) || (new_importedTypes_String_value != null && !new_importedTypes_String_value.equals(((SimpleSet<TypeDecl>)_value.value)))) {
+        state.setChangeInCycle();
+        _value.value = new_importedTypes_String_value;
+      }
+      return new_importedTypes_String_value;
+    } else {
+      return (SimpleSet<TypeDecl>) _value.value;
+    }
   }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet importedTypes_compute(String name) {
-      SimpleSet set = SimpleSet.emptySet;
+  /** @apilevel internal */
+  private SimpleSet<TypeDecl> importedTypes_compute(String name) {
+      SimpleSet<TypeDecl> result = emptySet();
       if (getAccess() instanceof PackageAccess) {
         String packageName = ((PackageAccess) getAccess()).getPackage();
         TypeDecl typeDecl = lookupType(packageName, name);
-        if (typeDecl.accessibleFromPackage(packageName()) &&
-           typeDecl.typeName().equals(packageName + "." + name)) {
+        if (typeDecl.accessibleFromPackage(packageName())
+            && typeDecl.typeName().equals(packageName + "." + name)) {
           // Canonical names match.
-          set = set.add(typeDecl);
+          result = result.add(typeDecl);
         }
       } else {
-        for (Iterator iter = getAccess().type().memberTypes(name).iterator(); iter.hasNext(); ) {
-          TypeDecl decl = (TypeDecl) iter.next();
-          if (decl.accessibleFromPackage(packageName()) &&
-             decl.typeName().equals(getAccess().typeName() + "." + name)) {
+        for (TypeDecl type : getAccess().type().memberTypes(name)) {
+          if (type.accessibleFromPackage(packageName())
+              && type.typeName().equals(getAccess().typeName() + "." + name)) {
             // Canonical names match.
-            set = set.add(decl);
+            result = result.add(type);
           }
         }
       }
-      return set;
+      return result;
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
   public boolean isOnDemand() {
-    ASTNode$State state = state();
     boolean isOnDemand_value = true;
-
     return isOnDemand_value;
   }
   /**
    * @attribute inh
    * @aspect TypeScopePropagation
-   * @declaredat extendj/java4/frontend/LookupType.jrag:463
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:479
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:479")
   public TypeDecl lookupType(String packageName, String typeName) {
-    ASTNode$State state = state();
-    TypeDecl lookupType_String_String_value = getParent().Define_TypeDecl_lookupType(this, null, packageName, typeName);
-
+    TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
     return lookupType_String_String_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/SyntacticClassification.jrag:131
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getAccessNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:127
       return NameType.PACKAGE_OR_TYPE_NAME;
     }
     else {
-      return getParent().Define_NameType_nameType(this, caller);
+      return getParent().Define_nameType(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:54
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : nameProblems()) {
+      collection.add(value);
+    }
   }
 }

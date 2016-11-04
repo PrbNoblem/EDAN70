@@ -1,60 +1,34 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat extendj/java4/grammar/Java.ast:21
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:21
  * @production SuperConstructorAccess : {@link ConstructorAccess};
 
  */
 public class SuperConstructorAccess extends ConstructorAccess implements Cloneable {
-  /**
-   * @aspect TypeHierarchyCheck
-   * @declaredat extendj/java4/frontend/TypeHierarchyCheck.jrag:94
-   */
-  public void nameCheck() {
-    super.nameCheck();
-    // JLS 5?: 8.8.5.1
-    // JLS 7: 8.8.7.1
-    TypeDecl c = hostType();
-    TypeDecl s = c.isClassDecl() ? ((ClassDecl) c).superclass() : unknownType();
-    if (isQualified()) {
-      if (!s.isInnerType() || s.inStaticContext()) {
-        errorf("the super type %s of %s is not an inner class", s.typeName(), c.typeName());
-      } else if (!qualifier().type().instanceOf(s.enclosingType())) {
-        errorf("The type of this primary expression, %s is not enclosing the super type, %s, of %s",
-            qualifier().type().typeName(), s.typeName(), c.typeName());
-      }
-    }
-    if (!isQualified() && s.isInnerType()) {
-      if (!c.isInnerType()) {
-        errorf("no enclosing instance for %s when accessed in %s", s.typeName(), this.prettyPrint());
-      }
-    }
-    if (s.isInnerType() && hostType().instanceOf(s.enclosingType())) {
-      error("cannot reference 'this' before supertype constructor has been called");
-    }
-  }
   /**
    * @declaredat ASTNode:1
    */
@@ -86,59 +60,48 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
     setID(p0);
     setChild(p1, 0);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:25
+  /** @apilevel low-level 
+   * @declaredat ASTNode:23
    */
   protected int numChildren() {
     return 1;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:31
+   * @declaredat ASTNode:29
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:37
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     decls_reset();
+    unassignedAfter_Variable_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:44
+  /** @apilevel internal 
+   * @declaredat ASTNode:39
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:50
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:56
+  /** @apilevel internal 
+   * @declaredat ASTNode:43
    */
   public SuperConstructorAccess clone() throws CloneNotSupportedException {
     SuperConstructorAccess node = (SuperConstructorAccess) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:63
+  /** @apilevel internal 
+   * @declaredat ASTNode:48
    */
   public SuperConstructorAccess copy() {
     try {
       SuperConstructorAccess node = (SuperConstructorAccess) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -152,8 +115,9 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:82
+   * @declaredat ASTNode:67
    */
+  @Deprecated
   public SuperConstructorAccess fullCopy() {
     return treeCopyNoTransform();
   }
@@ -162,14 +126,14 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:91
+   * @declaredat ASTNode:77
    */
   public SuperConstructorAccess treeCopyNoTransform() {
     SuperConstructorAccess tree = (SuperConstructorAccess) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -183,18 +147,26 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:111
+   * @declaredat ASTNode:97
    */
   public SuperConstructorAccess treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    SuperConstructorAccess tree = (SuperConstructorAccess) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:118
+  /** @apilevel internal 
+   * @declaredat ASTNode:111
    */
   protected boolean is$Equal(ASTNode node) {
-    return super.is$Equal(node) && (tokenString_ID == ((SuperConstructorAccess)node).tokenString_ID);    
+    return super.is$Equal(node) && (tokenString_ID == ((SuperConstructorAccess) node).tokenString_ID);    
   }
   /**
    * Replaces the lexeme ID.
@@ -210,7 +182,7 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    * @apilevel internal
    */
   public void setID(beaver.Symbol symbol) {
-    if(symbol.value != null && !(symbol.value instanceof String))
+    if (symbol.value != null && !(symbol.value instanceof String))
     throw new UnsupportedOperationException("setID is only valid for String lexemes");
     tokenString_ID = (String)symbol.value;
     IDstart = symbol.getStart();
@@ -273,11 +245,10 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    * @apilevel high-level
    */
   public void addArg(Expr node) {
-    List<Expr> list = (parent == null || state == null) ? getArgListNoTransform() : getArgList();
+    List<Expr> list = (parent == null) ? getArgListNoTransform() : getArgList();
     list.addChild(node);
   }
-  /**
-   * @apilevel low-level
+  /** @apilevel low-level 
    */
   public void addArgNoTransform(Expr node) {
     List<Expr> list = getArgListNoTransform();
@@ -301,7 +272,6 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
   @ASTNodeAnnotation.ListChild(name="Arg")
   public List<Expr> getArgList() {
     List<Expr> list = (List<Expr>) getChild(0);
-    list.getNumChild();
     return list;
   }
   /**
@@ -312,6 +282,13 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    */
   public List<Expr> getArgListNoTransform() {
     return (List<Expr>) getChildNoTransform(0);
+  }
+  /**
+   * @return the element at index {@code i} in the Arg list without
+   * triggering rewrites.
+   */
+  public Expr getArgNoTransform(int i) {
+    return (Expr) getArgListNoTransform().getChildNoTransform(i);
   }
   /**
    * Retrieves the Arg list.
@@ -330,164 +307,293 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
   public List<Expr> getArgsNoTransform() {
     return getArgListNoTransform();
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDAafter(Variable v) {
-    ASTNode$State state = state();
-    boolean isDAafter_Variable_value = isDAbefore(v);
-
-    return isDAafter_Variable_value;
+  /**
+   * @attribute syn
+   * @aspect TypeHierarchyCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:106
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:106")
+  public Collection<Problem> typeHierarchyProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        // JLS 5?: 8.8.5.1
+        // JLS 7: 8.8.7.1
+        TypeDecl c = hostType();
+        TypeDecl s = c.isClassDecl() ? ((ClassDecl) c).superclass() : unknownType();
+        if (isQualified()) {
+          if (!s.isInnerType() || s.inStaticContext()) {
+            problems.add(errorf("the super type %s of %s is not an inner class",
+                s.typeName(), c.typeName()));
+          } else if (!qualifier().type().instanceOf(s.enclosingType())) {
+            problems.add(errorf(
+                "the type of this primary expression, %s is not enclosing the super type, %s, of %s",
+                qualifier().type().typeName(), s.typeName(), c.typeName()));
+          }
+        }
+        if (!isQualified() && s.isInnerType()
+            && (!c.isInnerType() || !c.enclosingType().instanceOf(s.enclosingType()))) {
+          problems.add(errorf("superconstructor call in constructor for class %s requires "
+              + "enclosing instance for the enclosing class %s of superclass %s",
+              c.name(), s.enclosingType().name(), s.typeName()));
+        }
+        if (s.isInnerType() && hostType().instanceOf(s.enclosingType())) {
+          problems.add(error("cannot reference 'this' before supertype constructor has been called"));
+        }
+        return problems;
+      }
   }
-  @ASTNodeAnnotation.Attribute
-  public boolean isDUafter(Variable v) {
-    ASTNode$State state = state();
-    boolean isDUafter_Variable_value = isDUbefore(v);
-
-    return isDUafter_Variable_value;
+  /**
+   * @attribute syn
+   * @aspect AccessTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:72
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:72")
+  public boolean isSuperConstructorAccess() {
+    boolean isSuperConstructorAccess_value = true;
+    return isSuperConstructorAccess_value;
   }
   /**
-   * @apilevel internal
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
+   * @attribute syn
+   * @aspect SyntacticClassification
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
    */
-  protected boolean decls_computed = false;
-  /**
-   * @apilevel internal
-   */
-  protected SimpleSet decls_value;
-  /**
-   * @apilevel internal
-   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.EXPRESSION_NAME;
+    return predNameType_value;
+  }
+  /** @apilevel internal */
   private void decls_reset() {
-    decls_computed = false;
+    decls_computed = null;
     decls_value = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet decls() {
-    if(decls_computed) {
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle decls_computed = null;
+
+  /** @apilevel internal */
+  protected SimpleSet<ConstructorDecl> decls_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstructScope
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:97
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:97")
+  public SimpleSet<ConstructorDecl> decls() {
+    ASTNode$State state = state();
+    if (decls_computed == ASTNode$State.NON_CYCLE || decls_computed == state().cycle()) {
       return decls_value;
     }
-    ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
     decls_value = decls_compute();
-    if (isFinal && num == state().boundariesCrossed) {
-      decls_computed = true;
+    if (state().inCircle()) {
+      decls_computed = state().cycle();
+    
     } else {
+      decls_computed = ASTNode$State.NON_CYCLE;
+    
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
     return decls_value;
   }
-  /**
-   * @apilevel internal
-   */
-  private SimpleSet decls_compute() {
-      Collection c = hasPrevExpr() && !prevExpr().isTypeAccess()
+  /** @apilevel internal */
+  private SimpleSet<ConstructorDecl> decls_compute() {
+      Collection<ConstructorDecl> c = hasPrevExpr() && !prevExpr().isTypeAccess()
           ? hostType().lookupSuperConstructor()
           : lookupSuperConstructor();
       return chooseConstructor(c, getArgList());
     }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
+  public boolean assignedAfter(Variable v) {
+    boolean assignedAfter_Variable_value = v.isInstanceVariable() ? assignedBefore(v) : v.isClassVariable();
+    return assignedAfter_Variable_value;
+  }
+  /** @apilevel internal */
+  private void unassignedAfter_Variable_reset() {
+    unassignedAfter_Variable_values = null;
+  }
+  protected java.util.Map unassignedAfter_Variable_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
+  public boolean unassignedAfter(Variable v) {
+    Object _parameters = v;
+    if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (unassignedAfter_Variable_values.containsKey(_parameters)) {
+      Object _cache = unassignedAfter_Variable_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      unassignedAfter_Variable_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_unassignedAfter_Variable_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_unassignedAfter_Variable_value = v.isInstanceVariable() ? unassignedBefore(v) : !v.isClassVariable();
+        if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_unassignedAfter_Variable_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      unassignedAfter_Variable_values.put(_parameters, new_unassignedAfter_Variable_value);
+
+      state.leaveCircle();
+      return new_unassignedAfter_Variable_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_unassignedAfter_Variable_value = v.isInstanceVariable() ? unassignedBefore(v) : !v.isClassVariable();
+      if (new_unassignedAfter_Variable_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_unassignedAfter_Variable_value;
+      }
+      return new_unassignedAfter_Variable_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /**
+   * @attribute syn
+   * @aspect Names
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:38
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:38")
   public String name() {
-    ASTNode$State state = state();
     String name_value = "super";
-
     return name_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public boolean isSuperConstructorAccess() {
-    ASTNode$State state = state();
-    boolean isSuperConstructorAccess_value = true;
-
-    return isSuperConstructorAccess_value;
-  }
-  @ASTNodeAnnotation.Attribute
-  public NameType predNameType() {
-    ASTNode$State state = state();
-    NameType predNameType_value = NameType.EXPRESSION_NAME;
-
-    return predNameType_value;
   }
   /**
    * @attribute inh
    * @aspect ConstructScope
-   * @declaredat extendj/java4/frontend/LookupConstructor.jrag:40
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:43
    */
-  @ASTNodeAnnotation.Attribute
-  public Collection lookupSuperConstructor() {
-    ASTNode$State state = state();
-    Collection lookupSuperConstructor_value = getParent().Define_Collection_lookupSuperConstructor(this, null);
-
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="ConstructScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:43")
+  public Collection<ConstructorDecl> lookupSuperConstructor() {
+    Collection<ConstructorDecl> lookupSuperConstructor_value = getParent().Define_lookupSuperConstructor(this, null);
     return lookupSuperConstructor_value;
   }
   /**
    * @attribute inh
    * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:584
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:663
    */
-  @ASTNodeAnnotation.Attribute
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:663")
   public TypeDecl enclosingInstance() {
-    ASTNode$State state = state();
-    TypeDecl enclosingInstance_value = getParent().Define_TypeDecl_enclosingInstance(this, null);
-
+    TypeDecl enclosingInstance_value = getParent().Define_enclosingInstance(this, null);
     return enclosingInstance_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/LookupType.jrag:120
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:189
    * @apilevel internal
    */
-  public boolean Define_boolean_hasPackage(ASTNode caller, ASTNode child, String packageName) {
-    if (caller == getArgListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return unqualifiedScope().hasPackage(packageName);
-    }
-    else {
-      return super.Define_boolean_hasPackage(caller, child, packageName);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/LookupVariable.jrag:221
-   * @apilevel internal
-   */
-  public SimpleSet Define_SimpleSet_lookupVariable(ASTNode caller, ASTNode child, String name) {
-    if (caller == getArgListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
-      return unqualifiedScope().lookupVariable(name);
-    }
-    else {
-      return super.Define_SimpleSet_lookupVariable(caller, child, name);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/TypeHierarchyCheck.jrag:169
-   * @apilevel internal
-   */
-  public boolean Define_boolean_inExplicitConstructorInvocation(ASTNode caller, ASTNode child) {
-    if (caller == getArgListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public boolean Define_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getArgListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:193
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return true;
     }
     else {
-      return super.Define_boolean_inExplicitConstructorInvocation(caller, child);
+      return super.Define_inExplicitConstructorInvocation(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/TypeHierarchyCheck.jrag:178
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197
    * @apilevel internal
    */
-  public TypeDecl Define_TypeDecl_enclosingExplicitConstructorHostType(ASTNode caller, ASTNode child) {
-    if (caller == getArgListNoTransform()) {
-      int childIndex = caller.getIndexOfChild(child);
+  public TypeDecl Define_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getArgListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:202
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
       return hostType();
     }
     else {
-      return super.Define_TypeDecl_enclosingExplicitConstructorHostType(caller, child);
+      return super.Define_enclosingExplicitConstructorHostType(_callerNode, _childNode);
     }
   }
+  protected boolean canDefine_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getArgListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:245
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return unqualifiedScope().lookupVariable(name);
+    }
+    else {
+      return super.Define_lookupVariable(_callerNode, _childNode, name);
+    }
+  }
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:113
+   * @apilevel internal
+   */
+  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    if (_callerNode == getArgListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:118
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return unqualifiedScope().hasPackage(packageName);
+    }
+    else {
+      return super.Define_hasPackage(_callerNode, _childNode, packageName);
+    }
+  }
+  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:104
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    for (Problem value : typeHierarchyProblems()) {
+      collection.add(value);
+    }
   }
 }

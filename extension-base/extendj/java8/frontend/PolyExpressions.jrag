@@ -53,8 +53,9 @@ aspect PolyExpressions {
       isBooleanConditional();
 
   syn lazy boolean ConditionalExpr.isBooleanConditional() =
-      getTrueExpr().isBooleanExpression() && getFalseExpr().isBooleanExpression();
-
+      getTrueExpr().isBooleanExpression() && getFalseExpr().isBooleanExpression()
+      || getTrueExpr().isBooleanExpression() && getFalseExpr().isNullLiteral()
+      || getFalseExpr().isBooleanExpression() && getTrueExpr().isNullLiteral();
 
   syn lazy boolean Expr.isNumericExpression() =
       !isPolyExpression() && type().isNumericType();
@@ -68,11 +69,16 @@ aspect PolyExpressions {
     }
   }
 
+  syn boolean Expr.isNullLiteral() = false;
+  eq NullLiteral.isNullLiteral() = true;
+
   eq ConditionalExpr.isNumericExpression() =
       isNumericConditional();
 
   syn lazy boolean ConditionalExpr.isNumericConditional() =
-      getTrueExpr().isNumericExpression() && getFalseExpr().isNumericExpression();
+      getTrueExpr().isNumericExpression() && getFalseExpr().isNumericExpression()
+      || getTrueExpr().isNumericExpression() && getFalseExpr().isNullLiteral()
+      || getFalseExpr().isNumericExpression() && getTrueExpr().isNullLiteral();
 
   syn lazy boolean ConditionalExpr.isReferenceConditional() =
       !isBooleanConditional() && !isNumericConditional();
@@ -96,6 +102,7 @@ aspect PolyExpressions {
 
   // 15.12
   eq ParMethodAccess.isPolyExpression() = false;
+
   eq MethodAccess.isPolyExpression() {
     if (!assignmentContext() && !invocationContext()) {
       return false;
@@ -121,7 +128,7 @@ aspect PolyExpressions {
         list.add(current.getChild(i));
       }
       if (current instanceof TypeAccess) {
-        TypeAccess typeAccess = (TypeAccess)current;
+        TypeAccess typeAccess = (TypeAccess) current;
         if (typeAccess.type().isTypeVariable()) {
           for (int i = 0; i < getNumTypeParameter(); i++) {
             if (typeAccess.type() == getTypeParameter(i)) {
@@ -181,7 +188,7 @@ aspect PolyExpressions {
       return super.assignConversionTo(type);
     } else {
       return ((DiamondAccess) getAccess()).getTypeAccess().type().assignConversionTo(
-          type, ((DiamondAccess)getAccess()).getTypeAccess());
+          type, ((DiamondAccess) getAccess()).getTypeAccess());
     }
   }
 

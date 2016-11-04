@@ -1,62 +1,44 @@
-/* This file was generated with JastAdd2 (http://jastadd.org) version 2.1.10-34-g8379457 */
+/* This file was generated with JastAdd2 (http://jastadd.org) version 2.2.2 */
 package org.extendj.ast;
-
 import java.util.ArrayList;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.IOException;
 import java.util.Set;
 import beaver.*;
 import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
 import org.jastadd.util.PrettyPrintable;
 import org.jastadd.util.PrettyPrinter;
-import java.io.FileNotFoundException;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * A catch clause that can catch a single exception type.
  * @ast node
- * @declaredat extendj/java7/grammar/MultiCatch.ast:9
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/MultiCatch.ast:9
  * @production BasicCatch : {@link CatchClause} ::= <span class="component">Parameter:{@link ParameterDeclaration}</span> <span class="component">{@link Block}</span>;
 
  */
 public class BasicCatch extends CatchClause implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat extendj/java4/frontend/PrettyPrint.jadd:35
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:98
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("catch (");
     out.print(getParameter());
     out.print(") ");
     out.print(getBlock());
-  }
-  /**
-   * @aspect TypeCheck
-   * @declaredat extendj/java4/frontend/TypeCheck.jrag:431
-   */
-  public void typeCheck() {
-    if (!getParameter().type().instanceOf(typeThrowable())) {
-      error("*** The catch variable must extend Throwable");
-    }
-  }
-  /**
-   * @aspect PreciseRethrow
-   * @declaredat extendj/java7/frontend/PreciseRethrow.jrag:286
-   */
-  void checkUnreachableStmt() {
-    if (!getBlock().reachable() && reportUnreachable()) {
-      errorf("the exception %s is not thrown in the body of the try statement",
-          getParameter().type().fullName());
-    }
   }
   /**
    * @declaredat ASTNode:1
@@ -81,59 +63,47 @@ public class BasicCatch extends CatchClause implements Cloneable {
     setChild(p0, 0);
     setChild(p1, 1);
   }
-  /**
-   * @apilevel low-level
-   * @declaredat ASTNode:20
+  /** @apilevel low-level 
+   * @declaredat ASTNode:18
    */
   protected int numChildren() {
     return 2;
   }
   /**
    * @apilevel internal
-   * @declaredat ASTNode:26
+   * @declaredat ASTNode:24
    */
   public boolean mayHaveRewrite() {
     return false;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:32
+  /** @apilevel internal 
+   * @declaredat ASTNode:28
    */
   public void flushAttrCache() {
     super.flushAttrCache();
     parameterDeclaration_String_reset();
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:39
+  /** @apilevel internal 
+   * @declaredat ASTNode:33
    */
   public void flushCollectionCache() {
     super.flushCollectionCache();
   }
-  /**
-   * @api internal
-   * @declaredat ASTNode:45
-   */
-  public void flushRewriteCache() {
-    super.flushRewriteCache();
-  }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:51
+  /** @apilevel internal 
+   * @declaredat ASTNode:37
    */
   public BasicCatch clone() throws CloneNotSupportedException {
     BasicCatch node = (BasicCatch) super.clone();
     return node;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:58
+  /** @apilevel internal 
+   * @declaredat ASTNode:42
    */
   public BasicCatch copy() {
     try {
       BasicCatch node = (BasicCatch) clone();
       node.parent = null;
-      if(children != null) {
+      if (children != null) {
         node.children = (ASTNode[]) children.clone();
       }
       return node;
@@ -147,8 +117,9 @@ public class BasicCatch extends CatchClause implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:77
+   * @declaredat ASTNode:61
    */
+  @Deprecated
   public BasicCatch fullCopy() {
     return treeCopyNoTransform();
   }
@@ -157,14 +128,14 @@ public class BasicCatch extends CatchClause implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:86
+   * @declaredat ASTNode:71
    */
   public BasicCatch treeCopyNoTransform() {
     BasicCatch tree = (BasicCatch) copy();
     if (children != null) {
       for (int i = 0; i < children.length; ++i) {
         ASTNode child = (ASTNode) children[i];
-        if(child != null) {
+        if (child != null) {
           child = child.treeCopyNoTransform();
           tree.setChild(child, i);
         }
@@ -178,15 +149,23 @@ public class BasicCatch extends CatchClause implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:106
+   * @declaredat ASTNode:91
    */
   public BasicCatch treeCopy() {
-    doFullTraversal();
-    return treeCopyNoTransform();
+    BasicCatch tree = (BasicCatch) copy();
+    if (children != null) {
+      for (int i = 0; i < children.length; ++i) {
+        ASTNode child = (ASTNode) getChild(i);
+        if (child != null) {
+          child = child.treeCopy();
+          tree.setChild(child, i);
+        }
+      }
+    }
+    return tree;
   }
-  /**
-   * @apilevel internal
-   * @declaredat ASTNode:113
+  /** @apilevel internal 
+   * @declaredat ASTNode:105
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node);    
@@ -243,168 +222,259 @@ public class BasicCatch extends CatchClause implements Cloneable {
   public Block getBlockNoTransform() {
     return (Block) getChildNoTransform(1);
   }
-  @ASTNodeAnnotation.Attribute
+  /**
+   * @attribute syn
+   * @aspect ExceptionHandling
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279")
   public boolean handles(TypeDecl exceptionType) {
-    ASTNode$State state = state();
     boolean handles_TypeDecl_value = !getParameter().type().isUnknown()
           && exceptionType.instanceOf(getParameter().type());
-
     return handles_TypeDecl_value;
   }
-  protected java.util.Map parameterDeclaration_String_values;
-  /**
-   * @apilevel internal
-   */
+  /** @apilevel internal */
   private void parameterDeclaration_String_reset() {
+    parameterDeclaration_String_computed = new java.util.HashMap(4);
     parameterDeclaration_String_values = null;
   }
-  @ASTNodeAnnotation.Attribute
-  public SimpleSet parameterDeclaration(String name) {
+  /** @apilevel internal */
+  protected java.util.Map parameterDeclaration_String_values;
+  /** @apilevel internal */
+  protected java.util.Map parameterDeclaration_String_computed;
+  /**
+   * @attribute syn
+   * @aspect VariableScope
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192")
+  public SimpleSet<Variable> parameterDeclaration(String name) {
     Object _parameters = name;
-    if (parameterDeclaration_String_values == null) parameterDeclaration_String_values = new org.jastadd.util.RobustMap(new java.util.HashMap());
-    if(parameterDeclaration_String_values.containsKey(_parameters)) {
-      return (SimpleSet)parameterDeclaration_String_values.get(_parameters);
-    }
+    if (parameterDeclaration_String_computed == null) parameterDeclaration_String_computed = new java.util.HashMap(4);
+    if (parameterDeclaration_String_values == null) parameterDeclaration_String_values = new java.util.HashMap(4);
     ASTNode$State state = state();
-    boolean intermediate = state.INTERMEDIATE_VALUE;
-    state.INTERMEDIATE_VALUE = false;
-    int num = state.boundariesCrossed;
-    boolean isFinal = this.is$Final();
-    SimpleSet parameterDeclaration_String_value = getParameter().name().equals(name)
-          ? getParameter()
-          : SimpleSet.emptySet;
-    if (isFinal && num == state().boundariesCrossed) {
-      parameterDeclaration_String_values.put(_parameters, parameterDeclaration_String_value);
-    } else {
+    if (parameterDeclaration_String_values.containsKey(_parameters) && parameterDeclaration_String_computed != null
+        && parameterDeclaration_String_computed.containsKey(_parameters)
+        && (parameterDeclaration_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || parameterDeclaration_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) parameterDeclaration_String_values.get(_parameters);
     }
-    state.INTERMEDIATE_VALUE |= intermediate;
-
+    SimpleSet<Variable> parameterDeclaration_String_value = getParameter().name().equals(name)
+          ? getParameter()
+          : ASTNode.<Variable>emptySet();
+    if (state().inCircle()) {
+      parameterDeclaration_String_values.put(_parameters, parameterDeclaration_String_value);
+      parameterDeclaration_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      parameterDeclaration_String_values.put(_parameters, parameterDeclaration_String_value);
+      parameterDeclaration_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
     return parameterDeclaration_String_value;
   }
   /**
-   * @declaredat extendj/java4/frontend/LookupVariable.jrag:143
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
    * @apilevel internal
    */
-  public SimpleSet Define_SimpleSet_lookupVariable(ASTNode caller, ASTNode child, String name) {
-    if (caller == getParameterNoTransform()) {
-      return parameterDeclaration(name);
-    }
-    else {
-      return super.Define_SimpleSet_lookupVariable(caller, child, name);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/NameCheck.jrag:366
-   * @apilevel internal
-   */
-  public VariableScope Define_VariableScope_outerScope(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
-      return this;
-    }
-    else {
-      return getParent().Define_VariableScope_outerScope(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/SyntacticClassification.jrag:113
-   * @apilevel internal
-   */
-  public NameType Define_NameType_nameType(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
-      return NameType.TYPE_NAME;
-    }
-    else {
-      return getParent().Define_NameType_nameType(this, caller);
-    }
-  }
-  /**
-   * @declaredat extendj/java4/frontend/UnreachableStatements.jrag:180
-   * @apilevel internal
-   */
-  public boolean Define_boolean_reachable(ASTNode caller, ASTNode child) {
-    if (caller == getBlockNoTransform()) {
+  public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
+    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:177
       return reachableCatchClause(getParameter().type());
     }
     else {
-      return getParent().Define_boolean_reachable(this, caller);
+      return getParent().Define_reachable(this, _callerNode);
     }
   }
+  protected boolean canDefine_reachable(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/VariableDeclaration.jrag:85
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
-  public boolean Define_boolean_isMethodParameter(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:109
+      return NameType.TYPE_NAME;
+    }
+    else {
+      return getParent().Define_nameType(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:31
+   * @apilevel internal
+   */
+  public VariableScope Define_outerScope(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:424
+      return this;
+    }
+    else {
+      return getParent().Define_outerScope(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_outerScope(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @apilevel internal
+   */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:145
+      return parameterDeclaration(name);
+    }
+    else {
+      return super.Define_lookupVariable(_callerNode, _childNode, name);
+    }
+  }
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:44
+   * @apilevel internal
+   */
+  public boolean Define_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:95
       return false;
     }
     else {
-      return getParent().Define_boolean_isMethodParameter(this, caller);
+      return getParent().Define_isMethodParameter(this, _callerNode);
     }
   }
+  protected boolean canDefine_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/VariableDeclaration.jrag:86
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:45
    * @apilevel internal
    */
-  public boolean Define_boolean_isConstructorParameter(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
+  public boolean Define_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:96
       return false;
     }
     else {
-      return getParent().Define_boolean_isConstructorParameter(this, caller);
+      return getParent().Define_isConstructorParameter(this, _callerNode);
     }
   }
+  protected boolean canDefine_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java4/frontend/VariableDeclaration.jrag:87
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:46
    * @apilevel internal
    */
-  public boolean Define_boolean_isExceptionHandlerParameter(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
+  public boolean Define_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:97
       return true;
     }
     else {
-      return getParent().Define_boolean_isExceptionHandlerParameter(this, caller);
+      return getParent().Define_isExceptionHandlerParameter(this, _callerNode);
     }
   }
+  protected boolean canDefine_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java5/frontend/VariableArityParameters.jrag:45
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46
    * @apilevel internal
    */
-  public boolean Define_boolean_variableArityValid(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
+  public boolean Define_variableArityValid(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:43
       return false;
     }
     else {
-      return getParent().Define_boolean_variableArityValid(this, caller);
+      return getParent().Define_variableArityValid(this, _callerNode);
     }
   }
+  protected boolean canDefine_variableArityValid(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java7/frontend/PreciseRethrow.jrag:81
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
    * @apilevel internal
    */
-  public boolean Define_boolean_inhModifiedInScope(ASTNode caller, ASTNode child, Variable var) {
-    if (caller == getParameterNoTransform()) {
+  public boolean Define_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:75
       return getBlock().modifiedInScope(var);
     }
     else {
-      return getParent().Define_boolean_inhModifiedInScope(this, caller, var);
+      return getParent().Define_inhModifiedInScope(this, _callerNode, var);
     }
   }
+  protected boolean canDefine_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
+    return true;
+  }
   /**
-   * @declaredat extendj/java7/frontend/PreciseRethrow.jrag:210
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:202
    * @apilevel internal
    */
-  public boolean Define_boolean_isCatchParam(ASTNode caller, ASTNode child) {
-    if (caller == getParameterNoTransform()) {
+  public boolean Define_isCatchParam(ASTNode _callerNode, ASTNode _childNode) {
+    if (getParameterNoTransform() != null && _callerNode == getParameter()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:206
       return true;
     }
     else {
-      return getParent().Define_boolean_isCatchParam(this, caller);
+      return getParent().Define_isCatchParam(this, _callerNode);
     }
   }
-  /**
-   * @apilevel internal
-   */
+  protected boolean canDefine_isCatchParam(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
+  }
+  /** @apilevel internal */
+  public boolean canRewrite() {
+    return false;
+  }
+  protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:491
+    if (!getParameter().type().instanceOf(typeThrowable())) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:283
+    if (!getBlock().reachable() && reportUnreachable()) {
+      {
+        java.util.Set<ASTNode> contributors = _map.get(_root);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) _root, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_problems(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
+    super.contributeTo_CompilationUnit_problems(collection);
+    if (!getParameter().type().instanceOf(typeThrowable())) {
+      collection.add(error("*** The catch variable must extend Throwable"));
+    }
+    if (!getBlock().reachable() && reportUnreachable()) {
+      collection.add(errorf("the exception %s is not thrown in the body of the try statement",
+                getParameter().type().fullName()));
+    }
   }
 }
