@@ -1141,8 +1141,20 @@ public class FieldDecl extends MemberDecl implements Cloneable {
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:14
-    if (getTypeAccess().nodeType().equals("PrimitiveTypeAccess")) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:17
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:22
+    if (getTypeAccess().nodeType().equals("TypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
         java.util.Set<ASTNode> contributors = _map.get(target);
@@ -1163,8 +1175,11 @@ public class FieldDecl extends MemberDecl implements Cloneable {
   }
   protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_usedTypes(collection);
-    if (getTypeAccess().nodeType().equals("PrimitiveTypeAccess")) {
-      collection.add(((PrimitiveTypeAccess)getTypeAccess()).getID());
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      collection.add(((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName());
+    }
+    if (getTypeAccess().nodeType().equals("TypeAccess")) {
+      collection.add(getTypeAccess().typeName());
     }
   }
 }

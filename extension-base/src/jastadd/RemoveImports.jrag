@@ -1,0 +1,51 @@
+import java.io.*;
+aspect RemoveImports {
+
+public void CompilationUnit.removeImports(String path) {
+    //prettyPrint(System.out);
+    System.out.println(path);
+    FileInputStream in = null;
+    BufferedReader reader = null;
+    FileWriter writer = null;
+
+
+
+
+
+
+    try {
+        writer = new FileWriter(path+".temp");
+        in = new FileInputStream(path);
+        reader = new BufferedReader(new InputStreamReader(in));
+
+        String line = reader.readLine();
+        int lineNumber = 1;
+        while(line != null){
+            if(!killableLines().contains(lineNumber)){
+                writer.write(line);
+                writer.write("\n");
+            }
+            lineNumber++;
+            line = reader.readLine();
+        }
+
+    }catch(Exception e){
+
+    }finally {
+            try {
+                in.close();
+            } catch (Exception e) {}
+
+
+            try {
+                reader.close();
+            } catch (Exception e) {}
+
+            try {
+                writer.close();
+            } catch (Exception e) {}
+
+    }
+  }
+
+}

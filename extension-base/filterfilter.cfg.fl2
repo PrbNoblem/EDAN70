@@ -1,0 +1,3 @@
+// Example filter rules:
+ exclude Program *
+include ** CompilationUnit when {fromSource()}

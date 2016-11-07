@@ -7,12 +7,38 @@ aspect UnusedImports {
     syn String Access.nodeType() = "";
     eq PrimitiveTypeAccess.nodeType() = "PrimitiveTypeAccess";
     eq ParTypeAccess.nodeType() = "ParTypeAccess";
+    eq TypeAccess.nodeType() = "TypeAccess";
 
     coll HashSet<String> CompilationUnit.usedTypes() [new HashSet<String>()] with add root CompilationUnit;
-     syn String CompilationUnit.hej() = "jaha";
+    coll HashSet<SingleTypeImportDecl> CompilationUnit.importTypes() [new HashSet<SingleTypeImportDecl>()] with add root CompilationUnit;
 
-    FieldDecl contributes ((PrimitiveTypeAccess)getTypeAccess()).getID()
-		when getTypeAccess().nodeType().equals("PrimitiveTypeAccess")
+
+
+    FieldDecl contributes ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName()
+		when getTypeAccess().nodeType().equals("ParTypeAccess")
 		to CompilationUnit.usedTypes()
         for compilationUnit();
+
+    FieldDecl contributes getTypeAccess().typeName()
+    	when getTypeAccess().nodeType().equals("TypeAccess")
+    	to CompilationUnit.usedTypes()
+        for compilationUnit();
+
+
+    SingleTypeImportDecl contributes this
+        to CompilationUnit.importTypes()
+        for compilationUnit();
+
+
+    syn HashSet<Integer> CompilationUnit.killableLines() {
+        HashSet<Integer> killable = new HashSet<Integer>();
+        for(SingleTypeImportDecl s : importTypes()) {
+            if(!usedTypes().contains(((TypeAccess)(s.getAccess())).getID())){
+                killable.add(s.lineNumber());
+            }
+        }
+        return killable;
+
+    }
+
 }

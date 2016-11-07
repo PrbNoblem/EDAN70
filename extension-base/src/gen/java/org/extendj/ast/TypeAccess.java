@@ -579,6 +579,17 @@ public class TypeAccess extends Access implements Cloneable {
         return super.substituted(original, substitution);
       }
   }
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7")
+  public String nodeType() {
+    String nodeType_value = "TypeAccess";
+    return nodeType_value;
+  }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
