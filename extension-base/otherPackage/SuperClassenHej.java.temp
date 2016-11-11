@@ -1,4 +1,4 @@
-package testfiles.otherPackage;
+package otherPackage;
 
 public class SuperClassenHej {
 

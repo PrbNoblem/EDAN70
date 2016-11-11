@@ -777,6 +777,32 @@ public class ParameterDeclaration extends ASTNode<ASTNode> implements Cloneable,
     }
   /**
    * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:8
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:8")
+  public String accessType() {
+    String accessType_value = getTypeAccess().nodeType();
+    return accessType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:15
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:15")
+  public String varibleTypeName() {
+    {
+            if(accessType().equals("ParTypeAccess")) {
+                return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
+            }
+            return getTypeAccess().typeName();
+        }
+  }
+  /**
+   * @attribute syn
    * @aspect Modifiers
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:281
    */
@@ -1032,10 +1058,46 @@ public class ParameterDeclaration extends ASTNode<ASTNode> implements Cloneable,
     }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:44
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:49
+    if (getTypeAccess().nodeType().equals("TypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_usedTypes(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     for (Problem value : nameProblems()) {
       collection.add(value);
+    }
+  }
+  protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
+    super.contributeTo_CompilationUnit_usedTypes(collection);
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      collection.add(varibleTypeName());
+    }
+    if (getTypeAccess().nodeType().equals("TypeAccess")) {
+      collection.add(varibleTypeName());
     }
   }
 }

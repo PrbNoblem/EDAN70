@@ -3,24 +3,22 @@ aspect RemoveImports {
 
 public void CompilationUnit.removeImports(String path) {
     //prettyPrint(System.out);
-    System.out.println(path);
+    System.out.println(pathName());
+
     FileInputStream in = null;
     BufferedReader reader = null;
     FileWriter writer = null;
 
-
-
-
-
-
     try {
-        writer = new FileWriter(path+".temp");
-        in = new FileInputStream(path);
+        writer = new FileWriter(pathName()+".temp");
+        in = new FileInputStream(pathName());
         reader = new BufferedReader(new InputStreamReader(in));
 
         String line = reader.readLine();
         int lineNumber = 1;
+
         while(line != null){
+
             if(!killableLines().contains(lineNumber)){
                 writer.write(line);
                 writer.write("\n");
@@ -35,7 +33,6 @@ public void CompilationUnit.removeImports(String path) {
             try {
                 in.close();
             } catch (Exception e) {}
-
 
             try {
                 reader.close();

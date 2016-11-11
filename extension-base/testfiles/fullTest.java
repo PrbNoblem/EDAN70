@@ -4,9 +4,8 @@ import java.util.List;
 
 public class Otto extends SuperClassenHej {
 
-    List<String> hest;
-
-    private void test1() {
+    
+    private void test1(Integer l) {
 
         String s = "otto";
     }
