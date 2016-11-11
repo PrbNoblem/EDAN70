@@ -652,7 +652,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:22
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypes = null;
 
@@ -665,7 +665,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:13
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:23
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_importTypes = null;
 
@@ -957,10 +957,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:33
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:63
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:33")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:63")
   public HashSet<Integer> killableLines() {
     {
             HashSet<Integer> killable = new HashSet<Integer>();
@@ -1511,10 +1511,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute coll
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:22
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:22")
   public HashSet<String> usedTypes() {
     ASTNode$State state = state();
     if (CompilationUnit_usedTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypes_computed == state().cycle()) {
@@ -1555,10 +1555,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute coll
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:13
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:23
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:13")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:23")
   public HashSet<SingleTypeImportDecl> importTypes() {
     ASTNode$State state = state();
     if (CompilationUnit_importTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_importTypes_computed == state().cycle()) {

@@ -2456,6 +2456,26 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
       }
   }
   /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:15
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:15")
+  public String accessType() {
+    { return hasSuperClass() ? getSuperClass().nodeType() : ""; }
+  }
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:16
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:16")
+  public String superClassName() {
+    { return hasSuperClass() ? getSuperClass().typeName() : ""; }
+  }
+  /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
@@ -2657,6 +2677,33 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
     }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:47
+    if (accessType().equals("ParTypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:52
+    if (accessType().equals("TypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_usedTypes(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     for (Problem value : typeProblems()) {
@@ -2670,6 +2717,15 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
     }
     for (Problem value : accessControlProblems()) {
       collection.add(value);
+    }
+  }
+  protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
+    super.contributeTo_CompilationUnit_usedTypes(collection);
+    if (accessType().equals("ParTypeAccess")) {
+      collection.add(superClassName());
+    }
+    if (accessType().equals("TypeAccess")) {
+      collection.add(superClassName());
     }
   }
 }

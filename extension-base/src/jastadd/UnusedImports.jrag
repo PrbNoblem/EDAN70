@@ -3,7 +3,17 @@ import java.util.HashSet;
 
 aspect UnusedImports {
 
-    syn String FieldDecl.AccessType() = getTypeAccess().nodeType();
+    syn String FieldDecl.accessType() = getTypeAccess().nodeType();
+    syn String VarDeclStmt.accessType() = getTypeAccess().nodeType();
+    syn String FieldDecl.varibleTypeName() {
+        if(accessType().equals("ParTypeAccess")) {
+            return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
+        }
+        return getTypeAccess().typeName();
+    }
+    syn String VarDeclStmt.localVaribleTypeName() = getTypeAccess().typeName();
+    syn String ClassDecl.accessType() { return hasSuperClass() ? getSuperClass().nodeType() : ""; }
+    syn String ClassDecl.superClassName() { return hasSuperClass() ? getSuperClass().typeName() : ""; }
     syn String Access.nodeType() = "";
     eq PrimitiveTypeAccess.nodeType() = "PrimitiveTypeAccess";
     eq ParTypeAccess.nodeType() = "ParTypeAccess";
@@ -14,14 +24,34 @@ aspect UnusedImports {
 
 
 
-    FieldDecl contributes ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName()
+    FieldDecl contributes varibleTypeName()
 		when getTypeAccess().nodeType().equals("ParTypeAccess")
 		to CompilationUnit.usedTypes()
         for compilationUnit();
 
-    FieldDecl contributes getTypeAccess().typeName()
+    FieldDecl contributes varibleTypeName()
     	when getTypeAccess().nodeType().equals("TypeAccess")
     	to CompilationUnit.usedTypes()
+        for compilationUnit();
+
+    VarDeclStmt contributes localVaribleTypeName()
+    	when getTypeAccess().nodeType().equals("ParTypeAccess")
+    	to CompilationUnit.usedTypes()
+        for compilationUnit();
+
+    VarDeclStmt contributes localVaribleTypeName()
+        when getTypeAccess().nodeType().equals("TypeAccess")
+        to CompilationUnit.usedTypes()
+        for compilationUnit();
+
+    ClassDecl contributes superClassName()
+        when accessType().equals("ParTypeAccess")
+        to CompilationUnit.usedTypes()
+        for compilationUnit();
+
+    ClassDecl contributes superClassName()
+        when accessType().equals("TypeAccess")
+        to CompilationUnit.usedTypes()
         for compilationUnit();
 
 

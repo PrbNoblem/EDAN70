@@ -752,9 +752,24 @@ public class FieldDecl extends MemberDecl implements Cloneable {
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
   @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:6")
-  public String AccessType() {
-    String AccessType_value = getTypeAccess().nodeType();
-    return AccessType_value;
+  public String accessType() {
+    String accessType_value = getTypeAccess().nodeType();
+    return accessType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:8
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:8")
+  public String varibleTypeName() {
+    {
+            if(accessType().equals("ParTypeAccess")) {
+                return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
+            }
+            return getTypeAccess().typeName();
+        }
   }
   /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:208
@@ -1141,7 +1156,7 @@ public class FieldDecl extends MemberDecl implements Cloneable {
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:17
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -1153,7 +1168,7 @@ public class FieldDecl extends MemberDecl implements Cloneable {
         contributors.add(this);
       }
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:22
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:32
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -1176,10 +1191,10 @@ public class FieldDecl extends MemberDecl implements Cloneable {
   protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_usedTypes(collection);
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
-      collection.add(((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName());
+      collection.add(varibleTypeName());
     }
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
-      collection.add(getTypeAccess().typeName());
+      collection.add(varibleTypeName());
     }
   }
 }

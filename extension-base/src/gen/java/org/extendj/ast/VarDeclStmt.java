@@ -521,6 +521,28 @@ public class VarDeclStmt extends Stmt implements Cloneable {
       }
   }
   /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:7")
+  public String accessType() {
+    String accessType_value = getTypeAccess().nodeType();
+    return accessType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:14
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:14")
+  public String localVaribleTypeName() {
+    String localVaribleTypeName_value = getTypeAccess().typeName();
+    return localVaribleTypeName_value;
+  }
+  /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
@@ -753,5 +775,41 @@ public class VarDeclStmt extends Stmt implements Cloneable {
   /** @apilevel internal */
   public boolean canRewrite() {
     return false;
+  }
+  protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:37
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:42
+    if (getTypeAccess().nodeType().equals("TypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_usedTypes(_root, _map);
+  }
+  protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
+    super.contributeTo_CompilationUnit_usedTypes(collection);
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      collection.add(localVaribleTypeName());
+    }
+    if (getTypeAccess().nodeType().equals("TypeAccess")) {
+      collection.add(localVaribleTypeName());
+    }
   }
 }
