@@ -5,6 +5,7 @@ aspect OverrideAnnotation {
     coll HashSet<String> CompilationUnit.methods() [new HashSet<String>()] with add root CompilationUnit;
     coll HashSet<Integer> CompilationUnit.methodLinesWhereWeShouldAddOverrideAnnotation() [new HashSet<Integer>()] with add root CompilationUnit;
     coll HashSet<String> CompilationUnit.overrideMethods() [new HashSet<String>()] with addAll root CompilationUnit;
+    coll HashSet<Integer> CompilationUnit.onDemlines() [new HashSet<Integer>()] with add root CompilationUnit;
 
     MethodDecl contributes getID()
     to CompilationUnit.methods()
@@ -19,6 +20,13 @@ aspect OverrideAnnotation {
     when compilationUnit().overrideMethods().contains(getID())
     to CompilationUnit.methodLinesWhereWeShouldAddOverrideAnnotation()
     for compilationUnit();
+
+    TypeImportOnDemandDecl contributes lineNumber()
+    when isOnDemand()
+    to CompilationUnit.onDemlines()
+    for compilationUnit();
+
+
 
 
 

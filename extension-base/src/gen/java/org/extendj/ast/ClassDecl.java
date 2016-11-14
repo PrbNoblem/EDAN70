@@ -2705,7 +2705,7 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
     super.collect_contributors_CompilationUnit_usedTypes(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_overrideMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:13
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:14
     if (hasSuperClass()) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());

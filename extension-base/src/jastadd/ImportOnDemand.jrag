@@ -1,0 +1,22 @@
+
+aspect ImportOnDemand {
+
+//coll HashSet<String> CompilationUnit.ImportTypesOnDemand() [new HashSet<String>()] with add root CompilationUnit;
+syn HashSet<String> CompilationUnit.importTypesOnDemand() {
+    HashSet<String> temp = new HashSet<String>();
+    for(ImportDecl decl : getImportDeclList()) {
+        if(decl.isOnDemand()) {
+            for(String type : usedTypes()) {
+                if(decl.importedTypes(type).toString() == "org.extendj.ast.GenericInterfaceDecl" ||
+                 decl.importedTypes(type).toString() == "org.extendj.ast.ClassDecl" ||
+                 decl.importedTypes(type).toString() == "org.extendj.ast.GenericClassDecl") {
+                     temp.add(decl.getAccess().packageName() + "." + type);
+                 }
+            }
+        }
+    }
+    return temp;
+}
+
+
+}

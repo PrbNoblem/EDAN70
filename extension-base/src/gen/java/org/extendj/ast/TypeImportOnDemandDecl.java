@@ -343,10 +343,31 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
     }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_onDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:24
+    if (isOnDemand()) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_onDemlines(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     for (Problem value : nameProblems()) {
       collection.add(value);
+    }
+  }
+  protected void contributeTo_CompilationUnit_onDemlines(HashSet<Integer> collection) {
+    super.contributeTo_CompilationUnit_onDemlines(collection);
+    if (isOnDemand()) {
+      collection.add(lineNumber());
     }
   }
 }

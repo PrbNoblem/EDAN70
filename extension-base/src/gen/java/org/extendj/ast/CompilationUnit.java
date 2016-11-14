@@ -137,13 +137,29 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
         while(line != null){
 
             if(!killableLines().contains(lineNumber)){
+                if(onDemlines().contains(lineNumber)){
+                    String result = line.replaceAll("[*;]","");
+                     result = result.replaceAll("import","");
+                    result = result.replaceAll(" ","");
+                    System.out.println(result);
+                    for(String s : importTypesOnDemand()){
+                        System.out.println(s);
+                        System.out.println(result);
+                        if(s.contains(result)) {
+                            writer.write("import " + s + ";");
+                            writer.write("\n");
+                        }
+                    }
+                } else {
+
                 if(methodLinesWhereWeShouldAddOverrideAnnotation().contains(lineNumber)) {
-                    writer.write("@Override");
+                    writer.write("\t" + "@Override");
                     writer.write("\n");
                 }
 
                 writer.write(line);
                 writer.write("\n");
+            }
             }
             lineNumber++;
             line = reader.readLine();
@@ -238,22 +254,25 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation_value = null;
     CompilationUnit_overrideMethods_computed = null;
     CompilationUnit_overrideMethods_value = null;
+    CompilationUnit_onDemlines_computed = null;
+    CompilationUnit_onDemlines_value = null;
     contributorMap_CompilationUnit_problems = null;
     contributorMap_CompilationUnit_usedTypes = null;
     contributorMap_CompilationUnit_importTypes = null;
     contributorMap_CompilationUnit_methods = null;
     contributorMap_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation = null;
     contributorMap_CompilationUnit_overrideMethods = null;
+    contributorMap_CompilationUnit_onDemlines = null;
   }
   /** @apilevel internal 
-   * @declaredat ASTNode:64
+   * @declaredat ASTNode:67
    */
   public CompilationUnit clone() throws CloneNotSupportedException {
     CompilationUnit node = (CompilationUnit) super.clone();
     return node;
   }
   /** @apilevel internal 
-   * @declaredat ASTNode:69
+   * @declaredat ASTNode:72
    */
   public CompilationUnit copy() {
     try {
@@ -273,7 +292,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:88
+   * @declaredat ASTNode:91
    */
   @Deprecated
   public CompilationUnit fullCopy() {
@@ -284,7 +303,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:98
+   * @declaredat ASTNode:101
    */
   public CompilationUnit treeCopyNoTransform() {
     CompilationUnit tree = (CompilationUnit) copy();
@@ -305,7 +324,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:118
+   * @declaredat ASTNode:121
    */
   public CompilationUnit treeCopy() {
     CompilationUnit tree = (CompilationUnit) copy();
@@ -321,7 +340,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return tree;
   }
   /** @apilevel internal 
-   * @declaredat ASTNode:132
+   * @declaredat ASTNode:135
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node) && (tokenString_PackageDecl == ((CompilationUnit) node).tokenString_PackageDecl);    
@@ -727,6 +746,19 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
 
   /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:8
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_onDemlines = null;
+
+  protected void survey_CompilationUnit_onDemlines() {
+    if (contributorMap_CompilationUnit_onDemlines == null) {
+      contributorMap_CompilationUnit_onDemlines = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_onDemlines(this, contributorMap_CompilationUnit_onDemlines);
+    }
+  }
+
+  /**
    * @return The path to the source file, or the path to the file inside a Jar
    * file.
    * @attribute syn
@@ -1022,6 +1054,30 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
             return killable;
     
         }
+  }
+  /**
+   * @attribute syn
+   * @aspect ImportOnDemand
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5")
+  public HashSet<String> importTypesOnDemand() {
+    {
+        HashSet<String> temp = new HashSet<String>();
+        for(ImportDecl decl : getImportDeclList()) {
+            if(decl.isOnDemand()) {
+                for(String type : usedTypes()) {
+                    if(decl.importedTypes(type).toString() == "org.extendj.ast.GenericInterfaceDecl" ||
+                     decl.importedTypes(type).toString() == "org.extendj.ast.ClassDecl" ||
+                     decl.importedTypes(type).toString() == "org.extendj.ast.GenericClassDecl") {
+                         temp.add(decl.getAccess().packageName() + "." + type);
+                     }
+                }
+            }
+        }
+        return temp;
+    }
   }
   /**
    * @attribute inh
@@ -1777,6 +1833,50 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /** @apilevel internal */
   protected HashSet<String> CompilationUnit_overrideMethods_value;
+
+  /**
+   * @attribute coll
+   * @aspect OverrideAnnotation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:8
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:8")
+  public HashSet<Integer> onDemlines() {
+    ASTNode$State state = state();
+    if (CompilationUnit_onDemlines_computed == ASTNode$State.NON_CYCLE || CompilationUnit_onDemlines_computed == state().cycle()) {
+      return CompilationUnit_onDemlines_value;
+    }
+    CompilationUnit_onDemlines_value = onDemlines_compute();
+    if (state().inCircle()) {
+      CompilationUnit_onDemlines_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_onDemlines_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_onDemlines_value;
+  }
+  /** @apilevel internal */
+  private HashSet<Integer> onDemlines_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_onDemlines();
+    HashSet<Integer> _computedValue = new HashSet<Integer>();
+    if (root.contributorMap_CompilationUnit_onDemlines.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_onDemlines.get(this)) {
+        contributor.contributeTo_CompilationUnit_onDemlines(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_onDemlines_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<Integer> CompilationUnit_onDemlines_value;
 
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:66
