@@ -940,6 +940,42 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
+   */
+    protected void collect_contributors_CompilationUnit_methods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_methods(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_methods(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
+   */
+    protected void collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(HashSet<Integer> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:7
+   */
+    protected void collect_contributors_CompilationUnit_overrideMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_overrideMethods(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_overrideMethods(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:47
    */
     protected void collect_contributors_BlockLambdaBody_lambdaReturns(Program _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {

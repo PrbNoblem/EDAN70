@@ -2463,6 +2463,34 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_methods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:9
+    {
+      CompilationUnit target = (CompilationUnit) (compilationUnit());
+      java.util.Set<ASTNode> contributors = _map.get(target);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) target, contributors);
+      }
+      contributors.add(this);
+    }
+    super.collect_contributors_CompilationUnit_methods(_root, _map);
+  }
+  protected void collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:18
+    if (compilationUnit().overrideMethods().contains(getID())) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     for (Problem value : modifierProblems()) {
@@ -2479,6 +2507,16 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
               && isVariableArity()
               && !getParameter(getNumParameter()-1).type().isReifiable()) {
       collection.add(warning("possible heap pollution for variable arity parameter"));
+    }
+  }
+  protected void contributeTo_CompilationUnit_methods(HashSet<String> collection) {
+    super.contributeTo_CompilationUnit_methods(collection);
+    collection.add(getID());
+  }
+  protected void contributeTo_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(HashSet<Integer> collection) {
+    super.contributeTo_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(collection);
+    if (compilationUnit().overrideMethods().contains(getID())) {
+      collection.add(lineNumber());
     }
   }
 }

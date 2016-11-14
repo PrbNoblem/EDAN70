@@ -1,0 +1,8 @@
+
+public class VarDeclTest{
+
+    public void methodOne(){
+        ArrayList<String> l = new ArrayList<String>();
+    }
+
+}

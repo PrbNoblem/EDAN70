@@ -1,7 +1,7 @@
 import java.io.*;
 aspect RemoveImports {
 
-public void CompilationUnit.removeImports(String path) {
+public void CompilationUnit.removeImports() {
     //prettyPrint(System.out);
     System.out.println(pathName());
 
@@ -20,6 +20,11 @@ public void CompilationUnit.removeImports(String path) {
         while(line != null){
 
             if(!killableLines().contains(lineNumber)){
+                if(methodLinesWhereWeShouldAddOverrideAnnotation().contains(lineNumber)) {
+                    writer.write("\t" + "@Override");
+                    writer.write("\n");
+                }
+
                 writer.write(line);
                 writer.write("\n");
             }

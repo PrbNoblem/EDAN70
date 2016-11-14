@@ -1,0 +1,19 @@
+package testfiles.overridetests;
+
+public class OverRideTest extends SuperClassOR {
+
+@Override
+	public int m1() {
+		return 3;
+	}
+
+@Override
+	public void m2() {
+
+	}
+
+	public void m3() {
+		
+	}
+
+}

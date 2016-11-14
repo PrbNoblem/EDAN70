@@ -2,8 +2,7 @@ import java.util.List;
 import java.util.HashSet;
 import java.io.File;
 
+public class UnusedImports {
 
-public class SecondTest{
-     File f = null;
-
+  List<Integer> list;
 }

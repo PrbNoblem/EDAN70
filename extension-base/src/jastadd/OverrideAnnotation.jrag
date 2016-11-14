@@ -1,0 +1,26 @@
+aspect OverrideAnnotation {
+
+
+
+    coll HashSet<String> CompilationUnit.methods() [new HashSet<String>()] with add root CompilationUnit;
+    coll HashSet<Integer> CompilationUnit.methodLinesWhereWeShouldAddOverrideAnnotation() [new HashSet<Integer>()] with add root CompilationUnit;
+    coll HashSet<String> CompilationUnit.overrideMethods() [new HashSet<String>()] with addAll root CompilationUnit;
+
+    MethodDecl contributes getID()
+    to CompilationUnit.methods()
+    for compilationUnit();
+
+    ClassDecl contributes getSuperClass().type().compilationUnit().methods()
+    when hasSuperClass()
+    to CompilationUnit.overrideMethods()
+    for compilationUnit();
+
+    MethodDecl contributes lineNumber()
+    when compilationUnit().overrideMethods().contains(getID())
+    to CompilationUnit.methodLinesWhereWeShouldAddOverrideAnnotation()
+    for compilationUnit();
+
+
+
+
+}
