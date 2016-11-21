@@ -1,0 +1,11 @@
+package testfiles.importTest;
+import  testfiles.otherPackage.SuperClassEx;
+import java.util.Map.Entry;
+
+public class TestAll extends SuperClassEx {
+
+    Entry<String, String> e;
+    private void m1() {
+    }
+
+}

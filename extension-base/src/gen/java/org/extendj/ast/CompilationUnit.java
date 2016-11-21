@@ -682,7 +682,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:29
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:42
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypes = null;
 
@@ -695,7 +695,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:43
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_importTypes = null;
 
@@ -1039,17 +1039,25 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:80
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:93
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:80")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:93")
   public HashSet<Integer> killableLines() {
     {
             HashSet<Integer> killable = new HashSet<Integer>();
             for(SingleTypeImportDecl s : importTypes()) {
-                if(!usedTypes().contains(((TypeAccess)(s.getAccess())).getID())){
+    
+                if(s.getAccess().nodeType() == "Dot"){
+                    //if(!usedTypes().contains(((Dot)s.getAccess()).typeName())){
+                    if(!usedTypes().contains( ((TypeAccess)((Dot)s.getAccess()).getRight()).getID() ) ){
+                    killable.add(s.lineNumber());
+                    }
+                } else if(!usedTypes().contains( ((TypeAccess)(s.getAccess())).getID())){
                     killable.add(s.lineNumber());
                 }
+    
+    
             }
             return killable;
     
@@ -1617,10 +1625,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute coll
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:29
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:42
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:29")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:42")
   public HashSet<String> usedTypes() {
     ASTNode$State state = state();
     if (CompilationUnit_usedTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypes_computed == state().cycle()) {
@@ -1661,10 +1669,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute coll
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:43
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:30")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:43")
   public HashSet<SingleTypeImportDecl> importTypes() {
     ASTNode$State state = state();
     if (CompilationUnit_importTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_importTypes_computed == state().cycle()) {
