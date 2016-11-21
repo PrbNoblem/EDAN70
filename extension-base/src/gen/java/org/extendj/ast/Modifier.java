@@ -219,6 +219,17 @@ public class Modifier extends ASTNode<ASTNode> implements Cloneable {
     return isAnnotation_String_String_value;
   }
   /**
+   * @attribute syn
+   * @aspect OverrideAnnotation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:46
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:46")
+  public boolean isOverride() {
+    boolean isOverride_value = false;
+    return isOverride_value;
+  }
+  /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */

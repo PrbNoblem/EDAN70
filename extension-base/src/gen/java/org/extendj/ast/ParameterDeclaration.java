@@ -789,17 +789,13 @@ public class ParameterDeclaration extends ASTNode<ASTNode> implements Cloneable,
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:17
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:10
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:17")
-  public String varibleTypeName() {
-    {
-            if(accessType().equals("ParTypeAccess")) {
-                return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
-            }
-            return getTypeAccess().typeName();
-        }
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:10")
+  public String variableTypeName() {
+    String variableTypeName_value = getTypeAccess().myTypeName();
+    return variableTypeName_value;
   }
   /**
    * @attribute syn
@@ -1059,7 +1055,7 @@ public class ParameterDeclaration extends ASTNode<ASTNode> implements Cloneable,
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:57
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:40
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -1071,7 +1067,7 @@ public class ParameterDeclaration extends ASTNode<ASTNode> implements Cloneable,
         contributors.add(this);
       }
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:62
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:45
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -1094,10 +1090,10 @@ public class ParameterDeclaration extends ASTNode<ASTNode> implements Cloneable,
   protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_usedTypes(collection);
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
-      collection.add(varibleTypeName());
+      collection.add(variableTypeName());
     }
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
-      collection.add(varibleTypeName());
+      collection.add(variableTypeName());
     }
   }
 }

@@ -534,13 +534,13 @@ public class VarDeclStmt extends Stmt implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:33
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:15
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:33")
-  public String localVaribleTypeName() {
-    String localVaribleTypeName_value = getTypeAccess().typeName();
-    return localVaribleTypeName_value;
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:15")
+  public String localVariableTypeName() {
+    String localVariableTypeName_value = getTypeAccess().myTypeName();
+    return localVariableTypeName_value;
   }
   /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
@@ -777,7 +777,7 @@ public class VarDeclStmt extends Stmt implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:67
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:50
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -789,7 +789,7 @@ public class VarDeclStmt extends Stmt implements Cloneable {
         contributors.add(this);
       }
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:72
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -806,10 +806,10 @@ public class VarDeclStmt extends Stmt implements Cloneable {
   protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_usedTypes(collection);
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
-      collection.add(localVaribleTypeName());
+      collection.add(localVariableTypeName());
     }
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
-      collection.add(localVaribleTypeName());
+      collection.add(localVariableTypeName());
     }
   }
 }

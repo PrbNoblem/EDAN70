@@ -763,13 +763,9 @@ public class FieldDecl extends MemberDecl implements Cloneable {
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
   @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:9")
-  public String varibleTypeName() {
-    {
-            if(accessType().equals("ParTypeAccess")) {
-                return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
-            }
-            return getTypeAccess().typeName();
-        }
+  public String variableTypeName() {
+    String variableTypeName_value = getTypeAccess().myTypeName();
+    return variableTypeName_value;
   }
   /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:208
@@ -1156,7 +1152,7 @@ public class FieldDecl extends MemberDecl implements Cloneable {
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:47
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:30
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -1168,7 +1164,7 @@ public class FieldDecl extends MemberDecl implements Cloneable {
         contributors.add(this);
       }
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:52
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:35
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
@@ -1191,10 +1187,10 @@ public class FieldDecl extends MemberDecl implements Cloneable {
   protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_usedTypes(collection);
     if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
-      collection.add(varibleTypeName());
+      collection.add(variableTypeName());
     }
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
-      collection.add(varibleTypeName());
+      collection.add(variableTypeName());
     }
   }
 }

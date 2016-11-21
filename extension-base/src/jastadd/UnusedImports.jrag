@@ -6,37 +6,20 @@ aspect UnusedImports {
     syn String FieldDecl.accessType() = getTypeAccess().nodeType();
     syn String VarDeclStmt.accessType() = getTypeAccess().nodeType();
     syn String ParameterDeclaration.accessType() = getTypeAccess().nodeType();
-    syn String FieldDecl.varibleTypeName() {
-        if(accessType().equals("ParTypeAccess")) {
-            return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
-        }
-        return getTypeAccess().typeName();
-    }
+    syn String FieldDecl.variableTypeName() = getTypeAccess().myTypeName();
+    syn String ParameterDeclaration.variableTypeName() = getTypeAccess().myTypeName();
 
+    syn String Access.myTypeName() = typeName();
+    eq  ParTypeAccess.myTypeName() = getTypeAccess().typeName();
 
-    syn String ParameterDeclaration.varibleTypeName() {
-        if(accessType().equals("ParTypeAccess")) {
-            return ((ParTypeAccess)getTypeAccess()).getTypeAccess().typeName();
-        }
-        return getTypeAccess().typeName();
-    }
-
-
-    //AAAAAAAAAA
-    eq Dot.nodeType() = "Dot" ;
-
-
-    //AAAAAAAAA
-
-
-
-    syn String VarDeclStmt.localVaribleTypeName() = getTypeAccess().typeName();
+    syn String VarDeclStmt.localVariableTypeName() = getTypeAccess().myTypeName();
     syn String ClassDecl.accessType() { return hasSuperClass() ? getSuperClass().nodeType() : ""; }
     syn String ClassDecl.superClassName() { return hasSuperClass() ? getSuperClass().typeName() : ""; }
     syn String Access.nodeType() = "";
     eq PrimitiveTypeAccess.nodeType() = "PrimitiveTypeAccess";
     eq ParTypeAccess.nodeType() = "ParTypeAccess";
     eq TypeAccess.nodeType() = "TypeAccess";
+    eq Dot.nodeType() = "Dot" ;
 
 
     coll HashSet<String> CompilationUnit.usedTypes() [new HashSet<String>()] with add root CompilationUnit;
@@ -44,32 +27,32 @@ aspect UnusedImports {
 
 
 
-    FieldDecl contributes varibleTypeName()
+    FieldDecl contributes variableTypeName()
 		when getTypeAccess().nodeType().equals("ParTypeAccess")
 		to CompilationUnit.usedTypes()
         for compilationUnit();
 
-    FieldDecl contributes varibleTypeName()
+    FieldDecl contributes variableTypeName()
     	when getTypeAccess().nodeType().equals("TypeAccess")
     	to CompilationUnit.usedTypes()
         for compilationUnit();
 
-    ParameterDeclaration contributes varibleTypeName()
+    ParameterDeclaration contributes variableTypeName()
     	when getTypeAccess().nodeType().equals("ParTypeAccess")
     	to CompilationUnit.usedTypes()
         for compilationUnit();
 
-    ParameterDeclaration contributes varibleTypeName()
+    ParameterDeclaration contributes variableTypeName()
         when getTypeAccess().nodeType().equals("TypeAccess")
         to CompilationUnit.usedTypes()
         for compilationUnit();
 
-    VarDeclStmt contributes localVaribleTypeName()
+    VarDeclStmt contributes localVariableTypeName()
     	when getTypeAccess().nodeType().equals("ParTypeAccess")
     	to CompilationUnit.usedTypes()
         for compilationUnit();
 
-    VarDeclStmt contributes localVaribleTypeName()
+    VarDeclStmt contributes localVariableTypeName()
         when getTypeAccess().nodeType().equals("TypeAccess")
         to CompilationUnit.usedTypes()
         for compilationUnit();
@@ -89,21 +72,19 @@ aspect UnusedImports {
         to CompilationUnit.importTypes()
         for compilationUnit();
 
+    syn String Access.uberID() = "IHAVENOIDEAWHATIAMNOOOSUKA";
+    eq TypeAccess.uberID() = getID();
+    eq Dot.uberID() = getRight().dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID();
+
+    syn String Access.dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID() = "";
+    eq TypeAccess.dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID() = getID();
 
     syn HashSet<Integer> CompilationUnit.killableLines() {
         HashSet<Integer> killable = new HashSet<Integer>();
         for(SingleTypeImportDecl s : importTypes()) {
-
-            if(s.getAccess().nodeType() == "Dot"){
-                //if(!usedTypes().contains(((Dot)s.getAccess()).typeName())){
-                if(!usedTypes().contains( ((TypeAccess)((Dot)s.getAccess()).getRight()).getID() ) ){
-                killable.add(s.lineNumber());
-                }
-            } else if(!usedTypes().contains( ((TypeAccess)(s.getAccess())).getID())){
+            if( !usedTypes().contains(s.getAccess().uberID())){
                 killable.add(s.lineNumber());
             }
-
-
         }
         return killable;
 

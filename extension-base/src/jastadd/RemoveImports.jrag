@@ -2,8 +2,6 @@ import java.io.*;
 aspect RemoveImports {
 
 public void CompilationUnit.removeImports() {
-    //prettyPrint(System.out);
-    System.out.println(pathName());
 
     FileInputStream in = null;
     BufferedReader reader = null;
@@ -24,10 +22,7 @@ public void CompilationUnit.removeImports() {
                     String result = line.replaceAll("[*;]","");
                      result = result.replaceAll("import","");
                     result = result.replaceAll(" ","");
-                    System.out.println(result);
                     for(String s : importTypesOnDemand()){
-                        System.out.println(s);
-                        System.out.println(result);
                         if(s.contains(result)) {
                             writer.write("import " + s + ";");
                             writer.write("\n");

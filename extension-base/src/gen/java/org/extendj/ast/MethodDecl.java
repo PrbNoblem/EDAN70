@@ -1901,6 +1901,23 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       }
     }
   /**
+   * @attribute syn
+   * @aspect OverrideAnnotation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:38
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:38")
+  public boolean hasOverride() {
+    {
+            for(Modifier m :getModifiers().getModifierList()){
+                if(m.isOverride()){
+                    return true;
+                }
+            }
+            return false;
+        }
+  }
+  /**
    * @attribute inh
    * @aspect LookupMethod
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:36
@@ -2464,7 +2481,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_methods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:10
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:9
     {
       CompilationUnit target = (CompilationUnit) (compilationUnit());
       java.util.Set<ASTNode> contributors = _map.get(target);
@@ -2475,21 +2492,6 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       contributors.add(this);
     }
     super.collect_contributors_CompilationUnit_methods(_root, _map);
-  }
-  protected void collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:19
-    if (compilationUnit().overrideMethods().contains(getID())) {
-      {
-        CompilationUnit target = (CompilationUnit) (compilationUnit());
-        java.util.Set<ASTNode> contributors = _map.get(target);
-        if (contributors == null) {
-          contributors = new java.util.LinkedHashSet<ASTNode>();
-          _map.put((ASTNode) target, contributors);
-        }
-        contributors.add(this);
-      }
-    }
-    super.collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(_root, _map);
   }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
@@ -2509,14 +2511,8 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       collection.add(warning("possible heap pollution for variable arity parameter"));
     }
   }
-  protected void contributeTo_CompilationUnit_methods(HashSet<String> collection) {
+  protected void contributeTo_CompilationUnit_methods(HashSet<MethodDecl> collection) {
     super.contributeTo_CompilationUnit_methods(collection);
-    collection.add(getID());
-  }
-  protected void contributeTo_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(HashSet<Integer> collection) {
-    super.contributeTo_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(collection);
-    if (compilationUnit().overrideMethods().contains(getID())) {
-      collection.add(lineNumber());
-    }
+    collection.add(this);
   }
 }

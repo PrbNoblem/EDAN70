@@ -4,10 +4,11 @@ import java.util.Map.Entry;
 import java.util.Map;
 import java.io.File;
 
-public class TestAll extends SuperClassEx {
+public class FixMap extends SuperClassEx {
 
-    Entry<String, String> e;
+
     private void m1() {
+        Entry<String, String> e;
     }
 
 }

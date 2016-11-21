@@ -5,5 +5,7 @@ public abstract class SuperClassOR {
 		return 1;
 	}
 
-	public abstract void m2();
+	public void m2(){}
+
+	public abstract void m3();
 }

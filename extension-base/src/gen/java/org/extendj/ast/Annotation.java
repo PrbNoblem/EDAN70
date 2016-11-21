@@ -551,6 +551,17 @@ public class Annotation extends Modifier implements Cloneable {
     return isMetaAnnotation_value;
   }
   /**
+   * @attribute syn
+   * @aspect OverrideAnnotation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:46
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:46")
+  public boolean isOverride() {
+    boolean isOverride_value = getAccess().overrider();
+    return isOverride_value;
+  }
+  /**
    * @return {@code true} if this annotation is used inside another annotation, i.e. it is
    * used in a complex annoation.
    * @attribute inh

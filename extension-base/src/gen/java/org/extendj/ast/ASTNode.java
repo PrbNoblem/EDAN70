@@ -916,7 +916,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:42
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
    */
     protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -928,7 +928,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:43
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
    */
     protected void collect_contributors_CompilationUnit_importTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -940,6 +940,18 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
+   */
+    protected void collect_contributors_CompilationUnit_onDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_onDemlines(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_onDemlines(HashSet<Integer> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
    */
     protected void collect_contributors_CompilationUnit_methods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
@@ -947,19 +959,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
       getChild(i).collect_contributors_CompilationUnit_methods(_root, _map);
     }
   }
-  protected void contributeTo_CompilationUnit_methods(HashSet<String> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
-   */
-    protected void collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_methodLinesWhereWeShouldAddOverrideAnnotation(HashSet<Integer> collection) {
+  protected void contributeTo_CompilationUnit_methods(HashSet<MethodDecl> collection) {
   }
 
   /**
@@ -971,19 +971,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
       getChild(i).collect_contributors_CompilationUnit_overrideMethods(_root, _map);
     }
   }
-  protected void contributeTo_CompilationUnit_overrideMethods(HashSet<String> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:8
-   */
-    protected void collect_contributors_CompilationUnit_onDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_onDemlines(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_onDemlines(HashSet<Integer> collection) {
+  protected void contributeTo_CompilationUnit_overrideMethods(HashSet<MethodDecl> collection) {
   }
 
   /**

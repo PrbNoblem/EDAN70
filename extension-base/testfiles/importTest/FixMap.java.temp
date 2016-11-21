@@ -2,10 +2,11 @@ package testfiles.importTest;
 import  testfiles.otherPackage.SuperClassEx;
 import java.util.Map.Entry;
 
-public class TestAll extends SuperClassEx {
+public class FixMap extends SuperClassEx {
 
-    Entry<String, String> e;
+
     private void m1() {
+        Entry<String, String> e;
     }
 
 }
