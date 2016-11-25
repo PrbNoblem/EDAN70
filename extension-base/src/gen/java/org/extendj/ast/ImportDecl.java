@@ -337,6 +337,17 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
     return importedMethods_String_value;
   }
   /**
+   * @attribute syn
+   * @aspect ImportOnDemand
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:29
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:29")
+  public boolean isImportedAlready(String name) {
+    boolean isImportedAlready_String_value = false;
+    return isImportedAlready_String_value;
+  }
+  /**
    * @attribute inh
    * @aspect NameCheck
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50

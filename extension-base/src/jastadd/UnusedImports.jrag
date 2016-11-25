@@ -72,6 +72,10 @@ aspect UnusedImports {
         to CompilationUnit.importTypes()
         for compilationUnit();
 
+
+
+
+
     syn String Access.uberID() = "IHAVENOIDEAWHATIAMNOOOSUKA";
     eq TypeAccess.uberID() = getID();
     eq Dot.uberID() = getRight().dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID();
@@ -84,6 +88,11 @@ aspect UnusedImports {
         for(SingleTypeImportDecl s : importTypes()) {
             if( !usedTypes().contains(s.getAccess().uberID())){
                 killable.add(s.lineNumber());
+            }
+        }
+        for(SingleStaticImportDecl st : staticImports()) {
+            if(!staticMethods().contains(st.getID())) {
+                killable.add(st.lineNumber());
             }
         }
         return killable;

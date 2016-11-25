@@ -1684,6 +1684,29 @@ public class MethodAccess extends Access implements Cloneable {
     return stmtCompatible_value;
   }
   /**
+   * @attribute syn
+   * @aspect StaticStuff
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:18
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:18")
+  public boolean existsHereOrInSuperClass() {
+    {
+            for(MethodDecl md : compilationUnit().methods()){
+                if(decl().equals(md)){
+                    return true;
+                }
+            }
+            for(MethodDecl md : compilationUnit().superClassMethods()){
+                if(decl().equals(md)){
+                    return true;
+                }
+            }
+    
+            return false;
+        }
+  }
+  /**
    * @attribute inh
    * @aspect TypeHierarchyCheck
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:185
@@ -2078,6 +2101,21 @@ public class MethodAccess extends Access implements Cloneable {
     }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_staticMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:12
+    if (!existsHereOrInSuperClass()) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_staticMethods(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     for (Problem value : typeHierarchyProblems()) {
@@ -2097,6 +2135,12 @@ public class MethodAccess extends Access implements Cloneable {
     }
     for (Problem value : uncheckedWarnings()) {
       collection.add(value);
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticMethods(HashSet<String> collection) {
+    super.contributeTo_CompilationUnit_staticMethods(collection);
+    if (!existsHereOrInSuperClass()) {
+      collection.add(getID());
     }
   }
 }

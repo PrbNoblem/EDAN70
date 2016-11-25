@@ -1,4 +1,4 @@
-package testfiles.importTest;
+package testCommandonAllJavaFile.importTest;
 import  testfiles.otherPackage.SuperClassEx;
 import java.util.Map.Entry;
 

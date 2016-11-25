@@ -3,7 +3,7 @@ aspect OverrideAnnotation {
 
 
     coll HashSet<MethodDecl> CompilationUnit.methods() [new HashSet<MethodDecl>()] with add root CompilationUnit;
-    coll HashSet<MethodDecl> CompilationUnit.overrideMethods() [new HashSet<MethodDecl>()] with addAll root CompilationUnit;
+    coll HashSet<MethodDecl> CompilationUnit.superClassMethods() [new HashSet<MethodDecl>()] with addAll root CompilationUnit;
 
     MethodDecl contributes this
     to CompilationUnit.methods()
@@ -11,7 +11,7 @@ aspect OverrideAnnotation {
 
     ClassDecl contributes getSuperClass().type().compilationUnit().methods()
     when hasSuperClass()
-    to CompilationUnit.overrideMethods()
+    to CompilationUnit.superClassMethods()
     for compilationUnit();
 
 
@@ -19,7 +19,7 @@ aspect OverrideAnnotation {
     syn HashSet<Integer> CompilationUnit.methodLinesWhereWeShouldAddOverrideAnnotation() {
         HashSet<Integer> temp = new HashSet<Integer>();
         for(MethodDecl m : methods()){
-            for(MethodDecl sm : overrideMethods()){
+            for(MethodDecl sm : superClassMethods()){
                 if(m.overrides(sm) && !m.hasOverride()){
                     temp.add(m.lineNumber());
                 }

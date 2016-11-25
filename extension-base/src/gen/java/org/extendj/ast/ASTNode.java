@@ -940,6 +940,30 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
+   */
+    protected void collect_contributors_CompilationUnit_staticMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_staticMethods(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticMethods(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
+   */
+    protected void collect_contributors_CompilationUnit_staticImports(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_staticImports(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticImports(HashSet<SingleStaticImportDecl> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
    */
     protected void collect_contributors_CompilationUnit_onDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
@@ -964,14 +988,14 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:7
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
    */
-    protected void collect_contributors_CompilationUnit_overrideMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    protected void collect_contributors_CompilationUnit_superClassMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_overrideMethods(_root, _map);
+      getChild(i).collect_contributors_CompilationUnit_superClassMethods(_root, _map);
     }
   }
-  protected void contributeTo_CompilationUnit_overrideMethods(HashSet<MethodDecl> collection) {
+  protected void contributeTo_CompilationUnit_superClassMethods(HashSet<MethodDecl> collection) {
   }
 
   /**

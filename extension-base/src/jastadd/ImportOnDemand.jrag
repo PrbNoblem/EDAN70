@@ -1,28 +1,61 @@
 
 aspect ImportOnDemand {
 
-coll HashSet<Integer> CompilationUnit.onDemlines() [new HashSet<Integer>()] with add root CompilationUnit;
+    coll HashSet<Integer> CompilationUnit.onDemlines() [new HashSet<Integer>()] with add root CompilationUnit;
 
-syn HashSet<String> CompilationUnit.importTypesOnDemand() {
-    HashSet<String> temp = new HashSet<String>();
-    for(ImportDecl decl : getImportDeclList()) {
-        if(decl.isOnDemand()) {
-            for(String type : usedTypes()) {
-                if(decl.importedTypes(type).toString().equals("org.extendj.ast.GenericInterfaceDecl") ||
-                 decl.importedTypes(type).toString().equals("org.extendj.ast.ClassDecl") ||
-                 decl.importedTypes(type).toString().equals("org.extendj.ast.GenericClassDecl") ) {
-                     temp.add(decl.getAccess().packageName() + "." + type);
-                 }
+    syn HashSet<String> CompilationUnit.importTypesOnDemand() {
+        HashSet<String> temp = new HashSet<String>();
+        for(ImportDecl decl : getImportDeclList()) {
+            if(decl.isOnDemand()) {
+                for(String type : usedTypes()) {
+                    if(decl.importedTypes(type).toString().equals("org.extendj.ast.GenericInterfaceDecl") ||
+                     decl.importedTypes(type).toString().equals("org.extendj.ast.ClassDecl") ||
+                     decl.importedTypes(type).toString().equals("org.extendj.ast.GenericClassDecl") ) {
+                         if(!decl.isImportedAlready(type)){
+                            temp.add(decl.getAccess().packageName() + "." + type);
+                        }
+                     }
+                }
             }
         }
+        return temp;
     }
-    return temp;
-}
 
-TypeImportOnDemandDecl contributes lineNumber()
-when isOnDemand()
-to CompilationUnit.onDemlines()
-for compilationUnit();
+    TypeImportOnDemandDecl contributes lineNumber()
+    when isOnDemand()
+    to CompilationUnit.onDemlines()
+    for compilationUnit();
 
+    syn boolean ImportDecl.isImportedAlready(String name) = false;
+
+    eq TypeImportOnDemandDecl.isImportedAlready(String name) {
+        for(SingleTypeImportDecl s : compilationUnit().importTypes()) {
+
+                if(importedTypes(name).toString().equals("org.extendj.ast.GenericInterfaceDecl") ||
+                 importedTypes(name).toString().equals("org.extendj.ast.ClassDecl") ||
+                 importedTypes(name).toString().equals("org.extendj.ast.GenericClassDecl") ) {
+                     if(s.getAccess().uberID().equals(name)){
+                         return true;
+                     }
+
+                 }
+
+         }
+
+         /*for(SingleStaticImportDecl s : compilationUnit().staticImports()) {
+
+                 if(importedTypes(name).toString().equals("org.extendj.ast.GenericInterfaceDecl") ||
+                  importedTypes(name).toString().equals("org.extendj.ast.ClassDecl") ||
+                  importedTypes(name).toString().equals("org.extendj.ast.GenericClassDecl") ) {
+                      if(s.getAccess().uberID().equals(name)){
+                          return true;
+                      }
+
+                  }
+
+          }*/
+
+         return false;
+    }
 
 }

@@ -1,0 +1,41 @@
+aspect StaticStuff{
+
+
+
+
+
+    coll HashSet<String> CompilationUnit.staticMethods() [new HashSet<String>()] with add root CompilationUnit;
+    coll HashSet<SingleStaticImportDecl> CompilationUnit.staticImports() [new HashSet<SingleStaticImportDecl>()] with add root CompilationUnit;
+
+
+
+    MethodAccess contributes getID()
+    when !existsHereOrInSuperClass()
+    to CompilationUnit.staticMethods()
+    for compilationUnit();
+
+
+    syn boolean MethodAccess.existsHereOrInSuperClass() {
+        for(MethodDecl md : compilationUnit().methods()){
+            if(decl().equals(md)){
+                return true;
+            }
+        }
+        for(MethodDecl md : compilationUnit().superClassMethods()){
+            if(decl().equals(md)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    SingleStaticImportDecl contributes this
+        to CompilationUnit.staticImports()
+        for compilationUnit();
+
+
+
+
+}

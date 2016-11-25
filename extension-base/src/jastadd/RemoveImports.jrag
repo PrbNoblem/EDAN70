@@ -43,6 +43,8 @@ public void CompilationUnit.removeImports() {
             line = reader.readLine();
         }
 
+
+
     }catch(Exception e){
 
     }finally {
@@ -58,7 +60,21 @@ public void CompilationUnit.removeImports() {
                 writer.close();
             } catch (Exception e) {}
 
+
+
+            /*File f1 = new File(pathName());
+            f1.renameTo(new File(pathName() + ".old"));
+
+
+            File f2 = new File(pathName() + ".temp");
+            f2.renameTo(new File(pathName()));*/
+
+
+
     }
   }
+
+
+
 
 }
