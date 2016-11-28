@@ -1,8 +1,12 @@
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
 import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 
 
 public class staticImportTest {
+
+	private static final int HEJ = 10;
 
 	public void otto(){
 		cos(3d);
@@ -10,6 +14,8 @@ public class staticImportTest {
 
 	public void fisk(){
 		otto();
+		sin(PI);
+		sin(HEJ);
 	}
 
 

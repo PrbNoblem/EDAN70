@@ -28,6 +28,19 @@ public void CompilationUnit.removeImports() {
                             writer.write("\n");
                         }
                     }
+
+                } else if(staticOnDemlines().contains(lineNumber)){
+                    String result = line.replaceAll("[*;]","");
+                    result = result.replaceAll("import","");
+                    result = result.replaceAll("static","");
+                   result = result.replaceAll(" ","");
+                   for(String s : staticImportsOnDemand()){
+                       if(s.contains(result)) {
+                           writer.write("import static " + s + ";");
+                           writer.write("\n");
+                       }
+                   }
+
                 } else {
 
                 if(methodLinesWhereWeShouldAddOverrideAnnotation().contains(lineNumber)) {

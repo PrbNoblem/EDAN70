@@ -91,7 +91,7 @@ aspect UnusedImports {
             }
         }
         for(SingleStaticImportDecl st : staticImports()) {
-            if(!staticMethods().contains(st.getID())) {
+            if(!staticMethods().contains(st.getID()) && !variableAccess().contains(st.getID())) {
                 killable.add(st.lineNumber());
             }
         }

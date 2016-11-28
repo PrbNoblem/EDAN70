@@ -299,10 +299,10 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:29
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:62
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:29")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:62")
   public boolean isImportedAlready(String name) {
     {
             for(SingleTypeImportDecl s : compilationUnit().importTypes()) {
@@ -317,6 +317,8 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
                      }
     
              }
+    
+    
              return false;
         }
   }
@@ -368,7 +370,7 @@ public class TypeImportOnDemandDecl extends ImportDecl implements Cloneable {
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_onDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:24
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:52
     if (isOnDemand()) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());

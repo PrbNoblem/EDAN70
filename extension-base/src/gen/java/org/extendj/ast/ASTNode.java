@@ -954,6 +954,18 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
    * @aspect <NoAspect>
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
    */
+    protected void collect_contributors_CompilationUnit_variableAccess(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_variableAccess(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_variableAccess(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
+   */
     protected void collect_contributors_CompilationUnit_staticImports(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
       getChild(i).collect_contributors_CompilationUnit_staticImports(_root, _map);
@@ -972,6 +984,18 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
     }
   }
   protected void contributeTo_CompilationUnit_onDemlines(HashSet<Integer> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
+   */
+    protected void collect_contributors_CompilationUnit_staticOnDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_staticOnDemlines(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticOnDemlines(HashSet<Integer> collection) {
   }
 
   /**

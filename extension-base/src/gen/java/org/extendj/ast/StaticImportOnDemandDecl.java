@@ -218,6 +218,23 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
     return isOnDemand_value;
   }
   /**
+   * @attribute syn
+   * @aspect ImportOnDemand
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:62
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:62")
+  public boolean isImportedAlready(String name) {
+    {
+            for(SingleStaticImportDecl s : compilationUnit().staticImports()) {
+                if(s.getID().equals(name)){
+                    return true;
+                }
+            }
+            return false;
+        }
+  }
+  /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
@@ -255,11 +272,32 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
     }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_staticOnDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:57
+    if (isOnDemand()) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_staticOnDemlines(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     if (!getAccess().type().typeName().equals(typeName())) {
       collection.add(errorf("In on-demand import: %s is not the canonical name of type %s",
                 typeName(), getAccess().type().typeName()));
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticOnDemlines(HashSet<Integer> collection) {
+    super.contributeTo_CompilationUnit_staticOnDemlines(collection);
+    if (isOnDemand()) {
+      collection.add(lineNumber());
     }
   }
 }

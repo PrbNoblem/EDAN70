@@ -5,6 +5,7 @@ aspect StaticStuff{
 
 
     coll HashSet<String> CompilationUnit.staticMethods() [new HashSet<String>()] with add root CompilationUnit;
+    coll HashSet<String> CompilationUnit.variableAccess() [new HashSet<String>()] with add root CompilationUnit;
     coll HashSet<SingleStaticImportDecl> CompilationUnit.staticImports() [new HashSet<SingleStaticImportDecl>()] with add root CompilationUnit;
 
 
@@ -12,6 +13,10 @@ aspect StaticStuff{
     MethodAccess contributes getID()
     when !existsHereOrInSuperClass()
     to CompilationUnit.staticMethods()
+    for compilationUnit();
+
+    VarAccess contributes getID()
+    to CompilationUnit.variableAccess()
     for compilationUnit();
 
 
