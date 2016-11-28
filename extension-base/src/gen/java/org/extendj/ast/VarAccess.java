@@ -859,6 +859,23 @@ protected ASTNode$State.Cycle isConstant_cycle = null;
     return isVariable_Variable_value;
   }
   /**
+   * @attribute syn
+   * @aspect StaticStuff
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:26
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:26")
+  public String dotAccess() {
+    {
+            if(hasParentDot()) {
+                Access a = (Access)parentDot().getLeft();
+                return a.uberID();
+            }
+    
+            return "";
+        }
+  }
+  /**
    * @attribute inh
    * @aspect TypeHierarchyCheck
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:184
@@ -982,6 +999,16 @@ protected ASTNode$State.Cycle isConstant_cycle = null;
       }
       contributors.add(this);
     }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:22
+    {
+      CompilationUnit target = (CompilationUnit) (compilationUnit());
+      java.util.Set<ASTNode> contributors = _map.get(target);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) target, contributors);
+      }
+      contributors.add(this);
+    }
     super.collect_contributors_CompilationUnit_variableAccess(_root, _map);
   }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
@@ -1009,5 +1036,6 @@ protected ASTNode$State.Cycle isConstant_cycle = null;
   protected void contributeTo_CompilationUnit_variableAccess(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_variableAccess(collection);
     collection.add(getID());
+    collection.add(dotAccess());
   }
 }

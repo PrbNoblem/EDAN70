@@ -1178,6 +1178,21 @@ public class FieldDecl extends MemberDecl implements Cloneable {
     }
     super.collect_contributors_CompilationUnit_usedTypes(_root, _map);
   }
+  protected void collect_contributors_CompilationUnit_usedTypesList(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:50
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      {
+        CompilationUnit target = (CompilationUnit) (compilationUnit());
+        java.util.Set<ASTNode> contributors = _map.get(target);
+        if (contributors == null) {
+          contributors = new java.util.LinkedHashSet<ASTNode>();
+          _map.put((ASTNode) target, contributors);
+        }
+        contributors.add(this);
+      }
+    }
+    super.collect_contributors_CompilationUnit_usedTypesList(_root, _map);
+  }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
     for (Problem value : modifierProblems()) {
@@ -1191,6 +1206,12 @@ public class FieldDecl extends MemberDecl implements Cloneable {
     }
     if (getTypeAccess().nodeType().equals("TypeAccess")) {
       collection.add(variableTypeName());
+    }
+  }
+  protected void contributeTo_CompilationUnit_usedTypesList(HashSet<String> collection) {
+    super.contributeTo_CompilationUnit_usedTypesList(collection);
+    if (getTypeAccess().nodeType().equals("ParTypeAccess")) {
+      collection.addAll(getTypeAccess().TypeArguments());
     }
   }
 }

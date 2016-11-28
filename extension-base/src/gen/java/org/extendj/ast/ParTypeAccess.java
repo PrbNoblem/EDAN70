@@ -526,6 +526,25 @@ public class ParTypeAccess extends Access implements Cloneable {
     return nodeType_value;
   }
   /**
+   * @attribute syn
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55")
+  public HashSet<String> TypeArguments() {
+    {
+    
+            HashSet<String> temp = new HashSet<String>();
+    
+            for(Access a : getTypeArgumentList()) {
+                temp.add(a.uberID());
+            }
+    
+            return temp;
+        }
+  }
+  /**
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */

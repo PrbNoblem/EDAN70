@@ -75,12 +75,12 @@ public void CompilationUnit.removeImports() {
 
 
 
-            /*File f1 = new File(pathName());
+            File f1 = new File(pathName());
             f1.renameTo(new File(pathName() + ".old"));
 
 
             File f2 = new File(pathName() + ".temp");
-            f2.renameTo(new File(pathName()));*/
+            f2.renameTo(new File(pathName()));
 
 
 

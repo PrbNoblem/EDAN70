@@ -11,13 +11,26 @@ aspect StaticStuff{
 
 
     MethodAccess contributes getID()
-    when !existsHereOrInSuperClass()
+    when !existsHereOrInSuperClass() && !hasParentDot()
     to CompilationUnit.staticMethods()
     for compilationUnit();
 
     VarAccess contributes getID()
     to CompilationUnit.variableAccess()
     for compilationUnit();
+
+    VarAccess contributes dotAccess()
+    to CompilationUnit.variableAccess()
+    for compilationUnit();
+
+    syn String VarAccess.dotAccess() {
+        if(hasParentDot()) {
+            Access a = (Access)parentDot().getLeft();
+            return a.uberID();
+        }
+
+        return "";
+    }
 
 
     syn boolean MethodAccess.existsHereOrInSuperClass() {
@@ -31,6 +44,8 @@ aspect StaticStuff{
                 return true;
             }
         }
+
+
         return false;
     }
 

@@ -930,6 +930,18 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
    * @aspect <NoAspect>
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
    */
+    protected void collect_contributors_CompilationUnit_usedTypesList(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_usedTypesList(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_usedTypesList(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
+   */
     protected void collect_contributors_CompilationUnit_importTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
       getChild(i).collect_contributors_CompilationUnit_importTypes(_root, _map);

@@ -192,12 +192,12 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
 
 
-            /*File f1 = new File(pathName());
+            File f1 = new File(pathName());
             f1.renameTo(new File(pathName() + ".old"));
 
 
             File f2 = new File(pathName() + ".temp");
-            f2.renameTo(new File(pathName()));*/
+            f2.renameTo(new File(pathName()));
 
 
 
@@ -267,6 +267,8 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     CompilationUnit_problems_value = null;
     CompilationUnit_usedTypes_computed = null;
     CompilationUnit_usedTypes_value = null;
+    CompilationUnit_usedTypesList_computed = null;
+    CompilationUnit_usedTypesList_value = null;
     CompilationUnit_importTypes_computed = null;
     CompilationUnit_importTypes_value = null;
     CompilationUnit_staticMethods_computed = null;
@@ -285,6 +287,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     CompilationUnit_superClassMethods_value = null;
     contributorMap_CompilationUnit_problems = null;
     contributorMap_CompilationUnit_usedTypes = null;
+    contributorMap_CompilationUnit_usedTypesList = null;
     contributorMap_CompilationUnit_importTypes = null;
     contributorMap_CompilationUnit_staticMethods = null;
     contributorMap_CompilationUnit_variableAccess = null;
@@ -295,14 +298,14 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     contributorMap_CompilationUnit_superClassMethods = null;
   }
   /** @apilevel internal 
-   * @declaredat ASTNode:76
+   * @declaredat ASTNode:79
    */
   public CompilationUnit clone() throws CloneNotSupportedException {
     CompilationUnit node = (CompilationUnit) super.clone();
     return node;
   }
   /** @apilevel internal 
-   * @declaredat ASTNode:81
+   * @declaredat ASTNode:84
    */
   public CompilationUnit copy() {
     try {
@@ -322,7 +325,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
    * @deprecated Please use treeCopy or treeCopyNoTransform instead
-   * @declaredat ASTNode:100
+   * @declaredat ASTNode:103
    */
   @Deprecated
   public CompilationUnit fullCopy() {
@@ -333,7 +336,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:110
+   * @declaredat ASTNode:113
    */
   public CompilationUnit treeCopyNoTransform() {
     CompilationUnit tree = (CompilationUnit) copy();
@@ -354,7 +357,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * The copy is dangling, i.e. has no parent.
    * @return dangling copy of the subtree at this node
    * @apilevel low-level
-   * @declaredat ASTNode:130
+   * @declaredat ASTNode:133
    */
   public CompilationUnit treeCopy() {
     CompilationUnit tree = (CompilationUnit) copy();
@@ -370,7 +373,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return tree;
   }
   /** @apilevel internal 
-   * @declaredat ASTNode:144
+   * @declaredat ASTNode:147
    */
   protected boolean is$Equal(ASTNode node) {
     return super.is$Equal(node) && (tokenString_PackageDecl == ((CompilationUnit) node).tokenString_PackageDecl);    
@@ -726,6 +729,19 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @aspect <NoAspect>
    * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypesList = null;
+
+  protected void survey_CompilationUnit_usedTypesList() {
+    if (contributorMap_CompilationUnit_usedTypesList == null) {
+      contributorMap_CompilationUnit_usedTypesList = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_usedTypesList(this, contributorMap_CompilationUnit_usedTypesList);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_importTypes = null;
 
@@ -1108,15 +1124,18 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:86
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:117
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:86")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:117")
   public HashSet<Integer> killableLines() {
     {
             HashSet<Integer> killable = new HashSet<Integer>();
             for(SingleTypeImportDecl s : importTypes()) {
-                if( !usedTypes().contains(s.getAccess().uberID())){
+                HashSet<String> all = new HashSet<String>();
+                all.addAll(usedTypes());
+                all.addAll(usedTypesList());
+                if( !all.contains(s.getAccess().uberID()) && !variableAccess().contains(s.getAccess().uberID())){
                     killable.add(s.lineNumber());
                 }
             }
@@ -1125,6 +1144,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
                     killable.add(st.lineNumber());
                 }
             }
+    
             return killable;
     
         }
@@ -1141,7 +1161,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
             HashSet<String> temp = new HashSet<String>();
             for(ImportDecl decl : getImportDeclList()) {
                 if(decl.isOnDemand()) {
-                    for(String type : usedTypes()) {
+                    HashSet<String> all = new HashSet<String>();
+                    all.addAll(usedTypes());
+                    all.addAll(usedTypesList());
+                    for(String type : all) {
                         if(decl.importedTypes(type).toString().equals("org.extendj.ast.GenericInterfaceDecl") ||
                          decl.importedTypes(type).toString().equals("org.extendj.ast.ClassDecl") ||
                          decl.importedTypes(type).toString().equals("org.extendj.ast.GenericClassDecl") ) {
@@ -1160,10 +1183,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:28
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:31
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:28")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:31")
   public HashSet<String> staticImportsOnDemand() {
     {
             HashSet<String> temp = new HashSet<String>();
@@ -1796,6 +1819,50 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
   @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26")
+  public HashSet<String> usedTypesList() {
+    ASTNode$State state = state();
+    if (CompilationUnit_usedTypesList_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypesList_computed == state().cycle()) {
+      return CompilationUnit_usedTypesList_value;
+    }
+    CompilationUnit_usedTypesList_value = usedTypesList_compute();
+    if (state().inCircle()) {
+      CompilationUnit_usedTypesList_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_usedTypesList_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_usedTypesList_value;
+  }
+  /** @apilevel internal */
+  private HashSet<String> usedTypesList_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_usedTypesList();
+    HashSet<String> _computedValue = new HashSet<String>();
+    if (root.contributorMap_CompilationUnit_usedTypesList.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_usedTypesList.get(this)) {
+        contributor.contributeTo_CompilationUnit_usedTypesList(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_usedTypesList_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<String> CompilationUnit_usedTypesList_value;
+
+  /**
+   * @attribute coll
+   * @aspect UnusedImports
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27")
   public HashSet<SingleTypeImportDecl> importTypes() {
     ASTNode$State state = state();
     if (CompilationUnit_importTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_importTypes_computed == state().cycle()) {

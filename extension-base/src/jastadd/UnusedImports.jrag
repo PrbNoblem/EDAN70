@@ -23,8 +23,8 @@ aspect UnusedImports {
 
 
     coll HashSet<String> CompilationUnit.usedTypes() [new HashSet<String>()] with add root CompilationUnit;
+    coll HashSet<String> CompilationUnit.usedTypesList() [new HashSet<String>()] with addAll root CompilationUnit;
     coll HashSet<SingleTypeImportDecl> CompilationUnit.importTypes() [new HashSet<SingleTypeImportDecl>()] with add root CompilationUnit;
-
 
 
     FieldDecl contributes variableTypeName()
@@ -41,6 +41,29 @@ aspect UnusedImports {
     	when getTypeAccess().nodeType().equals("ParTypeAccess")
     	to CompilationUnit.usedTypes()
         for compilationUnit();
+
+    VarDeclStmt contributes getTypeAccess().TypeArguments()
+        when getTypeAccess().nodeType().equals("ParTypeAccess")
+        to CompilationUnit.usedTypesList()
+        for compilationUnit();
+
+    FieldDecl contributes getTypeAccess().TypeArguments()
+        when getTypeAccess().nodeType().equals("ParTypeAccess")
+        to CompilationUnit.usedTypesList()
+        for compilationUnit();
+
+    syn HashSet<String> Access.TypeArguments() = null;
+
+    eq ParTypeAccess.TypeArguments() {
+
+        HashSet<String> temp = new HashSet<String>();
+
+        for(Access a : getTypeArgumentList()) {
+            temp.add(a.uberID());
+        }
+
+        return temp;
+    }
 
     ParameterDeclaration contributes variableTypeName()
         when getTypeAccess().nodeType().equals("TypeAccess")
@@ -67,6 +90,14 @@ aspect UnusedImports {
         to CompilationUnit.usedTypes()
         for compilationUnit();
 
+    CastExpr contributes getTypeAccess().uberID()
+        to CompilationUnit.usedTypes()
+        for compilationUnit();
+
+    ClassInstanceExpr contributes getAccess().uberID()
+    to CompilationUnit.usedTypes()
+    for compilationUnit();
+
 
     SingleTypeImportDecl contributes this
         to CompilationUnit.importTypes()
@@ -86,7 +117,10 @@ aspect UnusedImports {
     syn HashSet<Integer> CompilationUnit.killableLines() {
         HashSet<Integer> killable = new HashSet<Integer>();
         for(SingleTypeImportDecl s : importTypes()) {
-            if( !usedTypes().contains(s.getAccess().uberID())){
+            HashSet<String> all = new HashSet<String>();
+            all.addAll(usedTypes());
+            all.addAll(usedTypesList());
+            if( !all.contains(s.getAccess().uberID()) && !variableAccess().contains(s.getAccess().uberID())){
                 killable.add(s.lineNumber());
             }
         }
@@ -95,6 +129,7 @@ aspect UnusedImports {
                 killable.add(st.lineNumber());
             }
         }
+
         return killable;
 
     }

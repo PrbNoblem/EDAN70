@@ -1686,10 +1686,10 @@ public class MethodAccess extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticStuff
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:23
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:36
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:23")
+  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:36")
   public boolean existsHereOrInSuperClass() {
     {
             for(MethodDecl md : compilationUnit().methods()){
@@ -1702,6 +1702,8 @@ public class MethodAccess extends Access implements Cloneable {
                     return true;
                 }
             }
+    
+    
             return false;
         }
   }
@@ -2102,7 +2104,7 @@ public class MethodAccess extends Access implements Cloneable {
   }
   protected void collect_contributors_CompilationUnit_staticMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:13
-    if (!existsHereOrInSuperClass()) {
+    if (!existsHereOrInSuperClass() && !hasParentDot()) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
         java.util.Set<ASTNode> contributors = _map.get(target);
@@ -2138,7 +2140,7 @@ public class MethodAccess extends Access implements Cloneable {
   }
   protected void contributeTo_CompilationUnit_staticMethods(HashSet<String> collection) {
     super.contributeTo_CompilationUnit_staticMethods(collection);
-    if (!existsHereOrInSuperClass()) {
+    if (!existsHereOrInSuperClass() && !hasParentDot()) {
       collection.add(getID());
     }
   }
