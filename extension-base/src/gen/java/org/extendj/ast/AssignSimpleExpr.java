@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:107
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:107
  * @production AssignSimpleExpr : {@link AssignExpr};
 
  */
@@ -210,24 +210,13 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
   public Expr getSourceNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  /** The operator string used for pretty printing this expression. 
-   * @attribute syn
-   * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:264
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:264")
-  public String printOp() {
-    String printOp_value = "=";
-    return printOp_value;
-  }
   /**
    * @attribute syn
    * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:77
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:77
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:77")
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:77")
   public Collection<Problem> typeProblems() {
     {
         Collection<Problem> problems = new LinkedList<Problem>();
@@ -241,24 +230,35 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
         return problems;
       }
   }
+  /** The operator string used for pretty printing this expression. 
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:264
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:264")
+  public String printOp() {
+    String printOp_value = "=";
+    return printOp_value;
+  }
   /**
    * @attribute inh
    * @aspect SuppressWarnings
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:36
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:36")
+  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:36")
   public boolean withinSuppressWarnings(String annot) {
     boolean withinSuppressWarnings_String_value = getParent().Define_withinSuppressWarnings(this, null, annot);
     return withinSuppressWarnings_String_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
    * @apilevel internal
    */
   public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
     if (getDestNoTransform() != null && _callerNode == getDest()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:36
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:36
       return true;
     }
     else {
@@ -269,12 +269,12 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
    * @apilevel internal
    */
   public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
     if (getDestNoTransform() != null && _callerNode == getDest()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:46
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:46
       return false;
     }
     else {
@@ -285,12 +285,12 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:65
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:65
    * @apilevel internal
    */
   public TypeDecl Define_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
     if (getSourceNoTransform() != null && _callerNode == getSource()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:67
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:67
       return getDest().type();
     }
     else {
@@ -309,7 +309,7 @@ public class AssignSimpleExpr extends AssignExpr implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/UncheckedConversion.jrag:51
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/UncheckedConversion.jrag:51
     if (!withinSuppressWarnings("unchecked")) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

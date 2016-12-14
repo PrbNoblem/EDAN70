@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:4
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:4
  * @production ArrayReference : {@link ConstructorReference};
 
  */
 public class ArrayReference extends ConstructorReference implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:35
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:35
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getTypeAccess());
@@ -77,9 +77,9 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    potentiallyCompatible_TypeDecl_BodyDecl_reset();
     congruentTo_FunctionDescriptor_reset();
     isExact_reset();
+    potentiallyCompatible_TypeDecl_BodyDecl_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:34
@@ -195,57 +195,6 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
     return (Access) getChildNoTransform(0);
   }
   /** @apilevel internal */
-  private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
-    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
-    potentiallyCompatible_TypeDecl_BodyDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
-  public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
-    java.util.List _parameters = new java.util.ArrayList(2);
-    _parameters.add(type);
-    _parameters.add(candidateDecl);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
-        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
-        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
-    }
-    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
-    if (state().inCircle()) {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
-      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
-      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return potentiallyCompatible_TypeDecl_BodyDecl_value;
-  }
-  /** @apilevel internal */
-  private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
-      if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
-        return true;
-      } else if (!super.potentiallyCompatible(type, candidateDecl)) {
-        return false;
-      }
-      InterfaceDecl iDecl = (InterfaceDecl) type;
-      FunctionDescriptor f = iDecl.functionDescriptor();
-      return f.method.arity() == 1;
-    }
-  /** @apilevel internal */
   private void congruentTo_FunctionDescriptor_reset() {
     congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
     congruentTo_FunctionDescriptor_values = null;
@@ -257,10 +206,10 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstructorReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68")
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
     if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -311,10 +260,10 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstructorReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127")
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127")
   public boolean isExact() {
     ASTNode$State state = state();
     if (isExact_computed == ASTNode$State.NON_CYCLE || isExact_computed == state().cycle()) {
@@ -333,10 +282,10 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect Java8NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:534
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:534
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:534")
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:534")
   public Collection<Problem> nameProblems() {
     {
         Access typeAccess = getTypeAccess();
@@ -350,6 +299,57 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
       }
   }
   /** @apilevel internal */
+  private void potentiallyCompatible_TypeDecl_BodyDecl_reset() {
+    potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    potentiallyCompatible_TypeDecl_BodyDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map potentiallyCompatible_TypeDecl_BodyDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodSignature18
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
+  public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
+    java.util.List _parameters = new java.util.ArrayList(2);
+    _parameters.add(type);
+    _parameters.add(candidateDecl);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_computed == null) potentiallyCompatible_TypeDecl_BodyDecl_computed = new java.util.HashMap(4);
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values == null) potentiallyCompatible_TypeDecl_BodyDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (potentiallyCompatible_TypeDecl_BodyDecl_values.containsKey(_parameters) && potentiallyCompatible_TypeDecl_BodyDecl_computed != null
+        && potentiallyCompatible_TypeDecl_BodyDecl_computed.containsKey(_parameters)
+        && (potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || potentiallyCompatible_TypeDecl_BodyDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) potentiallyCompatible_TypeDecl_BodyDecl_values.get(_parameters);
+    }
+    boolean potentiallyCompatible_TypeDecl_BodyDecl_value = potentiallyCompatible_compute(type, candidateDecl);
+    if (state().inCircle()) {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      potentiallyCompatible_TypeDecl_BodyDecl_values.put(_parameters, potentiallyCompatible_TypeDecl_BodyDecl_value);
+      potentiallyCompatible_TypeDecl_BodyDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return potentiallyCompatible_TypeDecl_BodyDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean potentiallyCompatible_compute(TypeDecl type, BodyDecl candidateDecl) {
+      if (super.potentiallyCompatible(type, candidateDecl) && type.isTypeVariable()) {
+        return true;
+      } else if (!super.potentiallyCompatible(type, candidateDecl)) {
+        return false;
+      }
+      InterfaceDecl iDecl = (InterfaceDecl) type;
+      FunctionDescriptor f = iDecl.functionDescriptor();
+      return f.method.arity() == 1;
+    }
+  /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
   }
@@ -358,7 +358,7 @@ public class ArrayReference extends ConstructorReference implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:532
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:532
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

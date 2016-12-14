@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:22
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:22
  * @production ParClassInstanceExpr : {@link ClassInstanceExpr} ::= <span class="component">TypeArgument:{@link Access}*</span>;
 
  */
 public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable {
   /**
    * @aspect GenericMethodsPrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:282
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:282
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("<");
@@ -476,12 +476,12 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
     return getTypeArgumentListNoTransform();
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeArgumentListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:239
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:239
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
@@ -493,12 +493,12 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
   public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getTypeArgumentListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:240
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:240
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return unqualifiedScope().lookupType(name);
     }
@@ -510,12 +510,12 @@ public class ParClassInstanceExpr extends ClassInstanceExpr implements Cloneable
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:425
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:425
    * @apilevel internal
    */
   public boolean Define_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
     if (getAccessNoTransform() != null && _callerNode == getAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:430
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:430
       return true;
     }
     else {

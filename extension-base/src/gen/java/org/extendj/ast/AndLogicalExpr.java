@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:171
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:171
  * @production AndLogicalExpr : {@link LogicalExpr};
 
  */
@@ -215,35 +215,13 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
   public Expr getRightOperandNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  /**
-   * @attribute syn
-   * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
-  public Constant constant() {
-    Constant constant_value = Constant.create(left().constant().booleanValue() && right().constant().booleanValue());
-    return constant_value;
-  }
-  /** The operator string used for pretty printing this expression. 
-   * @attribute syn
-   * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242")
-  public String printOp() {
-    String printOp_value = "&&";
-    return printOp_value;
-  }
   /** @apilevel internal */
   private void assignedAfterTrue_Variable_reset() {
     assignedAfterTrue_Variable_values = null;
   }
   protected java.util.Map assignedAfterTrue_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:491")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:491")
   public boolean assignedAfterTrue(Variable v) {
     Object _parameters = v;
     if (assignedAfterTrue_Variable_values == null) assignedAfterTrue_Variable_values = new java.util.HashMap(4);
@@ -294,7 +272,7 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
   }
   protected java.util.Map assignedAfterFalse_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:494")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:494")
   public boolean assignedAfterFalse(Variable v) {
     Object _parameters = v;
     if (assignedAfterFalse_Variable_values == null) assignedAfterFalse_Variable_values = new java.util.HashMap(4);
@@ -344,10 +322,10 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect DefiniteAssignment
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
   public boolean assignedAfter(Variable v) {
     boolean assignedAfter_Variable_value = assignedAfterTrue(v) && assignedAfterFalse(v);
     return assignedAfter_Variable_value;
@@ -358,7 +336,7 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
   }
   protected java.util.Map unassignedAfterTrue_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:909")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:909")
   public boolean unassignedAfterTrue(Variable v) {
     Object _parameters = v;
     if (unassignedAfterTrue_Variable_values == null) unassignedAfterTrue_Variable_values = new java.util.HashMap(4);
@@ -409,7 +387,7 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
   }
   protected java.util.Map unassignedAfterFalse_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:911")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:911")
   public boolean unassignedAfterFalse(Variable v) {
     Object _parameters = v;
     if (unassignedAfterFalse_Variable_values == null) unassignedAfterFalse_Variable_values = new java.util.HashMap(4);
@@ -460,7 +438,7 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
   }
   protected java.util.Map unassignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
   public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
     if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
@@ -506,16 +484,38 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
     }
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
+  public Constant constant() {
+    Constant constant_value = Constant.create(left().constant().booleanValue() && right().constant().booleanValue());
+    return constant_value;
+  }
+  /** The operator string used for pretty printing this expression. 
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242")
+  public String printOp() {
+    String printOp_value = "&&";
+    return printOp_value;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
    * @apilevel internal
    */
   public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
     if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:428
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:428
       return getLeftOperand().assignedAfterTrue(v);
     }
     else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:425
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:425
       return assignedBefore(v);
     }
     else {
@@ -526,16 +526,16 @@ public class AndLogicalExpr extends LogicalExpr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
    * @apilevel internal
    */
   public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
     if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1026
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1026
       return getLeftOperand().unassignedAfterTrue(v);
     }
     else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1024
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1024
       return unassignedBefore(v);
     }
     else {

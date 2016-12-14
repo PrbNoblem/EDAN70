@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/BoundNames.ast:3
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/BoundNames.ast:3
  * @production BoundMethodAccess : {@link MethodAccess};
 
  */
@@ -37,7 +37,7 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
    * <p>Specifying the hostType changes the target qualifier type which is used
    * to invoke the bound method.
    * @aspect BoundNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:68
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:68
    */
   public BoundMethodAccess(String name, List args, MethodDecl methodDecl,
       TypeDecl hostType) {
@@ -47,19 +47,19 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
   }
   /**
    * @aspect BoundNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:75
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:75
    */
   public BoundMethodAccess(String name, List args, MethodDecl methodDecl) {
     this(name, args, methodDecl, methodDecl.hostType());
   }
   /**
    * @aspect BoundNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:79
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:79
    */
   private MethodDecl methodDecl;
   /**
    * @aspect BoundNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:81
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:81
    */
   private TypeDecl boundHostType;
   /**
@@ -353,10 +353,10 @@ public class BoundMethodAccess extends MethodAccess implements Cloneable {
   /**
    * @attribute syn
    * @aspect LookupMethod
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:159
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:159
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:159")
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:159")
   public MethodDecl decl() {
     ASTNode$State state = state();
     if (decl_computed == ASTNode$State.NON_CYCLE || decl_computed == state().cycle()) {

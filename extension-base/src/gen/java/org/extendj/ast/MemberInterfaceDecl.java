@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:99
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:99
  * @production MemberInterfaceDecl : {@link MemberTypeDecl} ::= <span class="component">{@link InterfaceDecl}</span>;
 
  */
 public class MemberInterfaceDecl extends MemberTypeDecl implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:457
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:457
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getInterfaceDecl());
@@ -193,10 +193,10 @@ public class MemberInterfaceDecl extends MemberTypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613")
   public TypeDecl typeDecl() {
     TypeDecl typeDecl_value = getInterfaceDecl();
     return typeDecl_value;
@@ -204,21 +204,21 @@ public class MemberInterfaceDecl extends MemberTypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
   public boolean modifiedInScope(Variable var) {
     boolean modifiedInScope_Variable_value = getInterfaceDecl().modifiedInScope(var);
     return modifiedInScope_Variable_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:580
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:580
    * @apilevel internal
    */
   public boolean Define_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
     if (getInterfaceDeclNoTransform() != null && _callerNode == getInterfaceDecl()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:582
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:582
       return true;
     }
     else {
@@ -237,7 +237,7 @@ public class MemberInterfaceDecl extends MemberTypeDecl implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:222
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:222
     if (hostType().isInnerClass()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

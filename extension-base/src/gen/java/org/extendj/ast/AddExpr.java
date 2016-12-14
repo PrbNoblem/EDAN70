@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:157
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:157
  * @production AddExpr : {@link AdditiveExpr};
 
  */
@@ -213,11 +213,33 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
+   * @aspect TypeCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:221
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:221")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        TypeDecl left = getLeftOperand().type();
+        TypeDecl right = getRightOperand().type();
+        if (!left.isString() && !right.isString()) {
+          return super.typeProblems();
+        } else if (left.isVoid()) {
+          problems.add(error("The type void of the left hand side is not numeric"));
+        } else if (right.isVoid()) {
+          problems.add(error("The type void of the right hand side is not numeric"));
+        }
+        return problems;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect ConstantExpression
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
   public Constant constant() {
     Constant constant_value = type().add(getLeftOperand().constant(), getRightOperand().constant());
     return constant_value;
@@ -225,10 +247,10 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
   /** The operator string used for pretty printing this expression. 
    * @attribute syn
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242")
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:242")
   public String printOp() {
     String printOp_value = "+";
     return printOp_value;
@@ -247,10 +269,10 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -281,34 +303,12 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
       }
     }
   /**
-   * @attribute syn
-   * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:221
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:221")
-  public Collection<Problem> typeProblems() {
-    {
-        Collection<Problem> problems = new LinkedList<Problem>();
-        TypeDecl left = getLeftOperand().type();
-        TypeDecl right = getRightOperand().type();
-        if (!left.isString() && !right.isString()) {
-          return super.typeProblems();
-        } else if (left.isVoid()) {
-          problems.add(error("The type void of the left hand side is not numeric"));
-        } else if (right.isVoid()) {
-          problems.add(error("The type void of the right hand side is not numeric"));
-        }
-        return problems;
-      }
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
    * @apilevel internal
    */
   public TypeDecl Define_targetType(ASTNode _callerNode, ASTNode _childNode) {
     if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:52
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:52
       {
           if (getRightOperand().stringContext()) {
             return getLeftOperand().type();
@@ -320,7 +320,7 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
         }
     }
     else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:43
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:43
       {
           if (getLeftOperand().stringContext()) {
             return getRightOperand().type();
@@ -339,12 +339,12 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
   public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getRightOperandNoTransform() != null && _callerNode == getRightOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:233
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:233
       {
           if (!getRightOperand().isPolyExpression() && !getLeftOperand().isPolyExpression()) {
             if (getLeftOperand().type().isString() && !getRightOperand().type().isString()) {
@@ -355,7 +355,7 @@ public class AddExpr extends AdditiveExpr implements Cloneable {
         }
     }
     else if (getLeftOperandNoTransform() != null && _callerNode == getLeftOperand()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:225
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:225
       {
           if (!getRightOperand().isPolyExpression() && !getLeftOperand().isPolyExpression()) {
             if (getRightOperand().type().isString() && !getLeftOperand().type().isString()) {

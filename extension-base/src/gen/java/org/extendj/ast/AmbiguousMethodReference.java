@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:5
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:5
  * @production AmbiguousMethodReference : {@link MethodReference} ::= <span class="component">AmbiguousName:{@link Access}</span>;
 
  */
@@ -349,10 +349,10 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
     if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -387,10 +387,10 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259")
   public ArrayList<MethodDecl> potentiallyApplicableMethods(FunctionDescriptor f) {
     Object _parameters = f;
     if (potentiallyApplicableMethods_FunctionDescriptor_computed == null) potentiallyApplicableMethods_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -427,10 +427,10 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314")
   public MethodDecl exactCompileTimeDeclaration() {
     ASTNode$State state = state();
     if (exactCompileTimeDeclaration_computed == ASTNode$State.NON_CYCLE || exactCompileTimeDeclaration_computed == state().cycle()) {
@@ -447,12 +447,12 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
     return exactCompileTimeDeclaration_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (getAmbiguousNameNoTransform() != null && _callerNode == getAmbiguousName()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:196
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:196
       return NameType.AMBIGUOUS_NAME;
     }
     else {
@@ -464,18 +464,18 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
   }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:199
+    // Declared at /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:199
     if (!getAmbiguousName().isTypeAccess()) {
       return rewriteRule0();
     }
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:209
+    // Declared at /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:209
     if (getAmbiguousName().isTypeAccess()) {
       return rewriteRule1();
     }
     return super.rewriteTo();
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:199
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:199
    * @apilevel internal
    */
   private ExprMethodReference rewriteRule0() {
@@ -486,7 +486,7 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
             (Access) getAmbiguousName().treeCopy());
       }  }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:209
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:209
    * @apilevel internal
    */
   private TypeMethodReference rewriteRule1() {
@@ -498,11 +498,11 @@ public class AmbiguousMethodReference extends MethodReference implements Cloneab
       }  }
   /** @apilevel internal */
   public boolean canRewrite() {
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:199
+    // Declared at /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:199
     if (!getAmbiguousName().isTypeAccess()) {
       return true;
     }
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:209
+    // Declared at /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:209
     if (getAmbiguousName().isTypeAccess()) {
       return true;
     }

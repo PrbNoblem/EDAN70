@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:38
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:38
  * @production AbstractWildcardType : {@link TypeDecl};
 
  */
@@ -33,7 +33,7 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
    * Qualified access for wildcard types.  Since they have no ordinary package
    * and type name we just return the bound access.
    * @aspect Generics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:38
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:38
    */
   public Access createQualifiedAccess() {
     return createBoundAccess();
@@ -296,6 +296,44 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
   public List<BodyDecl> getBodyDeclsNoTransform() {
     return getBodyDeclListNoTransform();
   }
+  /** @return {@code true} if this type is a wildcard type, possibly with type bounds. 
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:120
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:120")
+  public boolean isWildcard() {
+    boolean isWildcard_value = true;
+    return isWildcard_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577")
+  public boolean supertypeNullType(NullType type) {
+    boolean supertypeNullType_NullType_value = true;
+    return supertypeNullType_NullType_value;
+  }
+  /**
+   * A type is reifiable if it either refers to a non-parameterized type,
+   * is a raw type, is a parameterized type with only unbound wildcard
+   * parameters or is an array type with a reifiable type parameter.
+   * 
+   * @see "JLS SE7 &sect;4.7"
+   * @attribute syn
+   * @aspect ReifiableTypes
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
+  public boolean isReifiable() {
+    boolean isReifiable_value = false;
+    return isReifiable_value;
+  }
   /** @apilevel internal */
   private void castingConversionTo_TypeDecl_reset() {
     castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
@@ -308,10 +346,10 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
   /**
    * @attribute syn
    * @aspect TypeConversion
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100")
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100")
   public boolean castingConversionTo(TypeDecl type) {
     Object _parameters = type;
     if (castingConversionTo_TypeDecl_computed == null) castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
@@ -337,51 +375,13 @@ public abstract class AbstractWildcardType extends TypeDecl implements Cloneable
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178")
   public boolean isReferenceType() {
     boolean isReferenceType_value = true;
     return isReferenceType_value;
-  }
-  /**
-   * A type is reifiable if it either refers to a non-parameterized type,
-   * is a raw type, is a parameterized type with only unbound wildcard
-   * parameters or is an array type with a reifiable type parameter.
-   * 
-   * @see "JLS SE7 &sect;4.7"
-   * @attribute syn
-   * @aspect ReifiableTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
-  public boolean isReifiable() {
-    boolean isReifiable_value = false;
-    return isReifiable_value;
-  }
-  /** @return {@code true} if this type is a wildcard type, possibly with type bounds. 
-   * @attribute syn
-   * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:120
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:120")
-  public boolean isWildcard() {
-    boolean isWildcard_value = true;
-    return isWildcard_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577")
-  public boolean supertypeNullType(NullType type) {
-    boolean supertypeNullType_NullType_value = true;
-    return supertypeNullType_NullType_value;
   }
   /** @apilevel internal */
   public ASTNode rewriteTo() {

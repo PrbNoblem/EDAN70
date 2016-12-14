@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:11
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:11
  * @production LambdaBody : {@link ASTNode};
 
  */
@@ -32,7 +32,7 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
   /**
    * Copies the method block for the lambda body.
    * @aspect LambdaToClass
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:77
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:77
    */
   protected abstract Block toBlock();
   /**
@@ -114,42 +114,53 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:43
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:43
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:43")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:43")
   public abstract boolean modifiedInScope(Variable var);
   /**
    * @attribute syn
    * @aspect LambdaExpr
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:72
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:72
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:72")
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:72")
   public abstract boolean congruentTo(FunctionDescriptor f);
   /**
    * @attribute syn
    * @aspect LambdaBody
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:29
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:29
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaBody", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:29")
+  @ASTNodeAnnotation.Source(aspect="LambdaBody", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:29")
   public abstract boolean isBlockBody();
   /**
    * @attribute syn
    * @aspect LambdaBody
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:30
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaBody", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:30")
+  @ASTNodeAnnotation.Source(aspect="LambdaBody", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:30")
   public abstract boolean isExprBody();
   /**
    * @attribute inh
-   * @aspect EnclosingLambda
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29
+   * @aspect TypeCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:32
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="EnclosingLambda", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29")
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:32")
+  public TypeDecl unknownType() {
+    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
+    return unknownType_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect EnclosingLambda
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="EnclosingLambda", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29")
   public LambdaExpr enclosingLambda() {
     ASTNode$State state = state();
     if (enclosingLambda_computed == ASTNode$State.NON_CYCLE || enclosingLambda_computed == state().cycle()) {
@@ -179,10 +190,10 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30")
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30")
   public SimpleSet<Variable> lookupVariable(String name) {
     Object _parameters = name;
     if (lookupVariable_String_computed == null) lookupVariable_String_computed = new java.util.HashMap(4);
@@ -214,17 +225,6 @@ public abstract class LambdaBody extends ASTNode<ASTNode> implements Cloneable {
   protected java.util.Map lookupVariable_String_values;
   /** @apilevel internal */
   protected java.util.Map lookupVariable_String_computed;
-  /**
-   * @attribute inh
-   * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:32
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:32")
-  public TypeDecl unknownType() {
-    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
-    return unknownType_value;
-  }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();

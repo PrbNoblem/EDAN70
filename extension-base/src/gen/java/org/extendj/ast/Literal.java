@@ -5,34 +5,34 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * The abstract base class for all literals.
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:4
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:4
  * @production Literal : {@link PrimaryExpr} ::= <span class="component">&lt;LITERAL:String&gt;</span>;
 
  */
 public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:442
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:442
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getLITERAL());
@@ -42,7 +42,7 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
    * @param s string to escape
    * @return escaped string literal
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:295
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:295
    */
   protected static String escape(String s) {
     StringBuffer result = new StringBuffer();
@@ -85,7 +85,7 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   }
   /**
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:335
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:335
    */
   protected static String asEscape(int value) {
     StringBuffer s = new StringBuffer("\\u");
@@ -98,14 +98,14 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   }
   /**
    * @aspect BytecodeCONSTANT
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BytecodeCONSTANT.jrag:96
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BytecodeCONSTANT.jrag:96
    */
   public static Literal buildBooleanLiteral(boolean value) {
     return new BooleanLiteral(value ? "true" : "false");
   }
   /**
    * @aspect BytecodeCONSTANT
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BytecodeCONSTANT.jrag:100
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BytecodeCONSTANT.jrag:100
    */
   public static Literal buildStringLiteral(String value) {
     return new StringLiteral(value);
@@ -238,7 +238,7 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @return a fresh double literal representing the given value
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:76
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:76
    */
     public static Literal buildDoubleLiteral(double value) {
     String digits = Double.toString(value);
@@ -250,7 +250,7 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @return a fresh float literal representing the given value
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:88
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:88
    */
     public static Literal buildFloatLiteral(float value) {
     String digits = Float.toString(value);
@@ -262,7 +262,7 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @return a fresh integer literal representing the given value
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:100
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:100
    */
     public static Literal buildIntegerLiteral(int value) {
     String digits = Integer.toHexString(value);
@@ -274,7 +274,7 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @return a fresh long literal representing the given value
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:112
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:112
    */
     public static Literal buildLongLiteral(long value) {
     String digits = Long.toHexString(value);
@@ -297,10 +297,10 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
   public Constant constant() {
     ASTNode$State state = state();
     if (constant_computed == ASTNode$State.NON_CYCLE || constant_computed == state().cycle()) {
@@ -324,10 +324,10 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383")
   public boolean isConstant() {
     boolean isConstant_value = true;
     return isConstant_value;
@@ -335,10 +335,10 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:435
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:435
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:435")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:435")
   public boolean isTrue() {
     boolean isTrue_value = false;
     return isTrue_value;
@@ -346,10 +346,10 @@ public abstract class Literal extends PrimaryExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:438
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:438
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:438")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:438")
   public boolean isFalse() {
     boolean isFalse_value = false;
     return isFalse_value;

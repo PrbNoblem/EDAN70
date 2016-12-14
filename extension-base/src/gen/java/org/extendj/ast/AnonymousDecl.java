@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:67
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:67
  * @production AnonymousDecl : {@link ClassDecl} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">[SuperClass:{@link Access}]</span> <span class="component">Implements:{@link Access}*</span> <span class="component">{@link BodyDecl}*</span>;
 
  */
@@ -83,10 +83,10 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    getImplicitConstructorOpt_reset();
     isCircular_reset();
     getSuperClassOpt_reset();
     getImplementsList_reset();
-    getImplicitConstructorOpt_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:46
@@ -560,7 +560,7 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
   }
   /**
    * @aspect VariableArityParameters
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:132
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:132
    */
    
   protected List constructorParameterList(ConstructorDecl decl) {
@@ -585,136 +585,6 @@ public class AnonymousDecl extends ClassDecl implements Cloneable {
 
     return parameterList;
   }
-/** @apilevel internal */
-protected ASTNode$State.Cycle isCircular_cycle = null;
-  /** @apilevel internal */
-  private void isCircular_reset() {
-    isCircular_computed = false;
-    isCircular_initialized = false;
-    isCircular_cycle = null;
-  }
-  /** @apilevel internal */
-  protected boolean isCircular_computed = false;
-
-  /** @apilevel internal */
-  protected boolean isCircular_value;
-  /** @apilevel internal */
-  protected boolean isCircular_initialized = false;
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="Circularity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:718")
-  public boolean isCircular() {
-    if (isCircular_computed) {
-      return isCircular_value;
-    }
-    ASTNode$State state = state();
-    if (!isCircular_initialized) {
-      isCircular_initialized = true;
-      isCircular_value = true;
-    }
-    if (!state.inCircle() || state.calledByLazyAttribute()) {
-      state.enterCircle();
-      do {
-        isCircular_cycle = state.nextCycle();
-        boolean new_isCircular_value = false;
-        if (new_isCircular_value != isCircular_value) {
-          state.setChangeInCycle();
-        }
-        isCircular_value = new_isCircular_value;
-      } while (state.testAndClearChangeInCycle());
-      isCircular_computed = true;
-
-      state.leaveCircle();
-    } else if (isCircular_cycle != state.cycle()) {
-      isCircular_cycle = state.cycle();
-      boolean new_isCircular_value = false;
-      if (new_isCircular_value != isCircular_value) {
-        state.setChangeInCycle();
-      }
-      isCircular_value = new_isCircular_value;
-    } else {
-    }
-    return isCircular_value;
-  }
-  /** @apilevel internal */
-  private void getSuperClassOpt_reset() {
-    getSuperClassOpt_computed = false;
-    
-    getSuperClassOpt_value = null;
-  }
-  /** @apilevel internal */
-  protected boolean getSuperClassOpt_computed = false;
-
-  /** @apilevel internal */
-  protected Opt getSuperClassOpt_value;
-
-  /**
-   * @attribute syn nta
-   * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:56
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:56")
-  public Opt getSuperClassOpt() {
-    ASTNode$State state = state();
-    if (getSuperClassOpt_computed) {
-      return (Opt) getChild(getSuperClassOptChildPosition());
-    }
-    state().enterLazyAttribute();
-    getSuperClassOpt_value = getSuperClassOpt_compute();
-    setChild(getSuperClassOpt_value, getSuperClassOptChildPosition());
-    getSuperClassOpt_computed = true;
-    state().leaveLazyAttribute();
-    Opt node = (Opt) this.getChild(getSuperClassOptChildPosition());
-    return node;
-  }
-  /** @apilevel internal */
-  private Opt getSuperClassOpt_compute() {
-      if (superType().isInterfaceDecl()) {
-        return new Opt(typeObject().createQualifiedAccess());
-      } else {
-        return new Opt(superType().createBoundAccess());
-      }
-    }
-  /** @apilevel internal */
-  private void getImplementsList_reset() {
-    getImplementsList_computed = false;
-    
-    getImplementsList_value = null;
-  }
-  /** @apilevel internal */
-  protected boolean getImplementsList_computed = false;
-
-  /** @apilevel internal */
-  protected List getImplementsList_value;
-
-  /**
-   * @attribute syn nta
-   * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:64
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:64")
-  public List getImplementsList() {
-    ASTNode$State state = state();
-    if (getImplementsList_computed) {
-      return (List) getChild(getImplementsListChildPosition());
-    }
-    state().enterLazyAttribute();
-    getImplementsList_value = getImplementsList_compute();
-    setChild(getImplementsList_value, getImplementsListChildPosition());
-    getImplementsList_computed = true;
-    state().leaveLazyAttribute();
-    List node = (List) this.getChild(getImplementsListChildPosition());
-    return node;
-  }
-  /** @apilevel internal */
-  private List getImplementsList_compute() {
-      if (superType().isInterfaceDecl()) {
-        return new List().add(superType().createBoundAccess());
-      } else {
-        return new List();
-      }
-    }
   /** @apilevel internal */
   private void getImplicitConstructorOpt_reset() {
     getImplicitConstructorOpt_computed = false;
@@ -730,10 +600,10 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
   /**
    * @attribute syn nta
    * @aspect ImplicitConstructor
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:274
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:274
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="ImplicitConstructor", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:274")
+  @ASTNodeAnnotation.Source(aspect="ImplicitConstructor", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:274")
   public Opt<ConstructorDecl> getImplicitConstructorOpt() {
     ASTNode$State state = state();
     if (getImplicitConstructorOpt_computed) {
@@ -805,13 +675,143 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
         return new Opt<ConstructorDecl>();
       }
     }
+/** @apilevel internal */
+protected ASTNode$State.Cycle isCircular_cycle = null;
+  /** @apilevel internal */
+  private void isCircular_reset() {
+    isCircular_computed = false;
+    isCircular_initialized = false;
+    isCircular_cycle = null;
+  }
+  /** @apilevel internal */
+  protected boolean isCircular_computed = false;
+
+  /** @apilevel internal */
+  protected boolean isCircular_value;
+  /** @apilevel internal */
+  protected boolean isCircular_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="Circularity", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:718")
+  public boolean isCircular() {
+    if (isCircular_computed) {
+      return isCircular_value;
+    }
+    ASTNode$State state = state();
+    if (!isCircular_initialized) {
+      isCircular_initialized = true;
+      isCircular_value = true;
+    }
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      do {
+        isCircular_cycle = state.nextCycle();
+        boolean new_isCircular_value = false;
+        if (new_isCircular_value != isCircular_value) {
+          state.setChangeInCycle();
+        }
+        isCircular_value = new_isCircular_value;
+      } while (state.testAndClearChangeInCycle());
+      isCircular_computed = true;
+
+      state.leaveCircle();
+    } else if (isCircular_cycle != state.cycle()) {
+      isCircular_cycle = state.cycle();
+      boolean new_isCircular_value = false;
+      if (new_isCircular_value != isCircular_value) {
+        state.setChangeInCycle();
+      }
+      isCircular_value = new_isCircular_value;
+    } else {
+    }
+    return isCircular_value;
+  }
+  /** @apilevel internal */
+  private void getSuperClassOpt_reset() {
+    getSuperClassOpt_computed = false;
+    
+    getSuperClassOpt_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean getSuperClassOpt_computed = false;
+
+  /** @apilevel internal */
+  protected Opt getSuperClassOpt_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect AnonymousClasses
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:56
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:56")
+  public Opt getSuperClassOpt() {
+    ASTNode$State state = state();
+    if (getSuperClassOpt_computed) {
+      return (Opt) getChild(getSuperClassOptChildPosition());
+    }
+    state().enterLazyAttribute();
+    getSuperClassOpt_value = getSuperClassOpt_compute();
+    setChild(getSuperClassOpt_value, getSuperClassOptChildPosition());
+    getSuperClassOpt_computed = true;
+    state().leaveLazyAttribute();
+    Opt node = (Opt) this.getChild(getSuperClassOptChildPosition());
+    return node;
+  }
+  /** @apilevel internal */
+  private Opt getSuperClassOpt_compute() {
+      if (superType().isInterfaceDecl()) {
+        return new Opt(typeObject().createQualifiedAccess());
+      } else {
+        return new Opt(superType().createBoundAccess());
+      }
+    }
+  /** @apilevel internal */
+  private void getImplementsList_reset() {
+    getImplementsList_computed = false;
+    
+    getImplementsList_value = null;
+  }
+  /** @apilevel internal */
+  protected boolean getImplementsList_computed = false;
+
+  /** @apilevel internal */
+  protected List getImplementsList_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect AnonymousClasses
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:64
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:64")
+  public List getImplementsList() {
+    ASTNode$State state = state();
+    if (getImplementsList_computed) {
+      return (List) getChild(getImplementsListChildPosition());
+    }
+    state().enterLazyAttribute();
+    getImplementsList_value = getImplementsList_compute();
+    setChild(getImplementsList_value, getImplementsListChildPosition());
+    getImplementsList_computed = true;
+    state().leaveLazyAttribute();
+    List node = (List) this.getChild(getImplementsListChildPosition());
+    return node;
+  }
+  /** @apilevel internal */
+  private List getImplementsList_compute() {
+      if (superType().isInterfaceDecl()) {
+        return new List().add(superType().createBoundAccess());
+      } else {
+        return new List();
+      }
+    }
   /**
    * @attribute inh
    * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:33
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:33
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:33")
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:33")
   public TypeDecl superType() {
     TypeDecl superType_value = getParent().Define_superType(this, null);
     return superType_value;
@@ -819,10 +819,10 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
   /**
    * @attribute inh
    * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:39
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:39
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:39")
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:39")
   public ConstructorDecl constructorDecl() {
     ConstructorDecl constructorDecl_value = getParent().Define_constructorDecl(this, null);
     return constructorDecl_value;
@@ -830,10 +830,10 @@ protected ASTNode$State.Cycle isCircular_cycle = null;
   /**
    * @attribute inh
    * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:95
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:95
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:95")
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:95")
   public TypeDecl typeNullPointerException() {
     TypeDecl typeNullPointerException_value = getParent().Define_typeNullPointerException(this, null);
     return typeNullPointerException_value;

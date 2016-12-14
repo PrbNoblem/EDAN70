@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:97
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:97
  * @production MemberTypeDecl : {@link MemberDecl};
 
  */
@@ -106,29 +106,18 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:613")
   public abstract TypeDecl typeDecl();
   /**
    * @attribute syn
-   * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:257
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:257")
-  public boolean isStatic() {
-    boolean isStatic_value = typeDecl().isStatic();
-    return isStatic_value;
-  }
-  /**
-   * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:608")
   public boolean declaresType(String name) {
     boolean declaresType_String_value = typeDecl().name().equals(name);
     return declaresType_String_value;
@@ -136,21 +125,32 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:610")
   public TypeDecl type(String name) {
     TypeDecl type_String_value = declaresType(name) ? typeDecl() : null;
     return type_String_value;
   }
   /**
    * @attribute syn
-   * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428
+   * @aspect Modifiers
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:257
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:257")
+  public boolean isStatic() {
+    boolean isStatic_value = typeDecl().isStatic();
+    return isStatic_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Annotations
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428")
   public boolean hasAnnotationSuppressWarnings(String annot) {
     boolean hasAnnotationSuppressWarnings_String_value = typeDecl().hasAnnotationSuppressWarnings(annot);
     return hasAnnotationSuppressWarnings_String_value;
@@ -158,10 +158,10 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:483
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:483
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:483")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:483")
   public boolean isDeprecated() {
     boolean isDeprecated_value = typeDecl().isDeprecated();
     return isDeprecated_value;
@@ -169,10 +169,10 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericsParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98")
+  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98")
   public boolean visibleTypeParameters() {
     boolean visibleTypeParameters_value = !isStatic();
     return visibleTypeParameters_value;
@@ -181,10 +181,10 @@ public abstract class MemberTypeDecl extends MemberDecl implements Cloneable {
    * @return true if the modifier list includes the SafeVarargs annotation
    * @attribute syn
    * @aspect SafeVarargs
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41")
+  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41")
   public boolean hasAnnotationSafeVarargs() {
     boolean hasAnnotationSafeVarargs_value = typeDecl().hasAnnotationSafeVarargs();
     return hasAnnotationSafeVarargs_value;

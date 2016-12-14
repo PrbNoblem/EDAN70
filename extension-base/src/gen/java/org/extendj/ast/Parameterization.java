@@ -5,29 +5,43 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast class
  * @aspect LookupParTypeDecl
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:973
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:973
  */
 public class Parameterization extends java.lang.Object {
+  public static final TypeProperty SAME_STRUCTURE = new TypeProperty() {
+    @Override
+    public boolean holds(TypeDecl t1, TypeDecl t2) {
+      return t1.sameStructure(t2);
+    }
+  };
+
+  public static final TypeProperty CONTAINED_IN = new TypeProperty() {
+    @Override
+    public boolean holds(TypeDecl t1, TypeDecl t2) {
+      return t1.containedIn(t2);
+    }
+  };
+
   
     public interface TypeProperty {
       boolean holds(TypeDecl t1, TypeDecl t2);
@@ -173,20 +187,6 @@ public class Parameterization extends java.lang.Object {
       }
       return !it1.hasNext() && !it2.hasNext();
     }
-
-  public static final TypeProperty SAME_STRUCTURE = new TypeProperty() {
-    @Override
-    public boolean holds(TypeDecl t1, TypeDecl t2) {
-      return t1.sameStructure(t2);
-    }
-  };
-
-  public static final TypeProperty CONTAINED_IN = new TypeProperty() {
-    @Override
-    public boolean holds(TypeDecl t1, TypeDecl t2) {
-      return t1.containedIn(t2);
-    }
-  };
 
   public static final TypeProperty STRICT_CONTAINED_IN = new TypeProperty() {
     @Override

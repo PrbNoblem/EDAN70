@@ -5,38 +5,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:8
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:8
  * @production ParMethodReferenceAccess : {@link ParMethodAccess};
 
  */
 public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:392
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:392
    */
   private FunctionDescriptor targetDescriptor;
   /**
    * @aspect Synthetics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:393
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:393
    */
   public ParMethodReferenceAccess(String name,
       List<Expr> args, List<Access> typeArgs, FunctionDescriptor f) {
@@ -447,10 +447,10 @@ public class ParMethodReferenceAccess extends ParMethodAccess implements Cloneab
   /**
    * @attribute syn
    * @aspect TargetType
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:176
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:176
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:176")
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:176")
   public TypeDecl assignConvertedType() {
     ASTNode$State state = state();
     if (assignConvertedType_computed == ASTNode$State.NON_CYCLE || assignConvertedType_computed == state().cycle()) {

@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:70
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:70
  * @production InstanceInitializer : {@link BodyDecl} ::= <span class="component">{@link Block}</span>;
 
  */
 public class InstanceInitializer extends BodyDecl implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:389
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:389
    */
   public void prettyPrint(PrettyPrinter out) {
     if (!blockIsEmpty()) {
@@ -78,9 +78,9 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    exceptions_reset();
     assignedAfter_Variable_reset();
     unassignedAfter_Variable_reset();
+    exceptions_reset();
     handlesException_TypeDecl_reset();
   }
   /** @apilevel internal 
@@ -197,68 +197,12 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
     return (Block) getChildNoTransform(0);
   }
   /** @apilevel internal */
-  private void exceptions_reset() {
-    exceptions_computed = null;
-    exceptions_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle exceptions_computed = null;
-
-  /** @apilevel internal */
-  protected Collection<TypeDecl> exceptions_value;
-
-  /**
-   * @attribute syn
-   * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:111
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:111")
-  public Collection<TypeDecl> exceptions() {
-    ASTNode$State state = state();
-    if (exceptions_computed == ASTNode$State.NON_CYCLE || exceptions_computed == state().cycle()) {
-      return exceptions_value;
-    }
-    exceptions_value = exceptions_compute();
-    if (state().inCircle()) {
-      exceptions_computed = state().cycle();
-    
-    } else {
-      exceptions_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return exceptions_value;
-  }
-  /** @apilevel internal */
-  private Collection<TypeDecl> exceptions_compute() {
-      Collection<TypeDecl> exceptions = new HashSet<TypeDecl>();
-      collectExceptions(exceptions, this);
-      for (Iterator<TypeDecl> iter = exceptions.iterator(); iter.hasNext(); ) {
-        TypeDecl exception = iter.next();
-        if (!getBlock().reachedException(exception)) {
-          iter.remove();
-        }
-      }
-      return exceptions;
-    }
-  /**
-   * @attribute syn
-   * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:187
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:187")
-  public boolean blockIsEmpty() {
-    boolean blockIsEmpty_value = getBlock().getNumStmt() == 0;
-    return blockIsEmpty_value;
-  }
-  /** @apilevel internal */
   private void assignedAfter_Variable_reset() {
     assignedAfter_Variable_values = null;
   }
   protected java.util.Map assignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:272")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:272")
   public boolean assignedAfter(Variable v) {
     Object _parameters = v;
     if (assignedAfter_Variable_values == null) assignedAfter_Variable_values = new java.util.HashMap(4);
@@ -309,7 +253,7 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
   }
   protected java.util.Map unassignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:915")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:915")
   public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
     if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
@@ -356,11 +300,67 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
+   * @aspect PrettyPrintUtil
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:187
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:187")
+  public boolean blockIsEmpty() {
+    boolean blockIsEmpty_value = getBlock().getNumStmt() == 0;
+    return blockIsEmpty_value;
+  }
+  /** @apilevel internal */
+  private void exceptions_reset() {
+    exceptions_computed = null;
+    exceptions_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle exceptions_computed = null;
+
+  /** @apilevel internal */
+  protected Collection<TypeDecl> exceptions_value;
+
+  /**
+   * @attribute syn
+   * @aspect AnonymousClasses
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:111
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AnonymousClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:111")
+  public Collection<TypeDecl> exceptions() {
+    ASTNode$State state = state();
+    if (exceptions_computed == ASTNode$State.NON_CYCLE || exceptions_computed == state().cycle()) {
+      return exceptions_value;
+    }
+    exceptions_value = exceptions_compute();
+    if (state().inCircle()) {
+      exceptions_computed = state().cycle();
+    
+    } else {
+      exceptions_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return exceptions_value;
+  }
+  /** @apilevel internal */
+  private Collection<TypeDecl> exceptions_compute() {
+      Collection<TypeDecl> exceptions = new HashSet<TypeDecl>();
+      collectExceptions(exceptions, this);
+      for (Iterator<TypeDecl> iter = exceptions.iterator(); iter.hasNext(); ) {
+        TypeDecl exception = iter.next();
+        if (!getBlock().reachedException(exception)) {
+          iter.remove();
+        }
+      }
+      return exceptions;
+    }
+  /**
+   * @attribute syn
+   * @aspect PreciseRethrow
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
   public boolean modifiedInScope(Variable var) {
     boolean modifiedInScope_Variable_value = getBlock().modifiedInScope(var);
     return modifiedInScope_Variable_value;
@@ -368,10 +368,10 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect ExceptionHandling
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:91
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:91
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:91")
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:91")
   public boolean handlesException(TypeDecl exceptionType) {
     Object _parameters = exceptionType;
     if (handlesException_TypeDecl_computed == null) handlesException_TypeDecl_computed = new java.util.HashMap(4);
@@ -404,28 +404,44 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
   /** @apilevel internal */
   protected java.util.Map handlesException_TypeDecl_computed;
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:208
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:356
    * @apilevel internal
    */
-  public boolean Define_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
+  public ASTNode Define_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:214
-      return false;
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:359
+      return this;
     }
     else {
-      return getParent().Define_inStaticContext(this, _callerNode);
+      return getParent().Define_enclosingBlock(this, _callerNode);
     }
   }
-  protected boolean canDefine_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
+  protected boolean canDefine_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @apilevel internal
+   */
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:553
+      return assignedBefore(v);
+    }
+    else {
+      return super.Define_assignedBefore(_callerNode, _childNode, v);
+    }
+  }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
    * @apilevel internal
    */
   public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:64
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:64
       return true;
     }
     else {
@@ -436,12 +452,12 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
    * @apilevel internal
    */
   public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:244
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:244
       {
           if (hostType().isAnonymous()) {
             return true;
@@ -462,39 +478,23 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:356
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:208
    * @apilevel internal
    */
-  public ASTNode Define_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
+  public boolean Define_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:359
-      return this;
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:214
+      return false;
     }
     else {
-      return getParent().Define_enclosingBlock(this, _callerNode);
+      return getParent().Define_inStaticContext(this, _callerNode);
     }
   }
-  protected boolean canDefine_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
+  protected boolean canDefine_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
-   * @apilevel internal
-   */
-  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:553
-      return assignedBefore(v);
-    }
-    else {
-      return super.Define_assignedBefore(_callerNode, _childNode, v);
-    }
-  }
-  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
    * @apilevel internal
    */
   public boolean Define_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
@@ -513,7 +513,7 @@ public class InstanceInitializer extends BodyDecl implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:43
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:43
     if (!getBlock().canCompleteNormally()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

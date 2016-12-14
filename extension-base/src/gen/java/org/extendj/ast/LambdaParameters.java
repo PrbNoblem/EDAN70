@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:3
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:3
  * @production LambdaParameters : {@link ASTNode};
 
  */
@@ -32,7 +32,7 @@ public abstract class LambdaParameters extends ASTNode<ASTNode> implements Clone
   /**
    * Builds a parameter list copying the lambda parameters.
    * @aspect LambdaToClass
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:99
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:99
    */
   protected abstract List<ParameterDeclaration> toParameterList();
   /**
@@ -113,26 +113,59 @@ public abstract class LambdaParameters extends ASTNode<ASTNode> implements Clone
   /**
    * @attribute syn
    * @aspect LambdaExpr
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42")
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42")
   public abstract int numParameters();
   /**
    * @attribute syn
    * @aspect LambdaExpr
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48")
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48")
   public abstract boolean congruentTo(FunctionDescriptor f);
   /**
    * @attribute inh
-   * @aspect EnclosingLambda
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:30
+   * @aspect PreciseRethrow
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:31
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="EnclosingLambda", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:30")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:31")
+  public boolean inhModifiedInScope(Variable var) {
+    boolean inhModifiedInScope_Variable_value = getParent().Define_inhModifiedInScope(this, null, var);
+    return inhModifiedInScope_Variable_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect Java8NameCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:32
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:32")
+  public VariableScope outerScope() {
+    VariableScope outerScope_value = getParent().Define_outerScope(this, null);
+    return outerScope_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect TypeCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:30
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:30")
+  public TypeDecl unknownType() {
+    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
+    return unknownType_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect EnclosingLambda
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:30
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="EnclosingLambda", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:30")
   public LambdaExpr enclosingLambda() {
     ASTNode$State state = state();
     if (enclosingLambda_computed == ASTNode$State.NON_CYCLE || enclosingLambda_computed == state().cycle()) {
@@ -159,39 +192,6 @@ public abstract class LambdaParameters extends ASTNode<ASTNode> implements Clone
   /** @apilevel internal */
   protected LambdaExpr enclosingLambda_value;
 
-  /**
-   * @attribute inh
-   * @aspect Java8NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:32
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:32")
-  public VariableScope outerScope() {
-    VariableScope outerScope_value = getParent().Define_outerScope(this, null);
-    return outerScope_value;
-  }
-  /**
-   * @attribute inh
-   * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:31
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:31")
-  public boolean inhModifiedInScope(Variable var) {
-    boolean inhModifiedInScope_Variable_value = getParent().Define_inhModifiedInScope(this, null, var);
-    return inhModifiedInScope_Variable_value;
-  }
-  /**
-   * @attribute inh
-   * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:30
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:30")
-  public TypeDecl unknownType() {
-    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
-    return unknownType_value;
-  }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();

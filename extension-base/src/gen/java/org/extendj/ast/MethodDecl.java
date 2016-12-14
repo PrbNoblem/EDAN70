@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:94
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:94
  * @production MethodDecl : {@link MemberDecl} ::= <span class="component">{@link Modifiers}</span> <span class="component">TypeAccess:{@link Access}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">Parameter:{@link ParameterDeclaration}*</span> <span class="component">Exception:{@link Access}*</span> <span class="component">[{@link Block}]</span>;
 
  */
 public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<MethodDecl> {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:471
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:471
    */
   public void prettyPrint(PrettyPrinter out) {
     if (!isSynthetic()) {
@@ -72,14 +72,14 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect BoundNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:95
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:95
    */
   public Access createBoundAccess(List<Expr> args) {
     return createBoundAccess(args, hostType());
   }
   /**
    * @aspect BoundNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:99
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BoundNames.jrag:99
    */
   public Access createBoundAccess(List<Expr> args, TypeDecl hostType) {
     if (isStatic()) {
@@ -91,7 +91,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:455
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:455
    */
   @Override
   public int size() {
@@ -99,7 +99,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:460
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:460
    */
   @Override
   public boolean isEmpty() {
@@ -107,7 +107,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:465
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:465
    */
   @Override
   public SimpleSet<MethodDecl> add(MethodDecl o) {
@@ -115,7 +115,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:470
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:470
    */
   @Override
   public boolean contains(Object o) {
@@ -123,7 +123,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:475
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:475
    */
   @Override
   public boolean isSingleton() {
@@ -131,7 +131,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:480
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:480
    */
   @Override
   public boolean isSingleton(MethodDecl o) {
@@ -139,7 +139,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:485
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:485
    */
   @Override
   public MethodDecl singletonValue() {
@@ -147,7 +147,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:490
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:490
    */
   @Override
   public boolean equals(Object o) {
@@ -155,7 +155,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:495
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:495
    */
   @Override
   public Iterator<MethodDecl> iterator() {
@@ -163,7 +163,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1286
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1286
    */
   public BodyDecl signatureCopy() {
     return new MethodDeclSubstituted(
@@ -177,7 +177,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1387
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1387
    */
   public BodyDecl erasedCopy() {
     return new MethodDeclSubstituted(
@@ -194,7 +194,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
    * in the methods throws-clause. This takes the position of the type
    * parameters into account.
    * @aspect FunctionDescriptor
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionDescriptor.jrag:201
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionDescriptor.jrag:201
    */
   public boolean subtypeThrowsClause(Access exception) {
     boolean foundCompatible = false;
@@ -211,7 +211,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
    * in the methods throws-clause. Performs erasure on all types before
    * comparing them.
    * @aspect FunctionDescriptor
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionDescriptor.jrag:217
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionDescriptor.jrag:217
    */
   public boolean subtypeThrowsClauseErased(Access exception) {
     boolean foundCompatible = false;
@@ -288,9 +288,9 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     overrides_MethodDecl_reset();
     hides_MethodDecl_reset();
     throwsException_TypeDecl_reset();
-    accessibleFrom_TypeDecl_reset();
     parameterDeclaration_String_reset();
     type_reset();
+    accessibleFrom_TypeDecl_reset();
     usesTypeVariable_reset();
     sourceMethodDecl_reset();
     subsignatureTo_MethodDecl_reset();
@@ -747,41 +747,409 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   /**
    * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:232
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:232
    */
   private boolean refined_MethodDecl_MethodDecl_sameSignature_MethodDecl(MethodDecl other)
 { return signature().equals(other.signature()); }
   /**
    * @attribute syn
-   * @aspect TypeHierarchyCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:388
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:193
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:388")
-  public boolean mayOverride(MethodDecl m) {
-    {
-        // 9.4.3
-        if (isDefault() && m.hostType().isType("java.lang", "Object") && !m.isPrivate()) {
-          return false;
-        } else {
-          MethodDecl self = this;
-          if (self.isGeneric()) {
-            self = genericDecl().rawMethodDecl();
-          }
-          if (m.isGeneric()) {
-            m = m.genericDecl().rawMethodDecl();
-          }
-          return self.returnTypeSubstitutableFor(m);
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:193")
+  public String name() {
+    String name_value = getID();
+    return name_value;
+  }
+  /** @apilevel internal */
+  private void signature_reset() {
+    signature_computed = null;
+    signature_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle signature_computed = null;
+
+  /** @apilevel internal */
+  protected String signature_value;
+
+  /**
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:196
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:196")
+  public String signature() {
+    ASTNode$State state = state();
+    if (signature_computed == ASTNode$State.NON_CYCLE || signature_computed == state().cycle()) {
+      return signature_value;
+    }
+    signature_value = signature_compute();
+    if (state().inCircle()) {
+      signature_computed = state().cycle();
+    
+    } else {
+      signature_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return signature_value;
+  }
+  /** @apilevel internal */
+  private String signature_compute() {
+      StringBuilder sb = new StringBuilder();
+      sb.append(name() + "(");
+      for (int i = 0; i < getNumParameter(); i++) {
+        if (i != 0) {
+          sb.append(", ");
         }
+        sb.append(getParameter(i).type().erasure().typeName());
+      }
+      sb.append(")");
+      return sb.toString();
+    }
+  /**
+   * @return Method signature, including generic parameters.
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:212
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:212")
+  public String fullSignature() {
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name() + "(");
+        for (int i = 0; i < getNumParameter(); i++) {
+          if (i != 0) {
+            sb.append(", ");
+          }
+          if (getParameter(i).type() instanceof PrimitiveType) {
+            sb.append(getParameter(i).type().typeName());
+          } else {
+            sb.append(getParameter(i).type().fullName());
+          }
+        }
+        sb.append(")");
+        return sb.toString();
+      }
+  }
+  /**
+   * 8.4.2 Method Signature
+   * @param other
+   * @return {@code true} if the signature of this method is same as the
+   * the signature of the argument method
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:232
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:232")
+  public boolean sameSignature(MethodDecl other) {
+    {
+        if (!refined_MethodDecl_MethodDecl_sameSignature_MethodDecl(other)) {
+          return false;
+        }
+        for (int i = 0; i < getNumParameter(); ++i) {
+          TypeDecl p1 = getParameter(i).type();
+          TypeDecl p2 = other.getParameter(i).type();
+          // JLSv7 $8.4.8.1 exception: if one parameter type is raw, then don't check type bounds
+          if (p1 != p2 && !p1.isRawType() && !p2.isRawType()) {
+            return false;
+          }
+        }
+        return true;
+      }
+  }
+  /**
+   * @param m argument method to compare to
+   * @return {@code true} if this the argument method is less specific than this
+   * and this is not less specific than the argument
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:240
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:240")
+  public boolean moreSpecificThan(MethodDecl m) {
+    boolean moreSpecificThan_MethodDecl_value = m.lessSpecificThan(this) && !this.lessSpecificThan(m);
+    return moreSpecificThan_MethodDecl_value;
+  }
+  /** @apilevel internal */
+  private void lessSpecificThan_MethodDecl_reset() {
+    lessSpecificThan_MethodDecl_computed = new java.util.HashMap(4);
+    lessSpecificThan_MethodDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map lessSpecificThan_MethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map lessSpecificThan_MethodDecl_computed;
+  /**
+   * Caution: a less specific than b does not mean b is not less specific than a!
+   * @param m argument method to compare to
+   * @return {@code true} if any parameter of this method decl is not a
+   * subtype (non-proper subtype) of the corresponding parameter of the
+   * argument method
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:250
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:250")
+  public boolean lessSpecificThan(MethodDecl m) {
+    Object _parameters = m;
+    if (lessSpecificThan_MethodDecl_computed == null) lessSpecificThan_MethodDecl_computed = new java.util.HashMap(4);
+    if (lessSpecificThan_MethodDecl_values == null) lessSpecificThan_MethodDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (lessSpecificThan_MethodDecl_values.containsKey(_parameters) && lessSpecificThan_MethodDecl_computed != null
+        && lessSpecificThan_MethodDecl_computed.containsKey(_parameters)
+        && (lessSpecificThan_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || lessSpecificThan_MethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) lessSpecificThan_MethodDecl_values.get(_parameters);
+    }
+    boolean lessSpecificThan_MethodDecl_value = lessSpecificThan_compute(m);
+    if (state().inCircle()) {
+      lessSpecificThan_MethodDecl_values.put(_parameters, lessSpecificThan_MethodDecl_value);
+      lessSpecificThan_MethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      lessSpecificThan_MethodDecl_values.put(_parameters, lessSpecificThan_MethodDecl_value);
+      lessSpecificThan_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return lessSpecificThan_MethodDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean lessSpecificThan_compute(MethodDecl m) {
+      int numA = getNumParameter();
+      int numB = m.getNumParameter();
+      int num = Math.max(numA, numB);
+      for (int i = 0; i < num; i++) {
+        TypeDecl t1 = getParameter(Math.min(i, numA - 1)).type();
+        TypeDecl t2 = m.getParameter(Math.min(i, numB - 1)).type();
+        if (!t1.instanceOf(t2) && !t1.withinBounds(t2)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  /** @apilevel internal */
+  private void overrideCandidate_MethodDecl_reset() {
+    overrideCandidate_MethodDecl_computed = new java.util.HashMap(4);
+    overrideCandidate_MethodDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map overrideCandidate_MethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map overrideCandidate_MethodDecl_computed;
+  /**
+   * Only check if this method would be able to override other method,
+   * not if this method is declared in a subtype of the hostType of
+   * other method. NB: does not check for equal signature!
+   * @param m other method
+   * @return {@code true} of the method could potentially override
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:319
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:319")
+  public boolean overrideCandidate(MethodDecl m) {
+    Object _parameters = m;
+    if (overrideCandidate_MethodDecl_computed == null) overrideCandidate_MethodDecl_computed = new java.util.HashMap(4);
+    if (overrideCandidate_MethodDecl_values == null) overrideCandidate_MethodDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (overrideCandidate_MethodDecl_values.containsKey(_parameters) && overrideCandidate_MethodDecl_computed != null
+        && overrideCandidate_MethodDecl_computed.containsKey(_parameters)
+        && (overrideCandidate_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || overrideCandidate_MethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) overrideCandidate_MethodDecl_values.get(_parameters);
+    }
+    boolean overrideCandidate_MethodDecl_value = !isStatic() && !m.isPrivate() && m.accessibleFrom(hostType());
+    if (state().inCircle()) {
+      overrideCandidate_MethodDecl_values.put(_parameters, overrideCandidate_MethodDecl_value);
+      overrideCandidate_MethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      overrideCandidate_MethodDecl_values.put(_parameters, overrideCandidate_MethodDecl_value);
+      overrideCandidate_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return overrideCandidate_MethodDecl_value;
+  }
+  /** @apilevel internal */
+  private void overrides_MethodDecl_reset() {
+    overrides_MethodDecl_computed = new java.util.HashMap(4);
+    overrides_MethodDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map overrides_MethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map overrides_MethodDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:322
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:322")
+  public boolean overrides(MethodDecl m) {
+    Object _parameters = m;
+    if (overrides_MethodDecl_computed == null) overrides_MethodDecl_computed = new java.util.HashMap(4);
+    if (overrides_MethodDecl_values == null) overrides_MethodDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (overrides_MethodDecl_values.containsKey(_parameters) && overrides_MethodDecl_computed != null
+        && overrides_MethodDecl_computed.containsKey(_parameters)
+        && (overrides_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || overrides_MethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) overrides_MethodDecl_values.get(_parameters);
+    }
+    boolean overrides_MethodDecl_value = !isStatic() && !m.isPrivate() && m.accessibleFrom(hostType())
+          && hostType().instanceOf(m.hostType()) && m.signature().equals(signature());
+    if (state().inCircle()) {
+      overrides_MethodDecl_values.put(_parameters, overrides_MethodDecl_value);
+      overrides_MethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      overrides_MethodDecl_values.put(_parameters, overrides_MethodDecl_value);
+      overrides_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return overrides_MethodDecl_value;
+  }
+  /** @apilevel internal */
+  private void hides_MethodDecl_reset() {
+    hides_MethodDecl_computed = new java.util.HashMap(4);
+    hides_MethodDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map hides_MethodDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map hides_MethodDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect MethodDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:326
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:326")
+  public boolean hides(MethodDecl m) {
+    Object _parameters = m;
+    if (hides_MethodDecl_computed == null) hides_MethodDecl_computed = new java.util.HashMap(4);
+    if (hides_MethodDecl_values == null) hides_MethodDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (hides_MethodDecl_values.containsKey(_parameters) && hides_MethodDecl_computed != null
+        && hides_MethodDecl_computed.containsKey(_parameters)
+        && (hides_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || hides_MethodDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) hides_MethodDecl_values.get(_parameters);
+    }
+    boolean hides_MethodDecl_value = isStatic() && !m.isPrivate() && m.accessibleFrom(hostType())
+          && hostType().instanceOf(m.hostType()) && m.signature().equals(signature());
+    if (state().inCircle()) {
+      hides_MethodDecl_values.put(_parameters, hides_MethodDecl_value);
+      hides_MethodDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      hides_MethodDecl_values.put(_parameters, hides_MethodDecl_value);
+      hides_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return hides_MethodDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:147
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:147")
+  public Collection<Problem> nameProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        // 8.4
+        // 8.4.2
+        if (hostType().methodsSignature(signature()).size() > 1) {
+          problems.add(errorf("method with signature %s is multiply declared in type %s", signature(),
+              hostType().typeName()));
+        }
+        // 8.4.3.4
+        if (isNative() && hasBlock()) {
+          problems.add(error("native methods must have an empty semicolon body"));
+        }
+        // 8.4.5
+        if (isAbstract() && hasBlock()) {
+          problems.add(error("abstract methods must have an empty semicolon body"));
+        }
+        // 8.4.5
+        if (!hasBlock() && !(isNative() || isAbstract())) {
+          problems.add(error("only abstract and native methods may have an empty semicolon body"));
+        }
+        return problems;
       }
   }
   /**
    * @attribute syn
-   * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:152
+   * @aspect ErrorCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:152")
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46")
+  public int lineNumber() {
+    int lineNumber_value = getLine(IDstart);
+    return lineNumber_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:514
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:514")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        // Thrown vs super class method see MethodDecl.nameCheck.
+        // 8.4.4
+        TypeDecl exceptionType = typeThrowable();
+        for (int i = 0; i < getNumException(); i++) {
+          TypeDecl typeDecl = getException(i).type();
+          if (!typeDecl.instanceOf(exceptionType)) {
+            problems.add(errorf("%s throws non throwable type %s", signature(), typeDecl.fullName()));
+          }
+        }
+        // Check returns.
+        if (!isVoid() && hasBlock() && getBlock().canCompleteNormally()) {
+          problems.add(error("the body of a non void method may not complete normally"));
+        }
+        return problems;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:219
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:219")
+  public boolean hasModifiers() {
+    boolean hasModifiers_value = getModifiers().getNumModifier() > 0;
+    return hasModifiers_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:231
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:231")
+  public boolean hasExceptions() {
+    boolean hasExceptions_value = getNumException() > 0;
+    return hasExceptions_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Modifiers
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:152
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:152")
   public Collection<Problem> modifierProblems() {
     {
         Collection<Problem> problems = new LinkedList<Problem>();
@@ -862,10 +1230,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:249
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:249
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:249")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:249")
   public boolean isSynthetic() {
     boolean isSynthetic_value = getModifiers().isSynthetic();
     return isSynthetic_value;
@@ -873,10 +1241,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:259
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:259
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:259")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:259")
   public boolean isPublic() {
     boolean isPublic_value = getModifiers().isPublic() || hostType().isInterfaceDecl();
     return isPublic_value;
@@ -884,10 +1252,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:260
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:260
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:260")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:260")
   public boolean isPrivate() {
     boolean isPrivate_value = getModifiers().isPrivate();
     return isPrivate_value;
@@ -895,10 +1263,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:261
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:261
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:261")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:261")
   public boolean isProtected() {
     boolean isProtected_value = getModifiers().isProtected();
     return isProtected_value;
@@ -906,10 +1274,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:262
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:262
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:262")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:262")
   public boolean isAbstract() {
     {
         return getModifiers().isAbstract() || (hostType().isInterfaceDecl() && !isStatic() && !isDefault());
@@ -918,10 +1286,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:263
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:263
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:263")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:263")
   public boolean isStatic() {
     boolean isStatic_value = getModifiers().isStatic();
     return isStatic_value;
@@ -929,10 +1297,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:266
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:266
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:266")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:266")
   public boolean isFinal() {
     boolean isFinal_value = getModifiers().isFinal() || hostType().isFinal() || isPrivate();
     return isFinal_value;
@@ -940,10 +1308,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:268
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:268
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:268")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:268")
   public boolean isSynchronized() {
     boolean isSynchronized_value = getModifiers().isSynchronized();
     return isSynchronized_value;
@@ -951,10 +1319,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:269
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:269
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:269")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:269")
   public boolean isNative() {
     boolean isNative_value = getModifiers().isNative();
     return isNative_value;
@@ -962,315 +1330,13 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:270
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:270
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:270")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:270")
   public boolean isStrictfp() {
     boolean isStrictfp_value = getModifiers().isStrictfp();
     return isStrictfp_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:193
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:193")
-  public String name() {
-    String name_value = getID();
-    return name_value;
-  }
-  /** @apilevel internal */
-  private void signature_reset() {
-    signature_computed = null;
-    signature_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle signature_computed = null;
-
-  /** @apilevel internal */
-  protected String signature_value;
-
-  /**
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:196
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:196")
-  public String signature() {
-    ASTNode$State state = state();
-    if (signature_computed == ASTNode$State.NON_CYCLE || signature_computed == state().cycle()) {
-      return signature_value;
-    }
-    signature_value = signature_compute();
-    if (state().inCircle()) {
-      signature_computed = state().cycle();
-    
-    } else {
-      signature_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return signature_value;
-  }
-  /** @apilevel internal */
-  private String signature_compute() {
-      StringBuilder sb = new StringBuilder();
-      sb.append(name() + "(");
-      for (int i = 0; i < getNumParameter(); i++) {
-        if (i != 0) {
-          sb.append(", ");
-        }
-        sb.append(getParameter(i).type().erasure().typeName());
-      }
-      sb.append(")");
-      return sb.toString();
-    }
-  /**
-   * @return Method signature, including generic parameters.
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:212
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:212")
-  public String fullSignature() {
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append(name() + "(");
-        for (int i = 0; i < getNumParameter(); i++) {
-          if (i != 0) {
-            sb.append(", ");
-          }
-          if (getParameter(i).type() instanceof PrimitiveType) {
-            sb.append(getParameter(i).type().typeName());
-          } else {
-            sb.append(getParameter(i).type().fullName());
-          }
-        }
-        sb.append(")");
-        return sb.toString();
-      }
-  }
-  /**
-   * 8.4.2 Method Signature
-   * @param other
-   * @return {@code true} if the signature of this method is same as the
-   * the signature of the argument method
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:232
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:232")
-  public boolean sameSignature(MethodDecl other) {
-    {
-        if (!refined_MethodDecl_MethodDecl_sameSignature_MethodDecl(other)) {
-          return false;
-        }
-        for (int i = 0; i < getNumParameter(); ++i) {
-          TypeDecl p1 = getParameter(i).type();
-          TypeDecl p2 = other.getParameter(i).type();
-          // JLSv7 $8.4.8.1 exception: if one parameter type is raw, then don't check type bounds
-          if (p1 != p2 && !p1.isRawType() && !p2.isRawType()) {
-            return false;
-          }
-        }
-        return true;
-      }
-  }
-  /**
-   * @param m argument method to compare to
-   * @return {@code true} if this the argument method is less specific than this
-   * and this is not less specific than the argument
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:240
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:240")
-  public boolean moreSpecificThan(MethodDecl m) {
-    boolean moreSpecificThan_MethodDecl_value = m.lessSpecificThan(this) && !this.lessSpecificThan(m);
-    return moreSpecificThan_MethodDecl_value;
-  }
-  /** @apilevel internal */
-  private void lessSpecificThan_MethodDecl_reset() {
-    lessSpecificThan_MethodDecl_computed = new java.util.HashMap(4);
-    lessSpecificThan_MethodDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map lessSpecificThan_MethodDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map lessSpecificThan_MethodDecl_computed;
-  /**
-   * Caution: a less specific than b does not mean b is not less specific than a!
-   * @param m argument method to compare to
-   * @return {@code true} if any parameter of this method decl is not a
-   * subtype (non-proper subtype) of the corresponding parameter of the
-   * argument method
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:250
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:250")
-  public boolean lessSpecificThan(MethodDecl m) {
-    Object _parameters = m;
-    if (lessSpecificThan_MethodDecl_computed == null) lessSpecificThan_MethodDecl_computed = new java.util.HashMap(4);
-    if (lessSpecificThan_MethodDecl_values == null) lessSpecificThan_MethodDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (lessSpecificThan_MethodDecl_values.containsKey(_parameters) && lessSpecificThan_MethodDecl_computed != null
-        && lessSpecificThan_MethodDecl_computed.containsKey(_parameters)
-        && (lessSpecificThan_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || lessSpecificThan_MethodDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) lessSpecificThan_MethodDecl_values.get(_parameters);
-    }
-    boolean lessSpecificThan_MethodDecl_value = lessSpecificThan_compute(m);
-    if (state().inCircle()) {
-      lessSpecificThan_MethodDecl_values.put(_parameters, lessSpecificThan_MethodDecl_value);
-      lessSpecificThan_MethodDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      lessSpecificThan_MethodDecl_values.put(_parameters, lessSpecificThan_MethodDecl_value);
-      lessSpecificThan_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return lessSpecificThan_MethodDecl_value;
-  }
-  /** @apilevel internal */
-  private boolean lessSpecificThan_compute(MethodDecl m) {
-      int numA = getNumParameter();
-      int numB = m.getNumParameter();
-      int num = Math.max(numA, numB);
-      for (int i = 0; i < num; i++) {
-        TypeDecl t1 = getParameter(Math.min(i, numA - 1)).type();
-        TypeDecl t2 = m.getParameter(Math.min(i, numB - 1)).type();
-        if (!t1.instanceOf(t2) && !t1.withinBounds(t2)) {
-          return true;
-        }
-      }
-      return false;
-    }
-  /** @apilevel internal */
-  private void overrideCandidate_MethodDecl_reset() {
-    overrideCandidate_MethodDecl_computed = new java.util.HashMap(4);
-    overrideCandidate_MethodDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map overrideCandidate_MethodDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map overrideCandidate_MethodDecl_computed;
-  /**
-   * Only check if this method would be able to override other method,
-   * not if this method is declared in a subtype of the hostType of
-   * other method. NB: does not check for equal signature!
-   * @param m other method
-   * @return {@code true} of the method could potentially override
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:319
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:319")
-  public boolean overrideCandidate(MethodDecl m) {
-    Object _parameters = m;
-    if (overrideCandidate_MethodDecl_computed == null) overrideCandidate_MethodDecl_computed = new java.util.HashMap(4);
-    if (overrideCandidate_MethodDecl_values == null) overrideCandidate_MethodDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (overrideCandidate_MethodDecl_values.containsKey(_parameters) && overrideCandidate_MethodDecl_computed != null
-        && overrideCandidate_MethodDecl_computed.containsKey(_parameters)
-        && (overrideCandidate_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || overrideCandidate_MethodDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) overrideCandidate_MethodDecl_values.get(_parameters);
-    }
-    boolean overrideCandidate_MethodDecl_value = !isStatic() && !m.isPrivate() && m.accessibleFrom(hostType());
-    if (state().inCircle()) {
-      overrideCandidate_MethodDecl_values.put(_parameters, overrideCandidate_MethodDecl_value);
-      overrideCandidate_MethodDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      overrideCandidate_MethodDecl_values.put(_parameters, overrideCandidate_MethodDecl_value);
-      overrideCandidate_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return overrideCandidate_MethodDecl_value;
-  }
-  /** @apilevel internal */
-  private void overrides_MethodDecl_reset() {
-    overrides_MethodDecl_computed = new java.util.HashMap(4);
-    overrides_MethodDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map overrides_MethodDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map overrides_MethodDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:322
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:322")
-  public boolean overrides(MethodDecl m) {
-    Object _parameters = m;
-    if (overrides_MethodDecl_computed == null) overrides_MethodDecl_computed = new java.util.HashMap(4);
-    if (overrides_MethodDecl_values == null) overrides_MethodDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (overrides_MethodDecl_values.containsKey(_parameters) && overrides_MethodDecl_computed != null
-        && overrides_MethodDecl_computed.containsKey(_parameters)
-        && (overrides_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || overrides_MethodDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) overrides_MethodDecl_values.get(_parameters);
-    }
-    boolean overrides_MethodDecl_value = !isStatic() && !m.isPrivate() && m.accessibleFrom(hostType())
-          && hostType().instanceOf(m.hostType()) && m.signature().equals(signature());
-    if (state().inCircle()) {
-      overrides_MethodDecl_values.put(_parameters, overrides_MethodDecl_value);
-      overrides_MethodDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      overrides_MethodDecl_values.put(_parameters, overrides_MethodDecl_value);
-      overrides_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return overrides_MethodDecl_value;
-  }
-  /** @apilevel internal */
-  private void hides_MethodDecl_reset() {
-    hides_MethodDecl_computed = new java.util.HashMap(4);
-    hides_MethodDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map hides_MethodDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map hides_MethodDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect MethodDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:326
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:326")
-  public boolean hides(MethodDecl m) {
-    Object _parameters = m;
-    if (hides_MethodDecl_computed == null) hides_MethodDecl_computed = new java.util.HashMap(4);
-    if (hides_MethodDecl_values == null) hides_MethodDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (hides_MethodDecl_values.containsKey(_parameters) && hides_MethodDecl_computed != null
-        && hides_MethodDecl_computed.containsKey(_parameters)
-        && (hides_MethodDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || hides_MethodDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) hides_MethodDecl_values.get(_parameters);
-    }
-    boolean hides_MethodDecl_value = isStatic() && !m.isPrivate() && m.accessibleFrom(hostType())
-          && hostType().instanceOf(m.hostType()) && m.signature().equals(signature());
-    if (state().inCircle()) {
-      hides_MethodDecl_values.put(_parameters, hides_MethodDecl_value);
-      hides_MethodDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      hides_MethodDecl_values.put(_parameters, hides_MethodDecl_value);
-      hides_MethodDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return hides_MethodDecl_value;
   }
   /** @apilevel internal */
   private void throwsException_TypeDecl_reset() {
@@ -1284,10 +1350,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect ExceptionHandling
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:204
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:204
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:204")
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:204")
   public boolean throwsException(TypeDecl exceptionType) {
     Object _parameters = exceptionType;
     if (throwsException_TypeDecl_computed == null) throwsException_TypeDecl_computed = new java.util.HashMap(4);
@@ -1320,126 +1386,6 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       return false;
     }
   /** @apilevel internal */
-  private void accessibleFrom_TypeDecl_reset() {
-    accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
-    accessibleFrom_TypeDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map accessibleFrom_TypeDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map accessibleFrom_TypeDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect AccessControl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:104
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AccessControl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:104")
-  public boolean accessibleFrom(TypeDecl type) {
-    Object _parameters = type;
-    if (accessibleFrom_TypeDecl_computed == null) accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
-    if (accessibleFrom_TypeDecl_values == null) accessibleFrom_TypeDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (accessibleFrom_TypeDecl_values.containsKey(_parameters) && accessibleFrom_TypeDecl_computed != null
-        && accessibleFrom_TypeDecl_computed.containsKey(_parameters)
-        && (accessibleFrom_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || accessibleFrom_TypeDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) accessibleFrom_TypeDecl_values.get(_parameters);
-    }
-    boolean accessibleFrom_TypeDecl_value = accessibleFrom_compute(type);
-    if (state().inCircle()) {
-      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
-      accessibleFrom_TypeDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
-      accessibleFrom_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return accessibleFrom_TypeDecl_value;
-  }
-  /** @apilevel internal */
-  private boolean accessibleFrom_compute(TypeDecl type) {
-      if (isPublic()) {
-        return true;
-      } else if (isProtected()) {
-        if (hostPackage().equals(type.hostPackage())) {
-          return true;
-        }
-        if (type.withinBodyThatSubclasses(hostType()) != null) {
-          return true;
-        }
-        return false;
-      } else if (isPrivate()) {
-        return hostType().topLevelType() == type.topLevelType();
-      } else {
-        return hostPackage().equals(type.hostPackage());
-      }
-    }
-  /**
-   * @attribute syn
-   * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46")
-  public int lineNumber() {
-    int lineNumber_value = getLine(IDstart);
-    return lineNumber_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:147
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:147")
-  public Collection<Problem> nameProblems() {
-    {
-        Collection<Problem> problems = new LinkedList<Problem>();
-        // 8.4
-        // 8.4.2
-        if (hostType().methodsSignature(signature()).size() > 1) {
-          problems.add(errorf("method with signature %s is multiply declared in type %s", signature(),
-              hostType().typeName()));
-        }
-        // 8.4.3.4
-        if (isNative() && hasBlock()) {
-          problems.add(error("native methods must have an empty semicolon body"));
-        }
-        // 8.4.5
-        if (isAbstract() && hasBlock()) {
-          problems.add(error("abstract methods must have an empty semicolon body"));
-        }
-        // 8.4.5
-        if (!hasBlock() && !(isNative() || isAbstract())) {
-          problems.add(error("only abstract and native methods may have an empty semicolon body"));
-        }
-        return problems;
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:219
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:219")
-  public boolean hasModifiers() {
-    boolean hasModifiers_value = getModifiers().getNumModifier() > 0;
-    return hasModifiers_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:231
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:231")
-  public boolean hasExceptions() {
-    boolean hasExceptions_value = getNumException() > 0;
-    return hasExceptions_value;
-  }
-  /** @apilevel internal */
   private void parameterDeclaration_String_reset() {
     parameterDeclaration_String_computed = new java.util.HashMap(4);
     parameterDeclaration_String_values = null;
@@ -1451,10 +1397,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /** @return the first variable declaration with the given name. 
    * @attribute syn
    * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:174
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:174
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:174")
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:174")
   public SimpleSet<Variable> parameterDeclaration(String name) {
     Object _parameters = name;
     if (parameterDeclaration_String_computed == null) parameterDeclaration_String_computed = new java.util.HashMap(4);
@@ -1500,10 +1446,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:290
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:290
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:290")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:290")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -1522,47 +1468,101 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:292
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:292
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:292")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:292")
   public boolean isVoid() {
     boolean isVoid_value = type().isVoid();
     return isVoid_value;
   }
+  /** @apilevel internal */
+  private void accessibleFrom_TypeDecl_reset() {
+    accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
+    accessibleFrom_TypeDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map accessibleFrom_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map accessibleFrom_TypeDecl_computed;
   /**
    * @attribute syn
-   * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:514
+   * @aspect AccessControl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:104
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:514")
-  public Collection<Problem> typeProblems() {
+  @ASTNodeAnnotation.Source(aspect="AccessControl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:104")
+  public boolean accessibleFrom(TypeDecl type) {
+    Object _parameters = type;
+    if (accessibleFrom_TypeDecl_computed == null) accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
+    if (accessibleFrom_TypeDecl_values == null) accessibleFrom_TypeDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (accessibleFrom_TypeDecl_values.containsKey(_parameters) && accessibleFrom_TypeDecl_computed != null
+        && accessibleFrom_TypeDecl_computed.containsKey(_parameters)
+        && (accessibleFrom_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || accessibleFrom_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) accessibleFrom_TypeDecl_values.get(_parameters);
+    }
+    boolean accessibleFrom_TypeDecl_value = accessibleFrom_compute(type);
+    if (state().inCircle()) {
+      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
+      accessibleFrom_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
+      accessibleFrom_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return accessibleFrom_TypeDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean accessibleFrom_compute(TypeDecl type) {
+      if (isPublic()) {
+        return true;
+      } else if (isProtected()) {
+        if (hostPackage().equals(type.hostPackage())) {
+          return true;
+        }
+        if (type.withinBodyThatSubclasses(hostType()) != null) {
+          return true;
+        }
+        return false;
+      } else if (isPrivate()) {
+        return hostType().topLevelType() == type.topLevelType();
+      } else {
+        return hostPackage().equals(type.hostPackage());
+      }
+    }
+  /**
+   * @attribute syn
+   * @aspect TypeHierarchyCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:388
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:388")
+  public boolean mayOverride(MethodDecl m) {
     {
-        Collection<Problem> problems = new LinkedList<Problem>();
-        // Thrown vs super class method see MethodDecl.nameCheck.
-        // 8.4.4
-        TypeDecl exceptionType = typeThrowable();
-        for (int i = 0; i < getNumException(); i++) {
-          TypeDecl typeDecl = getException(i).type();
-          if (!typeDecl.instanceOf(exceptionType)) {
-            problems.add(errorf("%s throws non throwable type %s", signature(), typeDecl.fullName()));
+        // 9.4.3
+        if (isDefault() && m.hostType().isType("java.lang", "Object") && !m.isPrivate()) {
+          return false;
+        } else {
+          MethodDecl self = this;
+          if (self.isGeneric()) {
+            self = genericDecl().rawMethodDecl();
           }
+          if (m.isGeneric()) {
+            m = m.genericDecl().rawMethodDecl();
+          }
+          return self.returnTypeSubstitutableFor(m);
         }
-        // Check returns.
-        if (!isVoid() && hasBlock() && getBlock().canCompleteNormally()) {
-          problems.add(error("the body of a non void method may not complete normally"));
-        }
-        return problems;
       }
   }
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:231
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:231
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:231")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:231")
   public boolean annotationMethodOverride() {
     boolean annotationMethodOverride_value = !hostType().ancestorMethods(signature()).isEmpty();
     return annotationMethodOverride_value;
@@ -1570,10 +1570,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:428")
   public boolean hasAnnotationSuppressWarnings(String annot) {
     boolean hasAnnotationSuppressWarnings_String_value = getModifiers().hasAnnotationSuppressWarnings(annot);
     return hasAnnotationSuppressWarnings_String_value;
@@ -1581,13 +1581,46 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:485
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:485
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:485")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:485")
   public boolean isDeprecated() {
     boolean isDeprecated_value = getModifiers().hasDeprecatedAnnotation();
     return isDeprecated_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect VariableArityParameters
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:53
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:53")
+  public boolean isVariableArity() {
+    boolean isVariableArity_value = getNumParameter() > 0 && getParameter(getNumParameter() - 1).isVariableArity();
+    return isVariableArity_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect VariableArityParameters
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:63
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:63")
+  public ParameterDeclaration lastParameter() {
+    ParameterDeclaration lastParameter_value = getParameter(getNumParameter() - 1);
+    return lastParameter_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsParTypeDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98")
+  public boolean visibleTypeParameters() {
+    boolean visibleTypeParameters_value = !isStatic();
+    return visibleTypeParameters_value;
   }
   /**
    * Note: isGeneric must be called first to check if this declaration is generic.
@@ -1595,10 +1628,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
    * @return the original generic declaration of this method.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336")
   public GenericMethodDecl genericDecl() {
     {
         throw new Error("can not evaulate generic declaration of non-generic method");
@@ -1607,46 +1640,13 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:425
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:425
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:425")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:425")
   public int arity() {
     int arity_value = getNumParameter();
     return arity_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect VariableArityParameters
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:53
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:53")
-  public boolean isVariableArity() {
-    boolean isVariableArity_value = getNumParameter() > 0 && getParameter(getNumParameter() - 1).isVariableArity();
-    return isVariableArity_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect VariableArityParameters
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:63
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:63")
-  public ParameterDeclaration lastParameter() {
-    ParameterDeclaration lastParameter_value = getParameter(getNumParameter() - 1);
-    return lastParameter_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericsParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:98")
-  public boolean visibleTypeParameters() {
-    boolean visibleTypeParameters_value = !isStatic();
-    return visibleTypeParameters_value;
   }
   /** @apilevel internal */
   private void usesTypeVariable_reset() {
@@ -1661,10 +1661,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179")
   public boolean usesTypeVariable() {
     ASTNode$State state = state();
     if (usesTypeVariable_computed == ASTNode$State.NON_CYCLE || usesTypeVariable_computed == state().cycle()) {
@@ -1684,10 +1684,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524")
   public MethodDecl erasedMethod() {
     MethodDecl erasedMethod_value = this;
     return erasedMethod_value;
@@ -1695,10 +1695,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1563
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1563
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1563")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1563")
   public boolean isSubstitutable() {
     boolean isSubstitutable_value = !isStatic();
     return isSubstitutable_value;
@@ -1717,10 +1717,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect SourceDeclarations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729")
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729")
   public MethodDecl sourceMethodDecl() {
     ASTNode$State state = state();
     if (sourceMethodDecl_computed == ASTNode$State.NON_CYCLE || sourceMethodDecl_computed == state().cycle()) {
@@ -1737,13 +1737,24 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return sourceMethodDecl_value;
   }
   /**
+   * @attribute syn
+   * @aspect SuppressWarnings
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:45
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:45")
+  public boolean suppressWarnings(String type) {
+    boolean suppressWarnings_String_value = hasAnnotationSuppressWarnings(type) || withinSuppressWarnings(type);
+    return suppressWarnings_String_value;
+  }
+  /**
    * @return true if the modifier list includes the SafeVarargs annotation
    * @attribute syn
    * @aspect SafeVarargs
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41")
+  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:41")
   public boolean hasAnnotationSafeVarargs() {
     boolean hasAnnotationSafeVarargs_value = getModifiers().hasAnnotationSafeVarargs();
     return hasAnnotationSafeVarargs_value;
@@ -1753,46 +1764,35 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
    * that is not a variable arity method or constructor.
    * @attribute syn
    * @aspect SafeVarargs
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:72
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:72
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:72")
+  @ASTNodeAnnotation.Source(aspect="SafeVarargs", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:72")
   public boolean hasIllegalAnnotationSafeVarargs() {
     boolean hasIllegalAnnotationSafeVarargs_value = hasAnnotationSafeVarargs() && (!isVariableArity() || (!isFinal() && !isStatic()));
     return hasIllegalAnnotationSafeVarargs_value;
   }
   /**
    * @attribute syn
-   * @aspect SuppressWarnings
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:45
+   * @aspect PreciseRethrow
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:45")
-  public boolean suppressWarnings(String type) {
-    boolean suppressWarnings_String_value = hasAnnotationSuppressWarnings(type) || withinSuppressWarnings(type);
-    return suppressWarnings_String_value;
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
+  public boolean modifiedInScope(Variable var) {
+    boolean modifiedInScope_Variable_value = hasBlock() && getBlock().modifiedInScope(var);
+    return modifiedInScope_Variable_value;
   }
   /**
    * @attribute syn
    * @aspect Modifiers
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/Modifiers.jrag:31
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/Modifiers.jrag:31
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/Modifiers.jrag:31")
+  @ASTNodeAnnotation.Source(aspect="Modifiers", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/Modifiers.jrag:31")
   public boolean isDefault() {
     boolean isDefault_value = getModifiers().isDefault();
     return isDefault_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:40")
-  public boolean modifiedInScope(Variable var) {
-    boolean modifiedInScope_Variable_value = hasBlock() && getBlock().modifiedInScope(var);
-    return modifiedInScope_Variable_value;
   }
   /** @apilevel internal */
   private void subsignatureTo_MethodDecl_reset() {
@@ -1806,10 +1806,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:62
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:62
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:62")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:62")
   public boolean subsignatureTo(MethodDecl m) {
     Object _parameters = m;
     if (subsignatureTo_MethodDecl_computed == null) subsignatureTo_MethodDecl_computed = new java.util.HashMap(4);
@@ -1854,10 +1854,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:86
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:86
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:86")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:86")
   public boolean returnTypeSubstitutableFor(MethodDecl m) {
     Object _parameters = m;
     if (returnTypeSubstitutableFor_MethodDecl_computed == null) returnTypeSubstitutableFor_MethodDecl_computed = new java.util.HashMap(4);
@@ -1903,10 +1903,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute syn
    * @aspect OverrideAnnotation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:32
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:32
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:32")
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:32")
   public boolean hasOverride() {
     {
             for(Modifier m :getModifiers().getModifierList()){
@@ -1920,10 +1920,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute inh
    * @aspect LookupMethod
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:36
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:36")
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:36")
   public MethodDecl unknownMethod() {
     MethodDecl unknownMethod_value = getParent().Define_unknownMethod(this, null);
     return unknownMethod_value;
@@ -1931,10 +1931,10 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute inh
    * @aspect ExceptionHandling
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:95
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:95
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:95")
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:95")
   public boolean handlesException(TypeDecl exceptionType) {
     Object _parameters = exceptionType;
     if (handlesException_TypeDecl_computed == null) handlesException_TypeDecl_computed = new java.util.HashMap(4);
@@ -1969,239 +1969,72 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   /**
    * @attribute inh
    * @aspect SuppressWarnings
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:38
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="SuppressWarnings", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/SuppressWarnings.jrag:38")
   public boolean withinSuppressWarnings(String annot) {
     boolean withinSuppressWarnings_String_value = getParent().Define_withinSuppressWarnings(this, null, annot);
     return withinSuppressWarnings_String_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:208
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:44
    * @apilevel internal
    */
-  public boolean Define_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:216
-      return isStatic();
-    }
-    else {
-      return getParent().Define_inStaticContext(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
-   * @apilevel internal
-   */
-  public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:62
-      return true;
-    }
-    else {
-      return getParent().Define_reachable(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_reachable(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
-   * @apilevel internal
-   */
-  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getExceptionListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:104
+  public boolean Define_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:92
       int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return NameType.TYPE_NAME;
+      return true;
     }
-    else if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:103
+    else {
+      return getParent().Define_isMethodParameter(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:45
+   * @apilevel internal
+   */
+  public boolean Define_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:93
       int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return NameType.TYPE_NAME;
-    }
-    else if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:102
-      return NameType.TYPE_NAME;
+      return false;
     }
     else {
-      return getParent().Define_nameType(this, _callerNode);
+      return getParent().Define_isConstructorParameter(this, _callerNode);
     }
   }
-  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+  protected boolean canDefine_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:433
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:46
    * @apilevel internal
    */
-  public boolean Define_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:327
-      return true;
+  public boolean Define_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:94
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return false;
     }
     else {
-      return getParent().Define_mayBePublic(this, _callerNode);
+      return getParent().Define_isExceptionHandlerParameter(this, _callerNode);
     }
   }
-  protected boolean canDefine_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
+  protected boolean canDefine_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:435
-   * @apilevel internal
-   */
-  public boolean Define_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:328
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeProtected(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:434
-   * @apilevel internal
-   */
-  public boolean Define_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:329
-      return true;
-    }
-    else {
-      return getParent().Define_mayBePrivate(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:438
-   * @apilevel internal
-   */
-  public boolean Define_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:330
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeAbstract(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:436
-   * @apilevel internal
-   */
-  public boolean Define_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:331
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeStatic(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:437
-   * @apilevel internal
-   */
-  public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:332
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeFinal(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:442
-   * @apilevel internal
-   */
-  public boolean Define_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:333
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeSynchronized(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:443
-   * @apilevel internal
-   */
-  public boolean Define_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:334
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeNative(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:441
-   * @apilevel internal
-   */
-  public boolean Define_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
-    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:335
-      return true;
-    }
-    else {
-      return getParent().Define_mayBeStrictfp(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
-   * @apilevel internal
-   */
-  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
-    if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:201
-      return throwsException(exceptionType);
-    }
-    else {
-      return getParent().Define_handlesException(this, _callerNode, exceptionType);
-    }
-  }
-  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:356
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:356
    * @apilevel internal
    */
   public ASTNode Define_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:357
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:357
       return this;
     }
     else {
@@ -2212,17 +2045,267 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @apilevel internal
+   */
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (_callerNode == getBlockOptNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:550
+      return v.isFinal() && v.isField() || assignedBefore(v);
+    }
+    else {
+      return super.Define_assignedBefore(_callerNode, _childNode, v);
+    }
+  }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
+   * @apilevel internal
+   */
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (_callerNode == getBlockOptNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1162
+      return !(v.isFinal() && v.isField());
+    }
+    else {
+      return super.Define_unassignedBefore(_callerNode, _childNode, v);
+    }
+  }
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @apilevel internal
+   */
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getExceptionListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:104
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return NameType.TYPE_NAME;
+    }
+    else if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:103
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return NameType.TYPE_NAME;
+    }
+    else if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:102
+      return NameType.TYPE_NAME;
+    }
+    else {
+      return getParent().Define_nameType(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
+   * @apilevel internal
+   */
+  public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getBlockOptNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:62
+      return true;
+    }
+    else {
+      return getParent().Define_reachable(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_reachable(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:534
+   * @apilevel internal
+   */
+  public TypeDecl Define_returnType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getBlockOptNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:536
+      return type();
+    }
+    else {
+      return getParent().Define_returnType(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_returnType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:433
+   * @apilevel internal
+   */
+  public boolean Define_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:327
+      return true;
+    }
+    else {
+      return getParent().Define_mayBePublic(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:435
+   * @apilevel internal
+   */
+  public boolean Define_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:328
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeProtected(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:434
+   * @apilevel internal
+   */
+  public boolean Define_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:329
+      return true;
+    }
+    else {
+      return getParent().Define_mayBePrivate(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:438
+   * @apilevel internal
+   */
+  public boolean Define_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:330
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeAbstract(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:436
+   * @apilevel internal
+   */
+  public boolean Define_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:331
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeStatic(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:437
+   * @apilevel internal
+   */
+  public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:332
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeFinal(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:442
+   * @apilevel internal
+   */
+  public boolean Define_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:333
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeSynchronized(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:443
+   * @apilevel internal
+   */
+  public boolean Define_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:334
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeNative(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:441
+   * @apilevel internal
+   */
+  public boolean Define_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
+    if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:335
+      return true;
+    }
+    else {
+      return getParent().Define_mayBeStrictfp(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
+   * @apilevel internal
+   */
+  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    if (_callerNode == getBlockOptNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:201
+      return throwsException(exceptionType);
+    }
+    else {
+      return getParent().Define_handlesException(this, _callerNode, exceptionType);
+    }
+  }
+  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
   public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:76
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:76
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return parameterDeclaration(name);
     }
     else if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:64
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:64
       {
           SimpleSet<Variable> result = parameterDeclaration(name);
           // A declaration of a method parameter name shadows any other variable declarations.
@@ -2241,111 +2324,39 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:44
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:208
    * @apilevel internal
    */
-  public boolean Define_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:92
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return true;
-    }
-    else {
-      return getParent().Define_isMethodParameter(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:45
-   * @apilevel internal
-   */
-  public boolean Define_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:93
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return false;
-    }
-    else {
-      return getParent().Define_isConstructorParameter(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:46
-   * @apilevel internal
-   */
-  public boolean Define_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:94
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return false;
-    }
-    else {
-      return getParent().Define_isExceptionHandlerParameter(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:534
-   * @apilevel internal
-   */
-  public TypeDecl Define_returnType(ASTNode _callerNode, ASTNode _childNode) {
+  public boolean Define_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:536
-      return type();
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:216
+      return isStatic();
     }
     else {
-      return getParent().Define_returnType(this, _callerNode);
+      return getParent().Define_inStaticContext(this, _callerNode);
     }
   }
-  protected boolean canDefine_returnType(ASTNode _callerNode, ASTNode _childNode) {
+  protected boolean canDefine_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
    * @apilevel internal
    */
-  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:550
-      return v.isFinal() && v.isField() || assignedBefore(v);
-    }
-    else {
-      return super.Define_assignedBefore(_callerNode, _childNode, v);
-    }
+  public boolean Define_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
   }
-  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+  protected boolean canDefine_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
-   * @apilevel internal
-   */
-  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1162
-      return !(v.isFinal() && v.isField());
-    }
-    else {
-      return super.Define_unassignedBefore(_callerNode, _childNode, v);
-    }
-  }
-  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:131
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:131
    * @apilevel internal
    */
   public boolean Define_mayUseAnnotationTarget(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (getModifiersNoTransform() != null && _callerNode == getModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:154
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:154
       return name.equals("METHOD");
     }
     else {
@@ -2356,12 +2367,12 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46
    * @apilevel internal
    */
   public boolean Define_variableArityValid(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:42
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:42
       int i = _callerNode.getIndexOfChild(_childNode);
       return i == getNumParameter() - 1;
     }
@@ -2373,7 +2384,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
    * @apilevel internal
    */
   public String Define_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -2384,23 +2395,12 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
-   * @apilevel internal
-   */
-  public boolean Define_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return false;
-  }
-  protected boolean canDefine_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
    * @apilevel internal
    */
   public boolean Define_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
     if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:73
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:73
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return hasBlock() && getBlock().modifiedInScope(var);
     }
@@ -2412,12 +2412,12 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:202
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:202
    * @apilevel internal
    */
   public boolean Define_isCatchParam(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:205
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:205
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return false;
     }
@@ -2437,7 +2437,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:150
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:145
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {
@@ -2446,7 +2446,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       }
       contributors.add(this);
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:145
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:512
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {
@@ -2455,7 +2455,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       }
       contributors.add(this);
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:512
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:150
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {
@@ -2464,7 +2464,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
       }
       contributors.add(this);
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:118
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/SafeVarargs.jrag:118
     if (!suppressWarnings("unchecked")
               && !hasAnnotationSafeVarargs()
               && isVariableArity()
@@ -2481,7 +2481,7 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_methods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:8
+    // @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:8
     {
       CompilationUnit target = (CompilationUnit) (compilationUnit());
       java.util.Set<ASTNode> contributors = _map.get(target);
@@ -2495,13 +2495,13 @@ public class MethodDecl extends MemberDecl implements Cloneable, SimpleSet<Metho
   }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
-    for (Problem value : modifierProblems()) {
-      collection.add(value);
-    }
     for (Problem value : nameProblems()) {
       collection.add(value);
     }
     for (Problem value : typeProblems()) {
+      collection.add(value);
+    }
+    for (Problem value : modifierProblems()) {
       collection.add(value);
     }
     if (!suppressWarnings("unchecked")

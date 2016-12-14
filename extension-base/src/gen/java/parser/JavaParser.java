@@ -1,4 +1,4 @@
-// Generated from /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/build/tmp/parser/JavaParser.all
+// Generated from /home/felix/EDAN70/extension-base/build/tmp/parser/JavaParser.all
 package org.extendj.parser;
 
  import org.extendj.ast.*;
@@ -927,7 +927,7 @@ public class JavaParser extends Parser {
 		"EhH$CaQ9u4lPEWTnAyd8JCfbq2b5ee2xcEOm$A0zY3Yf3hEFQWiWVh9SrNUwANFU7xINIp5" +
 		"#szqFE66lBZMCOZdmVFSZnubZ63gCyvbQXzmVk2My0jtET40IZv1lmD#2tmMzmVoFs1O4vr" +
 		"W19Ede1IEt6za#XtEG9AxS$r$k23$X$tAuW2");
- // Generated from /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/build/tmp/parser/JavaParser.all
+ // Generated from /home/felix/EDAN70/extension-base/build/tmp/parser/JavaParser.all
 class Events extends Parser.Events {
     public void scannerError(Scanner.Exception e) {
       errors.add(new Problem(null, e.getMessage(), e.line, e.column,

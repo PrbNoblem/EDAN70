@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:56
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:56
  * @production GenericClassDeclSubstituted : {@link GenericClassDecl} ::= <span class="component">&lt;Original:TypeDecl&gt;</span>;
 
  */
@@ -92,9 +92,9 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    sourceTypeDecl_reset();
     instanceOf_TypeDecl_reset();
     subtype_TypeDecl_reset();
+    sourceTypeDecl_reset();
     strictSubtype_TypeDecl_reset();
     localMethodsSignatureMap_reset();
     localFields_String_reset();
@@ -694,61 +694,6 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   protected int getImplicitConstructorOptChildPosition() {
     return 5;
   }
-  /**
-   * @attribute syn
-   * @aspect NestedTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635")
-  public TypeDecl hostType() {
-    TypeDecl hostType_value = getOriginal();
-    return hostType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1530
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1530")
-  public TypeDecl original() {
-    TypeDecl original_value = getOriginal().original();
-    return original_value;
-  }
-  /** @apilevel internal */
-  private void sourceTypeDecl_reset() {
-    sourceTypeDecl_computed = null;
-    sourceTypeDecl_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle sourceTypeDecl_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl sourceTypeDecl_value;
-
-  /**
-   * @attribute syn
-   * @aspect SourceDeclarations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1722
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1722")
-  public TypeDecl sourceTypeDecl() {
-    ASTNode$State state = state();
-    if (sourceTypeDecl_computed == ASTNode$State.NON_CYCLE || sourceTypeDecl_computed == state().cycle()) {
-      return sourceTypeDecl_value;
-    }
-    sourceTypeDecl_value = original().sourceTypeDecl();
-    if (state().inCircle()) {
-      sourceTypeDecl_computed = state().cycle();
-    
-    } else {
-      sourceTypeDecl_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return sourceTypeDecl_value;
-  }
   /** @apilevel internal */
   private void instanceOf_TypeDecl_reset() {
     instanceOf_TypeDecl_computed = new java.util.HashMap(4);
@@ -761,10 +706,10 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect TypeWideningAndIdentity
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
   public boolean instanceOf(TypeDecl type) {
     Object _parameters = type;
     if (instanceOf_TypeDecl_computed == null) instanceOf_TypeDecl_computed = new java.util.HashMap(4);
@@ -793,7 +738,7 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   }
   protected java.util.Map subtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
     if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
@@ -841,10 +786,10 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:618
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:618
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:618")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:618")
   public boolean supertypeGenericClassDeclSubstituted(GenericClassDeclSubstituted type) {
     boolean supertypeGenericClassDeclSubstituted_GenericClassDeclSubstituted_value = original() == type.original() && type.enclosingType().subtype(enclosingType())
               || super.supertypeGenericClassDeclSubstituted(type);
@@ -853,13 +798,68 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:37
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:37
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:37")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:37")
   public boolean supertypeGenericClassDecl(GenericClassDecl type) {
     boolean supertypeGenericClassDecl_GenericClassDecl_value = super.supertypeGenericClassDecl(type) || original().supertypeGenericClassDecl(type);
     return supertypeGenericClassDecl_GenericClassDecl_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect NestedTypes
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635")
+  public TypeDecl hostType() {
+    TypeDecl hostType_value = getOriginal();
+    return hostType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1530
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1530")
+  public TypeDecl original() {
+    TypeDecl original_value = getOriginal().original();
+    return original_value;
+  }
+  /** @apilevel internal */
+  private void sourceTypeDecl_reset() {
+    sourceTypeDecl_computed = null;
+    sourceTypeDecl_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle sourceTypeDecl_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl sourceTypeDecl_value;
+
+  /**
+   * @attribute syn
+   * @aspect SourceDeclarations
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1722
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1722")
+  public TypeDecl sourceTypeDecl() {
+    ASTNode$State state = state();
+    if (sourceTypeDecl_computed == ASTNode$State.NON_CYCLE || sourceTypeDecl_computed == state().cycle()) {
+      return sourceTypeDecl_value;
+    }
+    sourceTypeDecl_value = original().sourceTypeDecl();
+    if (state().inCircle()) {
+      sourceTypeDecl_computed = state().cycle();
+    
+    } else {
+      sourceTypeDecl_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return sourceTypeDecl_value;
   }
   /** @apilevel internal */
   private void strictSubtype_TypeDecl_reset() {
@@ -867,7 +867,7 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
     if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
@@ -915,10 +915,10 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:486
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:486
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:486")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:486")
   public boolean strictSupertypeGenericClassDeclSubstituted(GenericClassDeclSubstituted type) {
     boolean strictSupertypeGenericClassDeclSubstituted_GenericClassDeclSubstituted_value = original() == type.original() && type.enclosingType().strictSubtype(enclosingType())
           || super.strictSupertypeGenericClassDeclSubstituted(type);
@@ -927,10 +927,10 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:39
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:39
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:39")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:39")
   public boolean strictSupertypeGenericClassDecl(GenericClassDecl type) {
     boolean strictSupertypeGenericClassDecl_GenericClassDecl_value = super.strictSupertypeGenericClassDecl(type)
           || original().strictSupertypeGenericClassDecl(type);
@@ -950,10 +950,10 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1211
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1211
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1211")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1211")
   public Map<String, SimpleSet<MethodDecl>> localMethodsSignatureMap() {
     ASTNode$State state = state();
     if (localMethodsSignatureMap_computed == ASTNode$State.NON_CYCLE || localMethodsSignatureMap_computed == state().cycle()) {
@@ -998,10 +998,10 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1228
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1228
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1228")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1228")
   public SimpleSet<Variable> localFields(String name) {
     Object _parameters = name;
     if (localFields_String_computed == null) localFields_String_computed = new java.util.HashMap(4);
@@ -1051,7 +1051,7 @@ public class GenericClassDeclSubstituted extends GenericClassDecl implements Clo
   }
   protected java.util.Map localTypeDecls_String_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1259")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1259")
   public SimpleSet<TypeDecl> localTypeDecls(String name) {
     Object _parameters = name;
     if (localTypeDecls_String_values == null) localTypeDecls_String_values = new java.util.HashMap(4);

@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:21
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:21
  * @production ParSuperConstructorAccess : {@link SuperConstructorAccess} ::= <span class="component">TypeArgument:{@link Access}*</span>;
 
  */
 public class ParSuperConstructorAccess extends SuperConstructorAccess implements Cloneable {
   /**
    * @aspect GenericMethodsPrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:270
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:270
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("<");
@@ -434,12 +434,12 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
     return getTypeArgumentListNoTransform();
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeArgumentListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:220
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:220
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
@@ -451,12 +451,12 @@ public class ParSuperConstructorAccess extends SuperConstructorAccess implements
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
   public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getTypeArgumentListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:221
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:221
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return unqualifiedScope().lookupType(name);
     }

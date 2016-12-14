@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:203
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:203
  * @production DefaultCase : {@link Case};
 
  */
 public class DefaultCase extends Case implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:332
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:332
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("default:");
@@ -160,10 +160,10 @@ public class DefaultCase extends Case implements Cloneable {
   /**
    * @attribute syn
    * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:586
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:586
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:586")
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:586")
   public boolean constValue(Case c) {
     boolean constValue_Case_value = c instanceof DefaultCase;
     return constValue_Case_value;
@@ -171,10 +171,10 @@ public class DefaultCase extends Case implements Cloneable {
   /**
    * @attribute syn
    * @aspect StringsInSwitch
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/StringsInSwitch.jrag:61
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/StringsInSwitch.jrag:61
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StringsInSwitch", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/StringsInSwitch.jrag:61")
+  @ASTNodeAnnotation.Source(aspect="StringsInSwitch", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/StringsInSwitch.jrag:61")
   public boolean isDefaultCase() {
     boolean isDefaultCase_value = true;
     return isDefaultCase_value;
@@ -188,7 +188,7 @@ public class DefaultCase extends Case implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:564
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:564
     if (bind(this) != this) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

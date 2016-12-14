@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:4
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:4
  * @production CompilationUnit : {@link ASTNode} ::= <span class="component">&lt;PackageDecl:String&gt;</span> <span class="component">{@link ImportDecl}*</span> <span class="component">{@link TypeDecl}*</span>;
 
  */
 public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:223
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:223
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasPackageDecl()) {
@@ -57,66 +57,58 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     });
   }
   /**
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:435
-   */
-  private ClassSource classSource = ClassSource.NONE;
-  /**
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:437
-   */
-  private boolean fromSource = false;
-  /**
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:439
-   */
-  public void setClassSource(ClassSource source) {
-    this.classSource = source;
-  }
-  /**
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:443
-   */
-  public ClassSource getClassSource() {
-    return classSource;
-  }
-  /**
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:447
-   */
-  public void setFromSource(boolean value) {
-    this.fromSource = value;
-  }
-  /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:95
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:95
    */
   public Collection<Problem> parseErrors() {
     return parseErrors;
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:99
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:99
    */
   public void addParseError(Problem msg) {
     parseErrors.add(msg);
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:103
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:103
    */
   protected Collection<Problem> parseErrors = new ArrayList<Problem>();
   /**
-   * @aspect ExtensionBase
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ExtensionBase.jrag:3
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:435
    */
-  public void process() {
-    System.out.println(pathName() + " contained no errors");
-    
+  private ClassSource classSource = ClassSource.NONE;
+  /**
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:437
+   */
+  private boolean fromSource = false;
+  /**
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:439
+   */
+  public void setClassSource(ClassSource source) {
+    this.classSource = source;
+  }
+  /**
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:443
+   */
+  public ClassSource getClassSource() {
+    return classSource;
+  }
+  /**
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:447
+   */
+  public void setFromSource(boolean value) {
+    this.fromSource = value;
   }
   /**
    * @aspect RemoveImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/RemoveImports.jrag:4
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/RemoveImports.jrag:4
    */
   public void removeImports() {
 
@@ -204,6 +196,14 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     }
   }
   /**
+   * @aspect ExtensionBase
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ExtensionBase.jrag:3
+   */
+  public void process() {
+    System.out.println(pathName() + " contained no errors");
+    
+  }
+  /**
    * @declaredat ASTNode:1
    */
   public CompilationUnit() {
@@ -265,6 +265,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     super.flushCollectionCache();
     CompilationUnit_problems_computed = null;
     CompilationUnit_problems_value = null;
+    CompilationUnit_onDemlines_computed = null;
+    CompilationUnit_onDemlines_value = null;
+    CompilationUnit_staticOnDemlines_computed = null;
+    CompilationUnit_staticOnDemlines_value = null;
     CompilationUnit_usedTypes_computed = null;
     CompilationUnit_usedTypes_value = null;
     CompilationUnit_usedTypesList_computed = null;
@@ -277,23 +281,19 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     CompilationUnit_variableAccess_value = null;
     CompilationUnit_staticImports_computed = null;
     CompilationUnit_staticImports_value = null;
-    CompilationUnit_onDemlines_computed = null;
-    CompilationUnit_onDemlines_value = null;
-    CompilationUnit_staticOnDemlines_computed = null;
-    CompilationUnit_staticOnDemlines_value = null;
     CompilationUnit_methods_computed = null;
     CompilationUnit_methods_value = null;
     CompilationUnit_superClassMethods_computed = null;
     CompilationUnit_superClassMethods_value = null;
     contributorMap_CompilationUnit_problems = null;
+    contributorMap_CompilationUnit_onDemlines = null;
+    contributorMap_CompilationUnit_staticOnDemlines = null;
     contributorMap_CompilationUnit_usedTypes = null;
     contributorMap_CompilationUnit_usedTypesList = null;
     contributorMap_CompilationUnit_importTypes = null;
     contributorMap_CompilationUnit_staticMethods = null;
     contributorMap_CompilationUnit_variableAccess = null;
     contributorMap_CompilationUnit_staticImports = null;
-    contributorMap_CompilationUnit_onDemlines = null;
-    contributorMap_CompilationUnit_staticOnDemlines = null;
     contributorMap_CompilationUnit_methods = null;
     contributorMap_CompilationUnit_superClassMethods = null;
   }
@@ -638,7 +638,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
   /**
    * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68
    */
   private Collection<Problem> refined_NameCheck_CompilationUnit_nameProblems()
 {
@@ -659,7 +659,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
   /**
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:361
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:361
    */
   private SimpleSet<TypeDecl> refined_TypeScopePropagation_CompilationUnit_Child_lookupType_String(String name)
 {
@@ -702,7 +702,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_problems = null;
 
@@ -715,85 +715,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
-   */
-  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypes = null;
-
-  protected void survey_CompilationUnit_usedTypes() {
-    if (contributorMap_CompilationUnit_usedTypes == null) {
-      contributorMap_CompilationUnit_usedTypes = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
-      collect_contributors_CompilationUnit_usedTypes(this, contributorMap_CompilationUnit_usedTypes);
-    }
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
-   */
-  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypesList = null;
-
-  protected void survey_CompilationUnit_usedTypesList() {
-    if (contributorMap_CompilationUnit_usedTypesList == null) {
-      contributorMap_CompilationUnit_usedTypesList = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
-      collect_contributors_CompilationUnit_usedTypesList(this, contributorMap_CompilationUnit_usedTypesList);
-    }
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
-   */
-  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_importTypes = null;
-
-  protected void survey_CompilationUnit_importTypes() {
-    if (contributorMap_CompilationUnit_importTypes == null) {
-      contributorMap_CompilationUnit_importTypes = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
-      collect_contributors_CompilationUnit_importTypes(this, contributorMap_CompilationUnit_importTypes);
-    }
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
-   */
-  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_staticMethods = null;
-
-  protected void survey_CompilationUnit_staticMethods() {
-    if (contributorMap_CompilationUnit_staticMethods == null) {
-      contributorMap_CompilationUnit_staticMethods = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
-      collect_contributors_CompilationUnit_staticMethods(this, contributorMap_CompilationUnit_staticMethods);
-    }
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
-   */
-  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_variableAccess = null;
-
-  protected void survey_CompilationUnit_variableAccess() {
-    if (contributorMap_CompilationUnit_variableAccess == null) {
-      contributorMap_CompilationUnit_variableAccess = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
-      collect_contributors_CompilationUnit_variableAccess(this, contributorMap_CompilationUnit_variableAccess);
-    }
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
-   */
-  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_staticImports = null;
-
-  protected void survey_CompilationUnit_staticImports() {
-    if (contributorMap_CompilationUnit_staticImports == null) {
-      contributorMap_CompilationUnit_staticImports = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
-      collect_contributors_CompilationUnit_staticImports(this, contributorMap_CompilationUnit_staticImports);
-    }
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_onDemlines = null;
 
@@ -806,7 +728,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_staticOnDemlines = null;
 
@@ -819,7 +741,85 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypes = null;
+
+  protected void survey_CompilationUnit_usedTypes() {
+    if (contributorMap_CompilationUnit_usedTypes == null) {
+      contributorMap_CompilationUnit_usedTypes = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_usedTypes(this, contributorMap_CompilationUnit_usedTypes);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_usedTypesList = null;
+
+  protected void survey_CompilationUnit_usedTypesList() {
+    if (contributorMap_CompilationUnit_usedTypesList == null) {
+      contributorMap_CompilationUnit_usedTypesList = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_usedTypesList(this, contributorMap_CompilationUnit_usedTypesList);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_importTypes = null;
+
+  protected void survey_CompilationUnit_importTypes() {
+    if (contributorMap_CompilationUnit_importTypes == null) {
+      contributorMap_CompilationUnit_importTypes = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_importTypes(this, contributorMap_CompilationUnit_importTypes);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_staticMethods = null;
+
+  protected void survey_CompilationUnit_staticMethods() {
+    if (contributorMap_CompilationUnit_staticMethods == null) {
+      contributorMap_CompilationUnit_staticMethods = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_staticMethods(this, contributorMap_CompilationUnit_staticMethods);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_variableAccess = null;
+
+  protected void survey_CompilationUnit_variableAccess() {
+    if (contributorMap_CompilationUnit_variableAccess == null) {
+      contributorMap_CompilationUnit_variableAccess = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_variableAccess(this, contributorMap_CompilationUnit_variableAccess);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
+   */
+  protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_staticImports = null;
+
+  protected void survey_CompilationUnit_staticImports() {
+    if (contributorMap_CompilationUnit_staticImports == null) {
+      contributorMap_CompilationUnit_staticImports = new java.util.IdentityHashMap<ASTNode, java.util.Set<ASTNode>>();
+      collect_contributors_CompilationUnit_staticImports(this, contributorMap_CompilationUnit_staticImports);
+    }
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_methods = null;
 
@@ -832,7 +832,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
    */
   protected java.util.Map<ASTNode, java.util.Set<ASTNode>> contributorMap_CompilationUnit_superClassMethods = null;
 
@@ -844,85 +844,12 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
 
   /**
-   * @return The path to the source file, or the path to the file inside a Jar
-   * file.
-   * @attribute syn
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:92
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:92")
-  public String relativeName() {
-    String relativeName_value = getClassSource().relativeName();
-    return relativeName_value;
-  }
-  /**
-   * @return The path to the source file, or the enclosing Jar file.
-   * @attribute syn
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:97
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:97")
-  public String pathName() {
-    String pathName_value = getClassSource().pathName();
-    return pathName_value;
-  }
-  /**
-   * @return {@code true} if this compilation unit was parsed from source.
-   * @attribute syn
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:102
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:102")
-  public boolean fromSource() {
-    boolean fromSource_value = fromSource;
-    return fromSource_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:280
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:280")
-  public Collection<Problem> errors() {
-    {
-        Collection<Problem> errors = new LinkedList<Problem>();
-        for (Problem problem : problems()) {
-          if (problem.severity() == Problem.Severity.ERROR) {
-            errors.add(problem);
-          }
-        }
-        return errors;
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:290
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:290")
-  public Collection<Problem> warnings() {
-    {
-        Collection<Problem> warnings = new LinkedList<Problem>();
-        for (Problem problem : problems()) {
-          if (problem.severity() == Problem.Severity.WARNING) {
-            warnings.add(problem);
-          }
-        }
-        return warnings;
-      }
-  }
-  /**
    * @attribute syn
    * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68")
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:68")
   public Collection<Problem> nameProblems() {
     {
         Collection<Problem> problems = refined_NameCheck_CompilationUnit_nameProblems();
@@ -942,24 +869,13 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
         return problems;
       }
   }
-  /**
-   * @attribute syn
-   * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:233
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:233")
-  public boolean hasPackageDecl() {
-    boolean hasPackageDecl_value = !getPackageDecl().isEmpty();
-    return hasPackageDecl_value;
-  }
   /** Searches for a type with the given simple name in this compilation unit. 
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:401
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:401
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:401")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:401")
   public SimpleSet<TypeDecl> localLookupType(String name) {
     {
         for (int i = 0; i < getNumTypeDecl(); i++) {
@@ -973,10 +889,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:410
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:410
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:410")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:410")
   public SimpleSet<TypeDecl> importedTypes(String name) {
     {
         SimpleSet<TypeDecl> result = emptySet();
@@ -993,10 +909,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:422
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:422
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:422")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:422")
   public SimpleSet<TypeDecl> importedTypesOnDemand(String name) {
     {
         SimpleSet<TypeDecl> result = emptySet();
@@ -1009,6 +925,90 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
         }
         return result;
       }
+  }
+  /**
+   * @attribute syn
+   * @aspect ErrorCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:280
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:280")
+  public Collection<Problem> errors() {
+    {
+        Collection<Problem> errors = new LinkedList<Problem>();
+        for (Problem problem : problems()) {
+          if (problem.severity() == Problem.Severity.ERROR) {
+            errors.add(problem);
+          }
+        }
+        return errors;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect ErrorCheck
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:290
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:290")
+  public Collection<Problem> warnings() {
+    {
+        Collection<Problem> warnings = new LinkedList<Problem>();
+        for (Problem problem : problems()) {
+          if (problem.severity() == Problem.Severity.WARNING) {
+            warnings.add(problem);
+          }
+        }
+        return warnings;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect PrettyPrintUtil
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:233
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:233")
+  public boolean hasPackageDecl() {
+    boolean hasPackageDecl_value = !getPackageDecl().isEmpty();
+    return hasPackageDecl_value;
+  }
+  /**
+   * @return The path to the source file, or the path to the file inside a Jar
+   * file.
+   * @attribute syn
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:92
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:92")
+  public String relativeName() {
+    String relativeName_value = getClassSource().relativeName();
+    return relativeName_value;
+  }
+  /**
+   * @return The path to the source file, or the enclosing Jar file.
+   * @attribute syn
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:97
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:97")
+  public String pathName() {
+    String pathName_value = getClassSource().pathName();
+    return pathName_value;
+  }
+  /**
+   * @return {@code true} if this compilation unit was parsed from source.
+   * @attribute syn
+   * @aspect ClassPath
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:102
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:102")
+  public boolean fromSource() {
+    boolean fromSource_value = fromSource;
+    return fromSource_value;
   }
   /** @apilevel internal */
   private void packageName_reset() {
@@ -1024,10 +1024,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeName
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:112
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:112
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:112")
+  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:112")
   public String packageName() {
     ASTNode$State state = state();
     if (packageName_computed == ASTNode$State.NON_CYCLE || packageName_computed == state().cycle()) {
@@ -1048,10 +1048,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:191
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:191
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:191")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:191")
   public SimpleSet<Variable> importedFields(String name) {
     {
         SimpleSet<Variable> set = emptySet();
@@ -1068,10 +1068,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:203
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:203
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:203")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:203")
   public SimpleSet<Variable> importedFieldsOnDemand(String name) {
     {
         SimpleSet<Variable> set = emptySet();
@@ -1088,10 +1088,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:233
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:233
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:233")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:233")
   public Collection<MethodDecl> importedMethods(String name) {
     {
         Collection<MethodDecl> methods = new ArrayList<MethodDecl>();
@@ -1106,10 +1106,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:243
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:243
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:243")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:243")
   public Collection<MethodDecl> importedMethodsOnDemand(String name) {
     {
         Collection<MethodDecl> methods = new ArrayList<MethodDecl>();
@@ -1123,39 +1123,11 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:117
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:117")
-  public HashSet<Integer> killableLines() {
-    {
-            HashSet<Integer> killable = new HashSet<Integer>();
-            for(SingleTypeImportDecl s : importTypes()) {
-                HashSet<String> all = new HashSet<String>();
-                all.addAll(usedTypes());
-                all.addAll(usedTypesList());
-                if( !all.contains(s.getAccess().uberID()) && !variableAccess().contains(s.getAccess().uberID())){
-                    killable.add(s.lineNumber());
-                }
-            }
-            for(SingleStaticImportDecl st : staticImports()) {
-                if(!staticMethods().contains(st.getID()) && !variableAccess().contains(st.getID())) {
-                    killable.add(st.lineNumber());
-                }
-            }
-    
-            return killable;
-    
-        }
-  }
-  /**
-   * @attribute syn
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:7
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:7
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:7")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:7")
   public HashSet<String> importTypesOnDemand() {
     {
             HashSet<String> temp = new HashSet<String>();
@@ -1183,10 +1155,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:31
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:31
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:31")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:31")
   public HashSet<String> staticImportsOnDemand() {
     {
             HashSet<String> temp = new HashSet<String>();
@@ -1213,11 +1185,39 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect OverrideAnnotation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:19
+   * @aspect UnusedImports
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:117
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:19")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:117")
+  public HashSet<Integer> killableLines() {
+    {
+            HashSet<Integer> killable = new HashSet<Integer>();
+            for(SingleTypeImportDecl s : importTypes()) {
+                HashSet<String> all = new HashSet<String>();
+                all.addAll(usedTypes());
+                all.addAll(usedTypesList());
+                if( !all.contains(s.getAccess().uberID()) && !variableAccess().contains(s.getAccess().uberID())){
+                    killable.add(s.lineNumber());
+                }
+            }
+            for(SingleStaticImportDecl st : staticImports()) {
+                if(!staticMethods().contains(st.getID()) && !variableAccess().contains(st.getID())) {
+                    killable.add(st.lineNumber());
+                }
+            }
+    
+            return killable;
+    
+        }
+  }
+  /**
+   * @attribute syn
+   * @aspect OverrideAnnotation
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:19
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:19")
   public HashSet<Integer> methodLinesWhereWeShouldAddOverrideAnnotation() {
     {
             HashSet<Integer> temp = new HashSet<Integer>();
@@ -1236,10 +1236,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect LookupFullyQualifiedTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:131
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:131
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:131")
+  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:131")
   public TypeDecl lookupType(String packageName, String typeName) {
     TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
     return lookupType_String_String_value;
@@ -1247,10 +1247,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:350
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:350
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:350")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:350")
   public SimpleSet<TypeDecl> lookupType(String name) {
     Object _parameters = name;
     if (lookupType_String_computed == null) lookupType_String_computed = new java.util.HashMap(4);
@@ -1285,10 +1285,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:189
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:189
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:189")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:189")
   public SimpleSet<Variable> lookupVariable(String name) {
     SimpleSet<Variable> lookupVariable_String_value = getParent().Define_lookupVariable(this, null, name);
     return lookupVariable_String_value;
@@ -1296,71 +1296,21 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:231
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:231
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:231")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:231")
   public Collection<MethodDecl> lookupMethod(String name) {
     Collection<MethodDecl> lookupMethod_String_value = getParent().Define_lookupMethod(this, null, name);
     return lookupMethod_String_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105
-   * @apilevel internal
-   */
-  public CompilationUnit Define_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return this;
-  }
-  protected boolean canDefine_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
-   * @apilevel internal
-   */
-  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getImportDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:93
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return NameType.PACKAGE_NAME;
-    }
-    else {
-      return getParent().Define_nameType(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
-   * @apilevel internal
-   */
-  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
-    if (_callerNode == getImportDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:299
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return false;
-    }
-    else if (_callerNode == getTypeDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:199
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return false;
-    }
-    else {
-      return getParent().Define_handlesException(this, _callerNode, exceptionType);
-    }
-  }
-  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50
    * @apilevel internal
    */
   public SimpleSet<TypeDecl> Define_allImportedTypes(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getImportDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:52
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:52
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return importedTypes(name);
     }
@@ -1372,101 +1322,12 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:547
-   * @apilevel internal
-   */
-  public TypeDecl Define_enclosingType(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return null;
-  }
-  protected boolean canDefine_enclosingType(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:30
-   * @apilevel internal
-   */
-  public BodyDecl Define_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return null;
-  }
-  protected boolean canDefine_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:572
-   * @apilevel internal
-   */
-  public boolean Define_isNestedType(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return false;
-  }
-  protected boolean canDefine_isNestedType(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:580
-   * @apilevel internal
-   */
-  public boolean Define_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getTypeDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:583
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return false;
-    }
-    else {
-      return getParent().Define_isMemberType(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:598
-   * @apilevel internal
-   */
-  public boolean Define_isLocalClass(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return false;
-  }
-  protected boolean canDefine_isLocalClass(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:633
-   * @apilevel internal
-   */
-  public String Define_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return packageName();
-  }
-  protected boolean canDefine_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:76
-   * @apilevel internal
-   */
-  public TypeDecl Define_hostType(ASTNode _callerNode, ASTNode _childNode) {
-    if (_callerNode == getImportDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:646
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return null;
-    }
-    else {
-      return getParent().Define_hostType(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_hostType(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:66
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:66
    * @apilevel internal
    */
   public boolean Define_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:68
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:68
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return false;
     }
@@ -1478,12 +1339,29 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @apilevel internal
+   */
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:93
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return NameType.PACKAGE_NAME;
+    }
+    else {
+      return getParent().Define_nameType(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
   public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getImportDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:486
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:486
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return lookupType(name);
     }
@@ -1506,7 +1384,18 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:108
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105
+   * @apilevel internal
+   */
+  public CompilationUnit Define_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return this;
+  }
+  protected boolean canDefine_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:108
    * @apilevel internal
    */
   public String Define_packageName(ASTNode _callerNode, ASTNode _childNode) {
@@ -1517,7 +1406,140 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:115
+   * @apilevel internal
+   */
+  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:299
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return false;
+    }
+    else if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:199
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return false;
+    }
+    else {
+      return getParent().Define_handlesException(this, _callerNode, exceptionType);
+    }
+  }
+  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:547
+   * @apilevel internal
+   */
+  public TypeDecl Define_enclosingType(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:30
+   * @apilevel internal
+   */
+  public BodyDecl Define_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:572
+   * @apilevel internal
+   */
+  public boolean Define_isNestedType(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isNestedType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:580
+   * @apilevel internal
+   */
+  public boolean Define_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getTypeDeclListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:583
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return false;
+    }
+    else {
+      return getParent().Define_isMemberType(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:598
+   * @apilevel internal
+   */
+  public boolean Define_isLocalClass(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isLocalClass(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:633
+   * @apilevel internal
+   */
+  public String Define_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return packageName();
+  }
+  protected boolean canDefine_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:76
+   * @apilevel internal
+   */
+  public TypeDecl Define_hostType(ASTNode _callerNode, ASTNode _childNode) {
+    if (_callerNode == getImportDeclListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:646
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return null;
+    }
+    else {
+      return getParent().Define_hostType(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_hostType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:130
+   * @apilevel internal
+   */
+  public boolean Define_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
+   * @apilevel internal
+   */
+  public boolean Define_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return false;
+  }
+  protected boolean canDefine_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:95
    * @apilevel internal
    */
   public boolean Define_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
@@ -1528,12 +1550,12 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
   public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getTypeDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:177
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:177
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       {
           SimpleSet<Variable> set = importedFields(name);
@@ -1555,12 +1577,12 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:52
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:52
    * @apilevel internal
    */
   public Collection<MethodDecl> Define_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (_callerNode == getTypeDeclListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:219
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:219
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       {
           Collection<MethodDecl> methods = importedMethods(name);
@@ -1582,7 +1604,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
    * @apilevel internal
    */
   public String Define_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -1593,40 +1615,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:130
-   * @apilevel internal
-   */
-  public boolean Define_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return false;
-  }
-  protected boolean canDefine_isOriginalEnumConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:566
-   * @apilevel internal
-   */
-  public boolean Define_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return false;
-  }
-  protected boolean canDefine_inEnumInitializer(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:29
-   * @apilevel internal
-   */
-  public LambdaExpr Define_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return null;
-  }
-  protected boolean canDefine_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
    * @apilevel internal
    */
   public int Define_typeVarPosition(ASTNode _callerNode, ASTNode _childNode) {
@@ -1637,7 +1626,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
    * @apilevel internal
    */
   public boolean Define_typeVarInMethod(ASTNode _callerNode, ASTNode _childNode) {
@@ -1648,7 +1637,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31
    * @apilevel internal
    */
   public int Define_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
@@ -1659,7 +1648,18 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:37
+   * @apilevel internal
+   */
+  public LambdaExpr Define_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return null;
+  }
+  protected boolean canDefine_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
    * @apilevel internal
    */
   public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -1670,7 +1670,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
    * @apilevel internal
    */
   public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -1681,7 +1681,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
    * @apilevel internal
    */
   public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -1692,7 +1692,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
   public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -1703,7 +1703,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
   public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
@@ -1727,10 +1727,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
    * <p>Separate error checks are added using individual contribution statements.
    * @attribute coll
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278")
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278")
   public LinkedList<Problem> problems() {
     ASTNode$State state = state();
     if (CompilationUnit_problems_computed == ASTNode$State.NON_CYCLE || CompilationUnit_problems_computed == state().cycle()) {
@@ -1770,275 +1770,11 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @attribute coll
-   * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25")
-  public HashSet<String> usedTypes() {
-    ASTNode$State state = state();
-    if (CompilationUnit_usedTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypes_computed == state().cycle()) {
-      return CompilationUnit_usedTypes_value;
-    }
-    CompilationUnit_usedTypes_value = usedTypes_compute();
-    if (state().inCircle()) {
-      CompilationUnit_usedTypes_computed = state().cycle();
-    
-    } else {
-      CompilationUnit_usedTypes_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return CompilationUnit_usedTypes_value;
-  }
-  /** @apilevel internal */
-  private HashSet<String> usedTypes_compute() {
-    ASTNode node = this;
-    while (node != null && !(node instanceof CompilationUnit)) {
-      node = node.getParent();
-    }
-    CompilationUnit root = (CompilationUnit) node;
-    root.survey_CompilationUnit_usedTypes();
-    HashSet<String> _computedValue = new HashSet<String>();
-    if (root.contributorMap_CompilationUnit_usedTypes.containsKey(this)) {
-      for (ASTNode contributor : root.contributorMap_CompilationUnit_usedTypes.get(this)) {
-        contributor.contributeTo_CompilationUnit_usedTypes(_computedValue);
-      }
-    }
-    return _computedValue;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle CompilationUnit_usedTypes_computed = null;
-
-  /** @apilevel internal */
-  protected HashSet<String> CompilationUnit_usedTypes_value;
-
-  /**
-   * @attribute coll
-   * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26")
-  public HashSet<String> usedTypesList() {
-    ASTNode$State state = state();
-    if (CompilationUnit_usedTypesList_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypesList_computed == state().cycle()) {
-      return CompilationUnit_usedTypesList_value;
-    }
-    CompilationUnit_usedTypesList_value = usedTypesList_compute();
-    if (state().inCircle()) {
-      CompilationUnit_usedTypesList_computed = state().cycle();
-    
-    } else {
-      CompilationUnit_usedTypesList_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return CompilationUnit_usedTypesList_value;
-  }
-  /** @apilevel internal */
-  private HashSet<String> usedTypesList_compute() {
-    ASTNode node = this;
-    while (node != null && !(node instanceof CompilationUnit)) {
-      node = node.getParent();
-    }
-    CompilationUnit root = (CompilationUnit) node;
-    root.survey_CompilationUnit_usedTypesList();
-    HashSet<String> _computedValue = new HashSet<String>();
-    if (root.contributorMap_CompilationUnit_usedTypesList.containsKey(this)) {
-      for (ASTNode contributor : root.contributorMap_CompilationUnit_usedTypesList.get(this)) {
-        contributor.contributeTo_CompilationUnit_usedTypesList(_computedValue);
-      }
-    }
-    return _computedValue;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle CompilationUnit_usedTypesList_computed = null;
-
-  /** @apilevel internal */
-  protected HashSet<String> CompilationUnit_usedTypesList_value;
-
-  /**
-   * @attribute coll
-   * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27")
-  public HashSet<SingleTypeImportDecl> importTypes() {
-    ASTNode$State state = state();
-    if (CompilationUnit_importTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_importTypes_computed == state().cycle()) {
-      return CompilationUnit_importTypes_value;
-    }
-    CompilationUnit_importTypes_value = importTypes_compute();
-    if (state().inCircle()) {
-      CompilationUnit_importTypes_computed = state().cycle();
-    
-    } else {
-      CompilationUnit_importTypes_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return CompilationUnit_importTypes_value;
-  }
-  /** @apilevel internal */
-  private HashSet<SingleTypeImportDecl> importTypes_compute() {
-    ASTNode node = this;
-    while (node != null && !(node instanceof CompilationUnit)) {
-      node = node.getParent();
-    }
-    CompilationUnit root = (CompilationUnit) node;
-    root.survey_CompilationUnit_importTypes();
-    HashSet<SingleTypeImportDecl> _computedValue = new HashSet<SingleTypeImportDecl>();
-    if (root.contributorMap_CompilationUnit_importTypes.containsKey(this)) {
-      for (ASTNode contributor : root.contributorMap_CompilationUnit_importTypes.get(this)) {
-        contributor.contributeTo_CompilationUnit_importTypes(_computedValue);
-      }
-    }
-    return _computedValue;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle CompilationUnit_importTypes_computed = null;
-
-  /** @apilevel internal */
-  protected HashSet<SingleTypeImportDecl> CompilationUnit_importTypes_value;
-
-  /**
-   * @attribute coll
-   * @aspect StaticStuff
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7")
-  public HashSet<String> staticMethods() {
-    ASTNode$State state = state();
-    if (CompilationUnit_staticMethods_computed == ASTNode$State.NON_CYCLE || CompilationUnit_staticMethods_computed == state().cycle()) {
-      return CompilationUnit_staticMethods_value;
-    }
-    CompilationUnit_staticMethods_value = staticMethods_compute();
-    if (state().inCircle()) {
-      CompilationUnit_staticMethods_computed = state().cycle();
-    
-    } else {
-      CompilationUnit_staticMethods_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return CompilationUnit_staticMethods_value;
-  }
-  /** @apilevel internal */
-  private HashSet<String> staticMethods_compute() {
-    ASTNode node = this;
-    while (node != null && !(node instanceof CompilationUnit)) {
-      node = node.getParent();
-    }
-    CompilationUnit root = (CompilationUnit) node;
-    root.survey_CompilationUnit_staticMethods();
-    HashSet<String> _computedValue = new HashSet<String>();
-    if (root.contributorMap_CompilationUnit_staticMethods.containsKey(this)) {
-      for (ASTNode contributor : root.contributorMap_CompilationUnit_staticMethods.get(this)) {
-        contributor.contributeTo_CompilationUnit_staticMethods(_computedValue);
-      }
-    }
-    return _computedValue;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle CompilationUnit_staticMethods_computed = null;
-
-  /** @apilevel internal */
-  protected HashSet<String> CompilationUnit_staticMethods_value;
-
-  /**
-   * @attribute coll
-   * @aspect StaticStuff
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8")
-  public HashSet<String> variableAccess() {
-    ASTNode$State state = state();
-    if (CompilationUnit_variableAccess_computed == ASTNode$State.NON_CYCLE || CompilationUnit_variableAccess_computed == state().cycle()) {
-      return CompilationUnit_variableAccess_value;
-    }
-    CompilationUnit_variableAccess_value = variableAccess_compute();
-    if (state().inCircle()) {
-      CompilationUnit_variableAccess_computed = state().cycle();
-    
-    } else {
-      CompilationUnit_variableAccess_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return CompilationUnit_variableAccess_value;
-  }
-  /** @apilevel internal */
-  private HashSet<String> variableAccess_compute() {
-    ASTNode node = this;
-    while (node != null && !(node instanceof CompilationUnit)) {
-      node = node.getParent();
-    }
-    CompilationUnit root = (CompilationUnit) node;
-    root.survey_CompilationUnit_variableAccess();
-    HashSet<String> _computedValue = new HashSet<String>();
-    if (root.contributorMap_CompilationUnit_variableAccess.containsKey(this)) {
-      for (ASTNode contributor : root.contributorMap_CompilationUnit_variableAccess.get(this)) {
-        contributor.contributeTo_CompilationUnit_variableAccess(_computedValue);
-      }
-    }
-    return _computedValue;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle CompilationUnit_variableAccess_computed = null;
-
-  /** @apilevel internal */
-  protected HashSet<String> CompilationUnit_variableAccess_value;
-
-  /**
-   * @attribute coll
-   * @aspect StaticStuff
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9")
-  public HashSet<SingleStaticImportDecl> staticImports() {
-    ASTNode$State state = state();
-    if (CompilationUnit_staticImports_computed == ASTNode$State.NON_CYCLE || CompilationUnit_staticImports_computed == state().cycle()) {
-      return CompilationUnit_staticImports_value;
-    }
-    CompilationUnit_staticImports_value = staticImports_compute();
-    if (state().inCircle()) {
-      CompilationUnit_staticImports_computed = state().cycle();
-    
-    } else {
-      CompilationUnit_staticImports_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return CompilationUnit_staticImports_value;
-  }
-  /** @apilevel internal */
-  private HashSet<SingleStaticImportDecl> staticImports_compute() {
-    ASTNode node = this;
-    while (node != null && !(node instanceof CompilationUnit)) {
-      node = node.getParent();
-    }
-    CompilationUnit root = (CompilationUnit) node;
-    root.survey_CompilationUnit_staticImports();
-    HashSet<SingleStaticImportDecl> _computedValue = new HashSet<SingleStaticImportDecl>();
-    if (root.contributorMap_CompilationUnit_staticImports.containsKey(this)) {
-      for (ASTNode contributor : root.contributorMap_CompilationUnit_staticImports.get(this)) {
-        contributor.contributeTo_CompilationUnit_staticImports(_computedValue);
-      }
-    }
-    return _computedValue;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle CompilationUnit_staticImports_computed = null;
-
-  /** @apilevel internal */
-  protected HashSet<SingleStaticImportDecl> CompilationUnit_staticImports_value;
-
-  /**
-   * @attribute coll
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4")
   public HashSet<Integer> onDemlines() {
     ASTNode$State state = state();
     if (CompilationUnit_onDemlines_computed == ASTNode$State.NON_CYCLE || CompilationUnit_onDemlines_computed == state().cycle()) {
@@ -2079,10 +1815,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute coll
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5")
   public HashSet<Integer> staticOnDemlines() {
     ASTNode$State state = state();
     if (CompilationUnit_staticOnDemlines_computed == ASTNode$State.NON_CYCLE || CompilationUnit_staticOnDemlines_computed == state().cycle()) {
@@ -2122,11 +1858,275 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
 
   /**
    * @attribute coll
-   * @aspect OverrideAnnotation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
+   * @aspect UnusedImports
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25")
+  public HashSet<String> usedTypes() {
+    ASTNode$State state = state();
+    if (CompilationUnit_usedTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypes_computed == state().cycle()) {
+      return CompilationUnit_usedTypes_value;
+    }
+    CompilationUnit_usedTypes_value = usedTypes_compute();
+    if (state().inCircle()) {
+      CompilationUnit_usedTypes_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_usedTypes_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_usedTypes_value;
+  }
+  /** @apilevel internal */
+  private HashSet<String> usedTypes_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_usedTypes();
+    HashSet<String> _computedValue = new HashSet<String>();
+    if (root.contributorMap_CompilationUnit_usedTypes.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_usedTypes.get(this)) {
+        contributor.contributeTo_CompilationUnit_usedTypes(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_usedTypes_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<String> CompilationUnit_usedTypes_value;
+
+  /**
+   * @attribute coll
+   * @aspect UnusedImports
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26")
+  public HashSet<String> usedTypesList() {
+    ASTNode$State state = state();
+    if (CompilationUnit_usedTypesList_computed == ASTNode$State.NON_CYCLE || CompilationUnit_usedTypesList_computed == state().cycle()) {
+      return CompilationUnit_usedTypesList_value;
+    }
+    CompilationUnit_usedTypesList_value = usedTypesList_compute();
+    if (state().inCircle()) {
+      CompilationUnit_usedTypesList_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_usedTypesList_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_usedTypesList_value;
+  }
+  /** @apilevel internal */
+  private HashSet<String> usedTypesList_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_usedTypesList();
+    HashSet<String> _computedValue = new HashSet<String>();
+    if (root.contributorMap_CompilationUnit_usedTypesList.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_usedTypesList.get(this)) {
+        contributor.contributeTo_CompilationUnit_usedTypesList(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_usedTypesList_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<String> CompilationUnit_usedTypesList_value;
+
+  /**
+   * @attribute coll
+   * @aspect UnusedImports
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27")
+  public HashSet<SingleTypeImportDecl> importTypes() {
+    ASTNode$State state = state();
+    if (CompilationUnit_importTypes_computed == ASTNode$State.NON_CYCLE || CompilationUnit_importTypes_computed == state().cycle()) {
+      return CompilationUnit_importTypes_value;
+    }
+    CompilationUnit_importTypes_value = importTypes_compute();
+    if (state().inCircle()) {
+      CompilationUnit_importTypes_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_importTypes_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_importTypes_value;
+  }
+  /** @apilevel internal */
+  private HashSet<SingleTypeImportDecl> importTypes_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_importTypes();
+    HashSet<SingleTypeImportDecl> _computedValue = new HashSet<SingleTypeImportDecl>();
+    if (root.contributorMap_CompilationUnit_importTypes.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_importTypes.get(this)) {
+        contributor.contributeTo_CompilationUnit_importTypes(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_importTypes_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<SingleTypeImportDecl> CompilationUnit_importTypes_value;
+
+  /**
+   * @attribute coll
+   * @aspect StaticStuff
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7")
+  public HashSet<String> staticMethods() {
+    ASTNode$State state = state();
+    if (CompilationUnit_staticMethods_computed == ASTNode$State.NON_CYCLE || CompilationUnit_staticMethods_computed == state().cycle()) {
+      return CompilationUnit_staticMethods_value;
+    }
+    CompilationUnit_staticMethods_value = staticMethods_compute();
+    if (state().inCircle()) {
+      CompilationUnit_staticMethods_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_staticMethods_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_staticMethods_value;
+  }
+  /** @apilevel internal */
+  private HashSet<String> staticMethods_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_staticMethods();
+    HashSet<String> _computedValue = new HashSet<String>();
+    if (root.contributorMap_CompilationUnit_staticMethods.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_staticMethods.get(this)) {
+        contributor.contributeTo_CompilationUnit_staticMethods(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_staticMethods_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<String> CompilationUnit_staticMethods_value;
+
+  /**
+   * @attribute coll
+   * @aspect StaticStuff
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8")
+  public HashSet<String> variableAccess() {
+    ASTNode$State state = state();
+    if (CompilationUnit_variableAccess_computed == ASTNode$State.NON_CYCLE || CompilationUnit_variableAccess_computed == state().cycle()) {
+      return CompilationUnit_variableAccess_value;
+    }
+    CompilationUnit_variableAccess_value = variableAccess_compute();
+    if (state().inCircle()) {
+      CompilationUnit_variableAccess_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_variableAccess_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_variableAccess_value;
+  }
+  /** @apilevel internal */
+  private HashSet<String> variableAccess_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_variableAccess();
+    HashSet<String> _computedValue = new HashSet<String>();
+    if (root.contributorMap_CompilationUnit_variableAccess.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_variableAccess.get(this)) {
+        contributor.contributeTo_CompilationUnit_variableAccess(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_variableAccess_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<String> CompilationUnit_variableAccess_value;
+
+  /**
+   * @attribute coll
+   * @aspect StaticStuff
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="StaticStuff", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9")
+  public HashSet<SingleStaticImportDecl> staticImports() {
+    ASTNode$State state = state();
+    if (CompilationUnit_staticImports_computed == ASTNode$State.NON_CYCLE || CompilationUnit_staticImports_computed == state().cycle()) {
+      return CompilationUnit_staticImports_value;
+    }
+    CompilationUnit_staticImports_value = staticImports_compute();
+    if (state().inCircle()) {
+      CompilationUnit_staticImports_computed = state().cycle();
+    
+    } else {
+      CompilationUnit_staticImports_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return CompilationUnit_staticImports_value;
+  }
+  /** @apilevel internal */
+  private HashSet<SingleStaticImportDecl> staticImports_compute() {
+    ASTNode node = this;
+    while (node != null && !(node instanceof CompilationUnit)) {
+      node = node.getParent();
+    }
+    CompilationUnit root = (CompilationUnit) node;
+    root.survey_CompilationUnit_staticImports();
+    HashSet<SingleStaticImportDecl> _computedValue = new HashSet<SingleStaticImportDecl>();
+    if (root.contributorMap_CompilationUnit_staticImports.containsKey(this)) {
+      for (ASTNode contributor : root.contributorMap_CompilationUnit_staticImports.get(this)) {
+        contributor.contributeTo_CompilationUnit_staticImports(_computedValue);
+      }
+    }
+    return _computedValue;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle CompilationUnit_staticImports_computed = null;
+
+  /** @apilevel internal */
+  protected HashSet<SingleStaticImportDecl> CompilationUnit_staticImports_value;
+
+  /**
+   * @attribute coll
+   * @aspect OverrideAnnotation
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5")
   public HashSet<MethodDecl> methods() {
     ASTNode$State state = state();
     if (CompilationUnit_methods_computed == ASTNode$State.NON_CYCLE || CompilationUnit_methods_computed == state().cycle()) {
@@ -2167,10 +2167,10 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute coll
    * @aspect OverrideAnnotation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.COLL)
-  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6")
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6")
   public HashSet<MethodDecl> superClassMethods() {
     ASTNode$State state = state();
     if (CompilationUnit_superClassMethods_computed == ASTNode$State.NON_CYCLE || CompilationUnit_superClassMethods_computed == state().cycle()) {
@@ -2209,7 +2209,7 @@ public class CompilationUnit extends ASTNode<ASTNode> implements Cloneable {
   protected HashSet<MethodDecl> CompilationUnit_superClassMethods_value;
 
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:66
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:66
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

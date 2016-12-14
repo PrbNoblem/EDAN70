@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:8
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/Lambda.ast:8
  * @production InferredLambdaParameters : {@link LambdaParameters} ::= <span class="component">Parameter:{@link InferredParameterDeclaration}*</span>;
 
  */
 public class InferredLambdaParameters extends LambdaParameters implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:85
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:85
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("(");
@@ -45,7 +45,7 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
   }
   /**
    * @aspect LambdaToClass
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:105
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaAnonymousDecl.jrag:105
    */
   protected List<ParameterDeclaration> toParameterList() {
     List<ParameterDeclaration> paramList = new List<ParameterDeclaration>();
@@ -100,9 +100,9 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    parameterDeclaration_String_reset();
     numParameters_reset();
     congruentTo_FunctionDescriptor_reset();
+    parameterDeclaration_String_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:35
@@ -304,10 +304,10 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
   /**
    * @attribute syn
    * @aspect Java8NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:560
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:560
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:560")
+  @ASTNodeAnnotation.Source(aspect="Java8NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:560")
   public Collection<Problem> nameProblems() {
     {
         for (int i = 0; i < getNumParameter(); i++) {
@@ -321,6 +321,76 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
       }
   }
   /** @apilevel internal */
+  private void numParameters_reset() {
+    numParameters_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle numParameters_computed = null;
+
+  /** @apilevel internal */
+  protected int numParameters_value;
+
+  /**
+   * @attribute syn
+   * @aspect LambdaExpr
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42")
+  public int numParameters() {
+    ASTNode$State state = state();
+    if (numParameters_computed == ASTNode$State.NON_CYCLE || numParameters_computed == state().cycle()) {
+      return numParameters_value;
+    }
+    numParameters_value = getNumParameter();
+    if (state().inCircle()) {
+      numParameters_computed = state().cycle();
+    
+    } else {
+      numParameters_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return numParameters_value;
+  }
+  /** @apilevel internal */
+  private void congruentTo_FunctionDescriptor_reset() {
+    congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
+    congruentTo_FunctionDescriptor_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_values;
+  /** @apilevel internal */
+  protected java.util.Map congruentTo_FunctionDescriptor_computed;
+  /**
+   * @attribute syn
+   * @aspect LambdaExpr
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48")
+  public boolean congruentTo(FunctionDescriptor f) {
+    Object _parameters = f;
+    if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
+    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (congruentTo_FunctionDescriptor_values.containsKey(_parameters) && congruentTo_FunctionDescriptor_computed != null
+        && congruentTo_FunctionDescriptor_computed.containsKey(_parameters)
+        && (congruentTo_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || congruentTo_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) congruentTo_FunctionDescriptor_values.get(_parameters);
+    }
+    boolean congruentTo_FunctionDescriptor_value = numParameters() == f.method.getNumParameter();
+    if (state().inCircle()) {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, state().cycle());
+    
+    } else {
+      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
+      congruentTo_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return congruentTo_FunctionDescriptor_value;
+  }
+  /** @apilevel internal */
   private void parameterDeclaration_String_reset() {
     parameterDeclaration_String_computed = new java.util.HashMap(4);
     parameterDeclaration_String_values = null;
@@ -332,10 +402,10 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
   /**
    * @attribute syn
    * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:47
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:47
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:47")
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:47")
   public SimpleSet<Variable> parameterDeclaration(String name) {
     Object _parameters = name;
     if (parameterDeclaration_String_computed == null) parameterDeclaration_String_computed = new java.util.HashMap(4);
@@ -367,100 +437,13 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
       }
       return emptySet();
     }
-  /** @apilevel internal */
-  private void numParameters_reset() {
-    numParameters_computed = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle numParameters_computed = null;
-
-  /** @apilevel internal */
-  protected int numParameters_value;
-
   /**
-   * @attribute syn
-   * @aspect LambdaExpr
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:42")
-  public int numParameters() {
-    ASTNode$State state = state();
-    if (numParameters_computed == ASTNode$State.NON_CYCLE || numParameters_computed == state().cycle()) {
-      return numParameters_value;
-    }
-    numParameters_value = getNumParameter();
-    if (state().inCircle()) {
-      numParameters_computed = state().cycle();
-    
-    } else {
-      numParameters_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return numParameters_value;
-  }
-  /** @apilevel internal */
-  private void congruentTo_FunctionDescriptor_reset() {
-    congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
-    congruentTo_FunctionDescriptor_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map congruentTo_FunctionDescriptor_values;
-  /** @apilevel internal */
-  protected java.util.Map congruentTo_FunctionDescriptor_computed;
-  /**
-   * @attribute syn
-   * @aspect LambdaExpr
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LambdaExpr", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:48")
-  public boolean congruentTo(FunctionDescriptor f) {
-    Object _parameters = f;
-    if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
-    if (congruentTo_FunctionDescriptor_values == null) congruentTo_FunctionDescriptor_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (congruentTo_FunctionDescriptor_values.containsKey(_parameters) && congruentTo_FunctionDescriptor_computed != null
-        && congruentTo_FunctionDescriptor_computed.containsKey(_parameters)
-        && (congruentTo_FunctionDescriptor_computed.get(_parameters) == ASTNode$State.NON_CYCLE || congruentTo_FunctionDescriptor_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) congruentTo_FunctionDescriptor_values.get(_parameters);
-    }
-    boolean congruentTo_FunctionDescriptor_value = numParameters() == f.method.getNumParameter();
-    if (state().inCircle()) {
-      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
-      congruentTo_FunctionDescriptor_computed.put(_parameters, state().cycle());
-    
-    } else {
-      congruentTo_FunctionDescriptor_values.put(_parameters, congruentTo_FunctionDescriptor_value);
-      congruentTo_FunctionDescriptor_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return congruentTo_FunctionDescriptor_value;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
-   * @apilevel internal
-   */
-  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
-    if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:35
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return parameterDeclaration(name);
-    }
-    else {
-      return getParent().Define_lookupVariable(this, _callerNode, name);
-    }
-  }
-  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return true;
-  }
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
    * @apilevel internal
    */
   public boolean Define_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
     if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:37
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:37
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return inhModifiedInScope(var);
     }
@@ -472,12 +455,12 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:477
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:477
    * @apilevel internal
    */
   public TypeDecl Define_inferredType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getParameterListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:478
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:478
       int i = _callerNode.getIndexOfChild(_childNode);
       {
           if (enclosingLambda().targetInterface() == null) {
@@ -500,6 +483,23 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
   protected boolean canDefine_inferredType(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
+  /**
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @apilevel internal
+   */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getParameterListNoTransform()) {
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:35
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return parameterDeclaration(name);
+    }
+    else {
+      return getParent().Define_lookupVariable(this, _callerNode, name);
+    }
+  }
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
@@ -509,7 +509,7 @@ public class InferredLambdaParameters extends LambdaParameters implements Clonea
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:558
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:558
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

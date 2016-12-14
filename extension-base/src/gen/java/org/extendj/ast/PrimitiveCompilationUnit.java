@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:6
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:6
  * @production PrimitiveCompilationUnit : {@link CompilationUnit};
 
  */
@@ -444,10 +444,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:37
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:37
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:37")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:37")
   public TypeDecl typeBoolean() {
     ASTNode$State state = state();
     if (typeBoolean_computed) {
@@ -483,10 +483,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:45
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:45
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:45")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:45")
   public TypeDecl typeByte() {
     ASTNode$State state = state();
     if (typeByte_computed) {
@@ -522,10 +522,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:53
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:53
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:53")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:53")
   public TypeDecl typeShort() {
     ASTNode$State state = state();
     if (typeShort_computed) {
@@ -561,10 +561,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:61
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:61
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:61")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:61")
   public TypeDecl typeChar() {
     ASTNode$State state = state();
     if (typeChar_computed) {
@@ -600,10 +600,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:69
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:69
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:69")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:69")
   public TypeDecl typeInt() {
     ASTNode$State state = state();
     if (typeInt_computed) {
@@ -639,10 +639,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:77
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:77
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:77")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:77")
   public TypeDecl typeLong() {
     ASTNode$State state = state();
     if (typeLong_computed) {
@@ -680,10 +680,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:87
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:87
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:87")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:87")
   public TypeDecl typeFloat() {
     ASTNode$State state = state();
     if (typeFloat_computed) {
@@ -719,10 +719,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:95
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:95
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:95")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:95")
   public TypeDecl typeDouble() {
     ASTNode$State state = state();
     if (typeDouble_computed) {
@@ -758,10 +758,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:103
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:103
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:103")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:103")
   public TypeDecl typeVoid() {
     ASTNode$State state = state();
     if (typeVoid_computed) {
@@ -796,10 +796,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:110
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:110
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:110")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:110")
   public TypeDecl typeNull() {
     ASTNode$State state = state();
     if (typeNull_computed) {
@@ -834,10 +834,10 @@ public class PrimitiveCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:117
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:117
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:117")
+  @ASTNodeAnnotation.Source(aspect="PrimitiveTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:117")
   public TypeDecl unknownType() {
     ASTNode$State state = state();
     if (unknownType_computed) {

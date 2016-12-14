@@ -5,27 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Abstract superclass for catch clauses.
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/MultiCatch.ast:4
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/grammar/MultiCatch.ast:4
  * @production CatchClause : {@link ASTNode} ::= <span class="component">{@link Block}</span>;
 
  */
@@ -72,8 +72,8 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
     super.flushAttrCache();
     parameterDeclaration_String_reset();
     reachableCatchClause_TypeDecl_reset();
-    lookupVariable_String_reset();
     typeThrowable_reset();
+    lookupVariable_String_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:35
@@ -144,10 +144,10 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
   /**
    * @attribute syn
    * @aspect ExceptionHandling
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279")
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279")
   public boolean handles(TypeDecl exceptionType) {
     boolean handles_TypeDecl_value = false;
     return handles_TypeDecl_value;
@@ -164,10 +164,10 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
   /**
    * @attribute syn
    * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192")
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192")
   public SimpleSet<Variable> parameterDeclaration(String name) {
     Object _parameters = name;
     if (parameterDeclaration_String_computed == null) parameterDeclaration_String_computed = new java.util.HashMap(4);
@@ -193,10 +193,10 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
   /**
    * @attribute syn
    * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:144
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:144
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:144")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:144")
   public boolean modifiedInScope(Variable var) {
     boolean modifiedInScope_Variable_value = getBlock().modifiedInScope(var);
     return modifiedInScope_Variable_value;
@@ -205,10 +205,10 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
    * @return true if an exception of type exceptionType is catchable by the catch clause
    * @attribute inh
    * @aspect UnreachableStatements
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:182
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:182
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:182")
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:182")
   public boolean reachableCatchClause(TypeDecl exceptionType) {
     Object _parameters = exceptionType;
     if (reachableCatchClause_TypeDecl_computed == null) reachableCatchClause_TypeDecl_computed = new java.util.HashMap(4);
@@ -242,11 +242,44 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
   protected java.util.Map reachableCatchClause_TypeDecl_computed;
   /**
    * @attribute inh
-   * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:44
+   * @aspect SpecialClasses
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:93
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:44")
+  @ASTNodeAnnotation.Source(aspect="SpecialClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:93")
+  public TypeDecl typeThrowable() {
+    ASTNode$State state = state();
+    if (typeThrowable_computed == ASTNode$State.NON_CYCLE || typeThrowable_computed == state().cycle()) {
+      return typeThrowable_value;
+    }
+    typeThrowable_value = getParent().Define_typeThrowable(this, null);
+    if (state().inCircle()) {
+      typeThrowable_computed = state().cycle();
+    
+    } else {
+      typeThrowable_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return typeThrowable_value;
+  }
+  /** @apilevel internal */
+  private void typeThrowable_reset() {
+    typeThrowable_computed = null;
+    typeThrowable_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle typeThrowable_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl typeThrowable_value;
+
+  /**
+   * @attribute inh
+   * @aspect VariableScope
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:44
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:44")
   public SimpleSet<Variable> lookupVariable(String name) {
     Object _parameters = name;
     if (lookupVariable_String_computed == null) lookupVariable_String_computed = new java.util.HashMap(4);
@@ -280,44 +313,11 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
   protected java.util.Map lookupVariable_String_computed;
   /**
    * @attribute inh
-   * @aspect SpecialClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:93
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="SpecialClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:93")
-  public TypeDecl typeThrowable() {
-    ASTNode$State state = state();
-    if (typeThrowable_computed == ASTNode$State.NON_CYCLE || typeThrowable_computed == state().cycle()) {
-      return typeThrowable_value;
-    }
-    typeThrowable_value = getParent().Define_typeThrowable(this, null);
-    if (state().inCircle()) {
-      typeThrowable_computed = state().cycle();
-    
-    } else {
-      typeThrowable_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return typeThrowable_value;
-  }
-  /** @apilevel internal */
-  private void typeThrowable_reset() {
-    typeThrowable_computed = null;
-    typeThrowable_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle typeThrowable_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl typeThrowable_value;
-
-  /**
-   * @attribute inh
    * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:217
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:217
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:217")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:217")
   public Collection<TypeDecl> caughtExceptions() {
     Collection<TypeDecl> caughtExceptions_value = getParent().Define_caughtExceptions(this, null);
     return caughtExceptions_value;
@@ -325,21 +325,21 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
   /**
    * @attribute inh
    * @aspect PreciseRethrow
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280")
   public boolean reportUnreachable() {
     boolean reportUnreachable_value = getParent().Define_reportUnreachable(this, null);
     return reportUnreachable_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
   public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:138
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:138
       {
           SimpleSet<Variable> result = parameterDeclaration(name);
           if (!result.isEmpty()) {
@@ -356,7 +356,7 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:209
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:209
    * @apilevel internal
    */
   public CatchClause Define_catchClause(ASTNode _callerNode, ASTNode _childNode) {
@@ -367,12 +367,12 @@ public abstract class CatchClause extends ASTNode<ASTNode> implements Cloneable,
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
    * @apilevel internal
    */
   public boolean Define_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:281
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:281
       return false;
     }
     else {

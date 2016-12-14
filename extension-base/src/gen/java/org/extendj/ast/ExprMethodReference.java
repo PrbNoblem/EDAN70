@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:3
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:3
  * @production ExprMethodReference : {@link MethodReference} ::= <span class="component">{@link Expr}</span>;
 
  */
 public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @aspect Java8PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:70
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/PrettyPrint.jadd:70
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getExpr());
@@ -371,10 +371,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:32
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:32
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:32")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:32")
   public MethodDecl targetMethod(FunctionDescriptor f) {
     Object _parameters = f;
     if (targetMethod_FunctionDescriptor_computed == null) targetMethod_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -414,10 +414,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:36
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:36")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:36")
   public Access syntheticAccess(FunctionDescriptor f) {
     Object _parameters = f;
     if (syntheticAccess_FunctionDescriptor_values == null) syntheticAccess_FunctionDescriptor_values = new java.util.HashMap(4);
@@ -468,10 +468,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:53
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:53
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:53")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:53")
   public MethodAccess syntheticMethodAccess(FunctionDescriptor f) {
     Object _parameters = f;
     if (syntheticMethodAccess_FunctionDescriptor_computed == null) syntheticMethodAccess_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -511,10 +511,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:218")
   public boolean congruentTo(FunctionDescriptor f) {
     Object _parameters = f;
     if (congruentTo_FunctionDescriptor_computed == null) congruentTo_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -563,10 +563,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:259")
   public ArrayList<MethodDecl> potentiallyApplicableMethods(FunctionDescriptor f) {
     Object _parameters = f;
     if (potentiallyApplicableMethods_FunctionDescriptor_computed == null) potentiallyApplicableMethods_FunctionDescriptor_computed = new java.util.HashMap(4);
@@ -627,10 +627,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314")
+  @ASTNodeAnnotation.Source(aspect="MethodReference", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:314")
   public MethodDecl exactCompileTimeDeclaration() {
     ASTNode$State state = state();
     if (exactCompileTimeDeclaration_computed == ASTNode$State.NON_CYCLE || exactCompileTimeDeclaration_computed == state().cycle()) {
@@ -685,10 +685,10 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
   public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type);
@@ -734,12 +734,12 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
       return foundMethod;
     }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
    * @apilevel internal
    */
   public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:352
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:352
       return false;
     }
     else {
@@ -750,12 +750,12 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
    * @apilevel internal
    */
   public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:353
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:353
       return false;
     }
     else {
@@ -766,12 +766,12 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
    * @apilevel internal
    */
   public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:354
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:354
       return false;
     }
     else {
@@ -782,12 +782,12 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
   public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:355
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:355
       return false;
     }
     else {
@@ -798,12 +798,12 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
   public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:356
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:356
       return false;
     }
     else {
@@ -822,7 +822,7 @@ public class ExprMethodReference extends MethodReference implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:515
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:515
     if (!getExpr().isSuperAccess() && !getExpr().type().isReferenceType()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

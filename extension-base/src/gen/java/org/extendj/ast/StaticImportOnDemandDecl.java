@@ -5,21 +5,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -27,14 +27,14 @@ import java.io.DataInputStream;
  * members declared in the type named by a canonical name to be imported as
  * needed.
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/StaticImports.ast:19
+ * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/StaticImports.ast:19
  * @production StaticImportOnDemandDecl : {@link StaticImportDecl};
 
  */
 public class StaticImportOnDemandDecl extends StaticImportDecl implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:350
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:350
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("import static ");
@@ -198,10 +198,10 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98")
   public TypeDecl type() {
     TypeDecl type_value = getAccess().type();
     return type_value;
@@ -209,10 +209,10 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
   public boolean isOnDemand() {
     boolean isOnDemand_value = true;
     return isOnDemand_value;
@@ -220,10 +220,10 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
   /**
    * @attribute syn
    * @aspect ImportOnDemand
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65
+   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65")
   public boolean isImportedAlready(String name) {
     {
             for(SingleStaticImportDecl s : compilationUnit().staticImports()) {
@@ -235,12 +235,12 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
         }
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (getAccessNoTransform() != null && _callerNode == getAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:303
+      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:303
       return NameType.TYPE_NAME;
     }
     else {
@@ -259,7 +259,7 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:125
+    // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:125
     if (!getAccess().type().typeName().equals(typeName())) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);
@@ -273,7 +273,7 @@ public class StaticImportOnDemandDecl extends StaticImportDecl implements Clonea
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void collect_contributors_CompilationUnit_staticOnDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:60
+    // @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:60
     if (isOnDemand()) {
       {
         CompilationUnit target = (CompilationUnit) (compilationUnit());
