@@ -38,7 +38,9 @@ build and test the extension
 
 testscript runs the compiler with the code cleanup extension on a number of test files
 and checks for differences against files containing the expected output. These files can
-be found in the testfiles folder.
+be found in the testfiles folder. The output files are saved as filename.java.cleaned, while
+the expected output is stored as filename.java.expected. The original files are kept under the original
+names.
 
 
 
