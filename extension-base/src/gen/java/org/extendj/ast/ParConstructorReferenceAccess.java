@@ -5,38 +5,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:6
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:6
  * @production ParConstructorReferenceAccess : {@link ParClassInstanceExpr};
 
  */
 public class ParConstructorReferenceAccess extends ParClassInstanceExpr implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:406
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:406
    */
   private FunctionDescriptor targetDescriptor;
   /**
    * @aspect Synthetics
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:407
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:407
    */
   public ParConstructorReferenceAccess(Access access,
       List<Expr> args, Opt<TypeDecl> optDecl, List<Access> typeArgs, FunctionDescriptor f) {
@@ -489,10 +489,10 @@ public class ParConstructorReferenceAccess extends ParClassInstanceExpr implemen
   /**
    * @attribute syn
    * @aspect TargetType
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:185
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:185
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:185")
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:185")
   public TypeDecl targetType() {
     ASTNode$State state = state();
     if (targetType_computed == ASTNode$State.NON_CYCLE || targetType_computed == state().cycle()) {

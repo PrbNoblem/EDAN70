@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:24
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:24
  * @production ArrayTypeAccess : {@link TypeAccess} ::= <span class="component">&lt;Package:String&gt;</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">{@link Access}</span>;
 
  */
 public class ArrayTypeAccess extends TypeAccess implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:68
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:68
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getAccess());
@@ -39,7 +39,7 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
   }
   /**
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:287
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:287
    */
   public boolean sameType(ArrayTypeAccess a) {
     ArrayTypeAccess at1 = this;
@@ -96,10 +96,10 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    unassignedAfter_Variable_reset();
-    decl_reset();
     getPackage_reset();
     getID_reset();
+    unassignedAfter_Variable_reset();
+    decl_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:35
@@ -240,11 +240,101 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
   protected String tokenString_ID;
   /**
    * @attribute syn
-   * @aspect NameCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:241
+   * @aspect TypeHierarchyCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:225
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:241")
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:225")
+  public boolean staticContextQualifier() {
+    boolean staticContextQualifier_value = true;
+    return staticContextQualifier_value;
+  }
+  /** @apilevel internal */
+  private void getPackage_reset() {
+    getPackage_computed = null;
+    getPackage_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle getPackage_computed = null;
+
+  /** @apilevel internal */
+  protected String getPackage_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect Arrays
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:95
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Arrays", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:95")
+  public String getPackage() {
+    ASTNode$State state = state();
+    if (getPackage_computed == ASTNode$State.NON_CYCLE || getPackage_computed == state().cycle()) {
+      return getPackage_value;
+    }
+    getPackage_value = getAccess().type().packageName();
+    if (state().inCircle()) {
+      getPackage_computed = state().cycle();
+    
+    } else {
+      getPackage_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return getPackage_value;
+  }
+  /** @apilevel internal */
+  private void getID_reset() {
+    getID_computed = null;
+    getID_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle getID_computed = null;
+
+  /** @apilevel internal */
+  protected String getID_value;
+
+  /**
+   * @attribute syn nta
+   * @aspect Arrays
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:97
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
+  @ASTNodeAnnotation.Source(aspect="Arrays", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:97")
+  public String getID() {
+    ASTNode$State state = state();
+    if (getID_computed == ASTNode$State.NON_CYCLE || getID_computed == state().cycle()) {
+      return getID_value;
+    }
+    getID_value = getAccess().type().name();
+    if (state().inCircle()) {
+      getID_computed = state().cycle();
+    
+    } else {
+      getID_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return getID_value;
+  }
+  /**
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
+   * @attribute syn
+   * @aspect SyntacticClassification
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.AMBIGUOUS_NAME;
+    return predNameType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:241
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:241")
   public Collection<Problem> nameProblems() {
     {
         if (decl().elementType().isUnknown()) {
@@ -256,10 +346,10 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
   /**
    * @attribute syn
    * @aspect DefiniteAssignment
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
   public boolean assignedAfter(Variable v) {
     boolean assignedAfter_Variable_value = getAccess().assignedAfter(v);
     return assignedAfter_Variable_value;
@@ -270,7 +360,7 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
   }
   protected java.util.Map unassignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
   public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
     if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
@@ -315,19 +405,6 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
       return (Boolean) _value.value;
     }
   }
-  /**
-   * Defines the expected kind of name for the left hand side in a qualified
-   * expression.
-   * @attribute syn
-   * @aspect SyntacticClassification
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
-  public NameType predNameType() {
-    NameType predNameType_value = NameType.AMBIGUOUS_NAME;
-    return predNameType_value;
-  }
   /** @apilevel internal */
   private void decl_reset() {
     decl_computed = null;
@@ -342,10 +419,10 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:323
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:323
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:323")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:323")
   public TypeDecl decl() {
     ASTNode$State state = state();
     if (decl_computed == ASTNode$State.NON_CYCLE || decl_computed == state().cycle()) {
@@ -361,91 +438,14 @@ public class ArrayTypeAccess extends TypeAccess implements Cloneable {
     }
     return decl_value;
   }
-  /** @apilevel internal */
-  private void getPackage_reset() {
-    getPackage_computed = null;
-    getPackage_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle getPackage_computed = null;
-
-  /** @apilevel internal */
-  protected String getPackage_value;
-
-  /**
-   * @attribute syn nta
-   * @aspect Arrays
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:95
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="Arrays", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:95")
-  public String getPackage() {
-    ASTNode$State state = state();
-    if (getPackage_computed == ASTNode$State.NON_CYCLE || getPackage_computed == state().cycle()) {
-      return getPackage_value;
-    }
-    getPackage_value = getAccess().type().packageName();
-    if (state().inCircle()) {
-      getPackage_computed = state().cycle();
-    
-    } else {
-      getPackage_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return getPackage_value;
-  }
-  /** @apilevel internal */
-  private void getID_reset() {
-    getID_computed = null;
-    getID_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle getID_computed = null;
-
-  /** @apilevel internal */
-  protected String getID_value;
-
-  /**
-   * @attribute syn nta
-   * @aspect Arrays
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:97
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="Arrays", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:97")
-  public String getID() {
-    ASTNode$State state = state();
-    if (getID_computed == ASTNode$State.NON_CYCLE || getID_computed == state().cycle()) {
-      return getID_value;
-    }
-    getID_value = getAccess().type().name();
-    if (state().inCircle()) {
-      getID_computed = state().cycle();
-    
-    } else {
-      getID_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return getID_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect TypeHierarchyCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:225
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:225")
-  public boolean staticContextQualifier() {
-    boolean staticContextQualifier_value = true;
-    return staticContextQualifier_value;
-  }
   /**
    * Creates a copy of this access where parameterized types have been erased.
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
   public Access erasedCopy() {
     Access erasedCopy_value = new ArrayTypeAccess(getAccess().erasedCopy());
     return erasedCopy_value;

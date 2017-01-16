@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:62
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:62
  * @production WildcardsCompilationUnit : {@link CompilationUnit};
 
  */
 public class WildcardsCompilationUnit extends CompilationUnit implements Cloneable {
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1626
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1626
    */
   public static LUBType createLUBType(Collection<TypeDecl> bounds) {
     List<Access> boundList = new List<Access>();
@@ -457,10 +457,10 @@ public class WildcardsCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1585
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1585
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1585")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1585")
   public TypeDecl typeWildcard() {
     ASTNode$State state = state();
     if (typeWildcard_computed) {
@@ -489,10 +489,10 @@ public class WildcardsCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1595
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1595
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1595")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1595")
   public TypeDecl lookupWildcardExtends(TypeDecl bound) {
     Object _parameters = bound;
     if (lookupWildcardExtends_TypeDecl_values == null) lookupWildcardExtends_TypeDecl_values = new java.util.HashMap(4);
@@ -531,10 +531,10 @@ public class WildcardsCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1609
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1609
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1609")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1609")
   public TypeDecl lookupWildcardSuper(TypeDecl bound) {
     Object _parameters = bound;
     if (lookupWildcardSuper_TypeDecl_values == null) lookupWildcardSuper_TypeDecl_values = new java.util.HashMap(4);
@@ -573,10 +573,10 @@ public class WildcardsCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1623
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1623
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1623")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1623")
   public LUBType lookupLUBType(Collection<TypeDecl> bounds) {
     Object _parameters = bounds;
     if (lookupLUBType_Collection_TypeDecl__values == null) lookupLUBType_Collection_TypeDecl__values = new java.util.HashMap(4);
@@ -611,10 +611,10 @@ public class WildcardsCompilationUnit extends CompilationUnit implements Cloneab
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1667
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1667
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1667")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1667")
   public GLBType lookupGLBType(Collection<TypeDecl> bounds) {
     Object _parameters = bounds;
     if (lookupGLBType_Collection_TypeDecl__values == null) lookupGLBType_Collection_TypeDecl__values = new java.util.HashMap(4);

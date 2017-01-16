@@ -5,40 +5,40 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:32
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:32
  * @production ParseName : {@link Access};
 
  */
 public class ParseName extends Access implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:539
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:539
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(name());
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:208
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:208
    */
   public Access qualifiesAccess(Access access) {
     if (access instanceof ParseName) {
@@ -55,26 +55,26 @@ public class ParseName extends Access implements Cloneable {
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:429
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:429
    */
   private ArrayList<NamePart> nameParts = new ArrayList<NamePart>();
   /**
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:431
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:431
    */
   public ParseName(ArrayList<NamePart> nameParts) {
     this.nameParts.addAll(nameParts);
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:435
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:435
    */
   public ParseName(Symbol name) {
     nameParts.add(new NamePart(name));
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:447
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:447
    */
   public Access buildMethodAccess(List<Expr> arguments) {
     if (nameParts.isEmpty()) {
@@ -95,7 +95,7 @@ public class ParseName extends Access implements Cloneable {
   }
   /**
    * @aspect NameResolution
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:499
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:499
    */
   protected NamePart resolvePackageOrTypeName(NamePart qualifier, NamePart name) {
     if (qualifier.isPackageQualifier()) {
@@ -107,7 +107,7 @@ public class ParseName extends Access implements Cloneable {
   }
   /**
    * @aspect NameResolution
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:508
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:508
    */
   protected NamePart resolveAmbiguousName(NamePart qualifier, NamePart name) {
     if (qualifier == NamePart.EMPTY) {
@@ -251,10 +251,10 @@ public class ParseName extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect NameResolution
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:484
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:484
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameResolution", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:484")
+  @ASTNodeAnnotation.Source(aspect="NameResolution", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:484")
   public boolean isParseName() {
     boolean isParseName_value = true;
     return isParseName_value;
@@ -262,10 +262,10 @@ public class ParseName extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect NameResolution
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:488
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:488
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameResolution", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:488")
+  @ASTNodeAnnotation.Source(aspect="NameResolution", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:488")
   public String name() {
     {
         StringBuilder sb = new StringBuilder();
@@ -280,33 +280,33 @@ public class ParseName extends Access implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563")
-  public SimpleSet<TypeDecl> qualifiedLookupType(String name) {
-    SimpleSet<TypeDecl> qualifiedLookupType_String_value = emptySet();
-    return qualifiedLookupType_String_value;
-  }
-  /**
-   * @attribute syn
    * @aspect VariableScope
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264")
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264")
   public SimpleSet<Variable> qualifiedLookupVariable(String name) {
     SimpleSet<Variable> qualifiedLookupVariable_String_value = emptySet();
     return qualifiedLookupVariable_String_value;
   }
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563")
+  public SimpleSet<TypeDecl> qualifiedLookupType(String name) {
+    SimpleSet<TypeDecl> qualifiedLookupType_String_value = emptySet();
+    return qualifiedLookupType_String_value;
+  }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:527
+    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:527
     return rewriteRule0();
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:527
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:527
    * @apilevel internal
    */
   private Access rewriteRule0() {

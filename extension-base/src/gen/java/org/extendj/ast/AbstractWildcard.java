@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:33
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:33
  * @production AbstractWildcard : {@link Access};
 
  */
 public abstract class AbstractWildcard extends Access implements Cloneable {
   /**
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:271
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:271
    */
   public boolean sameType(AbstractWildcard w) {
     if (this instanceof Wildcard && w instanceof Wildcard) {
@@ -128,10 +128,10 @@ public abstract class AbstractWildcard extends Access implements Cloneable {
    * @return {@code true} if this is an unbounded wildcard access
    * @attribute syn
    * @aspect ReifiableTypes
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106")
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106")
   public boolean isWildcard() {
     boolean isWildcard_value = true;
     return isWildcard_value;

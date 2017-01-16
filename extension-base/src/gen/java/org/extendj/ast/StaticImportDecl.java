@@ -5,27 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * 7.5 Import Declarations
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/StaticImports.ast:4
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/StaticImports.ast:4
  * @production StaticImportDecl : {@link ImportDecl};
 
  */
@@ -143,10 +143,10 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:98")
   public abstract TypeDecl type();
   /** @apilevel internal */
   private void importedTypes_String_reset() {
@@ -154,7 +154,7 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
   }
   protected java.util.Map importedTypes_String_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:42")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:42")
   public SimpleSet<TypeDecl> importedTypes(String name) {
     Object _parameters = name;
     if (importedTypes_String_values == null) importedTypes_String_values = new java.util.HashMap(4);
@@ -215,7 +215,7 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
   }
   protected java.util.Map importedFields_String_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:55")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:55")
   public SimpleSet<Variable> importedFields(String name) {
     Object _parameters = name;
     if (importedFields_String_values == null) importedFields_String_values = new java.util.HashMap(4);
@@ -283,10 +283,10 @@ public abstract class StaticImportDecl extends ImportDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76")
   public Collection<MethodDecl> importedMethods(String name) {
     Object _parameters = name;
     if (importedMethods_String_computed == null) importedMethods_String_computed = new java.util.HashMap(4);

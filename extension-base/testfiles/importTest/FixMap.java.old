@@ -1,6 +1,7 @@
 package testfiles.importTest;
 import  testfiles.otherPackage.SuperClassEx;
 import java.util.Map.Entry;
+import java.util.Map;
 
 public class FixMap extends SuperClassEx {
 

@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:9
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:9
  * @production ImportDecl : {@link ASTNode} ::= <span class="component">{@link Access}</span>;
 
  */
@@ -152,10 +152,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:434")
   public SimpleSet<TypeDecl> importedTypes(String name) {
     Object _parameters = name;
     if (importedTypes_String_computed == null) importedTypes_String_computed = new java.util.HashMap(4);
@@ -196,10 +196,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
    * @return TypeDecl of imported type wrapped in SimpleSet
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:451")
   public SimpleSet<TypeDecl> importedTypes() {
     ASTNode$State state = state();
     if (importedTypes_computed == ASTNode$State.NON_CYCLE || importedTypes_computed == state().cycle()) {
@@ -218,10 +218,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:482")
   public boolean isOnDemand() {
     boolean isOnDemand_value = false;
     return isOnDemand_value;
@@ -229,10 +229,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect Names
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:60
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:60
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:60")
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:60")
   public String typeName() {
     {
         Access a = getAccess().lastAccess();
@@ -253,7 +253,7 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   }
   protected java.util.Map importedFields_String_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:55")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:55")
   public SimpleSet<Variable> importedFields(String name) {
     Object _parameters = name;
     if (importedFields_String_values == null) importedFields_String_values = new java.util.HashMap(4);
@@ -310,10 +310,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect StaticImports
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76")
+  @ASTNodeAnnotation.Source(aspect="StaticImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/StaticImports.jrag:76")
   public Collection<MethodDecl> importedMethods(String name) {
     Object _parameters = name;
     if (importedMethods_String_computed == null) importedMethods_String_computed = new java.util.HashMap(4);
@@ -339,10 +339,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect ImportOnDemand
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65")
+  @ASTNodeAnnotation.Source(aspect="ImportOnDemand", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:65")
   public boolean isImportedAlready(String name) {
     boolean isImportedAlready_String_value = false;
     return isImportedAlready_String_value;
@@ -350,10 +350,10 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect NameCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50")
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:50")
   public SimpleSet<TypeDecl> allImportedTypes(String name) {
     SimpleSet<TypeDecl> allImportedTypes_String_value = getParent().Define_allImportedTypes(this, null, name);
     return allImportedTypes_String_value;
@@ -361,48 +361,16 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:480
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:480
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:480")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:480")
   public String packageName() {
     String packageName_value = getParent().Define_packageName(this, null);
     return packageName_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
-   * @apilevel internal
-   */
-  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
-    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:42
-      return false;
-    }
-    else {
-      return getParent().Define_isDest(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
-   * @apilevel internal
-   */
-  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
-    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:51
-      return true;
-    }
-    else {
-      return getParent().Define_isSource(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
   public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
@@ -413,7 +381,7 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
    * @apilevel internal
    */
   public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
@@ -424,7 +392,7 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
    * @apilevel internal
    */
   public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
@@ -435,7 +403,7 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
    * @apilevel internal
    */
   public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
@@ -443,6 +411,38 @@ public abstract class ImportDecl extends ASTNode<ASTNode> implements Cloneable {
     return nextAccessError();
   }
   protected boolean canDefine_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
+   * @apilevel internal
+   */
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:42
+      return false;
+    }
+    else {
+      return getParent().Define_isDest(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
+   * @apilevel internal
+   */
+  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    if (getAccessNoTransform() != null && _callerNode == getAccess()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:51
+      return true;
+    }
+    else {
+      return getParent().Define_isSource(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
     return true;
   }
   /** @apilevel internal */

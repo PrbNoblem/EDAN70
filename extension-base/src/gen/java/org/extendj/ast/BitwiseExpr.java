@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:165
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:165
  * @production BitwiseExpr : {@link Binary};
 
  */
@@ -164,27 +164,6 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
   public Expr getRightOperandNoTransform() {
     return (Expr) getChildNoTransform(1);
   }
-  /**
-   * @attribute syn
-   * @aspect TypeCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:264
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:264")
-  public Collection<Problem> typeProblems() {
-    {
-        TypeDecl left = getLeftOperand().type();
-        TypeDecl right = getRightOperand().type();
-        if (left.isIntegralType() && right.isIntegralType()) {
-          return Collections.emptyList();
-        } else if (left.isBoolean() && right.isBoolean()) {
-          return Collections.emptyList();
-        } else {
-          return Collections.singletonList(errorf("%s is not compatible with %s",
-              left.typeName(), right.typeName()));
-        }
-      }
-  }
   /** @apilevel internal */
   private void type_reset() {
     type_computed = null;
@@ -199,10 +178,10 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -229,6 +208,27 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
       }
       return unknownType();
     }
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:264
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:264")
+  public Collection<Problem> typeProblems() {
+    {
+        TypeDecl left = getLeftOperand().type();
+        TypeDecl right = getRightOperand().type();
+        if (left.isIntegralType() && right.isIntegralType()) {
+          return Collections.emptyList();
+        } else if (left.isBoolean() && right.isBoolean()) {
+          return Collections.emptyList();
+        } else {
+          return Collections.singletonList(errorf("%s is not compatible with %s",
+              left.typeName(), right.typeName()));
+        }
+      }
+  }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
     return super.rewriteTo();
@@ -238,7 +238,7 @@ public abstract class BitwiseExpr extends Binary implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:262
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:262
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

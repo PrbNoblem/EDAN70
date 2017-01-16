@@ -5,38 +5,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:5
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:5
  * @production ConstructorReferenceAccess : {@link ClassInstanceExpr};
 
  */
 public class ConstructorReferenceAccess extends ClassInstanceExpr implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:399
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:399
    */
   private FunctionDescriptor targetDescriptor;
   /**
    * @aspect Synthetics
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:400
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:400
    */
   public ConstructorReferenceAccess(Access access,
       List<Expr> args, FunctionDescriptor f) {
@@ -377,10 +377,10 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
   /**
    * @attribute syn
    * @aspect TargetType
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:182
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:182
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:182")
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:182")
   public TypeDecl targetType() {
     ASTNode$State state = state();
     if (targetType_computed == ASTNode$State.NON_CYCLE || targetType_computed == state().cycle()) {
@@ -397,12 +397,12 @@ public class ConstructorReferenceAccess extends ClassInstanceExpr implements Clo
     return targetType_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:30
    * @apilevel internal
    */
   public TypeDecl Define_targetType(ASTNode _callerNode, ASTNode _childNode) {
     if (getAccessNoTransform() != null && _callerNode == getAccess()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:188
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:188
       return targetDescriptor.method.type();
     }
     else {

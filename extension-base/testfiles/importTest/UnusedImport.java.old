@@ -1,0 +1,10 @@
+package importTest;
+
+import java.util.List;
+import java.util.HashSet;
+import java.io.File;
+
+public class UnusedImport {
+
+  List<Integer> list;
+}

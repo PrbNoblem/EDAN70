@@ -10,6 +10,7 @@ public class OverRideTest extends SuperClassOR {
 	public void m2() {
 	}
 
+	@Override
 	public void m3() {
 
 	}

@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:189
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:189
  * @production Modifier : {@link ASTNode} ::= <span class="component">&lt;ID:String&gt;</span>;
 
  */
 public class Modifier extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:508
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:508
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getID());
@@ -210,10 +210,10 @@ public class Modifier extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:342
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:342
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:342")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:342")
   public boolean isAnnotation(String packageName, String name) {
     boolean isAnnotation_String_String_value = false;
     return isAnnotation_String_String_value;
@@ -221,16 +221,16 @@ public class Modifier extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute syn
    * @aspect OverrideAnnotation
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:40
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:40
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:40")
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:40")
   public boolean isOverride() {
     boolean isOverride_value = false;
     return isOverride_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
   public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
@@ -241,7 +241,7 @@ public class Modifier extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
    * @apilevel internal
    */
   public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
@@ -252,7 +252,7 @@ public class Modifier extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
    * @apilevel internal
    */
   public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
@@ -263,7 +263,7 @@ public class Modifier extends ASTNode<ASTNode> implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
    * @apilevel internal
    */
   public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {

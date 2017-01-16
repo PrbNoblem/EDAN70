@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:36
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:36
  * @production WildcardSuper : {@link AbstractWildcard} ::= <span class="component">{@link Access}</span>;
 
  */
 public class WildcardSuper extends AbstractWildcard implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:380
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:380
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("? super ");
@@ -206,10 +206,10 @@ public class WildcardSuper extends AbstractWildcard implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -228,10 +228,10 @@ public class WildcardSuper extends AbstractWildcard implements Cloneable {
   /**
    * @attribute inh
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1581
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1581
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1581")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1581")
   public TypeDecl lookupWildcardSuper(TypeDecl typeDecl) {
     TypeDecl lookupWildcardSuper_TypeDecl_value = getParent().Define_lookupWildcardSuper(this, null, typeDecl);
     return lookupWildcardSuper_TypeDecl_value;

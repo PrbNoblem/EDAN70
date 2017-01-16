@@ -5,27 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * The superclass and implemented interfaces in a raw type are also raw types.
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:26
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:26
  * @production RawInterfaceDecl : {@link ParInterfaceDecl};
 
  */
@@ -585,11 +585,82 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect GenericsSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:43
+   * @aspect GenericsParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:55
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:43")
+  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:55")
+  public String nameWithArgs() {
+    String nameWithArgs_value = name();
+    return nameWithArgs_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect NestedTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635")
+  public TypeDecl hostType() {
+    TypeDecl hostType_value = original();
+    return hostType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Generics
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:299
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Generics", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:299")
+  public boolean isParameterizedType() {
+    boolean isParameterizedType_value = false;
+    return isParameterizedType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Generics
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:300
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Generics", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:300")
+  public boolean isRawType() {
+    boolean isRawType_value = true;
+    return isRawType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:813
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:813")
+  public boolean sameSignature(Access a) {
+    boolean sameSignature_Access_value = a instanceof TypeAccess && a.type() == this;
+    return sameSignature_Access_value;
+  }
+  /**
+   * A type is reifiable if it either refers to a non-parameterized type,
+   * is a raw type, is a parameterized type with only unbound wildcard
+   * parameters or is an array type with a reifiable type parameter.
+   * 
+   * @see "JLS SE7 &sect;4.7"
+   * @attribute syn
+   * @aspect ReifiableTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
+  public boolean isReifiable() {
+    boolean isReifiable_value = true;
+    return isReifiable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:43
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:43")
   public boolean supertypeGenericInterfaceDecl(GenericInterfaceDecl type) {
     boolean supertypeGenericInterfaceDecl_GenericInterfaceDecl_value = type.subtype(genericDecl().original());
     return supertypeGenericInterfaceDecl_GenericInterfaceDecl_value;
@@ -600,7 +671,7 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   }
   protected java.util.Map subtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
     if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
@@ -648,10 +719,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
   public boolean supertypeClassDecl(ClassDecl type) {
     boolean supertypeClassDecl_ClassDecl_value = type.subtype(genericDecl().original());
     return supertypeClassDecl_ClassDecl_value;
@@ -659,10 +730,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522")
   public boolean supertypeInterfaceDecl(InterfaceDecl type) {
     boolean supertypeInterfaceDecl_InterfaceDecl_value = type.subtype(genericDecl().original());
     return supertypeInterfaceDecl_InterfaceDecl_value;
@@ -670,10 +741,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:150
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:150
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:150")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:150")
   public boolean supertypeParInterfaceDecl(ParInterfaceDecl type) {
     boolean supertypeParInterfaceDecl_ParInterfaceDecl_value = type.genericDecl().original().subtype(genericDecl().original());
     return supertypeParInterfaceDecl_ParInterfaceDecl_value;
@@ -690,10 +761,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeWideningAndIdentity
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
   public boolean instanceOf(TypeDecl type) {
     Object _parameters = type;
     if (instanceOf_TypeDecl_computed == null) instanceOf_TypeDecl_computed = new java.util.HashMap(4);
@@ -716,77 +787,6 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
     }
     return instanceOf_TypeDecl_value;
   }
-  /**
-   * @attribute syn
-   * @aspect GenericsParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:55
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:55")
-  public String nameWithArgs() {
-    String nameWithArgs_value = name();
-    return nameWithArgs_value;
-  }
-  /**
-   * A type is reifiable if it either refers to a non-parameterized type,
-   * is a raw type, is a parameterized type with only unbound wildcard
-   * parameters or is an array type with a reifiable type parameter.
-   * 
-   * @see "JLS SE7 &sect;4.7"
-   * @attribute syn
-   * @aspect ReifiableTypes
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
-  public boolean isReifiable() {
-    boolean isReifiable_value = true;
-    return isReifiable_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect NestedTypes
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NestedTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:635")
-  public TypeDecl hostType() {
-    TypeDecl hostType_value = original();
-    return hostType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect Generics
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:299
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Generics", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:299")
-  public boolean isParameterizedType() {
-    boolean isParameterizedType_value = false;
-    return isParameterizedType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect Generics
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:300
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Generics", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:300")
-  public boolean isRawType() {
-    boolean isRawType_value = true;
-    return isRawType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:813
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:813")
-  public boolean sameSignature(Access a) {
-    boolean sameSignature_Access_value = a instanceof TypeAccess && a.type() == this;
-    return sameSignature_Access_value;
-  }
   /** @apilevel internal */
   private void firstTypeArgument_reset() {
     firstTypeArgument_computed = null;
@@ -803,10 +803,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
    * java.lang.Object.
    * @attribute syn
    * @aspect EnhancedFor
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:117
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:117
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="EnhancedFor", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:117")
+  @ASTNodeAnnotation.Source(aspect="EnhancedFor", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:117")
   public TypeDecl firstTypeArgument() {
     ASTNode$State state = state();
     if (firstTypeArgument_computed == ASTNode$State.NON_CYCLE || firstTypeArgument_computed == state().cycle()) {
@@ -825,10 +825,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:46
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:46
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:46")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:46")
   public boolean strictSupertypeGenericInterfaceDecl(GenericInterfaceDecl type) {
     boolean strictSupertypeGenericInterfaceDecl_GenericInterfaceDecl_value = type.strictSubtype(genericDecl().original());
     return strictSupertypeGenericInterfaceDecl_GenericInterfaceDecl_value;
@@ -839,7 +839,7 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
     if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
@@ -887,10 +887,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
   public boolean strictSupertypeClassDecl(ClassDecl type) {
     boolean strictSupertypeClassDecl_ClassDecl_value = type.strictSubtype(genericDecl().original());
     return strictSupertypeClassDecl_ClassDecl_value;
@@ -898,10 +898,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398")
   public boolean strictSupertypeInterfaceDecl(InterfaceDecl type) {
     boolean strictSupertypeInterfaceDecl_InterfaceDecl_value = type.strictSubtype(genericDecl().original());
     return strictSupertypeInterfaceDecl_InterfaceDecl_value;
@@ -909,10 +909,10 @@ public class RawInterfaceDecl extends ParInterfaceDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:153
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:153
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:153")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:153")
   public boolean strictSupertypeParInterfaceDecl(ParInterfaceDecl type) {
     boolean strictSupertypeParInterfaceDecl_ParInterfaceDecl_value = type.genericDecl().original().strictSubtype(genericDecl().original());
     return strictSupertypeParInterfaceDecl_ParInterfaceDecl_value;

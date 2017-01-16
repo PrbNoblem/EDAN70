@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:48
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:48
  * @production ConstructorDeclSubstituted : {@link ConstructorDecl} ::= <span class="component">&lt;Original:ConstructorDecl&gt;</span>;
 
  */
@@ -584,10 +584,10 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
    * @return type parameters for this declaration.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
   public List<TypeVariable> typeParameters() {
     List<TypeVariable> typeParameters_value = sourceConstructorDecl().typeParameters();
     return typeParameters_value;
@@ -606,10 +606,10 @@ public class ConstructorDeclSubstituted extends ConstructorDecl implements Clone
   /**
    * @attribute syn
    * @aspect SourceDeclarations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733")
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733")
   public ConstructorDecl sourceConstructorDecl() {
     ASTNode$State state = state();
     if (sourceConstructorDecl_computed == ASTNode$State.NON_CYCLE || sourceConstructorDecl_computed == state().cycle()) {

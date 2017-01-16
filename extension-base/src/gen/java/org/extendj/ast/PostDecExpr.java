@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:147
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:147
  * @production PostDecExpr : {@link PostfixExpr};
 
  */
@@ -187,10 +187,10 @@ public class PostDecExpr extends PostfixExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect PrettyPrintUtil
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:278
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:278
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:278")
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:278")
   public String printPostOp() {
     String printPostOp_value = "--";
     return printPostOp_value;
@@ -198,10 +198,10 @@ public class PostDecExpr extends PostfixExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect PreciseRethrow
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:145")
   public boolean modifiedInScope(Variable var) {
     boolean modifiedInScope_Variable_value = getOperand().isVariable(var);
     return modifiedInScope_Variable_value;
@@ -219,10 +219,10 @@ public class PostDecExpr extends PostfixExpr implements Cloneable {
   /**
    * @attribute syn
    * @aspect StmtCompatible
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:119
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:119
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StmtCompatible", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:119")
+  @ASTNodeAnnotation.Source(aspect="StmtCompatible", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:119")
   public boolean stmtCompatible() {
     ASTNode$State state = state();
     if (stmtCompatible_computed == ASTNode$State.NON_CYCLE || stmtCompatible_computed == state().cycle()) {

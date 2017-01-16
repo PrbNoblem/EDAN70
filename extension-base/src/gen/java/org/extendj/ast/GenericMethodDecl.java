@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:1
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:1
  * @production GenericMethodDecl : {@link MethodDecl} ::= <span class="component">TypeParameter:{@link TypeVariable}*</span>;
 
  */
 public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:289
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:289
    */
   public void prettyPrint(PrettyPrinter out) {
     if (hasDocComment()) {
@@ -77,38 +77,8 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     }
   }
   /**
-   * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1297
-   */
-  public BodyDecl signatureCopy() {
-    return new GenericMethodDeclSubstituted(
-        getModifiers().treeCopyNoTransform(),
-        getTypeAccessNoTransform().treeCopyNoTransform(),
-        getID(),
-        getParameterList().treeCopyNoTransform(),
-        getExceptionList().treeCopyNoTransform(),
-        new Opt<Block>(),
-        getTypeParameterList().treeCopyNoTransform(),
-        this);
-  }
-  /**
-   * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1398
-   */
-  public BodyDecl erasedCopy() {
-    return new GenericMethodDeclErased(
-        getModifiers().treeCopyNoTransform(),
-        getTypeAccess().erasedCopy(),
-        getID(),
-        erasedParameterList(getParameterList()),
-        erasedAccessList(getExceptionList()),
-        new Opt<Block>(),
-        getTypeParameterList().treeCopyNoTransform(),
-        this);
-  }
-  /**
    * @aspect GenericMethods
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:64
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:64
    */
   public ParMethodDecl newParMethodDecl(Collection<TypeDecl> typeArguments) {
     Parameterization parameterization = new Parameterization(getTypeParameterList(),
@@ -139,6 +109,36 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     methodDecl.setTypeParameterList(getTypeParameterList().treeCopy());
     methodDecl.setParameterization(parameterization);
     return methodDecl;
+  }
+  /**
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1297
+   */
+  public BodyDecl signatureCopy() {
+    return new GenericMethodDeclSubstituted(
+        getModifiers().treeCopyNoTransform(),
+        getTypeAccessNoTransform().treeCopyNoTransform(),
+        getID(),
+        getParameterList().treeCopyNoTransform(),
+        getExceptionList().treeCopyNoTransform(),
+        new Opt<Block>(),
+        getTypeParameterList().treeCopyNoTransform(),
+        this);
+  }
+  /**
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1398
+   */
+  public BodyDecl erasedCopy() {
+    return new GenericMethodDeclErased(
+        getModifiers().treeCopyNoTransform(),
+        getTypeAccess().erasedCopy(),
+        getID(),
+        erasedParameterList(getParameterList()),
+        erasedAccessList(getExceptionList()),
+        new Opt<Block>(),
+        getTypeParameterList().treeCopyNoTransform(),
+        this);
   }
   /**
    * @declaredat ASTNode:1
@@ -765,10 +765,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * substitued generic method or constructor.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:325")
   public boolean isGeneric() {
     boolean isGeneric_value = true;
     return isGeneric_value;
@@ -779,10 +779,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @return the original generic declaration of this method.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:336")
   public GenericMethodDecl genericDecl() {
     GenericMethodDecl genericDecl_value = this;
     return genericDecl_value;
@@ -793,24 +793,13 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
    * @return type parameters for this declaration.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
   public List<TypeVariable> typeParameters() {
     List<TypeVariable> typeParameters_value = getTypeParameterList();
     return typeParameters_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1309
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1309")
-  public GenericMethodDecl original() {
-    GenericMethodDecl original_value = this;
-    return original_value;
   }
   /** @apilevel internal */
   private void rawMethodDecl_reset() {
@@ -826,10 +815,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericMethods
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:49
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:49
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:49")
+  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:49")
   public ParMethodDecl rawMethodDecl() {
     ASTNode$State state = state();
     if (rawMethodDecl_computed == ASTNode$State.NON_CYCLE || rawMethodDecl_computed == state().cycle()) {
@@ -858,10 +847,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericMethods
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:57
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:57
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:57")
+  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:57")
   public ParMethodDecl lookupParMethodDecl(Collection<TypeDecl> typeArguments) {
     Object _parameters = typeArguments;
     if (lookupParMethodDecl_Collection_TypeDecl__values == null) lookupParMethodDecl_Collection_TypeDecl__values = new java.util.HashMap(4);
@@ -886,10 +875,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericMethodsNameAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:205
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:205
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericMethodsNameAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:205")
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsNameAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:205")
   public SimpleSet<TypeDecl> localLookupType(String name) {
     {
         for (int i = 0; i < getNumTypeParameter(); i++) {
@@ -899,6 +888,17 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
         }
         return emptySet();
       }
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1309
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1309")
+  public GenericMethodDecl original() {
+    GenericMethodDecl original_value = this;
+    return original_value;
   }
   /** @apilevel internal */
   private void typeVariableInReturn_reset() {
@@ -913,10 +913,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect PolyExpressions
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:117
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:117
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:117")
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:117")
   public boolean typeVariableInReturn() {
     ASTNode$State state = state();
     if (typeVariableInReturn_computed == ASTNode$State.NON_CYCLE || typeVariableInReturn_computed == state().cycle()) {
@@ -966,10 +966,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:36
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:36
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:36")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:36")
   public boolean sameSignature(MethodDecl m) {
     {
         if (!m.isGeneric()) {
@@ -991,10 +991,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:72
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:72
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:72")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:72")
   public boolean subsignatureTo(MethodDecl m) {
     Object _parameters = m;
     if (subsignatureTo_MethodDecl_computed == null) subsignatureTo_MethodDecl_computed = new java.util.HashMap(4);
@@ -1042,10 +1042,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:108
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:108
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:108")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:108")
   public boolean sameTypeParameters(GenericMethodDecl gm) {
     Object _parameters = gm;
     if (sameTypeParameters_GenericMethodDecl_computed == null) sameTypeParameters_GenericMethodDecl_computed = new java.util.HashMap(4);
@@ -1095,10 +1095,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:124
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:124
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:124")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:124")
   public boolean sameFormalParameters(GenericMethodDecl gm) {
     Object _parameters = gm;
     if (sameFormalParameters_GenericMethodDecl_computed == null) sameFormalParameters_GenericMethodDecl_computed = new java.util.HashMap(4);
@@ -1154,10 +1154,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1179")
   public boolean usesTypeVariable() {
     ASTNode$State state = state();
     if (usesTypeVariable_computed == ASTNode$State.NON_CYCLE || usesTypeVariable_computed == state().cycle()) {
@@ -1176,10 +1176,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect GenericMethodsNameAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:203
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:203
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="GenericMethodsNameAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:203")
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsNameAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:203")
   public SimpleSet<TypeDecl> lookupType(String name) {
     SimpleSet<TypeDecl> lookupType_String_value = getParent().Define_lookupType(this, null, name);
     return lookupType_String_value;
@@ -1187,10 +1187,10 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect TypeVariablePositions
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31")
+  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31")
   public int genericMethodLevel() {
     ASTNode$State state = state();
     if (genericMethodLevel_computed == ASTNode$State.NON_CYCLE || genericMethodLevel_computed == state().cycle()) {
@@ -1217,12 +1217,12 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
   protected int genericMethodLevel_value;
 
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeParameterListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:201
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:201
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
@@ -1234,7 +1234,7 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
   public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
@@ -1245,12 +1245,12 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
    * @apilevel internal
    */
   public int Define_typeVarPosition(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeParameterListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:37
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:37
       int i = _callerNode.getIndexOfChild(_childNode);
       return i;
     }
@@ -1262,12 +1262,12 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
    * @apilevel internal
    */
   public boolean Define_typeVarInMethod(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeParameterListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:38
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:38
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return true;
     }
@@ -1279,16 +1279,16 @@ public class GenericMethodDecl extends MethodDecl implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:31
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30
    * @apilevel internal
    */
   public int Define_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getBlockOptNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:50
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:50
       return genericMethodLevel() + 1;
     }
     else if (_callerNode == getTypeParameterListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:49
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:49
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return genericMethodLevel() + 1;
     }

@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:206
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:206
  * @production WhileStmt : {@link BranchTargetStmt} ::= <span class="component">Condition:{@link Expr}</span> <span class="component">{@link Stmt}</span>;
 
  */
 public class WhileStmt extends BranchTargetStmt implements Cloneable {
   /**
    * @aspect PrettyPrintUtil
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:166
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:166
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("while (");
@@ -89,10 +89,10 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    canCompleteNormally_reset();
     assignedAfter_Variable_reset();
     unassignedAfter_Variable_reset();
     unassignedBeforeCondition_Variable_reset();
-    canCompleteNormally_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:36
@@ -233,13 +233,45 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
   public Stmt getStmtNoTransform() {
     return (Stmt) getChildNoTransform(1);
   }
+  /** @apilevel internal */
+  private void canCompleteNormally_reset() {
+    canCompleteNormally_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle canCompleteNormally_computed = null;
+
+  /** @apilevel internal */
+  protected boolean canCompleteNormally_value;
+
+  /**
+   * @attribute syn
+   * @aspect UnreachableStatements
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:50
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:50")
+  public boolean canCompleteNormally() {
+    ASTNode$State state = state();
+    if (canCompleteNormally_computed == ASTNode$State.NON_CYCLE || canCompleteNormally_computed == state().cycle()) {
+      return canCompleteNormally_value;
+    }
+    canCompleteNormally_value = reachable() && (!getCondition().isConstant() || !getCondition().isTrue()) || reachableBreak();
+    if (state().inCircle()) {
+      canCompleteNormally_computed = state().cycle();
+    
+    } else {
+      canCompleteNormally_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return canCompleteNormally_value;
+  }
   /**
    * @attribute syn
    * @aspect NameCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:548
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:548
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:548")
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:548")
   public boolean continueLabel() {
     boolean continueLabel_value = true;
     return continueLabel_value;
@@ -250,7 +282,7 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
   }
   protected java.util.Map assignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:264")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:264")
   public boolean assignedAfter(Variable v) {
     Object _parameters = v;
     if (assignedAfter_Variable_values == null) assignedAfter_Variable_values = new java.util.HashMap(4);
@@ -313,7 +345,7 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
   }
   protected java.util.Map unassignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:899")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:899")
   public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
     if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
@@ -379,7 +411,7 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
   }
   protected java.util.Map unassignedBeforeCondition_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1420")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1420")
   public boolean unassignedBeforeCondition(Variable v) {
     Object _parameters = v;
     if (unassignedBeforeCondition_Variable_values == null) unassignedBeforeCondition_Variable_values = new java.util.HashMap(4);
@@ -445,131 +477,32 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
    * branch target of the given branch statement.
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215")
   public boolean potentialTargetOf(Stmt branch) {
     boolean potentialTargetOf_Stmt_value = branch.canBranchTo(this);
     return potentialTargetOf_Stmt_value;
   }
-  /** @apilevel internal */
-  private void canCompleteNormally_reset() {
-    canCompleteNormally_computed = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle canCompleteNormally_computed = null;
-
-  /** @apilevel internal */
-  protected boolean canCompleteNormally_value;
-
-  /**
-   * @attribute syn
-   * @aspect UnreachableStatements
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:50
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:50")
-  public boolean canCompleteNormally() {
-    ASTNode$State state = state();
-    if (canCompleteNormally_computed == ASTNode$State.NON_CYCLE || canCompleteNormally_computed == state().cycle()) {
-      return canCompleteNormally_value;
-    }
-    canCompleteNormally_value = reachable() && (!getCondition().isConstant() || !getCondition().isTrue()) || reachableBreak();
-    if (state().inCircle()) {
-      canCompleteNormally_computed = state().cycle();
-    
-    } else {
-      canCompleteNormally_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return canCompleteNormally_value;
-  }
   /**
    * @attribute syn
    * @aspect PreciseRethrow
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78")
+  @ASTNodeAnnotation.Source(aspect="PreciseRethrow", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:78")
   public boolean modifiedInScope(Variable var) {
     boolean modifiedInScope_Variable_value = getStmt().modifiedInScope(var);
     return modifiedInScope_Variable_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:504
-   * @apilevel internal
-   */
-  public boolean Define_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
-    if (getStmtNoTransform() != null && _callerNode == getStmt()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:509
-      return true;
-    }
-    else {
-      return getParent().Define_insideLoop(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
-   * @apilevel internal
-   */
-  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (getStmtNoTransform() != null && _callerNode == getStmt()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:756
-      return getCondition().assignedAfterTrue(v);
-    }
-    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:754
-      return assignedBefore(v);
-    }
-    else {
-      return getParent().Define_assignedBefore(this, _callerNode, v);
-    }
-  }
-  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
-   * @apilevel internal
-   */
-  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (getStmtNoTransform() != null && _callerNode == getStmt()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1437
-      return getCondition().unassignedAfterTrue(v);
-    }
-    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1417
-      return unassignedBeforeCondition(v);
-    }
-    else {
-      return getParent().Define_unassignedBefore(this, _callerNode, v);
-    }
-  }
-  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:230
-   * @apilevel internal
-   */
-  public Stmt Define_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
-    int childIndex = this.getIndexOfChild(_callerNode);
-    return branch.canBranchTo(this) ? this : branchTarget(branch);
-  }
-  protected boolean canDefine_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
    * @apilevel internal
    */
   public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
     if (getStmtNoTransform() != null && _callerNode == getStmt()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:133
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:133
       return reachable() && !getCondition().isFalse();
     }
     else {
@@ -580,12 +513,12 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:280
    * @apilevel internal
    */
   public boolean Define_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
     if (getStmtNoTransform() != null && _callerNode == getStmt()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:213
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:213
       return reachable();
     }
     else {
@@ -596,12 +529,79 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:504
+   * @apilevel internal
+   */
+  public boolean Define_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
+    if (getStmtNoTransform() != null && _callerNode == getStmt()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:509
+      return true;
+    }
+    else {
+      return getParent().Define_insideLoop(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @apilevel internal
+   */
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getStmtNoTransform() != null && _callerNode == getStmt()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:756
+      return getCondition().assignedAfterTrue(v);
+    }
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:754
+      return assignedBefore(v);
+    }
+    else {
+      return getParent().Define_assignedBefore(this, _callerNode, v);
+    }
+  }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
+   * @apilevel internal
+   */
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getStmtNoTransform() != null && _callerNode == getStmt()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1437
+      return getCondition().unassignedAfterTrue(v);
+    }
+    else if (getConditionNoTransform() != null && _callerNode == getCondition()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1417
+      return unassignedBeforeCondition(v);
+    }
+    else {
+      return getParent().Define_unassignedBefore(this, _callerNode, v);
+    }
+  }
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:230
+   * @apilevel internal
+   */
+  public Stmt Define_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    int childIndex = this.getIndexOfChild(_callerNode);
+    return branch.canBranchTo(this) ? this : branchTarget(branch);
+  }
+  protected boolean canDefine_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:30
    * @apilevel internal
    */
   public boolean Define_inhModifiedInScope(ASTNode _callerNode, ASTNode _childNode, Variable var) {
     if (getStmtNoTransform() != null && _callerNode == getStmt()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:53
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:53
       return false;
     }
     else {
@@ -620,7 +620,7 @@ public class WhileStmt extends BranchTargetStmt implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:439
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:439
     if (!getCondition().type().isBoolean()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

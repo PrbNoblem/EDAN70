@@ -5,65 +5,65 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Stand-in method for type inference on generic instance creation.
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/grammar/Diamond.ast:9
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Diamond.ast:9
  * @production StandInMethodDecl : {@link GenericMethodDecl};
 
  */
 public class StandInMethodDecl extends GenericMethodDecl implements Cloneable {
   /**
    * @aspect Java7PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PrettyPrint.jadd:56
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PrettyPrint.jadd:56
    */
   public void prettyPrint(PrettyPrinter out) {
   }
   /**
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:45
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:45
    */
   public void nameCheck() { }
   /**
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:46
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:46
    */
   public void typeCheck() { }
   /**
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:47
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:47
    */
   public void exceptionHandling() { }
   /**
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:48
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:48
    */
   public void checkUnreachableStmt() { }
   /**
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:49
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:49
    */
   public void definiteAssignment() { }
   /**
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:50
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:50
    */
   public void checkModifiers() { }
   /**

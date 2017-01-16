@@ -5,43 +5,43 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:42
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:42
  * @production PrimitiveType : {@link TypeDecl} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">[SuperClass:{@link Access}]</span> <span class="component">{@link BodyDecl}*</span>;
 
  */
 public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
-   * @aspect CreateQualifiedAccesses
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:126
-   */
-  public Access createQualifiedAccess() {
-    return new PrimitiveTypeAccess(name());
-  }
-  /**
    * @aspect SuperClasses
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:671
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:671
    */
   public boolean hasSuperclass() {
     return !isObject();
+  }
+  /**
+   * @aspect CreateQualifiedAccesses
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:126
+   */
+  public Access createQualifiedAccess() {
+    return new PrimitiveTypeAccess(name());
   }
   /**
    * @declaredat ASTNode:1
@@ -408,10 +408,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeConversion
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38")
   public boolean wideningConversionTo(TypeDecl type) {
     boolean wideningConversionTo_TypeDecl_value = instanceOf(type);
     return wideningConversionTo_TypeDecl_value;
@@ -428,10 +428,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeConversion
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39")
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39")
   public boolean narrowingConversionTo(TypeDecl type) {
     Object _parameters = type;
     if (narrowingConversionTo_TypeDecl_computed == null) narrowingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
@@ -457,10 +457,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:182
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:182
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:182")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:182")
   public boolean isPrimitiveType() {
     boolean isPrimitiveType_value = true;
     return isPrimitiveType_value;
@@ -468,10 +468,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237")
   public boolean isPrimitive() {
     boolean isPrimitive_value = true;
     return isPrimitive_value;
@@ -488,10 +488,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeWideningAndIdentity
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
   public boolean instanceOf(TypeDecl type) {
     Object _parameters = type;
     if (instanceOf_TypeDecl_computed == null) instanceOf_TypeDecl_computed = new java.util.HashMap(4);
@@ -521,10 +521,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeWideningAndIdentity
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:520
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:520
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:520")
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:520")
   public boolean isSupertypeOfPrimitiveType(PrimitiveType type) {
     {
         if (super.isSupertypeOfPrimitiveType(type)) {
@@ -537,10 +537,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect SuperClasses
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:675
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:675
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SuperClasses", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:675")
+  @ASTNodeAnnotation.Source(aspect="SuperClasses", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:675")
   public TypeDecl superclass() {
     TypeDecl superclass_value = getSuperClass().type();
     return superclass_value;
@@ -548,13 +548,24 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199")
   public boolean isValidAnnotationMethodReturnType() {
     boolean isValidAnnotationMethodReturnType_value = true;
     return isValidAnnotationMethodReturnType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect AutoBoxing
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:48
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:48")
+  public boolean boxingConversionTo(TypeDecl typeDecl) {
+    boolean boxingConversionTo_TypeDecl_value = boxed() == typeDecl;
+    return boxingConversionTo_TypeDecl_value;
   }
   /** @apilevel internal */
   private void subtype_TypeDecl_reset() {
@@ -562,7 +573,7 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   }
   protected java.util.Map subtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
     if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
@@ -610,10 +621,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:568
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:568
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:568")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:568")
   public boolean supertypePrimitiveType(PrimitiveType type) {
     {
         if (super.supertypePrimitiveType(type)) {
@@ -623,24 +634,13 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
             && type.superclass().subtype(this);
       }
   }
-  /**
-   * @attribute syn
-   * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:48
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:48")
-  public boolean boxingConversionTo(TypeDecl typeDecl) {
-    boolean boxingConversionTo_TypeDecl_value = boxed() == typeDecl;
-    return boxingConversionTo_TypeDecl_value;
-  }
   /** @apilevel internal */
   private void strictSubtype_TypeDecl_reset() {
     strictSubtype_TypeDecl_values = null;
   }
   protected java.util.Map strictSubtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
   public boolean strictSubtype(TypeDecl type) {
     Object _parameters = type;
     if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
@@ -688,10 +688,10 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect StrictSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:445
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:445
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:445")
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:445")
   public boolean strictSupertypePrimitiveType(PrimitiveType type) {
     {
         if (super.strictSupertypePrimitiveType(type)) {
@@ -702,12 +702,12 @@ public class PrimitiveType extends TypeDecl implements Cloneable {
       }
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:76
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:76
    * @apilevel internal
    */
   public TypeDecl Define_hostType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getSuperClassOptNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:640
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:640
       return hostType();
     }
     else {

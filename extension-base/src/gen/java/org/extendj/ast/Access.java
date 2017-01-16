@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:13
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:13
  * @production Access : {@link Expr};
 
  */
@@ -32,7 +32,7 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * Used by the parser to build a method access from a parsed, potentially qualified, name.
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:442
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:442
    */
   public Access buildMethodAccess(List<Expr> arguments) {
     throw new Error("Can not build method access from access of type "
@@ -40,7 +40,7 @@ public abstract class Access extends Expr implements Cloneable {
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:465
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:465
    */
   public Access addArrayDims(List list) {
     Access a = this;
@@ -61,7 +61,7 @@ public abstract class Access extends Expr implements Cloneable {
    * Checks that two type accesses are the same, while taking type variable
    * substitution into account.
    * @aspect FunctionalInterface
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:182
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:182
    */
   public boolean sameType(Access a) {
     if (this instanceof ArrayTypeAccess && a instanceof ArrayTypeAccess) {
@@ -161,24 +161,57 @@ public abstract class Access extends Expr implements Cloneable {
   public abstract Access treeCopy();
   /**
    * @attribute syn
-   * @aspect LookupMethod
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:40
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:156
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:40")
-  public Expr unqualifiedScope() {
-    Expr unqualifiedScope_value = isQualified() ? nestedScope() : this;
-    return unqualifiedScope_value;
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:156")
+  public boolean isQualified() {
+    boolean isQualified_value = hasPrevExpr();
+    return isQualified_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:159
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:159")
+  public Expr qualifier() {
+    Expr qualifier_value = prevExpr();
+    return qualifier_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:166
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:166")
+  public Access lastAccess() {
+    Access lastAccess_value = this;
+    return lastAccess_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect QualifiedNames
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:175
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:175")
+  public boolean hasPrevExpr() {
+    boolean hasPrevExpr_value = isRightChildOfDot();
+    return hasPrevExpr_value;
   }
   /**
    * Defines the expected kind of name for the left hand side in a qualified
    * expression.
    * @attribute syn
    * @aspect SyntacticClassification
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
   public NameType predNameType() {
     {
         switch (nameType()) {
@@ -198,47 +231,14 @@ public abstract class Access extends Expr implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:156
+   * @aspect LookupMethod
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:40
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:156")
-  public boolean isQualified() {
-    boolean isQualified_value = hasPrevExpr();
-    return isQualified_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:159
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:159")
-  public Expr qualifier() {
-    Expr qualifier_value = prevExpr();
-    return qualifier_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:166
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:166")
-  public Access lastAccess() {
-    Access lastAccess_value = this;
-    return lastAccess_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect QualifiedNames
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:175
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="QualifiedNames", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:175")
-  public boolean hasPrevExpr() {
-    boolean hasPrevExpr_value = isRightChildOfDot();
-    return hasPrevExpr_value;
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:40")
+  public Expr unqualifiedScope() {
+    Expr unqualifiedScope_value = isQualified() ? nestedScope() : this;
+    return unqualifiedScope_value;
   }
   /** @apilevel internal */
   private void type_reset() {
@@ -254,10 +254,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -274,38 +274,38 @@ public abstract class Access extends Expr implements Cloneable {
     return type_value;
   }
   /**
-   * WARNING: this attribute is not the same as TypeDecl.isWildcard,
-   * which returns true for any wildcard type (even bounded wildcard types).
-   * @return {@code true} if this is an unbounded wildcard access
-   * @attribute syn
-   * @aspect ReifiableTypes
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106")
-  public boolean isWildcard() {
-    boolean isWildcard_value = false;
-    return isWildcard_value;
-  }
-  /**
    * Creates a copy of this access where parameterized types have been erased.
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
   public Access erasedCopy() {
     Access erasedCopy_value = treeCopyNoTransform();
     return erasedCopy_value;
   }
   /**
+   * WARNING: this attribute is not the same as TypeDecl.isWildcard,
+   * which returns true for any wildcard type (even bounded wildcard types).
+   * @return {@code true} if this is an unbounded wildcard access
    * @attribute syn
-   * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87
+   * @aspect ReifiableTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87")
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:106")
+  public boolean isWildcard() {
+    boolean isWildcard_value = false;
+    return isWildcard_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect Diamond
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:87")
   public boolean isDiamond() {
     boolean isDiamond_value = false;
     return isDiamond_value;
@@ -318,10 +318,10 @@ public abstract class Access extends Expr implements Cloneable {
    * @return the substituted Access node
    * @attribute syn
    * @aspect Diamond
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369")
+  @ASTNodeAnnotation.Source(aspect="Diamond", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:369")
   public Access substituted(Collection<TypeVariable> original, List<TypeVariable> substitution) {
     Access substituted_Collection_TypeVariable__List_TypeVariable__value = (Access) treeCopyNoTransform();
     return substituted_Collection_TypeVariable__List_TypeVariable__value;
@@ -329,10 +329,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:12")
   public String myTypeName() {
     String myTypeName_value = typeName();
     return myTypeName_value;
@@ -340,10 +340,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18")
   public String nodeType() {
     String nodeType_value = "";
     return nodeType_value;
@@ -351,10 +351,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:55")
   public HashSet<String> TypeArguments() {
     HashSet<String> TypeArguments_value = null;
     return TypeArguments_value;
@@ -362,10 +362,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110")
   public String uberID() {
     String uberID_value = "IHAVENOIDEAWHATIAMNOOOSUKA";
     return uberID_value;
@@ -373,10 +373,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:114
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:114
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:114")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:114")
   public String dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID() {
     String dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID_value = "";
     return dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID_value;
@@ -384,10 +384,10 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect OverrideAnnotation
-   * @declaredat /home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:42
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:42
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/home/felix/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:42")
+  @ASTNodeAnnotation.Source(aspect="OverrideAnnotation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:42")
   public boolean overrider() {
     boolean overrider_value = false;
     return overrider_value;
@@ -395,43 +395,43 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute inh
    * @aspect LookupMethod
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:42
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:42
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:42")
+  @ASTNodeAnnotation.Source(aspect="LookupMethod", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:42")
   public Expr nestedScope() {
     Expr nestedScope_value = getParent().Define_nestedScope(this, null);
     return nestedScope_value;
   }
   /**
    * @attribute inh
-   * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:295
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:295")
-  public TypeDecl unknownType() {
-    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
-    return unknownType_value;
-  }
-  /**
-   * @attribute inh
    * @aspect VariableScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:355
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:355
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="VariableScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:355")
+  @ASTNodeAnnotation.Source(aspect="VariableScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:355")
   public Variable unknownField() {
     Variable unknownField_value = getParent().Define_unknownField(this, null);
     return unknownField_value;
   }
   /**
    * @attribute inh
-   * @aspect Annotations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:403
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:295
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:403")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:295")
+  public TypeDecl unknownType() {
+    TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
+    return unknownType_value;
+  }
+  /**
+   * @attribute inh
+   * @aspect Annotations
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:403
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:403")
   public boolean withinSuppressWarnings(String annot) {
     boolean withinSuppressWarnings_String_value = getParent().Define_withinSuppressWarnings(this, null, annot);
     return withinSuppressWarnings_String_value;
@@ -439,16 +439,16 @@ public abstract class Access extends Expr implements Cloneable {
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:534
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:534
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:534")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:534")
   public boolean withinDeprecatedAnnotation() {
     boolean withinDeprecatedAnnotation_value = getParent().Define_withinDeprecatedAnnotation(this, null);
     return withinDeprecatedAnnotation_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
   public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
@@ -459,7 +459,7 @@ public abstract class Access extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
    * @apilevel internal
    */
   public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
@@ -470,7 +470,7 @@ public abstract class Access extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
    * @apilevel internal
    */
   public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
@@ -481,7 +481,7 @@ public abstract class Access extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
    * @apilevel internal
    */
   public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {

@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:45
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:45
  * @production MethodDeclSubstituted : {@link MethodDecl} ::= <span class="component">&lt;Original:MethodDecl&gt;</span>;
 
  */
@@ -557,10 +557,10 @@ public class MethodDeclSubstituted extends MethodDecl implements Cloneable {
    * @return type parameters for this declaration.
    * @attribute syn
    * @aspect MethodSignature15
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature15", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:360")
   public List<TypeVariable> typeParameters() {
     List<TypeVariable> typeParameters_value = sourceMethodDecl().typeParameters();
     return typeParameters_value;
@@ -568,10 +568,10 @@ public class MethodDeclSubstituted extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1524")
   public MethodDecl erasedMethod() {
     MethodDecl erasedMethod_value = getOriginal().erasedMethod();
     return erasedMethod_value;
@@ -590,10 +590,10 @@ public class MethodDeclSubstituted extends MethodDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect SourceDeclarations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729")
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1729")
   public MethodDecl sourceMethodDecl() {
     ASTNode$State state = state();
     if (sourceMethodDecl_computed == ASTNode$State.NON_CYCLE || sourceMethodDecl_computed == state().cycle()) {

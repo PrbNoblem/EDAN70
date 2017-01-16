@@ -5,34 +5,34 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * A catch clause that can catch a multiple exception types.
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/grammar/MultiCatch.ast:14
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/MultiCatch.ast:14
  * @production MultiCatch : {@link CatchClause} ::= <span class="component">Parameter:{@link CatchParameterDeclaration}</span> <span class="component">{@link Block}</span>;
 
  */
 public class MultiCatch extends CatchClause implements Cloneable {
   /**
    * @aspect Java7PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PrettyPrint.jadd:50
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PrettyPrint.jadd:50
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("catch (");
@@ -234,10 +234,10 @@ public class MultiCatch extends CatchClause implements Cloneable {
   /**
    * @attribute syn
    * @aspect VariableScope
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192")
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:192")
   public SimpleSet<Variable> parameterDeclaration(String name) {
     Object _parameters = name;
     if (parameterDeclaration_String_computed == null) parameterDeclaration_String_computed = new java.util.HashMap(4);
@@ -263,10 +263,10 @@ public class MultiCatch extends CatchClause implements Cloneable {
   /**
    * @attribute syn
    * @aspect ExceptionHandling
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279")
+  @ASTNodeAnnotation.Source(aspect="ExceptionHandling", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:279")
   public boolean handles(TypeDecl exceptionType) {
     {
         CatchParameterDeclaration param = getParameter();
@@ -282,10 +282,10 @@ public class MultiCatch extends CatchClause implements Cloneable {
   /**
    * @attribute syn
    * @aspect MultiCatch
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:197
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:197
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MultiCatch", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:197")
+  @ASTNodeAnnotation.Source(aspect="MultiCatch", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:197")
   public Collection<Problem> reachabilityProblems() {
     {
         Collection<Problem> problems = new LinkedList<Problem>();
@@ -301,12 +301,12 @@ public class MultiCatch extends CatchClause implements Cloneable {
       }
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:44
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:44
    * @apilevel internal
    */
   public boolean Define_isMethodParameter(ASTNode _callerNode, ASTNode _childNode) {
     if (getParameterNoTransform() != null && _callerNode == getParameter()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:54
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:54
       return false;
     }
     else {
@@ -317,12 +317,12 @@ public class MultiCatch extends CatchClause implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:45
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:45
    * @apilevel internal
    */
   public boolean Define_isConstructorParameter(ASTNode _callerNode, ASTNode _childNode) {
     if (getParameterNoTransform() != null && _callerNode == getParameter()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:55
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:55
       return false;
     }
     else {
@@ -333,12 +333,12 @@ public class MultiCatch extends CatchClause implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:46
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:46
    * @apilevel internal
    */
   public boolean Define_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
     if (getParameterNoTransform() != null && _callerNode == getParameter()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:56
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:56
       return true;
     }
     else {
@@ -349,12 +349,12 @@ public class MultiCatch extends CatchClause implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
   public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (getParameterNoTransform() != null && _callerNode == getParameter()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:127
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:127
       return parameterDeclaration(name);
     }
     else {
@@ -365,12 +365,12 @@ public class MultiCatch extends CatchClause implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:49
    * @apilevel internal
    */
   public boolean Define_reachable(ASTNode _callerNode, ASTNode _childNode) {
     if (getBlockNoTransform() != null && _callerNode == getBlock()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:180
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:180
       {
           boolean anyReachable = false;
           CatchParameterDeclaration param = getParameter();
@@ -402,16 +402,7 @@ public class MultiCatch extends CatchClause implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:195
-    {
-      java.util.Set<ASTNode> contributors = _map.get(_root);
-      if (contributors == null) {
-        contributors = new java.util.LinkedHashSet<ASTNode>();
-        _map.put((ASTNode) _root, contributors);
-      }
-      contributors.add(this);
-    }
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:289
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:289
     if (!getBlock().reachable() && reportUnreachable()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);
@@ -422,16 +413,25 @@ public class MultiCatch extends CatchClause implements Cloneable {
         contributors.add(this);
       }
     }
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:195
+    {
+      java.util.Set<ASTNode> contributors = _map.get(_root);
+      if (contributors == null) {
+        contributors = new java.util.LinkedHashSet<ASTNode>();
+        _map.put((ASTNode) _root, contributors);
+      }
+      contributors.add(this);
+    }
     super.collect_contributors_CompilationUnit_problems(_root, _map);
   }
   protected void contributeTo_CompilationUnit_problems(LinkedList<Problem> collection) {
     super.contributeTo_CompilationUnit_problems(collection);
-    for (Problem value : reachabilityProblems()) {
-      collection.add(value);
-    }
     if (!getBlock().reachable() && reportUnreachable()) {
       collection.add(errorf("the exception %s is not thrown in the body of the try statement",
                 getParameter().type().fullName()));
+    }
+    for (Problem value : reachabilityProblems()) {
+      collection.add(value);
     }
   }
 }

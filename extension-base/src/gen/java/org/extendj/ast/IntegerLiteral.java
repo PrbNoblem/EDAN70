@@ -5,35 +5,35 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Default Java integer literal. Should only be used for numbers
  * that can be stored in 32 bits binary.
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:48
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:48
  * @production IntegerLiteral : {@link NumericLiteral};
 
  */
 public class IntegerLiteral extends NumericLiteral implements Cloneable {
   /**
    * @aspect NodeConstructors
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:62
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:62
    */
   public IntegerLiteral(int i) {
     this(Integer.toString(i));
@@ -202,28 +202,6 @@ public class IntegerLiteral extends NumericLiteral implements Cloneable {
   public String getLITERAL() {
     return tokenString_LITERAL != null ? tokenString_LITERAL : "";
   }
-  /**
-   * @attribute syn
-   * @aspect TypeCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:750
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:750")
-  public Problem sizeError() {
-    Problem sizeError_value = errorf("The integer literal \"%s\" is too large for type int.", getLITERAL());
-    return sizeError_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect PositiveLiterals
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PositiveLiterals.jrag:36
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PositiveLiterals", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PositiveLiterals.jrag:36")
-  public boolean isPositive() {
-    boolean isPositive_value = !getLITERAL().startsWith("-");
-    return isPositive_value;
-  }
   /** @apilevel internal */
   private void type_reset() {
     type_computed = null;
@@ -238,10 +216,10 @@ public class IntegerLiteral extends NumericLiteral implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -257,6 +235,28 @@ public class IntegerLiteral extends NumericLiteral implements Cloneable {
     }
     return type_value;
   }
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:750
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:750")
+  public Problem sizeError() {
+    Problem sizeError_value = errorf("The integer literal \"%s\" is too large for type int.", getLITERAL());
+    return sizeError_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect PositiveLiterals
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PositiveLiterals.jrag:36
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PositiveLiterals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PositiveLiterals.jrag:36")
+  public boolean isPositive() {
+    boolean isPositive_value = !getLITERAL().startsWith("-");
+    return isPositive_value;
+  }
   /** @apilevel internal */
   private void constant_reset() {
     constant_computed = null;
@@ -271,10 +271,10 @@ public class IntegerLiteral extends NumericLiteral implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
   public Constant constant() {
     ASTNode$State state = state();
     if (constant_computed == ASTNode$State.NON_CYCLE || constant_computed == state().cycle()) {
@@ -318,10 +318,10 @@ public class IntegerLiteral extends NumericLiteral implements Cloneable {
    * @return true if this literal is a "raw", not-yet-parsed NumericLiteral
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/home/felix/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364")
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364")
   public boolean needsRewrite() {
     boolean needsRewrite_value = false;
     return needsRewrite_value;
@@ -335,7 +335,7 @@ public class IntegerLiteral extends NumericLiteral implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:754
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:754
     if (constant().error) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

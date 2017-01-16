@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:25
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:25
  * @production ArrayTypeWithSizeAccess : {@link ArrayTypeAccess} ::= <span class="component">{@link Expr}</span>;
 
  */
 public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:72
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:72
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getAccess());
@@ -242,10 +242,10 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
   /**
    * @attribute syn
    * @aspect DefiniteAssignment
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
   public boolean assignedAfter(Variable v) {
     boolean assignedAfter_Variable_value = getExpr().assignedAfter(v);
     return assignedAfter_Variable_value;
@@ -256,7 +256,7 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
   }
   protected java.util.Map unassignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
   public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
     if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
@@ -302,92 +302,12 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     }
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:52
-   * @apilevel internal
-   */
-  public Collection<MethodDecl> Define_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
-    if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:64
-      return unqualifiedScope().lookupMethod(name);
-    }
-    else {
-      return getParent().Define_lookupMethod(this, _callerNode, name);
-    }
-  }
-  protected boolean canDefine_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
-   * @apilevel internal
-   */
-  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
-    if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:55
-      return false;
-    }
-    else {
-      return getParent().Define_isDest(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
-   * @apilevel internal
-   */
-  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
-    if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:56
-      return true;
-    }
-    else {
-      return getParent().Define_isSource(this, _callerNode);
-    }
-  }
-  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
-   * @apilevel internal
-   */
-  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:413
-      return getAccess().assignedAfter(v);
-    }
-    else {
-      return getParent().Define_assignedBefore(this, _callerNode, v);
-    }
-  }
-  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
-   * @apilevel internal
-   */
-  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1101
-      return getAccess().unassignedAfter(v);
-    }
-    else {
-      return getParent().Define_unassignedBefore(this, _callerNode, v);
-    }
-  }
-  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:142
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:142
       return NameType.EXPRESSION_NAME;
     }
     else {
@@ -398,44 +318,28 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:113
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:52
    * @apilevel internal
    */
-  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+  public Collection<MethodDecl> Define_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:122
-      return unqualifiedScope().hasPackage(packageName);
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:64
+      return unqualifiedScope().lookupMethod(name);
     }
     else {
-      return getParent().Define_hasPackage(this, _callerNode, packageName);
+      return getParent().Define_lookupMethod(this, _callerNode, name);
     }
   }
-  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+  protected boolean canDefine_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
-   * @apilevel internal
-   */
-  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
-    if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:345
-      return unqualifiedScope().lookupType(name);
-    }
-    else {
-      return getParent().Define_lookupType(this, _callerNode, name);
-    }
-  }
-  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
    * @apilevel internal
    */
   public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:251
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:251
       return unqualifiedScope().lookupVariable(name);
     }
     else {
@@ -446,12 +350,108 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:34
+   * @apilevel internal
+   */
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:55
+      return false;
+    }
+    else {
+      return getParent().Define_isDest(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:44
+   * @apilevel internal
+   */
+  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:56
+      return true;
+    }
+    else {
+      return getParent().Define_isSource(this, _callerNode);
+    }
+  }
+  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:256
+   * @apilevel internal
+   */
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:413
+      return getAccess().assignedAfter(v);
+    }
+    else {
+      return getParent().Define_assignedBefore(this, _callerNode, v);
+    }
+  }
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:891
+   * @apilevel internal
+   */
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:1101
+      return getAccess().unassignedAfter(v);
+    }
+    else {
+      return getParent().Define_unassignedBefore(this, _callerNode, v);
+    }
+  }
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:113
+   * @apilevel internal
+   */
+  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:122
+      return unqualifiedScope().hasPackage(packageName);
+    }
+    else {
+      return getParent().Define_hasPackage(this, _callerNode, packageName);
+    }
+  }
+  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @apilevel internal
+   */
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (getExprNoTransform() != null && _callerNode == getExpr()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:345
+      return unqualifiedScope().lookupType(name);
+    }
+    else {
+      return getParent().Define_lookupType(this, _callerNode, name);
+    }
+  }
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
    * @apilevel internal
    */
   public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:340
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:340
       return false;
     }
     else {
@@ -462,12 +462,12 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
    * @apilevel internal
    */
   public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:341
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:341
       return false;
     }
     else {
@@ -478,12 +478,12 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
    * @apilevel internal
    */
   public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:342
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:342
       return false;
     }
     else {
@@ -494,12 +494,12 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
   public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:343
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:343
       return false;
     }
     else {
@@ -510,12 +510,12 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
   public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getExprNoTransform() != null && _callerNode == getExpr()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:344
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:344
       return false;
     }
     else {
@@ -534,7 +534,7 @@ public class ArrayTypeWithSizeAccess extends ArrayTypeAccess implements Cloneabl
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:732
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:732
     if (!getExpr().type().unaryNumericPromotion().isInt()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

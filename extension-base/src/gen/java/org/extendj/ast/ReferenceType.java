@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:41
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:41
  * @production ReferenceType : {@link TypeDecl};
 
  */
@@ -291,10 +291,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeConversion
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:38")
   public boolean wideningConversionTo(TypeDecl type) {
     boolean wideningConversionTo_TypeDecl_value = instanceOf(type);
     return wideningConversionTo_TypeDecl_value;
@@ -311,10 +311,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeConversion
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39")
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:39")
   public boolean narrowingConversionTo(TypeDecl type) {
     Object _parameters = type;
     if (narrowingConversionTo_TypeDecl_computed == null) narrowingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
@@ -364,10 +364,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:178")
   public boolean isReferenceType() {
     boolean isReferenceType_value = true;
     return isReferenceType_value;
@@ -375,10 +375,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeWideningAndIdentity
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:530
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:530
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:530")
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:530")
   public boolean isSupertypeOfNullType(NullType type) {
     boolean isSupertypeOfNullType_NullType_value = true;
     return isSupertypeOfNullType_NullType_value;
@@ -386,10 +386,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:199")
   public boolean isValidAnnotationMethodReturnType() {
     {
         if (isString()) {
@@ -407,22 +407,11 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect GenericsSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577")
-  public boolean supertypeNullType(NullType type) {
-    boolean supertypeNullType_NullType_value = true;
-    return supertypeNullType_NullType_value;
-  }
-  /**
-   * @attribute syn
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:73
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:73
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:73")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:73")
   public boolean unboxingConversionTo(TypeDecl typeDecl) {
     boolean unboxingConversionTo_TypeDecl_value = unboxed() == typeDecl;
     return unboxingConversionTo_TypeDecl_value;
@@ -441,10 +430,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /** Mapping between Reference type and corresponding unboxed Primitive type. 
    * @attribute syn
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77")
   public TypeDecl unboxed() {
     ASTNode$State state = state();
     if (unboxed_computed == ASTNode$State.NON_CYCLE || unboxed_computed == state().cycle()) {
@@ -494,10 +483,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect NumericPromotion
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:157
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:157
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:157")
+  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:157")
   public TypeDecl unaryNumericPromotion() {
     TypeDecl unaryNumericPromotion_value = isNumericType() && !isUnknown() ? unboxed().unaryNumericPromotion() : this;
     return unaryNumericPromotion_value;
@@ -505,10 +494,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect NumericPromotion
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:166
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:166
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:166")
+  @ASTNodeAnnotation.Source(aspect="NumericPromotion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:166")
   public TypeDecl binaryNumericPromotion(TypeDecl type) {
     TypeDecl binaryNumericPromotion_TypeDecl_value = unboxed().binaryNumericPromotion(type);
     return binaryNumericPromotion_TypeDecl_value;
@@ -516,10 +505,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:187
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:187
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:187")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:187")
   public boolean isNumericType() {
     boolean isNumericType_value = !unboxed().isUnknown() && unboxed().isNumericType();
     return isNumericType_value;
@@ -527,10 +516,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:191
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:191
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:191")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:191")
   public boolean isIntegralType() {
     boolean isIntegralType_value = !unboxed().isUnknown() && unboxed().isIntegralType();
     return isIntegralType_value;
@@ -538,10 +527,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:237")
   public boolean isPrimitive() {
     boolean isPrimitive_value = !unboxed().isUnknown() && unboxed().isPrimitive();
     return isPrimitive_value;
@@ -549,21 +538,32 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195")
   public boolean isBoolean() {
     boolean isBoolean_value = fullName().equals("java.lang.Boolean") && unboxed().isBoolean();
     return isBoolean_value;
   }
   /**
    * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:454
+   * @aspect GenericsSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:454")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:577")
+  public boolean supertypeNullType(NullType type) {
+    boolean supertypeNullType_NullType_value = true;
+    return supertypeNullType_NullType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:454
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:454")
   public boolean strictSupertypeNullType(NullType type) {
     boolean strictSupertypeNullType_NullType_value = true;
     return strictSupertypeNullType_NullType_value;
@@ -571,10 +571,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:110
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:110
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:110")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:110")
   public TypeDecl typeBoolean() {
     TypeDecl typeBoolean_value = getParent().Define_typeBoolean(this, null);
     return typeBoolean_value;
@@ -582,10 +582,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:112
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:112
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:112")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:112")
   public TypeDecl typeByte() {
     TypeDecl typeByte_value = getParent().Define_typeByte(this, null);
     return typeByte_value;
@@ -593,10 +593,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:114
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:114
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:114")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:114")
   public TypeDecl typeChar() {
     TypeDecl typeChar_value = getParent().Define_typeChar(this, null);
     return typeChar_value;
@@ -604,10 +604,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:116
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:116
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:116")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:116")
   public TypeDecl typeShort() {
     TypeDecl typeShort_value = getParent().Define_typeShort(this, null);
     return typeShort_value;
@@ -615,10 +615,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:118
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:118
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:118")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:118")
   public TypeDecl typeInt() {
     TypeDecl typeInt_value = getParent().Define_typeInt(this, null);
     return typeInt_value;
@@ -626,10 +626,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:120
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:120
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:120")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:120")
   public TypeDecl typeLong() {
     TypeDecl typeLong_value = getParent().Define_typeLong(this, null);
     return typeLong_value;
@@ -637,10 +637,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:122
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:122
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:122")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:122")
   public TypeDecl typeFloat() {
     TypeDecl typeFloat_value = getParent().Define_typeFloat(this, null);
     return typeFloat_value;
@@ -648,10 +648,10 @@ public abstract class ReferenceType extends TypeDecl implements Cloneable {
   /**
    * @attribute inh
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:124
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:124
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:124")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:124")
   public TypeDecl typeDouble() {
     TypeDecl typeDouble_value = getParent().Define_typeDouble(this, null);
     return typeDouble_value;

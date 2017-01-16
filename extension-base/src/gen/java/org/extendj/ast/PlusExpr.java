@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:139
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:139
  * @production PlusExpr : {@link Unary};
 
  */
@@ -187,10 +187,10 @@ public class PlusExpr extends Unary implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:32")
   public Constant constant() {
     Constant constant_value = type().plus(getOperand().constant());
     return constant_value;
@@ -198,10 +198,10 @@ public class PlusExpr extends Unary implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:383")
   public boolean isConstant() {
     boolean isConstant_value = getOperand().isConstant();
     return isConstant_value;
@@ -209,10 +209,10 @@ public class PlusExpr extends Unary implements Cloneable {
   /**
    * @attribute syn
    * @aspect PrettyPrintUtil
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282")
+  @ASTNodeAnnotation.Source(aspect="PrettyPrintUtil", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:282")
   public String printPreOp() {
     String printPreOp_value = "+";
     return printPreOp_value;
@@ -231,10 +231,10 @@ public class PlusExpr extends Unary implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -259,7 +259,7 @@ public class PlusExpr extends Unary implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:377
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:377
     if (!getOperand().type().isNumericType()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

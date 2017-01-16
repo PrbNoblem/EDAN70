@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:51
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:51
  * @production BooleanType : {@link PrimitiveType};
 
  */
 public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:126
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:126
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("boolean");
@@ -398,10 +398,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:95
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:95
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:95")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:95")
   public Constant cast(Constant c) {
     Constant cast_Constant_value = Constant.create(c.booleanValue());
     return cast_Constant_value;
@@ -409,10 +409,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:257
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:257
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:257")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:257")
   public Constant andBitwise(Constant c1, Constant c2) {
     Constant andBitwise_Constant_Constant_value = Constant.create(c1.booleanValue() & c2.booleanValue());
     return andBitwise_Constant_Constant_value;
@@ -420,10 +420,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:271
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:271
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:271")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:271")
   public Constant xorBitwise(Constant c1, Constant c2) {
     Constant xorBitwise_Constant_Constant_value = Constant.create(c1.booleanValue() ^ c2.booleanValue());
     return xorBitwise_Constant_Constant_value;
@@ -431,10 +431,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:285
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:285
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:285")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:285")
   public Constant orBitwise(Constant c1, Constant c2) {
     Constant orBitwise_Constant_Constant_value = Constant.create(c1.booleanValue() | c2.booleanValue());
     return orBitwise_Constant_Constant_value;
@@ -442,10 +442,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:299
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:299
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:299")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:299")
   public Constant questionColon(Constant cond, Constant c1, Constant c2) {
     Constant questionColon_Constant_Constant_Constant_value = Constant.create(cond.booleanValue() ? c1.booleanValue() : c2.booleanValue());
     return questionColon_Constant_Constant_Constant_value;
@@ -453,10 +453,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:499
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:499
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:499")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:499")
   public boolean eqIsTrue(Expr left, Expr right) {
     boolean eqIsTrue_Expr_Expr_value = left.isTrue() && right.isTrue() || left.isFalse() && right.isFalse();
     return eqIsTrue_Expr_Expr_value;
@@ -464,10 +464,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:195")
   public boolean isBoolean() {
     boolean isBoolean_value = true;
     return isBoolean_value;
@@ -486,10 +486,10 @@ public class BooleanType extends PrimitiveType implements Cloneable {
   /** Mapping between Primitive type and corresponding boxed Reference type. 
    * @attribute syn
    * @aspect AutoBoxing
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53")
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:53")
   public TypeDecl boxed() {
     ASTNode$State state = state();
     if (boxed_computed == ASTNode$State.NON_CYCLE || boxed_computed == state().cycle()) {

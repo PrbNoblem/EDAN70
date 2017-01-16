@@ -1,4 +1,4 @@
-package testfiles.overridetests;
+package finishedtests;
 
 public class OverRideTest extends SuperClassOR {
 
@@ -6,7 +6,8 @@ public class OverRideTest extends SuperClassOR {
 		return 3;
 	}
 
-	@Override
+
+
 	public void m2() {
 	}
 

@@ -1,4 +1,4 @@
-package testfiles.overridetests;
+package finishedtests;
 
 public abstract class SuperClassOR {
 	public int  m1() {

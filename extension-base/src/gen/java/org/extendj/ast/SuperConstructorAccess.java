@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:21
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:21
  * @production SuperConstructorAccess : {@link ConstructorAccess};
 
  */
@@ -78,8 +78,8 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    unassignedAfter_Variable_reset();
     decls_reset();
+    unassignedAfter_Variable_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:39
@@ -309,11 +309,111 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
   }
   /**
    * @attribute syn
-   * @aspect DefiniteAssignment
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   * @aspect TypeHierarchyCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:106
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:106")
+  public Collection<Problem> typeHierarchyProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        // JLS 5?: 8.8.5.1
+        // JLS 7: 8.8.7.1
+        TypeDecl c = hostType();
+        TypeDecl s = c.isClassDecl() ? ((ClassDecl) c).superclass() : unknownType();
+        if (isQualified()) {
+          if (!s.isInnerType() || s.inStaticContext()) {
+            problems.add(errorf("the super type %s of %s is not an inner class",
+                s.typeName(), c.typeName()));
+          } else if (!qualifier().type().instanceOf(s.enclosingType())) {
+            problems.add(errorf(
+                "the type of this primary expression, %s is not enclosing the super type, %s, of %s",
+                qualifier().type().typeName(), s.typeName(), c.typeName()));
+          }
+        }
+        if (!isQualified() && s.isInnerType()
+            && (!c.isInnerType() || !c.enclosingType().instanceOf(s.enclosingType()))) {
+          problems.add(errorf("superconstructor call in constructor for class %s requires "
+              + "enclosing instance for the enclosing class %s of superclass %s",
+              c.name(), s.enclosingType().name(), s.typeName()));
+        }
+        if (s.isInnerType() && hostType().instanceOf(s.enclosingType())) {
+          problems.add(error("cannot reference 'this' before supertype constructor has been called"));
+        }
+        return problems;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect AccessTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:72
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:72")
+  public boolean isSuperConstructorAccess() {
+    boolean isSuperConstructorAccess_value = true;
+    return isSuperConstructorAccess_value;
+  }
+  /**
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
+   * @attribute syn
+   * @aspect SyntacticClassification
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.EXPRESSION_NAME;
+    return predNameType_value;
+  }
+  /** @apilevel internal */
+  private void decls_reset() {
+    decls_computed = null;
+    decls_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle decls_computed = null;
+
+  /** @apilevel internal */
+  protected SimpleSet<ConstructorDecl> decls_value;
+
+  /**
+   * @attribute syn
+   * @aspect ConstructScope
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:97
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ConstructScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:97")
+  public SimpleSet<ConstructorDecl> decls() {
+    ASTNode$State state = state();
+    if (decls_computed == ASTNode$State.NON_CYCLE || decls_computed == state().cycle()) {
+      return decls_value;
+    }
+    decls_value = decls_compute();
+    if (state().inCircle()) {
+      decls_computed = state().cycle();
+    
+    } else {
+      decls_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return decls_value;
+  }
+  /** @apilevel internal */
+  private SimpleSet<ConstructorDecl> decls_compute() {
+      Collection<ConstructorDecl> c = hasPrevExpr() && !prevExpr().isTypeAccess()
+          ? hostType().lookupSuperConstructor()
+          : lookupSuperConstructor();
+      return chooseConstructor(c, getArgList());
+    }
+  /**
+   * @attribute syn
+   * @aspect DefiniteAssignment
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="DefiniteAssignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:268")
   public boolean assignedAfter(Variable v) {
     boolean assignedAfter_Variable_value = v.isInstanceVariable() ? assignedBefore(v) : v.isClassVariable();
     return assignedAfter_Variable_value;
@@ -324,7 +424,7 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
   }
   protected java.util.Map unassignedAfter_Variable_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
+  @ASTNodeAnnotation.Source(aspect="DefiniteUnassignment", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:903")
   public boolean unassignedAfter(Variable v) {
     Object _parameters = v;
     if (unassignedAfter_Variable_values == null) unassignedAfter_Variable_values = new java.util.HashMap(4);
@@ -370,179 +470,45 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
     }
   }
   /**
-   * Defines the expected kind of name for the left hand side in a qualified
-   * expression.
-   * @attribute syn
-   * @aspect SyntacticClassification
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
-  public NameType predNameType() {
-    NameType predNameType_value = NameType.EXPRESSION_NAME;
-    return predNameType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect AccessTypes
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:72
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:72")
-  public boolean isSuperConstructorAccess() {
-    boolean isSuperConstructorAccess_value = true;
-    return isSuperConstructorAccess_value;
-  }
-  /**
    * @attribute syn
    * @aspect Names
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:38
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:38")
   public String name() {
     String name_value = "super";
     return name_value;
   }
-  /** @apilevel internal */
-  private void decls_reset() {
-    decls_computed = null;
-    decls_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle decls_computed = null;
-
-  /** @apilevel internal */
-  protected SimpleSet<ConstructorDecl> decls_value;
-
-  /**
-   * @attribute syn
-   * @aspect ConstructScope
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:97
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstructScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:97")
-  public SimpleSet<ConstructorDecl> decls() {
-    ASTNode$State state = state();
-    if (decls_computed == ASTNode$State.NON_CYCLE || decls_computed == state().cycle()) {
-      return decls_value;
-    }
-    decls_value = decls_compute();
-    if (state().inCircle()) {
-      decls_computed = state().cycle();
-    
-    } else {
-      decls_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return decls_value;
-  }
-  /** @apilevel internal */
-  private SimpleSet<ConstructorDecl> decls_compute() {
-      Collection<ConstructorDecl> c = hasPrevExpr() && !prevExpr().isTypeAccess()
-          ? hostType().lookupSuperConstructor()
-          : lookupSuperConstructor();
-      return chooseConstructor(c, getArgList());
-    }
-  /**
-   * @attribute syn
-   * @aspect TypeHierarchyCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:106
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:106")
-  public Collection<Problem> typeHierarchyProblems() {
-    {
-        Collection<Problem> problems = new LinkedList<Problem>();
-        // JLS 5?: 8.8.5.1
-        // JLS 7: 8.8.7.1
-        TypeDecl c = hostType();
-        TypeDecl s = c.isClassDecl() ? ((ClassDecl) c).superclass() : unknownType();
-        if (isQualified()) {
-          if (!s.isInnerType() || s.inStaticContext()) {
-            problems.add(errorf("the super type %s of %s is not an inner class",
-                s.typeName(), c.typeName()));
-          } else if (!qualifier().type().instanceOf(s.enclosingType())) {
-            problems.add(errorf(
-                "the type of this primary expression, %s is not enclosing the super type, %s, of %s",
-                qualifier().type().typeName(), s.typeName(), c.typeName()));
-          }
-        }
-        if (!isQualified() && s.isInnerType()
-            && (!c.isInnerType() || !c.enclosingType().instanceOf(s.enclosingType()))) {
-          problems.add(errorf("superconstructor call in constructor for class %s requires "
-              + "enclosing instance for the enclosing class %s of superclass %s",
-              c.name(), s.enclosingType().name(), s.typeName()));
-        }
-        if (s.isInnerType() && hostType().instanceOf(s.enclosingType())) {
-          problems.add(error("cannot reference 'this' before supertype constructor has been called"));
-        }
-        return problems;
-      }
-  }
-  /**
-   * @attribute inh
-   * @aspect TypeCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:663
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:663")
-  public TypeDecl enclosingInstance() {
-    TypeDecl enclosingInstance_value = getParent().Define_enclosingInstance(this, null);
-    return enclosingInstance_value;
-  }
   /**
    * @attribute inh
    * @aspect ConstructScope
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:43
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:43
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="ConstructScope", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:43")
+  @ASTNodeAnnotation.Source(aspect="ConstructScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:43")
   public Collection<ConstructorDecl> lookupSuperConstructor() {
     Collection<ConstructorDecl> lookupSuperConstructor_value = getParent().Define_lookupSuperConstructor(this, null);
     return lookupSuperConstructor_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:113
-   * @apilevel internal
+   * @attribute inh
+   * @aspect TypeCheck
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:663
    */
-  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
-    if (_callerNode == getArgListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:118
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return unqualifiedScope().hasPackage(packageName);
-    }
-    else {
-      return super.Define_hasPackage(_callerNode, _childNode, packageName);
-    }
-  }
-  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
-    return true;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:663")
+  public TypeDecl enclosingInstance() {
+    TypeDecl enclosingInstance_value = getParent().Define_enclosingInstance(this, null);
+    return enclosingInstance_value;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
-   * @apilevel internal
-   */
-  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
-    if (_callerNode == getArgListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:245
-      int childIndex = _callerNode.getIndexOfChild(_childNode);
-      return unqualifiedScope().lookupVariable(name);
-    }
-    else {
-      return super.Define_lookupVariable(_callerNode, _childNode, name);
-    }
-  }
-  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return true;
-  }
-  /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:189
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:189
    * @apilevel internal
    */
   public boolean Define_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getArgListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:193
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:193
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return true;
     }
@@ -554,12 +520,12 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
     return true;
   }
   /**
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197
    * @apilevel internal
    */
   public TypeDecl Define_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getArgListNoTransform()) {
-      // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:202
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:202
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return hostType();
     }
@@ -568,6 +534,40 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
     }
   }
   protected boolean canDefine_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:30
+   * @apilevel internal
+   */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    if (_callerNode == getArgListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:245
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return unqualifiedScope().lookupVariable(name);
+    }
+    else {
+      return super.Define_lookupVariable(_callerNode, _childNode, name);
+    }
+  }
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return true;
+  }
+  /**
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:113
+   * @apilevel internal
+   */
+  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    if (_callerNode == getArgListNoTransform()) {
+      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:118
+      int childIndex = _callerNode.getIndexOfChild(_childNode);
+      return unqualifiedScope().hasPackage(packageName);
+    }
+    else {
+      return super.Define_hasPackage(_callerNode, _childNode, packageName);
+    }
+  }
+  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
     return true;
   }
   /** @apilevel internal */
@@ -579,7 +579,7 @@ public class SuperConstructorAccess extends ConstructorAccess implements Cloneab
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:104
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:104
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

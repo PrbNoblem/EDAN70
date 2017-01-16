@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import org.jastadd.util.*;
-import java.util.zip.*;
-import java.io.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
+import org.jastadd.util.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
+import java.util.zip.*;
+import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/grammar/Java.ast:27
+ * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:27
  * @production SuperAccess : {@link Access} ::= <span class="component">&lt;ID:String&gt;</span>;
 
  */
 public class SuperAccess extends Access implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:570
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:570
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print("super");
@@ -81,8 +81,8 @@ public class SuperAccess extends Access implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    decl_reset();
     type_reset();
+    decl_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:35
@@ -211,153 +211,17 @@ public class SuperAccess extends Access implements Cloneable {
   }
   /**
    * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:337
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:337
    */
   private TypeDecl refined_TypeScopePropagation_SuperAccess_decl()
 { return isQualified() ? qualifier().type() : hostType(); }
   /**
-   * Defines the expected kind of name for the left hand side in a qualified
-   * expression.
-   * @attribute syn
-   * @aspect SyntacticClassification
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
-  public NameType predNameType() {
-    NameType predNameType_value = NameType.TYPE_NAME;
-    return predNameType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect AccessTypes
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:48
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:48")
-  public boolean isSuperAccess() {
-    boolean isSuperAccess_value = true;
-    return isSuperAccess_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:327
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:327")
-  public SimpleSet<TypeDecl> decls() {
-    SimpleSet<TypeDecl> decls_value = emptySet();
-    return decls_value;
-  }
-  /** @apilevel internal */
-  private void decl_reset() {
-    decl_computed = null;
-    decl_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle decl_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl decl_value;
-
-  /**
-   * @return the type whose supertype this super access references.
-   * @attribute syn
-   * @aspect TypeScopePropagation
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:337
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:337")
-  public TypeDecl decl() {
-    ASTNode$State state = state();
-    if (decl_computed == ASTNode$State.NON_CYCLE || decl_computed == state().cycle()) {
-      return decl_value;
-    }
-    decl_value = decl_compute();
-    if (state().inCircle()) {
-      decl_computed = state().cycle();
-    
-    } else {
-      decl_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return decl_value;
-  }
-  /** @apilevel internal */
-  private TypeDecl decl_compute() {
-      TypeDecl typeDecl;
-      if (isQualified()) {
-        typeDecl = qualifier().type();
-      } else {
-        typeDecl = hostType();
-        while (typeDecl instanceof LambdaAnonymousDecl) {
-          typeDecl = typeDecl.enclosingType();
-        }
-      }
-  
-      if (typeDecl instanceof ParTypeDecl) {
-        typeDecl = ((ParTypeDecl) typeDecl).genericDecl();
-      }
-      return typeDecl;
-    }
-  /** @apilevel internal */
-  private void type_reset() {
-    type_computed = null;
-    type_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle type_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl type_value;
-
-  /**
-   * @attribute syn
-   * @aspect TypeAnalysis
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
-  public TypeDecl type() {
-    ASTNode$State state = state();
-    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
-      return type_value;
-    }
-    type_value = type_compute();
-    if (state().inCircle()) {
-      type_computed = state().cycle();
-    
-    } else {
-      type_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return type_value;
-  }
-  /** @apilevel internal */
-  private TypeDecl type_compute() {
-      TypeDecl typeDecl = decl();
-      if (typeDecl.isInterfaceDecl()) {
-        if (isQualified() && qualifier().type() == typeDecl) {
-          return typeDecl;
-        }
-      }
-      if (!typeDecl.isClassDecl()) {
-        return unknownType();
-      }
-      ClassDecl classDecl = (ClassDecl) typeDecl;
-      if (!classDecl.hasSuperclass()) {
-        return unknownType();
-      }
-      return classDecl.superclass();
-    }
-  /**
    * @attribute syn
    * @aspect TypeHierarchyCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:136
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:136
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:136")
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:136")
   public Collection<Problem> typeHierarchyProblems() {
     {
         Collection<Problem> problems = new LinkedList<Problem>();
@@ -472,12 +336,148 @@ public class SuperAccess extends Access implements Cloneable {
       }
   }
   /**
+   * @attribute syn
+   * @aspect AccessTypes
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:48
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:48")
+  public boolean isSuperAccess() {
+    boolean isSuperAccess_value = true;
+    return isSuperAccess_value;
+  }
+  /**
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
+   * @attribute syn
+   * @aspect SyntacticClassification
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.TYPE_NAME;
+    return predNameType_value;
+  }
+  /** @apilevel internal */
+  private void type_reset() {
+    type_computed = null;
+    type_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeAnalysis
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  public TypeDecl type() {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
+      return type_value;
+    }
+    type_value = type_compute();
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
+    } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return type_value;
+  }
+  /** @apilevel internal */
+  private TypeDecl type_compute() {
+      TypeDecl typeDecl = decl();
+      if (typeDecl.isInterfaceDecl()) {
+        if (isQualified() && qualifier().type() == typeDecl) {
+          return typeDecl;
+        }
+      }
+      if (!typeDecl.isClassDecl()) {
+        return unknownType();
+      }
+      ClassDecl classDecl = (ClassDecl) typeDecl;
+      if (!classDecl.hasSuperclass()) {
+        return unknownType();
+      }
+      return classDecl.superclass();
+    }
+  /**
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:327
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:327")
+  public SimpleSet<TypeDecl> decls() {
+    SimpleSet<TypeDecl> decls_value = emptySet();
+    return decls_value;
+  }
+  /** @apilevel internal */
+  private void decl_reset() {
+    decl_computed = null;
+    decl_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle decl_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl decl_value;
+
+  /**
+   * @return the type whose supertype this super access references.
+   * @attribute syn
+   * @aspect TypeScopePropagation
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:337
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:337")
+  public TypeDecl decl() {
+    ASTNode$State state = state();
+    if (decl_computed == ASTNode$State.NON_CYCLE || decl_computed == state().cycle()) {
+      return decl_value;
+    }
+    decl_value = decl_compute();
+    if (state().inCircle()) {
+      decl_computed = state().cycle();
+    
+    } else {
+      decl_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return decl_value;
+  }
+  /** @apilevel internal */
+  private TypeDecl decl_compute() {
+      TypeDecl typeDecl;
+      if (isQualified()) {
+        typeDecl = qualifier().type();
+      } else {
+        typeDecl = hostType();
+        while (typeDecl instanceof LambdaAnonymousDecl) {
+          typeDecl = typeDecl.enclosingType();
+        }
+      }
+  
+      if (typeDecl instanceof ParTypeDecl) {
+        typeDecl = ((ParTypeDecl) typeDecl).genericDecl();
+      }
+      return typeDecl;
+    }
+  /**
    * @attribute inh
    * @aspect TypeHierarchyCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:186
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:186
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:186")
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:186")
   public boolean inExplicitConstructorInvocation() {
     boolean inExplicitConstructorInvocation_value = getParent().Define_inExplicitConstructorInvocation(this, null);
     return inExplicitConstructorInvocation_value;
@@ -485,10 +485,10 @@ public class SuperAccess extends Access implements Cloneable {
   /**
    * @attribute inh
    * @aspect TypeHierarchyCheck
-   * @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197
+   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197")
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:197")
   public TypeDecl enclosingExplicitConstructorHostType() {
     TypeDecl enclosingExplicitConstructorHostType_value = getParent().Define_enclosingExplicitConstructorHostType(this, null);
     return enclosingExplicitConstructorHostType_value;
@@ -502,7 +502,7 @@ public class SuperAccess extends Access implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /home/felix/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:134
+    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:134
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {
