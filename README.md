@@ -38,7 +38,7 @@ build and test the extension
 
 testscript runs the compiler with the code cleanup extension on a number of test files
 and checks for differences against files containing the expected output. These files can
-be found in the testfiles folder. The output files are saved as filename.java.cleaned, while
+be found in the finishedtests folder. The output files are saved as filename.java.cleaned, while
 the expected output is stored as filename.java.expected. The original files are kept under the original
 names.
 
@@ -60,4 +60,5 @@ additional JastAdd source files are located.
   Java files supplied on the command-line and runs the `process()` method on each parsed AST.
 * `src/jastadd/ExtensionBase.jrag` - simple aspect containing a single inter-type declaration:
   the `CompilationUnit.process()` method.
-* `testfiles/` - folder containing test files
+* `testfiles/` - folder containing all test files including tests for functionality not yet implemented.
+* `finishedtests/` - folder containing the most curcial test files, used for automated tests
