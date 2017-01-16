@@ -5,40 +5,40 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:28
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/grammar/Java.ast:28
  * @production PackageAccess : {@link Access} ::= <span class="component">&lt;Package:String&gt;</span>;
 
  */
 public class PackageAccess extends Access implements Cloneable {
   /**
    * @aspect Java4PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:525
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/PrettyPrint.jadd:525
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getPackage());
   }
   /**
    * @aspect NodeConstructors
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:40
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NodeConstructors.jrag:40
    */
   public PackageAccess(String name, int start, int end) {
     this(name);
@@ -218,46 +218,11 @@ public class PackageAccess extends Access implements Cloneable {
   }
   /**
    * @attribute syn
-   * @aspect TypeHierarchyCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:47
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:47")
-  public boolean isUnknown() {
-    boolean isUnknown_value = !hasPackage(packageName());
-    return isUnknown_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect AccessTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:60
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:60")
-  public boolean isPackageAccess() {
-    boolean isPackageAccess_value = true;
-    return isPackageAccess_value;
-  }
-  /**
-   * Defines the expected kind of name for the left hand side in a qualified
-   * expression.
-   * @attribute syn
-   * @aspect SyntacticClassification
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
-  public NameType predNameType() {
-    NameType predNameType_value = NameType.PACKAGE_NAME;
-    return predNameType_value;
-  }
-  /**
-   * @attribute syn
    * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:87
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:87
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:87")
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:87")
   public Collection<Problem> nameProblems() {
     {
         Collection<Problem> problems = new LinkedList<Problem>();
@@ -268,23 +233,36 @@ public class PackageAccess extends Access implements Cloneable {
       }
   }
   /**
+   * Defines the expected kind of name for the left hand side in a qualified
+   * expression.
    * @attribute syn
-   * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264
+   * @aspect SyntacticClassification
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264")
-  public SimpleSet<Variable> qualifiedLookupVariable(String name) {
-    SimpleSet<Variable> qualifiedLookupVariable_String_value = emptySet();
-    return qualifiedLookupVariable_String_value;
+  @ASTNodeAnnotation.Source(aspect="SyntacticClassification", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:60")
+  public NameType predNameType() {
+    NameType predNameType_value = NameType.PACKAGE_NAME;
+    return predNameType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect AccessTypes
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:60
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessTypes", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:60")
+  public boolean isPackageAccess() {
+    boolean isPackageAccess_value = true;
+    return isPackageAccess_value;
   }
   /**
    * @attribute syn
    * @aspect LookupFullyQualifiedTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:110
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:110
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:110")
+  @ASTNodeAnnotation.Source(aspect="LookupFullyQualifiedTypes", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:110")
   public boolean hasQualifiedPackage(String packageName) {
     boolean hasQualifiedPackage_String_value = hasPackage(packageName() + "." + packageName);
     return hasQualifiedPackage_String_value;
@@ -292,10 +270,10 @@ public class PackageAccess extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeScopePropagation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563")
+  @ASTNodeAnnotation.Source(aspect="TypeScopePropagation", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:563")
   public SimpleSet<TypeDecl> qualifiedLookupType(String name) {
     {
         SimpleSet<TypeDecl> result = emptySet();
@@ -313,10 +291,10 @@ public class PackageAccess extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect Names
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:41
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:41
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:41")
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:41")
   public String name() {
     String name_value = getPackage();
     return name_value;
@@ -324,10 +302,10 @@ public class PackageAccess extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect Names
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43")
+  @ASTNodeAnnotation.Source(aspect="Names", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:43")
   public String packageName() {
     {
         StringBuilder sb = new StringBuilder();
@@ -340,12 +318,34 @@ public class PackageAccess extends Access implements Cloneable {
       }
   }
   /**
+   * @attribute syn
+   * @aspect VariableScope
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="VariableScope", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:264")
+  public SimpleSet<Variable> qualifiedLookupVariable(String name) {
+    SimpleSet<Variable> qualifiedLookupVariable_String_value = emptySet();
+    return qualifiedLookupVariable_String_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect TypeHierarchyCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:47
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeHierarchyCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:47")
+  public boolean isUnknown() {
+    boolean isUnknown_value = !hasPackage(packageName());
+    return isUnknown_value;
+  }
+  /**
    * @attribute inh
    * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:354
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:354
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:354")
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:354")
   public boolean hasPackage(String packageName) {
     boolean hasPackage_String_value = getParent().Define_hasPackage(this, null, packageName);
     return hasPackage_String_value;
@@ -359,7 +359,7 @@ public class PackageAccess extends Access implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:85
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:85
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

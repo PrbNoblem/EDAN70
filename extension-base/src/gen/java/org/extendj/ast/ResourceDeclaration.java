@@ -5,27 +5,27 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * A resource declaration in a try with resources statement.
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/TryWithResources.ast:9
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/grammar/TryWithResources.ast:9
  * @production ResourceDeclaration : {@link VariableDeclarator} ::= <span class="component">{@link ResourceModifiers}</span> <span class="component">ResourceType:{@link Access}</span>;
 
  */
@@ -449,10 +449,10 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
    * Type checking for TWR.
    * @attribute syn
    * @aspect TryWithResources
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:47
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:47
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:47")
+  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:47")
   public Collection<Problem> typeProblems() {
     {
         Collection<Problem> problems = new LinkedList<Problem>();
@@ -479,10 +479,10 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
   /** Modifiers are same as the parent declaration (e.g. VarDeclStmt). 
    * @attribute syn
    * @aspect VariableDeclarationTransformation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:130
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:130
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableDeclarationTransformation", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:130")
+  @ASTNodeAnnotation.Source(aspect="VariableDeclarationTransformation", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:130")
   public Modifiers getModifiers() {
     ASTNode$State state = state();
     if (getModifiers_computed == ASTNode$State.NON_CYCLE || getModifiers_computed == state().cycle()) {
@@ -513,10 +513,10 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
   /**
    * @attribute syn nta
    * @aspect TryWithResources
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:306
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:306
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:306")
+  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:306")
   public Access getTypeAccess() {
     ASTNode$State state = state();
     if (getTypeAccess_computed) {
@@ -534,25 +534,25 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
    * Inherit the lookupType attribute in ResourceDeclaration.
    * @attribute inh
    * @aspect TryWithResources
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:40
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:40
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:40")
+  @ASTNodeAnnotation.Source(aspect="TryWithResources", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:40")
   public TypeDecl lookupType(String packageName, String typeName) {
     TypeDecl lookupType_String_String_value = getParent().Define_lookupType(this, null, packageName, typeName);
     return lookupType_String_String_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (getResourceTypeNoTransform() != null && _callerNode == getResourceType()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:316
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:316
       return NameType.TYPE_NAME;
     }
     else if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:35
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:35
       return NameType.TYPE_NAME;
     }
     else {
@@ -563,12 +563,12 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:437
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:437
    * @apilevel internal
    */
   public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
     if (getResourceModifiersNoTransform() != null && _callerNode == getResourceModifiers()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:314
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:314
       return true;
     }
     else {
@@ -587,7 +587,7 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:42
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:42
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {
@@ -596,7 +596,7 @@ public class ResourceDeclaration extends VariableDeclarator implements Cloneable
       }
       contributors.add(this);
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:214
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:214
     if (resourcePreviouslyDeclared(name())) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

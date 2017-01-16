@@ -200,7 +200,7 @@ echo "moduleName: Java SE 8" > src/gen-res/BuildInfo.properties
 echo "moduleVariant: frontend" >> src/gen-res/BuildInfo.properties
 echo "timestamp: 2015-10-30T09:50Z" >> src/gen-res/BuildInfo.properties
 echo "build.date: 2015-10-30" >> src/gen-res/BuildInfo.properties
-jar cef org.extendj.ExtensionMain extension-base.jar \
+jar cef org.extendj.ExtensionMain CodeCleanUpExtension.jar \
     -C build/classes/main . \
     -C src/gen-res BuildInfo.properties \
     -C extendj/src/res Version.properties

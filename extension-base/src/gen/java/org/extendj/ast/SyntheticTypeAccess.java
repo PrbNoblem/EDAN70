@@ -5,38 +5,38 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:9
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/grammar/MethodReference.ast:9
  * @production SyntheticTypeAccess : {@link Access};
 
  */
 public class SyntheticTypeAccess extends Access implements Cloneable {
   /**
    * @aspect Synthetics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:379
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:379
    */
   private TypeDecl type;
   /**
    * @aspect Synthetics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:380
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:380
    */
   public SyntheticTypeAccess(TypeDecl type) {
     this.type = type;
@@ -177,10 +177,10 @@ public class SyntheticTypeAccess extends Access implements Cloneable {
   /**
    * @attribute syn
    * @aspect Synthetics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:383
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:383
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Synthetics", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:383")
+  @ASTNodeAnnotation.Source(aspect="Synthetics", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:383")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {

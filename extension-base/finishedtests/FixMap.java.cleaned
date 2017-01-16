@@ -1,5 +1,5 @@
 package finishedtests;
-import  testfiles.otherPackage.SuperClassEx;
+
 import java.util.Map.Entry;
 
 

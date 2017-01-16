@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/VariableArityParameters.ast:1
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/grammar/VariableArityParameters.ast:1
  * @production VariableArityParameterDeclaration : {@link ParameterDeclaration};
 
  */
 public class VariableArityParameterDeclaration extends ParameterDeclaration implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:367
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:367
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getModifiers());
@@ -273,10 +273,10 @@ public class VariableArityParameterDeclaration extends ParameterDeclaration impl
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:273
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:273
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:273")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:273")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -295,10 +295,10 @@ public class VariableArityParameterDeclaration extends ParameterDeclaration impl
   /**
    * @attribute syn
    * @aspect VariableArityParameters
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:59
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:59
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:59")
+  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:59")
   public boolean isVariableArity() {
     boolean isVariableArity_value = true;
     return isVariableArity_value;
@@ -307,10 +307,10 @@ public class VariableArityParameterDeclaration extends ParameterDeclaration impl
    * Creates a copy of this parameter declaration where parameterized types have been erased.
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1475
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1475
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1475")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1475")
   public ParameterDeclaration erasedCopy() {
     ParameterDeclaration erasedCopy_value = new VariableArityParameterDeclaration(
               getModifiers().treeCopyNoTransform(),
@@ -321,10 +321,10 @@ public class VariableArityParameterDeclaration extends ParameterDeclaration impl
   /**
    * @attribute inh
    * @aspect VariableArityParameters
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46")
+  @ASTNodeAnnotation.Source(aspect="VariableArityParameters", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:46")
   public boolean variableArityValid() {
     boolean variableArityValid_value = getParent().Define_variableArityValid(this, null);
     return variableArityValid_value;
@@ -338,7 +338,7 @@ public class VariableArityParameterDeclaration extends ParameterDeclaration impl
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:36
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/VariableArityParameters.jrag:36
     if (!variableArityValid()) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

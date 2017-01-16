@@ -1,10 +1,10 @@
-%header {: // Generated from /home/felix/EDAN70/extension-base/build/tmp/parser/JavaParser.all
+%header {: // Generated from /home/felix/edan70final/EDAN70/extension-base/build/tmp/parser/JavaParser.all
 package org.extendj.parser;
 
  import org.extendj.ast.*;
  import org.extendj.scanner.JavaScanner;
  import org.extendj.scanner.Unicode; :};
-%embed {: // Generated from /home/felix/EDAN70/extension-base/build/tmp/parser/JavaParser.all
+%embed {: // Generated from /home/felix/edan70final/EDAN70/extension-base/build/tmp/parser/JavaParser.all
 class Events extends Parser.Events {
     public void scannerError(Scanner.Exception e) {
       errors.add(new Problem(null, e.getMessage(), e.line, e.column,

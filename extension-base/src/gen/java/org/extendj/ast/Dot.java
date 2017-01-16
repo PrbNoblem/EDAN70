@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:16
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/grammar/Java.ast:16
  * @production Dot : {@link AbstractDot};
 
  */
 public class Dot extends AbstractDot implements Cloneable {
   /**
    * @aspect QualifiedNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:181
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:181
    */
   public Dot lastDot() {
     Dot node = this;
@@ -42,7 +42,7 @@ public class Dot extends AbstractDot implements Cloneable {
   }
   /**
    * @aspect QualifiedNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:199
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:199
    */
   public Access qualifiesAccess(Access access) {
     Dot lastDot = lastDot();
@@ -56,7 +56,7 @@ public class Dot extends AbstractDot implements Cloneable {
    * Used when replacing pairs from a list to concatenate the result to the
    * tail of the current location.
    * @aspect QualifiedNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:226
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:226
    */
   private Access qualifyTailWith(Access expr) {
     if (getRight() instanceof AbstractDot) {
@@ -250,10 +250,10 @@ public class Dot extends AbstractDot implements Cloneable {
    * Creates a copy of this access where parameterized types have been erased.
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1462")
   public Access erasedCopy() {
     Access erasedCopy_value = new Dot(getLeft().erasedCopy(), getRight().erasedCopy());
     return erasedCopy_value;
@@ -261,10 +261,10 @@ public class Dot extends AbstractDot implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:18")
   public String nodeType() {
     String nodeType_value = "Dot";
     return nodeType_value;
@@ -272,25 +272,25 @@ public class Dot extends AbstractDot implements Cloneable {
   /**
    * @attribute syn
    * @aspect UnusedImports
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110")
+  @ASTNodeAnnotation.Source(aspect="UnusedImports", declaredAt="/home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:110")
   public String uberID() {
     String uberID_value = getRight().dotSpecialCaseOnlyOneTimeUseVeryGoodAttributeID();
     return uberID_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:78
    * @apilevel internal
    */
   public boolean Define_isLeftChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
     if (getRightNoTransform() != null && _callerNode == getRight()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:82
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:82
       return false;
     }
     else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:81
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:81
       return true;
     }
     else {
@@ -301,16 +301,16 @@ public class Dot extends AbstractDot implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:93
    * @apilevel internal
    */
   public boolean Define_isRightChildOfDot(ASTNode _callerNode, ASTNode _childNode) {
     if (getRightNoTransform() != null && _callerNode == getRight()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:97
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:97
       return true;
     }
     else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:96
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:96
       return isRightChildOfDot();
     }
     else {
@@ -321,16 +321,16 @@ public class Dot extends AbstractDot implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:110
    * @apilevel internal
    */
   public Expr Define_prevExpr(ASTNode _callerNode, ASTNode _childNode) {
     if (getRightNoTransform() != null && _callerNode == getRight()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:113
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:113
       return getLeft();
     }
     else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:112
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:112
       return prevExpr();
     }
     else {
@@ -341,16 +341,16 @@ public class Dot extends AbstractDot implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:134
    * @apilevel internal
    */
   public Access Define_nextAccess(ASTNode _callerNode, ASTNode _childNode) {
     if (getRightNoTransform() != null && _callerNode == getRight()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:137
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:137
       return nextAccessError();
     }
     else if (getLeftNoTransform() != null && _callerNode == getLeft()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:136
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:136
       return getRight();
     }
     else {

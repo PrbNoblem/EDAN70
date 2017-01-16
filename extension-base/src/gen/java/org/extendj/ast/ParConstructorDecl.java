@@ -5,47 +5,47 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:10
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/grammar/GenericMethods.ast:10
  * @production ParConstructorDecl : {@link ConstructorDecl} ::= <span class="component">TypeArgument:{@link Access}*</span> <span class="component">&lt;GenericConstructorDecl:GenericConstructorDecl&gt;</span> <span class="component">TypeParameter:{@link TypeVariable}*</span> <span class="component">&lt;Parameterization:Parameterization&gt;</span>;
 
  */
 public class ParConstructorDecl extends ConstructorDecl implements Cloneable {
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1130
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1130
    */
   public boolean isRawType() {
     return false;
   }
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1146
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1146
    */
   public int numTypeParameter() {
     return genericConstructorDecl().original().getNumTypeParameter();
   }
   /**
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1154
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1154
    */
   public TypeVariable typeParameter(int index) {
     return genericConstructorDecl().original().getTypeParameter(index);
@@ -119,8 +119,8 @@ public class ParConstructorDecl extends ConstructorDecl implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    genericConstructorDecl_reset();
     sourceConstructorDecl_reset();
+    genericConstructorDecl_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:59
@@ -849,39 +849,6 @@ public class ParConstructorDecl extends ConstructorDecl implements Cloneable {
     return 7;
   }
   /** @apilevel internal */
-  private void genericConstructorDecl_reset() {
-    genericConstructorDecl_computed = null;
-    genericConstructorDecl_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle genericConstructorDecl_computed = null;
-
-  /** @apilevel internal */
-  protected GenericConstructorDecl genericConstructorDecl_value;
-
-  /**
-   * @attribute syn
-   * @aspect GenericMethods
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:54
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:54")
-  public GenericConstructorDecl genericConstructorDecl() {
-    ASTNode$State state = state();
-    if (genericConstructorDecl_computed == ASTNode$State.NON_CYCLE || genericConstructorDecl_computed == state().cycle()) {
-      return genericConstructorDecl_value;
-    }
-    genericConstructorDecl_value = getGenericConstructorDecl();
-    if (state().inCircle()) {
-      genericConstructorDecl_computed = state().cycle();
-    
-    } else {
-      genericConstructorDecl_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return genericConstructorDecl_value;
-  }
-  /** @apilevel internal */
   private void sourceConstructorDecl_reset() {
     sourceConstructorDecl_computed = null;
     sourceConstructorDecl_value = null;
@@ -895,10 +862,10 @@ public class ParConstructorDecl extends ConstructorDecl implements Cloneable {
   /**
    * @attribute syn
    * @aspect SourceDeclarations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733")
+  @ASTNodeAnnotation.Source(aspect="SourceDeclarations", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1733")
   public ConstructorDecl sourceConstructorDecl() {
     ASTNode$State state = state();
     if (sourceConstructorDecl_computed == ASTNode$State.NON_CYCLE || sourceConstructorDecl_computed == state().cycle()) {
@@ -914,8 +881,41 @@ public class ParConstructorDecl extends ConstructorDecl implements Cloneable {
     }
     return sourceConstructorDecl_value;
   }
+  /** @apilevel internal */
+  private void genericConstructorDecl_reset() {
+    genericConstructorDecl_computed = null;
+    genericConstructorDecl_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle genericConstructorDecl_computed = null;
+
+  /** @apilevel internal */
+  protected GenericConstructorDecl genericConstructorDecl_value;
+
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
+   * @attribute syn
+   * @aspect GenericMethods
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:54
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericMethods", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:54")
+  public GenericConstructorDecl genericConstructorDecl() {
+    ASTNode$State state = state();
+    if (genericConstructorDecl_computed == ASTNode$State.NON_CYCLE || genericConstructorDecl_computed == state().cycle()) {
+      return genericConstructorDecl_value;
+    }
+    genericConstructorDecl_value = getGenericConstructorDecl();
+    if (state().inCircle()) {
+      genericConstructorDecl_computed = state().cycle();
+    
+    } else {
+      genericConstructorDecl_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return genericConstructorDecl_value;
+  }
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:225
    * @apilevel internal
    */
   public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {

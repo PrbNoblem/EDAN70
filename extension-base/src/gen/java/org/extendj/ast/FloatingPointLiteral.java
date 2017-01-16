@@ -5,28 +5,28 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * Java floating point literal. Can store any value representable as an
  * IEEE 754 32-bit single-precision floating point number.
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:60
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/grammar/Literals.ast:60
  * @production FloatingPointLiteral : {@link NumericLiteral};
 
  */
@@ -199,7 +199,7 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
   /**
    * Defer pretty printing to superclass.
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:131
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:131
    */
     public void prettyPrint(PrettyPrinter out) {
     super.prettyPrint(out);
@@ -218,10 +218,10 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
   /**
    * @attribute syn
    * @aspect TypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
+  @ASTNodeAnnotation.Source(aspect="TypeAnalysis", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:296")
   public TypeDecl type() {
     ASTNode$State state = state();
     if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
@@ -251,10 +251,10 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
    * @return true if this floating point literal is equivalent to a zero literal
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:44
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:44
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:44")
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:44")
   public boolean isZero() {
     ASTNode$State state = state();
     if (isZero_computed == ASTNode$State.NON_CYCLE || isZero_computed == state().cycle()) {
@@ -297,10 +297,10 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstantExpression
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
+  @ASTNodeAnnotation.Source(aspect="ConstantExpression", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ConstantExpression.jrag:38")
   public Constant constant() {
     ASTNode$State state = state();
     if (constant_computed == ASTNode$State.NON_CYCLE || constant_computed == state().cycle()) {
@@ -335,10 +335,10 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
    * @return true if this literal is a "raw", not-yet-parsed NumericLiteral
    * @attribute syn
    * @aspect Java7Literals
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364")
+  @ASTNodeAnnotation.Source(aspect="Java7Literals", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Literals.jrag:364")
   public boolean needsRewrite() {
     boolean needsRewrite_value = false;
     return needsRewrite_value;
@@ -352,7 +352,7 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:767
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:767
     if (!isZero() && constant().floatValue() == 0.0f) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);
@@ -363,7 +363,7 @@ public class FloatingPointLiteral extends NumericLiteral implements Cloneable {
         contributors.add(this);
       }
     }
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:772
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:772
     if (constant().floatValue() == Float.NEGATIVE_INFINITY
               || constant().floatValue() == Float.POSITIVE_INFINITY) {
       {

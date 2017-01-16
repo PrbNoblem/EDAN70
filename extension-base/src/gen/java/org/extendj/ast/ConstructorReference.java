@@ -5,26 +5,26 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:1
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/grammar/ConstructorReference.ast:1
  * @production ConstructorReference : {@link Expr} ::= <span class="component">TypeAccess:{@link Access}</span>;
 
  */
@@ -69,14 +69,14 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
+    isPolyExpression_reset();
+    assignConversionTo_TypeDecl_reset();
+    type_reset();
     compatibleStrictContext_TypeDecl_reset();
     compatibleLooseContext_TypeDecl_reset();
     pertinentToApplicability_Expr_BodyDecl_int_reset();
     moreSpecificThan_TypeDecl_TypeDecl_reset();
     potentiallyCompatible_TypeDecl_BodyDecl_reset();
-    isPolyExpression_reset();
-    assignConversionTo_TypeDecl_reset();
-    type_reset();
     targetInterface_reset();
   }
   /** @apilevel internal 
@@ -148,19 +148,243 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect ConstructorReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68")
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:68")
   public abstract boolean congruentTo(FunctionDescriptor f);
   /**
    * @attribute syn
    * @aspect ConstructorReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127")
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:127")
   public abstract boolean isExact();
+  /** @apilevel internal */
+  private void isPolyExpression_reset() {
+    isPolyExpression_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle isPolyExpression_computed = null;
+
+  /** @apilevel internal */
+  protected boolean isPolyExpression_value;
+
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86")
+  public boolean isPolyExpression() {
+    ASTNode$State state = state();
+    if (isPolyExpression_computed == ASTNode$State.NON_CYCLE || isPolyExpression_computed == state().cycle()) {
+      return isPolyExpression_value;
+    }
+    isPolyExpression_value = true;
+    if (state().inCircle()) {
+      isPolyExpression_computed = state().cycle();
+    
+    } else {
+      isPolyExpression_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return isPolyExpression_value;
+  }
+  /** @apilevel internal */
+  private void assignConversionTo_TypeDecl_reset() {
+    assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    assignConversionTo_TypeDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map assignConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map assignConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect PolyExpressions
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149")
+  public boolean assignConversionTo(TypeDecl type) {
+    Object _parameters = type;
+    if (assignConversionTo_TypeDecl_computed == null) assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (assignConversionTo_TypeDecl_values == null) assignConversionTo_TypeDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (assignConversionTo_TypeDecl_values.containsKey(_parameters) && assignConversionTo_TypeDecl_computed != null
+        && assignConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (assignConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || assignConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) assignConversionTo_TypeDecl_values.get(_parameters);
+    }
+    boolean assignConversionTo_TypeDecl_value = assignConversionTo_compute(type);
+    if (state().inCircle()) {
+      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
+      assignConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
+      assignConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return assignConversionTo_TypeDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean assignConversionTo_compute(TypeDecl type) {
+      if (!type.isFunctionalInterface()) {
+        return false;
+      }
+      FunctionDescriptor f = ((InterfaceDecl) type).functionDescriptor();
+      return congruentTo(f);
+    }
+  /** @apilevel internal */
+  private void type_reset() {
+    type_computed = null;
+    type_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle type_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl type_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:97
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:97")
+  public TypeDecl type() {
+    ASTNode$State state = state();
+    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
+      return type_value;
+    }
+    type_value = type_compute();
+    if (state().inCircle()) {
+      type_computed = state().cycle();
+    
+    } else {
+      type_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return type_value;
+  }
+  /** @apilevel internal */
+  private TypeDecl type_compute() {
+      // 15.13.1
+      if (!assignmentContext() && !castContext() && !invocationContext()) {
+        return unknownType();
+      }
+      if (targetInterface() == null) {
+        return unknownType();
+      }
+  
+      InterfaceDecl iDecl = targetInterface();
+      if (!iDecl.isFunctional()) {
+        return unknownType();
+      }
+  
+      return iDecl;
+    }
+  /**
+   * @attribute syn
+   * @aspect TypeCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:371
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:371")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (!assignmentContext() && !castContext() && !invocationContext()) {
+          problems.add(error("Constructor references must target a functional interface"));
+          return problems;
+        }
+    
+        // This means there was an error in the overload resolution, will be reported elsewhere
+        if (invocationContext() && targetType() == unknownType()) {
+          return problems;
+        }
+    
+        if (!targetType().isFunctionalInterface()) {
+          problems.add(error("Constructor references must target a functional interface"));
+          return problems;
+        }
+        InterfaceDecl iDecl = targetInterface();
+    
+        if (!iDecl.isFunctional()) {
+          problems.add(errorf("Interface %s is not functional and can therefore not be targeted by a constructor reference",
+              iDecl.typeName()));
+          return problems;
+        }
+    
+        FunctionDescriptor f = iDecl.functionDescriptor();
+    
+        if (this instanceof ClassReference) {
+          ClassReference ref = (ClassReference) this;
+          ConstructorDecl decl = ref.targetConstructor(f);
+          if (unknownConstructor() == decl) {
+            problems.add(errorf("No constructor for the type %s that is compatible with the method %s in the interface %s was found",
+                getTypeAccess().type().typeName(), f.method.fullSignature(), iDecl.typeName()));
+          }
+          if (!f.method.type().isVoid()) {
+            // 15.13.1
+            TypeDecl returnType = ref.syntheticInstanceExpr(f).type();
+            if (!returnType.assignConversionTo(f.method.type(), null)) {
+              problems.add(errorf("Return type of method %s in interface %s is not compatible with"
+                  + " referenced constructor which has return type: %s",
+                  f.method.fullSignature(), iDecl.typeName(), returnType.typeName()));
+            }
+          }
+          for (int i = 0; i < decl.getNumException(); i++) {
+            TypeDecl exception = decl.getException(i).type();
+            if (exception.isUncheckedException()) {
+              continue;
+            }
+    
+            boolean legalException = false;
+            for (TypeDecl descriptorThrows : iDecl.functionDescriptor().throwsList) {
+              if (exception.strictSubtype(descriptorThrows)) {
+                legalException = true;
+                break;
+              }
+            }
+            if (!legalException) {
+              // 15.13.1
+              problems.add(errorf("Referenced constructor %s throws unhandled exception type %s",
+                  decl.name(), exception.typeName()));
+            }
+          }
+          problems.addAll(ref.syntheticInstanceExpr(f).typeProblems());
+        } else {
+          ArrayReference ref = (ArrayReference) this;
+          if (f.method.getNumParameter() != 1) {
+            problems.add(errorf("Array reference not compatible with method %s in interface %s,"
+                + " should have a single parameter of type int",
+                f.method.fullSignature(), iDecl.typeName()));
+            return problems;
+          }
+          if (!f.method.getParameter(0).type().assignConversionTo(iDecl.typeInt(), null)) {
+            problems.add(errorf("Array reference not compatible with method %s in interface %s,"
+                + " should have a single parameter of type int",
+                f.method.fullSignature(), iDecl.typeName()));
+            return problems;
+          }
+          if (!f.method.type().isVoid()) {
+            if (!getTypeAccess().type().assignConversionTo(f.method.type(), null)) {
+              problems.add(errorf("Return type %s of method %s in interface %s is not compatible with"
+                  + " the array reference type %s",
+                  f.method.type().typeName(), f.method.fullSignature(), iDecl.typeName(),
+                  getTypeAccess().type().typeName()));
+            }
+          }
+        }
+        return problems;
+      }
+  }
   /** @apilevel internal */
   private void compatibleStrictContext_TypeDecl_reset() {
     compatibleStrictContext_TypeDecl_computed = new java.util.HashMap(4);
@@ -173,10 +397,10 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:32")
   public boolean compatibleStrictContext(TypeDecl type) {
     Object _parameters = type;
     if (compatibleStrictContext_TypeDecl_computed == null) compatibleStrictContext_TypeDecl_computed = new java.util.HashMap(4);
@@ -219,10 +443,10 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:76")
   public boolean compatibleLooseContext(TypeDecl type) {
     Object _parameters = type;
     if (compatibleLooseContext_TypeDecl_computed == null) compatibleLooseContext_TypeDecl_computed = new java.util.HashMap(4);
@@ -257,10 +481,10 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:104")
   public boolean pertinentToApplicability(Expr access, BodyDecl decl, int argIndex) {
     java.util.List _parameters = new java.util.ArrayList(3);
     _parameters.add(access);
@@ -334,10 +558,10 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
    * @return {@code true} if type1 is more specific than type2, {@code false} otherwise
    * @attribute syn
    * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:230")
   public boolean moreSpecificThan(TypeDecl type1, TypeDecl type2) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type1);
@@ -430,10 +654,10 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect MethodSignature18
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
+  @ASTNodeAnnotation.Source(aspect="MethodSignature18", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/MethodSignature.jrag:465")
   public boolean potentiallyCompatible(TypeDecl type, BodyDecl candidateDecl) {
     java.util.List _parameters = new java.util.ArrayList(2);
     _parameters.add(type);
@@ -482,230 +706,6 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
       return true;
     }
   /** @apilevel internal */
-  private void isPolyExpression_reset() {
-    isPolyExpression_computed = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle isPolyExpression_computed = null;
-
-  /** @apilevel internal */
-  protected boolean isPolyExpression_value;
-
-  /**
-   * @attribute syn
-   * @aspect PolyExpressions
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:86")
-  public boolean isPolyExpression() {
-    ASTNode$State state = state();
-    if (isPolyExpression_computed == ASTNode$State.NON_CYCLE || isPolyExpression_computed == state().cycle()) {
-      return isPolyExpression_value;
-    }
-    isPolyExpression_value = true;
-    if (state().inCircle()) {
-      isPolyExpression_computed = state().cycle();
-    
-    } else {
-      isPolyExpression_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return isPolyExpression_value;
-  }
-  /** @apilevel internal */
-  private void assignConversionTo_TypeDecl_reset() {
-    assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
-    assignConversionTo_TypeDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map assignConversionTo_TypeDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map assignConversionTo_TypeDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect PolyExpressions
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="PolyExpressions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/PolyExpressions.jrag:149")
-  public boolean assignConversionTo(TypeDecl type) {
-    Object _parameters = type;
-    if (assignConversionTo_TypeDecl_computed == null) assignConversionTo_TypeDecl_computed = new java.util.HashMap(4);
-    if (assignConversionTo_TypeDecl_values == null) assignConversionTo_TypeDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (assignConversionTo_TypeDecl_values.containsKey(_parameters) && assignConversionTo_TypeDecl_computed != null
-        && assignConversionTo_TypeDecl_computed.containsKey(_parameters)
-        && (assignConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || assignConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) assignConversionTo_TypeDecl_values.get(_parameters);
-    }
-    boolean assignConversionTo_TypeDecl_value = assignConversionTo_compute(type);
-    if (state().inCircle()) {
-      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
-      assignConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      assignConversionTo_TypeDecl_values.put(_parameters, assignConversionTo_TypeDecl_value);
-      assignConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return assignConversionTo_TypeDecl_value;
-  }
-  /** @apilevel internal */
-  private boolean assignConversionTo_compute(TypeDecl type) {
-      if (!type.isFunctionalInterface()) {
-        return false;
-      }
-      FunctionDescriptor f = ((InterfaceDecl) type).functionDescriptor();
-      return congruentTo(f);
-    }
-  /** @apilevel internal */
-  private void type_reset() {
-    type_computed = null;
-    type_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle type_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl type_value;
-
-  /**
-   * @attribute syn
-   * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:97
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:97")
-  public TypeDecl type() {
-    ASTNode$State state = state();
-    if (type_computed == ASTNode$State.NON_CYCLE || type_computed == state().cycle()) {
-      return type_value;
-    }
-    type_value = type_compute();
-    if (state().inCircle()) {
-      type_computed = state().cycle();
-    
-    } else {
-      type_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return type_value;
-  }
-  /** @apilevel internal */
-  private TypeDecl type_compute() {
-      // 15.13.1
-      if (!assignmentContext() && !castContext() && !invocationContext()) {
-        return unknownType();
-      }
-      if (targetInterface() == null) {
-        return unknownType();
-      }
-  
-      InterfaceDecl iDecl = targetInterface();
-      if (!iDecl.isFunctional()) {
-        return unknownType();
-      }
-  
-      return iDecl;
-    }
-  /**
-   * @attribute syn
-   * @aspect TypeCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:371
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:371")
-  public Collection<Problem> typeProblems() {
-    {
-        Collection<Problem> problems = new LinkedList<Problem>();
-        if (!assignmentContext() && !castContext() && !invocationContext()) {
-          problems.add(error("Constructor references must target a functional interface"));
-          return problems;
-        }
-    
-        // This means there was an error in the overload resolution, will be reported elsewhere
-        if (invocationContext() && targetType() == unknownType()) {
-          return problems;
-        }
-    
-        if (!targetType().isFunctionalInterface()) {
-          problems.add(error("Constructor references must target a functional interface"));
-          return problems;
-        }
-        InterfaceDecl iDecl = targetInterface();
-    
-        if (!iDecl.isFunctional()) {
-          problems.add(errorf("Interface %s is not functional and can therefore not be targeted by a constructor reference",
-              iDecl.typeName()));
-          return problems;
-        }
-    
-        FunctionDescriptor f = iDecl.functionDescriptor();
-    
-        if (this instanceof ClassReference) {
-          ClassReference ref = (ClassReference) this;
-          ConstructorDecl decl = ref.targetConstructor(f);
-          if (unknownConstructor() == decl) {
-            problems.add(errorf("No constructor for the type %s that is compatible with the method %s in the interface %s was found",
-                getTypeAccess().type().typeName(), f.method.fullSignature(), iDecl.typeName()));
-          }
-          if (!f.method.type().isVoid()) {
-            // 15.13.1
-            TypeDecl returnType = ref.syntheticInstanceExpr(f).type();
-            if (!returnType.assignConversionTo(f.method.type(), null)) {
-              problems.add(errorf("Return type of method %s in interface %s is not compatible with"
-                  + " referenced constructor which has return type: %s",
-                  f.method.fullSignature(), iDecl.typeName(), returnType.typeName()));
-            }
-          }
-          for (int i = 0; i < decl.getNumException(); i++) {
-            TypeDecl exception = decl.getException(i).type();
-            if (exception.isUncheckedException()) {
-              continue;
-            }
-    
-            boolean legalException = false;
-            for (TypeDecl descriptorThrows : iDecl.functionDescriptor().throwsList) {
-              if (exception.strictSubtype(descriptorThrows)) {
-                legalException = true;
-                break;
-              }
-            }
-            if (!legalException) {
-              // 15.13.1
-              problems.add(errorf("Referenced constructor %s throws unhandled exception type %s",
-                  decl.name(), exception.typeName()));
-            }
-          }
-          problems.addAll(ref.syntheticInstanceExpr(f).typeProblems());
-        } else {
-          ArrayReference ref = (ArrayReference) this;
-          if (f.method.getNumParameter() != 1) {
-            problems.add(errorf("Array reference not compatible with method %s in interface %s,"
-                + " should have a single parameter of type int",
-                f.method.fullSignature(), iDecl.typeName()));
-            return problems;
-          }
-          if (!f.method.getParameter(0).type().assignConversionTo(iDecl.typeInt(), null)) {
-            problems.add(errorf("Array reference not compatible with method %s in interface %s,"
-                + " should have a single parameter of type int",
-                f.method.fullSignature(), iDecl.typeName()));
-            return problems;
-          }
-          if (!f.method.type().isVoid()) {
-            if (!getTypeAccess().type().assignConversionTo(f.method.type(), null)) {
-              problems.add(errorf("Return type %s of method %s in interface %s is not compatible with"
-                  + " the array reference type %s",
-                  f.method.type().typeName(), f.method.fullSignature(), iDecl.typeName(),
-                  getTypeAccess().type().typeName()));
-            }
-          }
-        }
-        return problems;
-      }
-  }
-  /** @apilevel internal */
   private void targetInterface_reset() {
     targetInterface_computed = null;
     targetInterface_value = null;
@@ -719,10 +719,10 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute syn
    * @aspect TargetType
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:161
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:161
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:161")
+  @ASTNodeAnnotation.Source(aspect="TargetType", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:161")
   public InterfaceDecl targetInterface() {
     ASTNode$State state = state();
     if (targetInterface_computed == ASTNode$State.NON_CYCLE || targetInterface_computed == state().cycle()) {
@@ -751,21 +751,21 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
   /**
    * @attribute inh
    * @aspect ConstructorReference
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:29
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:29
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:29")
+  @ASTNodeAnnotation.Source(aspect="ConstructorReference", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:29")
   public ConstructorDecl unknownConstructor() {
     ConstructorDecl unknownConstructor_value = getParent().Define_unknownConstructor(this, null);
     return unknownConstructor_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:66
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:66
       return NameType.TYPE_NAME;
     }
     else {
@@ -776,12 +776,12 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:195
    * @apilevel internal
    */
   public boolean Define_assignmentContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:364
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:364
       return false;
     }
     else {
@@ -792,12 +792,12 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:196
    * @apilevel internal
    */
   public boolean Define_invocationContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:365
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:365
       return false;
     }
     else {
@@ -808,12 +808,12 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:197
    * @apilevel internal
    */
   public boolean Define_castContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:366
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:366
       return false;
     }
     else {
@@ -824,12 +824,12 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:198
    * @apilevel internal
    */
   public boolean Define_stringContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:367
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:367
       return false;
     }
     else {
@@ -840,12 +840,12 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
     return true;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:199
    * @apilevel internal
    */
   public boolean Define_numericContext(ASTNode _callerNode, ASTNode _childNode) {
     if (getTypeAccessNoTransform() != null && _callerNode == getTypeAccess()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:368
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:368
       return false;
     }
     else {
@@ -864,7 +864,7 @@ public abstract class ConstructorReference extends Expr implements Cloneable {
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:368
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:368
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

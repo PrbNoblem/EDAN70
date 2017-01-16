@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:31
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/grammar/Generics.ast:31
  * @production TypeVariable : {@link ReferenceType} ::= <span class="component">{@link Modifiers}</span> <span class="component">&lt;ID:String&gt;</span> <span class="component">{@link BodyDecl}*</span> <span class="component">TypeBound:{@link Access}*</span>;
 
  */
 public class TypeVariable extends ReferenceType implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:355
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:355
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getID());
@@ -47,7 +47,7 @@ public class TypeVariable extends ReferenceType implements Cloneable {
   }
   /**
    * @aspect NewGenerics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1712
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1712
    */
   public Access createQualifiedAccess() {
     return createBoundAccess();
@@ -108,7 +108,10 @@ public class TypeVariable extends ReferenceType implements Cloneable {
     super.flushAttrCache();
     rewrittenNode_reset();
     toInterface_reset();
-    unboxed_reset();
+    involvesTypeParameters_reset();
+    sameStructure_TypeDecl_reset();
+    subtype_TypeDecl_reset();
+    instanceOf_TypeDecl_reset();
     memberFields_String_reset();
     castingConversionTo_TypeDecl_reset();
     erasure_reset();
@@ -117,12 +120,9 @@ public class TypeVariable extends ReferenceType implements Cloneable {
     usesTypeVariable_reset();
     accessibleFrom_TypeDecl_reset();
     typeName_reset();
-    involvesTypeParameters_reset();
-    sameStructure_TypeDecl_reset();
-    subtype_TypeDecl_reset();
-    instanceOf_TypeDecl_reset();
-    sameType_TypeVariable_reset();
+    unboxed_reset();
     strictSubtype_TypeDecl_reset();
+    sameType_TypeVariable_reset();
     typeVarPosition_reset();
     genericMethodLevel_reset();
     typeVarInMethod_reset();
@@ -504,10 +504,10 @@ public class TypeVariable extends ReferenceType implements Cloneable {
   /** Convert var to interface. 
    * @attribute syn
    * @aspect GreatestLowerBoundFactory
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GLBTypeFactory.jadd:35
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GLBTypeFactory.jadd:35
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isNTA=true)
-  @ASTNodeAnnotation.Source(aspect="GreatestLowerBoundFactory", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GLBTypeFactory.jadd:35")
+  @ASTNodeAnnotation.Source(aspect="GreatestLowerBoundFactory", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GLBTypeFactory.jadd:35")
   public InterfaceDecl toInterface() {
     ASTNode$State state = state();
     if (toInterface_computed) {
@@ -548,605 +548,6 @@ public class TypeVariable extends ReferenceType implements Cloneable {
       }
       return ITj;
     }
-  /** @apilevel internal */
-  private void unboxed_reset() {
-    unboxed_computed = null;
-    unboxed_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle unboxed_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl unboxed_value;
-
-  /** Mapping between Reference type and corresponding unboxed Primitive type. 
-   * @attribute syn
-   * @aspect AutoBoxing
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77")
-  public TypeDecl unboxed() {
-    ASTNode$State state = state();
-    if (unboxed_computed == ASTNode$State.NON_CYCLE || unboxed_computed == state().cycle()) {
-      return unboxed_value;
-    }
-    unboxed_value = unboxed_compute();
-    if (state().inCircle()) {
-      unboxed_computed = state().cycle();
-    
-    } else {
-      unboxed_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return unboxed_value;
-  }
-  /** @apilevel internal */
-  private TypeDecl unboxed_compute() {
-      for (Access bound: getTypeBoundList()) {
-        TypeDecl unboxed = bound.type().unboxed();
-        if (!unboxed.isUnknown()) {
-          return unboxed;
-        }
-      }
-      return unknownType();
-    }
-  /**
-   * @attribute syn
-   * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:364
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:364")
-  public Collection<Problem> nameProblems() {
-    {
-          if (extractSingleType(lookupType(name())) != this) {
-            return Collections.singletonList(
-                errorf("*** Semantic Error: type variable %s is multiply declared", name()));
-          }
-          return Collections.emptySet();
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericTypeVariables
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:58
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericTypeVariables", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:58")
-  public TypeDecl lowerBound() {
-    TypeDecl lowerBound_value = getTypeBound(0).type();
-    return lowerBound_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect MemberMethods
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:332
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="MemberMethods", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:332")
-  public Collection<MethodDecl> memberMethods(String name) {
-    {
-        Collection<MethodDecl> methods = new HashSet<MethodDecl>();
-        for (int i = 0; i < getNumTypeBound(); i++) {
-          for (MethodDecl method : getTypeBound(i).type().memberMethods(name)) {
-            methods.add(method);
-          }
-        }
-        return methods;
-      }
-  }
-  /** @apilevel internal */
-  private void memberFields_String_reset() {
-    memberFields_String_computed = new java.util.HashMap(4);
-    memberFields_String_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map memberFields_String_values;
-  /** @apilevel internal */
-  protected java.util.Map memberFields_String_computed;
-  /**
-   * @attribute syn
-   * @aspect Fields
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:475
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Fields", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:475")
-  public SimpleSet<Variable> memberFields(String name) {
-    Object _parameters = name;
-    if (memberFields_String_computed == null) memberFields_String_computed = new java.util.HashMap(4);
-    if (memberFields_String_values == null) memberFields_String_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (memberFields_String_values.containsKey(_parameters) && memberFields_String_computed != null
-        && memberFields_String_computed.containsKey(_parameters)
-        && (memberFields_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || memberFields_String_computed.get(_parameters) == state().cycle())) {
-      return (SimpleSet<Variable>) memberFields_String_values.get(_parameters);
-    }
-    SimpleSet<Variable> memberFields_String_value = memberFields_compute(name);
-    if (state().inCircle()) {
-      memberFields_String_values.put(_parameters, memberFields_String_value);
-      memberFields_String_computed.put(_parameters, state().cycle());
-    
-    } else {
-      memberFields_String_values.put(_parameters, memberFields_String_value);
-      memberFields_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return memberFields_String_value;
-  }
-  /** @apilevel internal */
-  private SimpleSet<Variable> memberFields_compute(String name) {
-      SimpleSet<Variable> fields = emptySet();
-      for (int i = 0; i < getNumTypeBound(); i++) {
-        for (Variable field : getTypeBound(i).type().memberFields(name)) {
-          fields = fields.add(field);
-        }
-      }
-      return fields;
-    }
-  /**
-   * @attribute syn
-   * @aspect GenricTypeVariablesTypeAnalysis
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:93
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenricTypeVariablesTypeAnalysis", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:93")
-  public Collection<Problem> typeProblems() {
-    {
-        Collection<Problem> problems = new LinkedList<Problem>();
-        if (!getTypeBound(0).type().isTypeVariable() && !getTypeBound(0).type().isClassDecl()
-            && !getTypeBound(0).type().isInterfaceDecl()) {
-          problems.add(errorf("the first type bound must be either a type variable,"
-              + " or a class or interface type which %s is not",
-              getTypeBound(0).type().fullName()));
-        }
-        for (int i = 1; i < getNumTypeBound(); i++) {
-          if (!getTypeBound(i).type().isInterfaceDecl()) {
-            problems.add(errorf("type bound %s must be an interface type which %s is not",
-                i, getTypeBound(i).type().fullName()));
-          }
-        }
-        Collection<TypeDecl> typeSet = new HashSet<TypeDecl>();
-        for (int i = 0; i < getNumTypeBound(); i++) {
-          TypeDecl type = getTypeBound(i).type();
-          TypeDecl erasure = type.erasure();
-          if (typeSet.contains(erasure)) {
-            if (type != erasure) {
-              problems.add(errorf("the erasure %s of typebound %s is multiply declared in %s",
-                  erasure.fullName(), getTypeBound(i).prettyPrint(), this));
-            } else {
-              problems.add(errorf("%s is multiply declared", type.fullName()));
-            }
-          }
-          typeSet.add(erasure);
-        }
-    
-        for (int i = 0; i < getNumTypeBound(); i++) {
-          TypeDecl type = getTypeBound(i).type();
-          for (Iterator iter = type.methodsIterator(); iter.hasNext(); ) {
-            MethodDecl m = (MethodDecl) iter.next();
-            for (int j = i + 1; j < getNumTypeBound(); j++) {
-              TypeDecl destType = getTypeBound(j).type();
-              for (MethodDecl n : destType.memberMethods(m.name())) {
-                if (m.sameSignature(n) && m.type() != n.type()) {
-                  problems.add(errorf("the two bounds, %s and %s, in type variable %s have"
-                      + " a method %s with conflicting return types %s and %s",
-                      type.name(), destType.name(), name(), m.signature(),
-                      m.type().name(), n.type().name()));
-                }
-              }
-            }
-          }
-        }
-        return problems;
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericsParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:104
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:104")
-  public boolean isTypeVariable() {
-    boolean isTypeVariable_value = true;
-    return isTypeVariable_value;
-  }
-  /** @apilevel internal */
-  private void castingConversionTo_TypeDecl_reset() {
-    castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
-    castingConversionTo_TypeDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map castingConversionTo_TypeDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map castingConversionTo_TypeDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect TypeConversion
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100")
-  public boolean castingConversionTo(TypeDecl type) {
-    Object _parameters = type;
-    if (castingConversionTo_TypeDecl_computed == null) castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
-    if (castingConversionTo_TypeDecl_values == null) castingConversionTo_TypeDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (castingConversionTo_TypeDecl_values.containsKey(_parameters) && castingConversionTo_TypeDecl_computed != null
-        && castingConversionTo_TypeDecl_computed.containsKey(_parameters)
-        && (castingConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || castingConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) castingConversionTo_TypeDecl_values.get(_parameters);
-    }
-    boolean castingConversionTo_TypeDecl_value = castingConversionTo_compute(type);
-    if (state().inCircle()) {
-      castingConversionTo_TypeDecl_values.put(_parameters, castingConversionTo_TypeDecl_value);
-      castingConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      castingConversionTo_TypeDecl_values.put(_parameters, castingConversionTo_TypeDecl_value);
-      castingConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return castingConversionTo_TypeDecl_value;
-  }
-  /** @apilevel internal */
-  private boolean castingConversionTo_compute(TypeDecl type) {
-      if (!type.isReferenceType()) {
-        return false;
-      }
-      if (getNumTypeBound() == 0) {
-        return true;
-      }
-      for (int i = 0; i < getNumTypeBound(); i++) {
-        if (getTypeBound(i).type().castingConversionTo(type)) {
-          return true;
-        }
-      }
-      return false;
-    }
-  /**
-   * @attribute syn
-   * @aspect Generics
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:193
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Generics", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:193")
-  public boolean isNestedType() {
-    boolean isNestedType_value = false;
-    return isNestedType_value;
-  }
-  /** @apilevel internal */
-  private void erasure_reset() {
-    erasure_computed = null;
-    erasure_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle erasure_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl erasure_value;
-
-  /**
-   * @attribute syn
-   * @aspect GenericsErasure
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:418
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsErasure", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:418")
-  public TypeDecl erasure() {
-    ASTNode$State state = state();
-    if (erasure_computed == ASTNode$State.NON_CYCLE || erasure_computed == state().cycle()) {
-      return erasure_value;
-    }
-    erasure_value = getTypeBound(0).type().erasure();
-    if (state().inCircle()) {
-      erasure_computed = state().cycle();
-    
-    } else {
-      erasure_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return erasure_value;
-  }
-  /** @apilevel internal */
-  private void fullName_reset() {
-    fullName_computed = null;
-    fullName_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle fullName_computed = null;
-
-  /** @apilevel internal */
-  protected String fullName_value;
-
-  /**
-   * @attribute syn
-   * @aspect TypeName
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:84
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:84")
-  public String fullName() {
-    ASTNode$State state = state();
-    if (fullName_computed == ASTNode$State.NON_CYCLE || fullName_computed == state().cycle()) {
-      return fullName_value;
-    }
-    fullName_value = typeVariableContext() + "@" + name();
-    if (state().inCircle()) {
-      fullName_computed = state().cycle();
-    
-    } else {
-      fullName_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return fullName_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:801
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:801")
-  public boolean sameSignature(Access a) {
-    boolean sameSignature_Access_value = a.type() == this;
-    return sameSignature_Access_value;
-  }
-  /** @apilevel internal */
-  private void lubType_reset() {
-    lubType_computed = null;
-    lubType_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle lubType_computed = null;
-
-  /** @apilevel internal */
-  protected TypeDecl lubType_value;
-
-  /**
-   * @attribute syn
-   * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1160
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1160")
-  public TypeDecl lubType() {
-    ASTNode$State state = state();
-    if (lubType_computed == ASTNode$State.NON_CYCLE || lubType_computed == state().cycle()) {
-      return lubType_value;
-    }
-    lubType_value = lubType_compute();
-    if (state().inCircle()) {
-      lubType_computed = state().cycle();
-    
-    } else {
-      lubType_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return lubType_value;
-  }
-  /** @apilevel internal */
-  private TypeDecl lubType_compute() {
-      ArrayList<TypeDecl> list = new ArrayList<TypeDecl>();
-      for (int i = 0; i < getNumTypeBound(); i++) {
-        list.add(getTypeBound(i).type());
-      }
-      return lookupLUBType(list);
-    }
-/** @apilevel internal */
-protected ASTNode$State.Cycle usesTypeVariable_cycle = null;
-  /** @apilevel internal */
-  private void usesTypeVariable_reset() {
-    usesTypeVariable_computed = false;
-    usesTypeVariable_initialized = false;
-    usesTypeVariable_cycle = null;
-  }
-  /** @apilevel internal */
-  protected boolean usesTypeVariable_computed = false;
-
-  /** @apilevel internal */
-  protected boolean usesTypeVariable_value;
-  /** @apilevel internal */
-  protected boolean usesTypeVariable_initialized = false;
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1189")
-  public boolean usesTypeVariable() {
-    if (usesTypeVariable_computed) {
-      return usesTypeVariable_value;
-    }
-    ASTNode$State state = state();
-    if (!usesTypeVariable_initialized) {
-      usesTypeVariable_initialized = true;
-      usesTypeVariable_value = false;
-    }
-    if (!state.inCircle() || state.calledByLazyAttribute()) {
-      state.enterCircle();
-      do {
-        usesTypeVariable_cycle = state.nextCycle();
-        boolean new_usesTypeVariable_value = true;
-        if (new_usesTypeVariable_value != usesTypeVariable_value) {
-          state.setChangeInCycle();
-        }
-        usesTypeVariable_value = new_usesTypeVariable_value;
-      } while (state.testAndClearChangeInCycle());
-      usesTypeVariable_computed = true;
-
-      state.leaveCircle();
-    } else if (usesTypeVariable_cycle != state.cycle()) {
-      usesTypeVariable_cycle = state.cycle();
-      boolean new_usesTypeVariable_value = true;
-      if (new_usesTypeVariable_value != usesTypeVariable_value) {
-        state.setChangeInCycle();
-      }
-      usesTypeVariable_value = new_usesTypeVariable_value;
-    } else {
-    }
-    return usesTypeVariable_value;
-  }
-  /** @apilevel internal */
-  private void accessibleFrom_TypeDecl_reset() {
-    accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
-    accessibleFrom_TypeDecl_values = null;
-  }
-  /** @apilevel internal */
-  protected java.util.Map accessibleFrom_TypeDecl_values;
-  /** @apilevel internal */
-  protected java.util.Map accessibleFrom_TypeDecl_computed;
-  /**
-   * @attribute syn
-   * @aspect AccessControl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:72
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="AccessControl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:72")
-  public boolean accessibleFrom(TypeDecl type) {
-    Object _parameters = type;
-    if (accessibleFrom_TypeDecl_computed == null) accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
-    if (accessibleFrom_TypeDecl_values == null) accessibleFrom_TypeDecl_values = new java.util.HashMap(4);
-    ASTNode$State state = state();
-    if (accessibleFrom_TypeDecl_values.containsKey(_parameters) && accessibleFrom_TypeDecl_computed != null
-        && accessibleFrom_TypeDecl_computed.containsKey(_parameters)
-        && (accessibleFrom_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || accessibleFrom_TypeDecl_computed.get(_parameters) == state().cycle())) {
-      return (Boolean) accessibleFrom_TypeDecl_values.get(_parameters);
-    }
-    boolean accessibleFrom_TypeDecl_value = true;
-    if (state().inCircle()) {
-      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
-      accessibleFrom_TypeDecl_computed.put(_parameters, state().cycle());
-    
-    } else {
-      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
-      accessibleFrom_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
-    
-    }
-    return accessibleFrom_TypeDecl_value;
-  }
-  /** @apilevel internal */
-  private void typeName_reset() {
-    typeName_computed = null;
-    typeName_value = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle typeName_computed = null;
-
-  /** @apilevel internal */
-  protected String typeName_value;
-
-  /**
-   * @attribute syn
-   * @aspect TypeName
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:95
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:95")
-  public String typeName() {
-    ASTNode$State state = state();
-    if (typeName_computed == ASTNode$State.NON_CYCLE || typeName_computed == state().cycle()) {
-      return typeName_value;
-    }
-    typeName_value = name();
-    if (state().inCircle()) {
-      typeName_computed = state().cycle();
-    
-    } else {
-      typeName_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return typeName_value;
-  }
-  /**
-   * A type is reifiable if it either refers to a non-parameterized type,
-   * is a raw type, is a parameterized type with only unbound wildcard
-   * parameters or is an array type with a reifiable type parameter.
-   * 
-   * @see "JLS SE7 &sect;4.7"
-   * @attribute syn
-   * @aspect ReifiableTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
-  public boolean isReifiable() {
-    boolean isReifiable_value = false;
-    return isReifiable_value;
-  }
-  /**
-   * Check if a given type is within the bound of this type, given a specific
-   * parameterization of this type.
-   * 
-   * See JLS SE7 $4.5
-   * 
-   * @param argument argument type
-   * @return {@code true} if the argument type is in the bound of this type
-   * @attribute syn
-   * @aspect GenericBoundCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:61
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:61")
-  public boolean boundOf(TypeDecl argument) {
-    {
-        for (int i = 0; i < getNumTypeBound(); ++i) {
-          TypeDecl bound = getTypeBound(i).type();
-          if (!argument.subtype(bound)) {
-            return false;
-          }
-        }
-        return true;
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericBoundCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:73
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:73")
-  public boolean boundOfWildcard(WildcardType type) {
-    boolean boundOfWildcard_WildcardType_value = true;
-    return boundOfWildcard_WildcardType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericBoundCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:77
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:77")
-  public boolean boundOfWildcardExtends(WildcardExtendsType type) {
-    boolean boundOfWildcardExtends_WildcardExtendsType_value = type.extendsType().subtype(this);
-    return boundOfWildcardExtends_WildcardExtendsType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericBoundCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:82
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:82")
-  public boolean boundOfWildcardSuper(WildcardSuperType type) {
-    boolean boundOfWildcardSuper_WildcardSuperType_value = type.superType().subtype(this);
-    return boundOfWildcardSuper_WildcardSuperType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect GenericBoundCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:87
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:87")
-  public boolean boundOfArray(ArrayDecl type) {
-    {
-        // An array type is within the bounds of a type variable if the
-        // type variable has a single type bound that is an array type bound,
-        // or if there are no type bounds for the type variable.
-        if (getNumTypeBound() == 1) {
-          return getTypeBound(0).type().boundOfArray(type);
-        }
-        return getNumTypeBound() == 0;
-      }
-  }
 /** @apilevel internal */
 protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /** @apilevel internal */
@@ -1163,7 +564,7 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /** @apilevel internal */
   protected boolean involvesTypeParameters_initialized = false;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="GenericMethodsInference", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:37")
+  @ASTNodeAnnotation.Source(aspect="GenericMethodsInference", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:37")
   public boolean involvesTypeParameters() {
     if (involvesTypeParameters_computed) {
       return involvesTypeParameters_value;
@@ -1200,10 +601,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:69
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:69
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:69")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:69")
   public boolean supertypeWildcard(WildcardType type) {
     boolean supertypeWildcard_WildcardType_value = true;
     return supertypeWildcard_WildcardType_value;
@@ -1211,10 +612,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:76
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:76
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:76")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:76")
   public boolean supertypeWildcardExtends(WildcardExtendsType type) {
     boolean supertypeWildcardExtends_WildcardExtendsType_value = type.extendsType().subtype(this);
     return supertypeWildcardExtends_WildcardExtendsType_value;
@@ -1222,10 +623,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:85
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:85
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:85")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:85")
   public boolean supertypeWildcardSuper(WildcardSuperType type) {
     boolean supertypeWildcardSuper_WildcardSuperType_value = type.superType().subtype(this);
     return supertypeWildcardSuper_WildcardSuperType_value;
@@ -1236,7 +637,7 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   }
   protected java.util.Map sameStructure_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:216")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:216")
   public boolean sameStructure(TypeDecl t) {
     Object _parameters = t;
     if (sameStructure_TypeDecl_values == null) sameStructure_TypeDecl_values = new java.util.HashMap(4);
@@ -1313,10 +714,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:539
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:539
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:539")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:539")
   public boolean supertypeArrayDecl(ArrayDecl type) {
     {
         for (int i = 0; i < getNumTypeBound(); i++) {
@@ -1333,7 +734,7 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   }
   protected java.util.Map subtype_TypeDecl_values;
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:490")
   public boolean subtype(TypeDecl type) {
     Object _parameters = type;
     if (subtype_TypeDecl_values == null) subtype_TypeDecl_values = new java.util.HashMap(4);
@@ -1381,10 +782,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:362
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:362
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:362")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:362")
   public boolean supertypeTypeVariable(TypeVariable type) {
     {
         if (type == this) {
@@ -1408,10 +809,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:505")
   public boolean supertypeClassDecl(ClassDecl type) {
     boolean supertypeClassDecl_ClassDecl_value = false;
     return supertypeClassDecl_ClassDecl_value;
@@ -1419,10 +820,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect GenericsSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522")
+  @ASTNodeAnnotation.Source(aspect="GenericsSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsSubtype.jrag:522")
   public boolean supertypeInterfaceDecl(InterfaceDecl type) {
     boolean supertypeInterfaceDecl_InterfaceDecl_value = false;
     return supertypeInterfaceDecl_InterfaceDecl_value;
@@ -1439,10 +840,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect TypeWideningAndIdentity
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
+  @ASTNodeAnnotation.Source(aspect="TypeWideningAndIdentity", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:443")
   public boolean instanceOf(TypeDecl type) {
     Object _parameters = type;
     if (instanceOf_TypeDecl_computed == null) instanceOf_TypeDecl_computed = new java.util.HashMap(4);
@@ -1465,6 +866,740 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
     }
     return instanceOf_TypeDecl_value;
   }
+  /**
+   * @attribute syn
+   * @aspect GenericsParTypeDecl
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:104
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:104")
+  public boolean isTypeVariable() {
+    boolean isTypeVariable_value = true;
+    return isTypeVariable_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect NameCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:364
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="NameCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:364")
+  public Collection<Problem> nameProblems() {
+    {
+          if (extractSingleType(lookupType(name())) != this) {
+            return Collections.singletonList(
+                errorf("*** Semantic Error: type variable %s is multiply declared", name()));
+          }
+          return Collections.emptySet();
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericTypeVariables
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:58
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericTypeVariables", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:58")
+  public TypeDecl lowerBound() {
+    TypeDecl lowerBound_value = getTypeBound(0).type();
+    return lowerBound_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect MemberMethods
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:332
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="MemberMethods", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:332")
+  public Collection<MethodDecl> memberMethods(String name) {
+    {
+        Collection<MethodDecl> methods = new HashSet<MethodDecl>();
+        for (int i = 0; i < getNumTypeBound(); i++) {
+          for (MethodDecl method : getTypeBound(i).type().memberMethods(name)) {
+            methods.add(method);
+          }
+        }
+        return methods;
+      }
+  }
+  /** @apilevel internal */
+  private void memberFields_String_reset() {
+    memberFields_String_computed = new java.util.HashMap(4);
+    memberFields_String_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map memberFields_String_values;
+  /** @apilevel internal */
+  protected java.util.Map memberFields_String_computed;
+  /**
+   * @attribute syn
+   * @aspect Fields
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:475
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Fields", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:475")
+  public SimpleSet<Variable> memberFields(String name) {
+    Object _parameters = name;
+    if (memberFields_String_computed == null) memberFields_String_computed = new java.util.HashMap(4);
+    if (memberFields_String_values == null) memberFields_String_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (memberFields_String_values.containsKey(_parameters) && memberFields_String_computed != null
+        && memberFields_String_computed.containsKey(_parameters)
+        && (memberFields_String_computed.get(_parameters) == ASTNode$State.NON_CYCLE || memberFields_String_computed.get(_parameters) == state().cycle())) {
+      return (SimpleSet<Variable>) memberFields_String_values.get(_parameters);
+    }
+    SimpleSet<Variable> memberFields_String_value = memberFields_compute(name);
+    if (state().inCircle()) {
+      memberFields_String_values.put(_parameters, memberFields_String_value);
+      memberFields_String_computed.put(_parameters, state().cycle());
+    
+    } else {
+      memberFields_String_values.put(_parameters, memberFields_String_value);
+      memberFields_String_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return memberFields_String_value;
+  }
+  /** @apilevel internal */
+  private SimpleSet<Variable> memberFields_compute(String name) {
+      SimpleSet<Variable> fields = emptySet();
+      for (int i = 0; i < getNumTypeBound(); i++) {
+        for (Variable field : getTypeBound(i).type().memberFields(name)) {
+          fields = fields.add(field);
+        }
+      }
+      return fields;
+    }
+  /**
+   * @attribute syn
+   * @aspect GenricTypeVariablesTypeAnalysis
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:93
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenricTypeVariablesTypeAnalysis", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:93")
+  public Collection<Problem> typeProblems() {
+    {
+        Collection<Problem> problems = new LinkedList<Problem>();
+        if (!getTypeBound(0).type().isTypeVariable() && !getTypeBound(0).type().isClassDecl()
+            && !getTypeBound(0).type().isInterfaceDecl()) {
+          problems.add(errorf("the first type bound must be either a type variable,"
+              + " or a class or interface type which %s is not",
+              getTypeBound(0).type().fullName()));
+        }
+        for (int i = 1; i < getNumTypeBound(); i++) {
+          if (!getTypeBound(i).type().isInterfaceDecl()) {
+            problems.add(errorf("type bound %s must be an interface type which %s is not",
+                i, getTypeBound(i).type().fullName()));
+          }
+        }
+        Collection<TypeDecl> typeSet = new HashSet<TypeDecl>();
+        for (int i = 0; i < getNumTypeBound(); i++) {
+          TypeDecl type = getTypeBound(i).type();
+          TypeDecl erasure = type.erasure();
+          if (typeSet.contains(erasure)) {
+            if (type != erasure) {
+              problems.add(errorf("the erasure %s of typebound %s is multiply declared in %s",
+                  erasure.fullName(), getTypeBound(i).prettyPrint(), this));
+            } else {
+              problems.add(errorf("%s is multiply declared", type.fullName()));
+            }
+          }
+          typeSet.add(erasure);
+        }
+    
+        for (int i = 0; i < getNumTypeBound(); i++) {
+          TypeDecl type = getTypeBound(i).type();
+          for (Iterator iter = type.methodsIterator(); iter.hasNext(); ) {
+            MethodDecl m = (MethodDecl) iter.next();
+            for (int j = i + 1; j < getNumTypeBound(); j++) {
+              TypeDecl destType = getTypeBound(j).type();
+              for (MethodDecl n : destType.memberMethods(m.name())) {
+                if (m.sameSignature(n) && m.type() != n.type()) {
+                  problems.add(errorf("the two bounds, %s and %s, in type variable %s have"
+                      + " a method %s with conflicting return types %s and %s",
+                      type.name(), destType.name(), name(), m.signature(),
+                      m.type().name(), n.type().name()));
+                }
+              }
+            }
+          }
+        }
+        return problems;
+      }
+  }
+  /**
+   * Check if a given type is within the bound of this type, given a specific
+   * parameterization of this type.
+   * 
+   * See JLS SE7 $4.5
+   * 
+   * @param argument argument type
+   * @return {@code true} if the argument type is in the bound of this type
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:61
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:61")
+  public boolean boundOf(TypeDecl argument) {
+    {
+        for (int i = 0; i < getNumTypeBound(); ++i) {
+          TypeDecl bound = getTypeBound(i).type();
+          if (!argument.subtype(bound)) {
+            return false;
+          }
+        }
+        return true;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:73
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:73")
+  public boolean boundOfWildcard(WildcardType type) {
+    boolean boundOfWildcard_WildcardType_value = true;
+    return boundOfWildcard_WildcardType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:77
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:77")
+  public boolean boundOfWildcardExtends(WildcardExtendsType type) {
+    boolean boundOfWildcardExtends_WildcardExtendsType_value = type.extendsType().subtype(this);
+    return boundOfWildcardExtends_WildcardExtendsType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:82
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:82")
+  public boolean boundOfWildcardSuper(WildcardSuperType type) {
+    boolean boundOfWildcardSuper_WildcardSuperType_value = type.superType().subtype(this);
+    return boundOfWildcardSuper_WildcardSuperType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect GenericBoundCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:87
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericBoundCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericBoundCheck.jrag:87")
+  public boolean boundOfArray(ArrayDecl type) {
+    {
+        // An array type is within the bounds of a type variable if the
+        // type variable has a single type bound that is an array type bound,
+        // or if there are no type bounds for the type variable.
+        if (getNumTypeBound() == 1) {
+          return getTypeBound(0).type().boundOfArray(type);
+        }
+        return getNumTypeBound() == 0;
+      }
+  }
+  /**
+   * A type is reifiable if it either refers to a non-parameterized type,
+   * is a raw type, is a parameterized type with only unbound wildcard
+   * parameters or is an array type with a reifiable type parameter.
+   * 
+   * @see "JLS SE7 &sect;4.7"
+   * @attribute syn
+   * @aspect ReifiableTypes
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="ReifiableTypes", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/ReifiableTypes.jrag:39")
+  public boolean isReifiable() {
+    boolean isReifiable_value = false;
+    return isReifiable_value;
+  }
+  /** @apilevel internal */
+  private void castingConversionTo_TypeDecl_reset() {
+    castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    castingConversionTo_TypeDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map castingConversionTo_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map castingConversionTo_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect TypeConversion
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeConversion", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:100")
+  public boolean castingConversionTo(TypeDecl type) {
+    Object _parameters = type;
+    if (castingConversionTo_TypeDecl_computed == null) castingConversionTo_TypeDecl_computed = new java.util.HashMap(4);
+    if (castingConversionTo_TypeDecl_values == null) castingConversionTo_TypeDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (castingConversionTo_TypeDecl_values.containsKey(_parameters) && castingConversionTo_TypeDecl_computed != null
+        && castingConversionTo_TypeDecl_computed.containsKey(_parameters)
+        && (castingConversionTo_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || castingConversionTo_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) castingConversionTo_TypeDecl_values.get(_parameters);
+    }
+    boolean castingConversionTo_TypeDecl_value = castingConversionTo_compute(type);
+    if (state().inCircle()) {
+      castingConversionTo_TypeDecl_values.put(_parameters, castingConversionTo_TypeDecl_value);
+      castingConversionTo_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      castingConversionTo_TypeDecl_values.put(_parameters, castingConversionTo_TypeDecl_value);
+      castingConversionTo_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return castingConversionTo_TypeDecl_value;
+  }
+  /** @apilevel internal */
+  private boolean castingConversionTo_compute(TypeDecl type) {
+      if (!type.isReferenceType()) {
+        return false;
+      }
+      if (getNumTypeBound() == 0) {
+        return true;
+      }
+      for (int i = 0; i < getNumTypeBound(); i++) {
+        if (getTypeBound(i).type().castingConversionTo(type)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  /**
+   * @attribute syn
+   * @aspect Generics
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:193
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="Generics", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:193")
+  public boolean isNestedType() {
+    boolean isNestedType_value = false;
+    return isNestedType_value;
+  }
+  /** @apilevel internal */
+  private void erasure_reset() {
+    erasure_computed = null;
+    erasure_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle erasure_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl erasure_value;
+
+  /**
+   * @attribute syn
+   * @aspect GenericsErasure
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:418
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="GenericsErasure", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:418")
+  public TypeDecl erasure() {
+    ASTNode$State state = state();
+    if (erasure_computed == ASTNode$State.NON_CYCLE || erasure_computed == state().cycle()) {
+      return erasure_value;
+    }
+    erasure_value = getTypeBound(0).type().erasure();
+    if (state().inCircle()) {
+      erasure_computed = state().cycle();
+    
+    } else {
+      erasure_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return erasure_value;
+  }
+  /** @apilevel internal */
+  private void fullName_reset() {
+    fullName_computed = null;
+    fullName_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle fullName_computed = null;
+
+  /** @apilevel internal */
+  protected String fullName_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeName
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:84
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:84")
+  public String fullName() {
+    ASTNode$State state = state();
+    if (fullName_computed == ASTNode$State.NON_CYCLE || fullName_computed == state().cycle()) {
+      return fullName_value;
+    }
+    fullName_value = typeVariableContext() + "@" + name();
+    if (state().inCircle()) {
+      fullName_computed = state().cycle();
+    
+    } else {
+      fullName_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return fullName_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:801
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:801")
+  public boolean sameSignature(Access a) {
+    boolean sameSignature_Access_value = a.type() == this;
+    return sameSignature_Access_value;
+  }
+  /** @apilevel internal */
+  private void lubType_reset() {
+    lubType_computed = null;
+    lubType_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle lubType_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl lubType_value;
+
+  /**
+   * @attribute syn
+   * @aspect LookupParTypeDecl
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1160
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1160")
+  public TypeDecl lubType() {
+    ASTNode$State state = state();
+    if (lubType_computed == ASTNode$State.NON_CYCLE || lubType_computed == state().cycle()) {
+      return lubType_value;
+    }
+    lubType_value = lubType_compute();
+    if (state().inCircle()) {
+      lubType_computed = state().cycle();
+    
+    } else {
+      lubType_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return lubType_value;
+  }
+  /** @apilevel internal */
+  private TypeDecl lubType_compute() {
+      ArrayList<TypeDecl> list = new ArrayList<TypeDecl>();
+      for (int i = 0; i < getNumTypeBound(); i++) {
+        list.add(getTypeBound(i).type());
+      }
+      return lookupLUBType(list);
+    }
+/** @apilevel internal */
+protected ASTNode$State.Cycle usesTypeVariable_cycle = null;
+  /** @apilevel internal */
+  private void usesTypeVariable_reset() {
+    usesTypeVariable_computed = false;
+    usesTypeVariable_initialized = false;
+    usesTypeVariable_cycle = null;
+  }
+  /** @apilevel internal */
+  protected boolean usesTypeVariable_computed = false;
+
+  /** @apilevel internal */
+  protected boolean usesTypeVariable_value;
+  /** @apilevel internal */
+  protected boolean usesTypeVariable_initialized = false;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1189")
+  public boolean usesTypeVariable() {
+    if (usesTypeVariable_computed) {
+      return usesTypeVariable_value;
+    }
+    ASTNode$State state = state();
+    if (!usesTypeVariable_initialized) {
+      usesTypeVariable_initialized = true;
+      usesTypeVariable_value = false;
+    }
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      do {
+        usesTypeVariable_cycle = state.nextCycle();
+        boolean new_usesTypeVariable_value = true;
+        if (new_usesTypeVariable_value != usesTypeVariable_value) {
+          state.setChangeInCycle();
+        }
+        usesTypeVariable_value = new_usesTypeVariable_value;
+      } while (state.testAndClearChangeInCycle());
+      usesTypeVariable_computed = true;
+
+      state.leaveCircle();
+    } else if (usesTypeVariable_cycle != state.cycle()) {
+      usesTypeVariable_cycle = state.cycle();
+      boolean new_usesTypeVariable_value = true;
+      if (new_usesTypeVariable_value != usesTypeVariable_value) {
+        state.setChangeInCycle();
+      }
+      usesTypeVariable_value = new_usesTypeVariable_value;
+    } else {
+    }
+    return usesTypeVariable_value;
+  }
+  /** @apilevel internal */
+  private void accessibleFrom_TypeDecl_reset() {
+    accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
+    accessibleFrom_TypeDecl_values = null;
+  }
+  /** @apilevel internal */
+  protected java.util.Map accessibleFrom_TypeDecl_values;
+  /** @apilevel internal */
+  protected java.util.Map accessibleFrom_TypeDecl_computed;
+  /**
+   * @attribute syn
+   * @aspect AccessControl
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:72
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AccessControl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/AccessControl.jrag:72")
+  public boolean accessibleFrom(TypeDecl type) {
+    Object _parameters = type;
+    if (accessibleFrom_TypeDecl_computed == null) accessibleFrom_TypeDecl_computed = new java.util.HashMap(4);
+    if (accessibleFrom_TypeDecl_values == null) accessibleFrom_TypeDecl_values = new java.util.HashMap(4);
+    ASTNode$State state = state();
+    if (accessibleFrom_TypeDecl_values.containsKey(_parameters) && accessibleFrom_TypeDecl_computed != null
+        && accessibleFrom_TypeDecl_computed.containsKey(_parameters)
+        && (accessibleFrom_TypeDecl_computed.get(_parameters) == ASTNode$State.NON_CYCLE || accessibleFrom_TypeDecl_computed.get(_parameters) == state().cycle())) {
+      return (Boolean) accessibleFrom_TypeDecl_values.get(_parameters);
+    }
+    boolean accessibleFrom_TypeDecl_value = true;
+    if (state().inCircle()) {
+      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
+      accessibleFrom_TypeDecl_computed.put(_parameters, state().cycle());
+    
+    } else {
+      accessibleFrom_TypeDecl_values.put(_parameters, accessibleFrom_TypeDecl_value);
+      accessibleFrom_TypeDecl_computed.put(_parameters, ASTNode$State.NON_CYCLE);
+    
+    }
+    return accessibleFrom_TypeDecl_value;
+  }
+  /** @apilevel internal */
+  private void typeName_reset() {
+    typeName_computed = null;
+    typeName_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle typeName_computed = null;
+
+  /** @apilevel internal */
+  protected String typeName_value;
+
+  /**
+   * @attribute syn
+   * @aspect TypeName
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:95
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="TypeName", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:95")
+  public String typeName() {
+    ASTNode$State state = state();
+    if (typeName_computed == ASTNode$State.NON_CYCLE || typeName_computed == state().cycle()) {
+      return typeName_value;
+    }
+    typeName_value = name();
+    if (state().inCircle()) {
+      typeName_computed = state().cycle();
+    
+    } else {
+      typeName_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return typeName_value;
+  }
+  /** @apilevel internal */
+  private void unboxed_reset() {
+    unboxed_computed = null;
+    unboxed_value = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle unboxed_computed = null;
+
+  /** @apilevel internal */
+  protected TypeDecl unboxed_value;
+
+  /** Mapping between Reference type and corresponding unboxed Primitive type. 
+   * @attribute syn
+   * @aspect AutoBoxing
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="AutoBoxing", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/AutoBoxing.jrag:77")
+  public TypeDecl unboxed() {
+    ASTNode$State state = state();
+    if (unboxed_computed == ASTNode$State.NON_CYCLE || unboxed_computed == state().cycle()) {
+      return unboxed_value;
+    }
+    unboxed_value = unboxed_compute();
+    if (state().inCircle()) {
+      unboxed_computed = state().cycle();
+    
+    } else {
+      unboxed_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return unboxed_value;
+  }
+  /** @apilevel internal */
+  private TypeDecl unboxed_compute() {
+      for (Access bound: getTypeBoundList()) {
+        TypeDecl unboxed = bound.type().unboxed();
+        if (!unboxed.isUnknown()) {
+          return unboxed;
+        }
+      }
+      return unknownType();
+    }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:68
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:68")
+  public boolean strictSupertypeWildcard(WildcardType type) {
+    boolean strictSupertypeWildcard_WildcardType_value = true;
+    return strictSupertypeWildcard_WildcardType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:79
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:79")
+  public boolean strictSupertypeWildcardSuper(WildcardSuperType type) {
+    boolean strictSupertypeWildcardSuper_WildcardSuperType_value = type.superType().strictSubtype(this);
+    return strictSupertypeWildcardSuper_WildcardSuperType_value;
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:415
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:415")
+  public boolean strictSupertypeArrayDecl(ArrayDecl type) {
+    boolean strictSupertypeArrayDecl_ArrayDecl_value = false;
+    return strictSupertypeArrayDecl_ArrayDecl_value;
+  }
+  /** @apilevel internal */
+  private void strictSubtype_TypeDecl_reset() {
+    strictSubtype_TypeDecl_values = null;
+  }
+  protected java.util.Map strictSubtype_TypeDecl_values;
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
+  public boolean strictSubtype(TypeDecl type) {
+    Object _parameters = type;
+    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
+    ASTNode$State.CircularValue _value;
+    if (strictSubtype_TypeDecl_values.containsKey(_parameters)) {
+      Object _cache = strictSubtype_TypeDecl_values.get(_parameters);
+      if (!(_cache instanceof ASTNode$State.CircularValue)) {
+        return (Boolean) _cache;
+      } else {
+        _value = (ASTNode$State.CircularValue) _cache;
+      }
+    } else {
+      _value = new ASTNode$State.CircularValue();
+      strictSubtype_TypeDecl_values.put(_parameters, _value);
+      _value.value = true;
+    }
+    ASTNode$State state = state();
+    if (!state.inCircle() || state.calledByLazyAttribute()) {
+      state.enterCircle();
+      boolean new_strictSubtype_TypeDecl_value;
+      do {
+        _value.cycle = state.nextCycle();
+        new_strictSubtype_TypeDecl_value = type.strictSupertypeTypeVariable(this);
+        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+          state.setChangeInCycle();
+          _value.value = new_strictSubtype_TypeDecl_value;
+        }
+      } while (state.testAndClearChangeInCycle());
+      strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
+
+      state.leaveCircle();
+      return new_strictSubtype_TypeDecl_value;
+    } else if (_value.cycle != state.cycle()) {
+      _value.cycle = state.cycle();
+      boolean new_strictSubtype_TypeDecl_value = type.strictSupertypeTypeVariable(this);
+      if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
+        state.setChangeInCycle();
+        _value.value = new_strictSubtype_TypeDecl_value;
+      }
+      return new_strictSubtype_TypeDecl_value;
+    } else {
+      return (Boolean) _value.value;
+    }
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:281
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:281")
+  public boolean strictSupertypeTypeVariable(TypeVariable type) {
+    {
+        if (typeVarInMethod() && type.typeVarInMethod()
+            && genericMethodLevel() == type.genericMethodLevel()) {
+          if (typeVarPosition() == type.typeVarPosition() || this == type) {
+            return true;
+          }
+        } else {
+          if (this == type) {
+            return true;
+          }
+        }
+        for (int i = 0; i < type.getNumTypeBound(); i++) {
+          if (type.getTypeBound(i).type().strictSubtype(this)) {
+            return true;
+          }
+        }
+        return false;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
+  public boolean strictSupertypeClassDecl(ClassDecl type) {
+    {
+        return false;
+      }
+  }
+  /**
+   * @attribute syn
+   * @aspect StrictSubtype
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398")
+  public boolean strictSupertypeInterfaceDecl(InterfaceDecl type) {
+    {
+        return false;
+      }
+  }
   /** @apilevel internal */
   private void sameType_TypeVariable_reset() {
     sameType_TypeVariable_computed = new java.util.HashMap(4);
@@ -1477,10 +1612,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute syn
    * @aspect FunctionalInterface
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:144
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:144
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:144")
+  @ASTNodeAnnotation.Source(aspect="FunctionalInterface", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/FunctionalInterface.jrag:144")
   public boolean sameType(TypeVariable tv2) {
     Object _parameters = tv2;
     if (sameType_TypeVariable_computed == null) sameType_TypeVariable_computed = new java.util.HashMap(4);
@@ -1538,141 +1673,6 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
       return true;
     }
   /**
-   * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:68
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:68")
-  public boolean strictSupertypeWildcard(WildcardType type) {
-    boolean strictSupertypeWildcard_WildcardType_value = true;
-    return strictSupertypeWildcard_WildcardType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:79
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:79")
-  public boolean strictSupertypeWildcardSuper(WildcardSuperType type) {
-    boolean strictSupertypeWildcardSuper_WildcardSuperType_value = type.superType().strictSubtype(this);
-    return strictSupertypeWildcardSuper_WildcardSuperType_value;
-  }
-  /**
-   * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:415
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:415")
-  public boolean strictSupertypeArrayDecl(ArrayDecl type) {
-    boolean strictSupertypeArrayDecl_ArrayDecl_value = false;
-    return strictSupertypeArrayDecl_ArrayDecl_value;
-  }
-  /** @apilevel internal */
-  private void strictSubtype_TypeDecl_reset() {
-    strictSubtype_TypeDecl_values = null;
-  }
-  protected java.util.Map strictSubtype_TypeDecl_values;
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN, isCircular=true)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:363")
-  public boolean strictSubtype(TypeDecl type) {
-    Object _parameters = type;
-    if (strictSubtype_TypeDecl_values == null) strictSubtype_TypeDecl_values = new java.util.HashMap(4);
-    ASTNode$State.CircularValue _value;
-    if (strictSubtype_TypeDecl_values.containsKey(_parameters)) {
-      Object _cache = strictSubtype_TypeDecl_values.get(_parameters);
-      if (!(_cache instanceof ASTNode$State.CircularValue)) {
-        return (Boolean) _cache;
-      } else {
-        _value = (ASTNode$State.CircularValue) _cache;
-      }
-    } else {
-      _value = new ASTNode$State.CircularValue();
-      strictSubtype_TypeDecl_values.put(_parameters, _value);
-      _value.value = true;
-    }
-    ASTNode$State state = state();
-    if (!state.inCircle() || state.calledByLazyAttribute()) {
-      state.enterCircle();
-      boolean new_strictSubtype_TypeDecl_value;
-      do {
-        _value.cycle = state.nextCycle();
-        new_strictSubtype_TypeDecl_value = type.strictSupertypeTypeVariable(this);
-        if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
-          state.setChangeInCycle();
-          _value.value = new_strictSubtype_TypeDecl_value;
-        }
-      } while (state.testAndClearChangeInCycle());
-      strictSubtype_TypeDecl_values.put(_parameters, new_strictSubtype_TypeDecl_value);
-
-      state.leaveCircle();
-      return new_strictSubtype_TypeDecl_value;
-    } else if (_value.cycle != state.cycle()) {
-      _value.cycle = state.cycle();
-      boolean new_strictSubtype_TypeDecl_value = type.strictSupertypeTypeVariable(this);
-      if (new_strictSubtype_TypeDecl_value != ((Boolean)_value.value)) {
-        state.setChangeInCycle();
-        _value.value = new_strictSubtype_TypeDecl_value;
-      }
-      return new_strictSubtype_TypeDecl_value;
-    } else {
-      return (Boolean) _value.value;
-    }
-  }
-  /**
-   * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:281
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:281")
-  public boolean strictSupertypeTypeVariable(TypeVariable type) {
-    {
-        if (typeVarInMethod() && type.typeVarInMethod()
-            && genericMethodLevel() == type.genericMethodLevel()) {
-          if (typeVarPosition() == type.typeVarPosition() || this == type) {
-            return true;
-          }
-        } else {
-          if (this == type) {
-            return true;
-          }
-        }
-        for (int i = 0; i < type.getNumTypeBound(); i++) {
-          if (type.getTypeBound(i).type().strictSubtype(this)) {
-            return true;
-          }
-        }
-        return false;
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:378")
-  public boolean strictSupertypeClassDecl(ClassDecl type) {
-    {
-        return false;
-      }
-  }
-  /**
-   * @attribute syn
-   * @aspect StrictSubtype
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="StrictSubtype", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/GenericsSubtype.jrag:398")
-  public boolean strictSupertypeInterfaceDecl(InterfaceDecl type) {
-    {
-        return false;
-      }
-  }
-  /**
    * Returns a string describing the context of a type variable. If the type
    * variable is part of a type declaration then the context string is the
    * qualified name of the type. If the type variable is declared in a method
@@ -1680,10 +1680,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
    * signature of the method or constructor.
    * @attribute inh
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:789")
   public String typeVariableContext() {
     String typeVariableContext_value = getParent().Define_typeVariableContext(this, null);
     return typeVariableContext_value;
@@ -1691,10 +1691,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute inh
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1158
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1158
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1158")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1158")
   public TypeDecl typeObject() {
     TypeDecl typeObject_value = getParent().Define_typeObject(this, null);
     return typeObject_value;
@@ -1702,10 +1702,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute inh
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1168
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1168
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1168")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1168")
   public TypeDecl typeNull() {
     TypeDecl typeNull_value = getParent().Define_typeNull(this, null);
     return typeNull_value;
@@ -1713,10 +1713,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute inh
    * @aspect TypeVariablePositions
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29")
+  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:29")
   public int typeVarPosition() {
     ASTNode$State state = state();
     if (typeVarPosition_computed == ASTNode$State.NON_CYCLE || typeVarPosition_computed == state().cycle()) {
@@ -1745,10 +1745,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute inh
    * @aspect TypeVariablePositions
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30")
+  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:30")
   public int genericMethodLevel() {
     ASTNode$State state = state();
     if (genericMethodLevel_computed == ASTNode$State.NON_CYCLE || genericMethodLevel_computed == state().cycle()) {
@@ -1777,10 +1777,10 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   /**
    * @attribute inh
    * @aspect TypeVariablePositions
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32")
+  @ASTNodeAnnotation.Source(aspect="TypeVariablePositions", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:32")
   public boolean typeVarInMethod() {
     ASTNode$State state = state();
     if (typeVarInMethod_computed == ASTNode$State.NON_CYCLE || typeVarInMethod_computed == state().cycle()) {
@@ -1807,12 +1807,12 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   protected boolean typeVarInMethod_value;
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/SyntacticClassification.jrag:36
    * @apilevel internal
    */
   public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
     if (_callerNode == getTypeBoundListNoTransform()) {
-      // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:35
+      // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:35
       int childIndex = _callerNode.getIndexOfChild(_childNode);
       return NameType.TYPE_NAME;
     }
@@ -1825,14 +1825,14 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
   }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:40
+    // Declared at /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:40
     if (getNumTypeBound() == 0) {
       return rewriteRule0();
     }
     return super.rewriteTo();
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:40
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:40
    * @apilevel internal
    */
   private TypeVariable rewriteRule0() {
@@ -1845,14 +1845,14 @@ protected ASTNode$State.Cycle involvesTypeParameters_cycle = null;
     }  }
   /** @apilevel internal */
   public boolean canRewrite() {
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:40
+    // Declared at /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:40
     if (getNumTypeBound() == 0) {
       return true;
     }
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:91
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericTypeVariables.jrag:91
     {
       java.util.Set<ASTNode> contributors = _map.get(_root);
       if (contributors == null) {

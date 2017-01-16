@@ -5,21 +5,21 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
@@ -30,12 +30,12 @@ import java.io.DataInputStream;
 public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneable, PrettyPrintable {
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:38
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:38
    */
   private String DUMP_TREE_INDENT = "  ";
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:40
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:40
    */
   public String dumpTree() {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -44,7 +44,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:46
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:46
    */
   public void dumpTree(PrintStream out) {
     dumpTree(out, "");
@@ -52,7 +52,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:51
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:51
    */
   public void dumpTree(PrintStream out, String indent) {
     out.print(indent + getClass().getSimpleName());
@@ -69,7 +69,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:65
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:65
    */
   public String getTokens() {
     StringBuilder sb = new StringBuilder();
@@ -88,7 +88,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:81
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:81
    */
   public String dumpTreeNoRewrite() {
     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -97,7 +97,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:87
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:87
    */
   public void dumpTreeNoRewrite(PrintStream out) {
     dumpTreeNoRewrite(out, "");
@@ -105,7 +105,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect DumpTree
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:92
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DumpTree.jadd:92
    */
   public void dumpTreeNoRewrite(PrintStream out, String indent) {
     out.print(indent + getClass().getSimpleName());
@@ -122,7 +122,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect StructuredPrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/StructuredPrettyPrint.jadd:32
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/StructuredPrettyPrint.jadd:32
    */
   public String structuredPrettyPrint() throws IOException {
     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -134,7 +134,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   /**
    * Hacky way of inserting parens around all expressions.
    * @aspect StructuredPrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/StructuredPrettyPrint.jadd:43
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/StructuredPrettyPrint.jadd:43
    */
   private void wrapExprs() {
     for (int i = 0; i < getNumChildNoTransform(); ++i) {
@@ -151,53 +151,10 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
     }
   }
   /**
-   * Helper method to throw an error when prevExpr is evaluated somewhere where
-   * the attribute can not be evaluated.
-   * @aspect QualifiedNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:130
-   */
-  protected Expr prevExprError() {
-    throw new Error("prevExpr can not be evaluated outside of the right side of a Dot access.");
-  }
-  /**
-   * Helper method to throw an error when nextAccess is evaluated somewhere
-   * where the attribute can not be evaluated.
-   * @aspect QualifiedNames
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:152
-   */
-  protected Access nextAccessError() {
-    throw new Error("nextAccess can not be evaluated outside of the left side of a Dot access.");
-  }
-  /**
-   * @aspect AnonymousClasses
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:123
-   */
-  protected void collectExceptions(Collection<TypeDecl> exceptions, ASTNode target) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collectExceptions(exceptions, target);
-    }
-  }
-  /** @return a copy of the block as an NTAFinallyBlock. 
-   * @aspect NTAFinally
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NTAFinally.jrag:33
-   */
-  protected static NTAFinallyBlock ntaFinallyBlock(FinallyHost origin,
-      Stmt branch, Block block) {
-    NTAFinallyBlock ntaBlock = new NTAFinallyBlock(origin);
-    ntaBlock.addStmt((Block) block.treeCopyNoTransform());
-    if (block.canCompleteNormally()) {
-      FinallyHost enclosing = block.enclosingFinally(branch);
-      if (enclosing != null) {
-        ntaBlock.addStmt(ntaFinallyBlock(enclosing, branch, enclosing.getFinallyBlock()));
-      }
-    }
-    return ntaBlock;
-  }
-  /**
    * Returns a filtered collection of methods, keeping only the static methods
    * from the input collection.
    * @aspect LookupMethod
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:107
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:107
    */
   public static Collection<MethodDecl> keepStaticMethods(
       Collection<MethodDecl> methods) {
@@ -212,7 +169,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   /**
    * Utility method to add a single item in a SimpleSet based signature map.
    * @aspect MemberMethods
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:566
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:566
    */
   protected static <E> void putSimpleSetElement(Map<String, SimpleSet<E>> map,
       String key, E value) {
@@ -223,20 +180,83 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
     map.put(key, result.add(value));
   }
   /**
-   * @aspect ExceptionHandling
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:292
+   * @aspect VariableDeclarationTransformation
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:121
    */
-  protected boolean reachedException(TypeDecl type) {
-    for (int i = 0; i < getNumChild(); i++) {
-      if (getChild(i).reachedException(type)) {
-        return true;
-      }
+  public void clearLocations() {
+    setStart(0);
+    setEnd(0);
+    for (int i = 0; i < getNumChildNoTransform(); i++) {
+      getChildNoTransform(i).clearLocations();
     }
-    return false;
   }
   /**
+   * @aspect NameCheck
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:33
+   */
+  public TypeDecl extractSingleType(SimpleSet<TypeDecl> types) {
+    return types.isSingleton() ? types.singletonValue() : null;
+  }
+  /**
+   * @aspect DefiniteAssignment
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:574
+   */
+  protected boolean checkDUeverywhere(Variable v) {
+    for (int i = 0; i < getNumChild(); i++) {
+      if (!getChild(i).checkDUeverywhere(v)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  /**
+   * @aspect DefiniteAssignment
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:723
+   */
+  protected boolean isDescendantTo(ASTNode node) {
+    if (this == node) {
+      return true;
+    }
+    if (getParent() == null) {
+      return false;
+    }
+    return getParent().isDescendantTo(node);
+  }
+  /**
+   * @aspect BranchTarget
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:94
+   */
+  public void collectBranches(Collection<Stmt> c) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collectBranches(c);
+    }
+  }
+  /**
+   * Helper method to throw an error when prevExpr is evaluated somewhere where
+   * the attribute can not be evaluated.
+   * @aspect QualifiedNames
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:130
+   */
+  protected Expr prevExprError() {
+    throw new Error("prevExpr can not be evaluated outside of the right side of a Dot access.");
+  }
+  /**
+   * Helper method to throw an error when nextAccess is evaluated somewhere
+   * where the attribute can not be evaluated.
+   * @aspect QualifiedNames
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ResolveAmbiguousNames.jrag:152
+   */
+  protected Access nextAccessError() {
+    throw new Error("nextAccess can not be evaluated outside of the left side of a Dot access.");
+  }
+  /**
+   * @aspect PrimitiveTypes
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:35
+   */
+  protected static final String PRIMITIVE_PACKAGE_NAME = "@primitive";
+  /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:34
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:34
    */
   protected String sourceFile() {
     ASTNode node = this;
@@ -251,7 +271,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:59
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:59
    */
   public ASTNode setLocation(ASTNode node) {
     setStart(node.getStart());
@@ -260,7 +280,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:65
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:65
    */
   public ASTNode setStart(int i) {
     start = i;
@@ -268,14 +288,14 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:70
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:70
    */
   public int start() {
     return start;
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:74
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:74
    */
   public ASTNode setEnd(int i) {
     end = i;
@@ -283,42 +303,42 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:79
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:79
    */
   public int end() {
     return end;
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:83
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:83
    */
   public String location() {
     return "" + lineNumber();
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:87
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:87
    */
   public String errorPrefix() {
     return sourceFile() + ":" + location() + ":\n" + "  *** Semantic Error: ";
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:91
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:91
    */
   public String warningPrefix() {
     return sourceFile() + ":" + location() + ":\n" + "  *** WARNING: ";
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:240
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:240
    */
   public Problem errorf(String messagefmt, Object... args) {
     return error(String.format(messagefmt, args));
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:244
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:244
    */
   public Problem error(String message) {
     ASTNode node = this;
@@ -340,7 +360,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:263
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:263
    */
   public Problem warning(String message) {
     ASTNode node = this;
@@ -352,17 +372,10 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
         Problem.Severity.WARNING, Problem.Kind.SEMANTIC);
   }
   /**
-   * @aspect NameCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:33
-   */
-  public TypeDecl extractSingleType(SimpleSet<TypeDecl> types) {
-    return types.isSingleton() ? types.singletonValue() : null;
-  }
-  /**
    * Pretty-print this ASTNode.
    * @return pretty-printed representation of this AST node
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:41
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:41
    */
   public String prettyPrint() {
     ByteArrayOutputStream buf = new ByteArrayOutputStream();
@@ -373,27 +386,71 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
    * Pretty print this AST node to the target PrintStream.
    * @param out target for pretty printing
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:51
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:51
    */
   public void prettyPrint(PrintStream out) {
     prettyPrint(new PrettyPrinter("  ", out));
   }
   /** @return the name of the class implementing this AST node. 
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:56
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:56
    */
   public String toString() {
     return getClass().getName();
   }
   /**
    * @aspect PrettyPrintUtil
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:60
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/PrettyPrintUtil.jrag:60
    */
   public void prettyPrint(PrettyPrinter out) {
   }
   /**
+   * @aspect DataStructures
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:312
+   */
+  public static <T> SimpleSet<T> emptySet() {
+    return (SimpleSet<T>) SimpleSet.EMPTY_SET;
+  }
+  /**
+   * @aspect ExceptionHandling
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:292
+   */
+  protected boolean reachedException(TypeDecl type) {
+    for (int i = 0; i < getNumChild(); i++) {
+      if (getChild(i).reachedException(type)) {
+        return true;
+      }
+    }
+    return false;
+  }
+  /**
+   * @aspect AnonymousClasses
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/AnonymousClasses.jrag:123
+   */
+  protected void collectExceptions(Collection<TypeDecl> exceptions, ASTNode target) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collectExceptions(exceptions, target);
+    }
+  }
+  /** @return a copy of the block as an NTAFinallyBlock. 
+   * @aspect NTAFinally
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NTAFinally.jrag:33
+   */
+  protected static NTAFinallyBlock ntaFinallyBlock(FinallyHost origin,
+      Stmt branch, Block block) {
+    NTAFinallyBlock ntaBlock = new NTAFinallyBlock(origin);
+    ntaBlock.addStmt((Block) block.treeCopyNoTransform());
+    if (block.canCompleteNormally()) {
+      FinallyHost enclosing = block.enclosingFinally(branch);
+      if (enclosing != null) {
+        ntaBlock.addStmt(ntaFinallyBlock(enclosing, branch, enclosing.getFinallyBlock()));
+      }
+    }
+    return ntaBlock;
+  }
+  /**
    * @aspect VariableScope
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:299
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupVariable.jrag:299
    */
   public SimpleSet<Variable> removeInstanceVariables(SimpleSet<Variable> vars) {
     SimpleSet<Variable> newSet = emptySet();
@@ -405,66 +462,9 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
     return newSet;
   }
   /**
-   * @aspect DataStructures
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DataStructures.jrag:312
-   */
-  public static <T> SimpleSet<T> emptySet() {
-    return (SimpleSet<T>) SimpleSet.EMPTY_SET;
-  }
-  /**
-   * @aspect VariableDeclarationTransformation
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/VariableDeclaration.jrag:121
-   */
-  public void clearLocations() {
-    setStart(0);
-    setEnd(0);
-    for (int i = 0; i < getNumChildNoTransform(); i++) {
-      getChildNoTransform(i).clearLocations();
-    }
-  }
-  /**
-   * @aspect DefiniteAssignment
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:574
-   */
-  protected boolean checkDUeverywhere(Variable v) {
-    for (int i = 0; i < getNumChild(); i++) {
-      if (!getChild(i).checkDUeverywhere(v)) {
-        return false;
-      }
-    }
-    return true;
-  }
-  /**
-   * @aspect DefiniteAssignment
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:723
-   */
-  protected boolean isDescendantTo(ASTNode node) {
-    if (this == node) {
-      return true;
-    }
-    if (getParent() == null) {
-      return false;
-    }
-    return getParent().isDescendantTo(node);
-  }
-  /**
-   * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:94
-   */
-  public void collectBranches(Collection<Stmt> c) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collectBranches(c);
-    }
-  }
-  /**
-   * @aspect PrimitiveTypes
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/PrimitiveTypes.jrag:35
-   */
-  protected static final String PRIMITIVE_PACKAGE_NAME = "@primitive";
-  /**
    * Create a copy of the access list where each access has been erased.
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1490
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1490
    */
   protected List<Access> erasedAccessList(List<Access> list) {
     List<Access> result = new List<Access>();
@@ -476,7 +476,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   /**
    * Create a copy of the parameter list where each parameter has been erased.
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1501
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1501
    */
   protected List<ParameterDeclaration> erasedParameterList(List<ParameterDeclaration> list) {
     List<ParameterDeclaration> result = new List<ParameterDeclaration>();
@@ -487,7 +487,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect UncheckedConversion
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/UncheckedConversion.jrag:61
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/UncheckedConversion.jrag:61
    */
   Collection<Problem> uncheckedConversionWarnings(TypeDecl source, TypeDecl dest) {
     if (source.isUncheckedConversionTo(dest)) {
@@ -904,7 +904,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:278
    */
     protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -916,79 +916,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
-   */
-    protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_usedTypes(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
-   */
-    protected void collect_contributors_CompilationUnit_usedTypesList(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_usedTypesList(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_usedTypesList(HashSet<String> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
-   */
-    protected void collect_contributors_CompilationUnit_importTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_importTypes(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_importTypes(HashSet<SingleTypeImportDecl> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
-   */
-    protected void collect_contributors_CompilationUnit_staticMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_staticMethods(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_staticMethods(HashSet<String> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
-   */
-    protected void collect_contributors_CompilationUnit_variableAccess(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_variableAccess(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_variableAccess(HashSet<String> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
-   */
-    protected void collect_contributors_CompilationUnit_staticImports(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    for (int i = 0; i < getNumChild(); i++) {
-      getChild(i).collect_contributors_CompilationUnit_staticImports(_root, _map);
-    }
-  }
-  protected void contributeTo_CompilationUnit_staticImports(HashSet<SingleStaticImportDecl> collection) {
-  }
-
-  /**
-   * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:4
    */
     protected void collect_contributors_CompilationUnit_onDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -1000,7 +928,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/ImportOnDemand.jrag:5
    */
     protected void collect_contributors_CompilationUnit_staticOnDemlines(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -1012,7 +940,79 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:25
+   */
+    protected void collect_contributors_CompilationUnit_usedTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_usedTypes(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_usedTypes(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:26
+   */
+    protected void collect_contributors_CompilationUnit_usedTypesList(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_usedTypesList(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_usedTypesList(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/UnusedImports.jrag:27
+   */
+    protected void collect_contributors_CompilationUnit_importTypes(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_importTypes(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_importTypes(HashSet<SingleTypeImportDecl> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:7
+   */
+    protected void collect_contributors_CompilationUnit_staticMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_staticMethods(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticMethods(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:8
+   */
+    protected void collect_contributors_CompilationUnit_variableAccess(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_variableAccess(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_variableAccess(HashSet<String> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/StaticStuff.jrag:9
+   */
+    protected void collect_contributors_CompilationUnit_staticImports(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
+    for (int i = 0; i < getNumChild(); i++) {
+      getChild(i).collect_contributors_CompilationUnit_staticImports(_root, _map);
+    }
+  }
+  protected void contributeTo_CompilationUnit_staticImports(HashSet<SingleStaticImportDecl> collection) {
+  }
+
+  /**
+   * @aspect <NoAspect>
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:5
    */
     protected void collect_contributors_CompilationUnit_methods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -1024,7 +1024,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/src/jastadd/OverrideAnnotation.jrag:6
    */
     protected void collect_contributors_CompilationUnit_superClassMethods(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -1036,7 +1036,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
 
   /**
    * @aspect <NoAspect>
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:47
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/LambdaBody.jrag:47
    */
     protected void collect_contributors_BlockLambdaBody_lambdaReturns(Program _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
     for (int i = 0; i < getNumChild(); i++) {
@@ -1049,10 +1049,10 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   /**
    * @attribute syn
    * @aspect ErrorCheck
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46")
+  @ASTNodeAnnotation.Source(aspect="ErrorCheck", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ErrorCheck.jrag:46")
   public int lineNumber() {
     {
         ASTNode n = this;
@@ -1065,10 +1065,10 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   /**
    * @attribute syn
    * @aspect LookupParTypeDecl
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1170
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1170
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1170")
+  @ASTNodeAnnotation.Source(aspect="LookupParTypeDecl", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1170")
   public boolean usesTypeVariable() {
     {
         for (int i = 0; i < getNumChild(); i++) {
@@ -1082,35 +1082,35 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   /**
    * @attribute inh
    * @aspect AddOptionsToProgram
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:40
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:40
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="AddOptionsToProgram", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:40")
+  @ASTNodeAnnotation.Source(aspect="AddOptionsToProgram", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:40")
   public Program program() {
     Program program_value = getParent().Define_program(this, null);
     return program_value;
   }
-  /** @return the enclosing compilation unit. 
-   * @attribute inh
-   * @aspect ClassPath
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105")
-  public CompilationUnit compilationUnit() {
-    CompilationUnit compilationUnit_value = getParent().Define_compilationUnit(this, null);
-    return compilationUnit_value;
-  }
   /** @return {@code true} if the field declaration is before this node. 
    * @attribute inh
    * @aspect DeclareBeforeUse
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:58
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:58
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="DeclareBeforeUse", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:58")
+  @ASTNodeAnnotation.Source(aspect="DeclareBeforeUse", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:58")
   public boolean declaredBefore(Variable decl) {
     boolean declaredBefore_Variable_value = getParent().Define_declaredBefore(this, null, decl);
     return declaredBefore_Variable_value;
+  }
+  /** @return the enclosing compilation unit. 
+   * @attribute inh
+   * @aspect ClassPath
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
+  @ASTNodeAnnotation.Source(aspect="ClassPath", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:105")
+  public CompilationUnit compilationUnit() {
+    CompilationUnit compilationUnit_value = getParent().Define_compilationUnit(this, null);
+    return compilationUnit_value;
   }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
@@ -1118,6 +1118,26 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
   /** @apilevel internal */
   public boolean canRewrite() {
+    return false;
+  }
+  /** @apilevel internal */
+  public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_enclosingFinally(self, _callerNode, branch)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_enclosingFinally(self, _callerNode, branch);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ExtraInheritedEqs.jrag:29
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute enclosingFinally
+   */
+  protected boolean canDefine_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
     return false;
   }
   /** @apilevel internal */
@@ -1133,431 +1153,11 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:42
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Options.jadd:42
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute program
    */
   protected boolean canDefine_program(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public String Define_methodHost(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_methodHost(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_methodHost(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:773
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute methodHost
-   */
-  protected boolean canDefine_methodHost(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_inExplicitConstructorInvocation(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_inExplicitConstructorInvocation(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:195
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute inExplicitConstructorInvocation
-   */
-  protected boolean canDefine_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_enclosingExplicitConstructorHostType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_enclosingExplicitConstructorHostType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:205
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute enclosingExplicitConstructorHostType
-   */
-  protected boolean canDefine_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_inStaticContext(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_inStaticContext(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:210
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute inStaticContext
-   */
-  protected boolean canDefine_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_reportUnreachable(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_reportUnreachable(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:281
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute reportUnreachable
-   */
-  protected boolean canDefine_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public CompilationUnit Define_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_compilationUnit(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_compilationUnit(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:107
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute compilationUnit
-   */
-  protected boolean canDefine_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_componentType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_componentType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_componentType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:54
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute componentType
-   */
-  protected boolean canDefine_componentType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_superType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_superType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_superType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupType.jrag:92
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute superType
-   */
-  protected boolean canDefine_superType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public ConstructorDecl Define_constructorDecl(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_constructorDecl(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_constructorDecl(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:118
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute constructorDecl
-   */
-  protected boolean canDefine_constructorDecl(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_nameType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_nameType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/MethodReference.jrag:196
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute nameType
-   */
-  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBePublic(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBePublic(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:327
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBePublic
-   */
-  protected boolean canDefine_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeProtected(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeProtected(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:328
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeProtected
-   */
-  protected boolean canDefine_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBePrivate(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBePrivate(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:329
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBePrivate
-   */
-  protected boolean canDefine_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeStatic(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeStatic(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:67
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeStatic
-   */
-  protected boolean canDefine_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeFinal(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeFinal(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:314
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeFinal
-   */
-  protected boolean canDefine_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeAbstract(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeAbstract(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:60
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeAbstract
-   */
-  protected boolean canDefine_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeVolatile(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeVolatile(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeVolatile(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:324
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeVolatile
-   */
-  protected boolean canDefine_mayBeVolatile(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeTransient(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeTransient(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeTransient(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:320
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeTransient
-   */
-  protected boolean canDefine_mayBeTransient(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeStrictfp(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeStrictfp(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:335
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeStrictfp
-   */
-  protected boolean canDefine_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeSynchronized(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeSynchronized(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:333
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeSynchronized
-   */
-  protected boolean canDefine_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_mayBeNative(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_mayBeNative(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:334
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute mayBeNative
-   */
-  protected boolean canDefine_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -1573,7 +1173,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:44
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:44
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute nestedScope
    */
@@ -1593,451 +1193,11 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:93
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupMethod.jrag:93
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupMethod
    */
   protected boolean canDefine_lookupMethod(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeException(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeException(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeException(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:48
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeException
-   */
-  protected boolean canDefine_typeException(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeRuntimeException(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeRuntimeException(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeRuntimeException(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:51
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeRuntimeException
-   */
-  protected boolean canDefine_typeRuntimeException(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeError(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeError(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeError(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:54
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeError
-   */
-  protected boolean canDefine_typeError(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeNullPointerException(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeNullPointerException(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeNullPointerException(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:57
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeNullPointerException
-   */
-  protected boolean canDefine_typeNullPointerException(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeThrowable(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeThrowable(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeThrowable(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:61
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeThrowable
-   */
-  protected boolean canDefine_typeThrowable(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_handlesException(self, _callerNode, exceptionType)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_handlesException(self, _callerNode, exceptionType);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:127
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute handlesException
-   */
-  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
-    return false;
-  }
-  /** @apilevel internal */
-  public ASTNode Define_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_enclosingBlock(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_enclosingBlock(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:357
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute enclosingBlock
-   */
-  protected boolean canDefine_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public VariableScope Define_outerScope(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_outerScope(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_outerScope(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:36
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute outerScope
-   */
-  protected boolean canDefine_outerScope(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_insideLoop(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_insideLoop(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:212
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute insideLoop
-   */
-  protected boolean canDefine_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_insideSwitch(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_insideSwitch(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_insideSwitch(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:515
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute insideSwitch
-   */
-  protected boolean canDefine_insideSwitch(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public Case Define_bind(ASTNode _callerNode, ASTNode _childNode, Case c) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_bind(self, _callerNode, c)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_bind(self, _callerNode, c);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:571
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute bind
-   */
-  protected boolean canDefine_bind(ASTNode _callerNode, ASTNode _childNode, Case c) {
-    return false;
-  }
-  /** @apilevel internal */
-  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_lookupVariable(self, _callerNode, name)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_lookupVariable(self, _callerNode, name);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:33
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute lookupVariable
-   */
-  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return false;
-  }
-  /** @apilevel internal */
-  public Collection<ConstructorDecl> Define_lookupConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_lookupConstructor(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_lookupConstructor(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:39
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute lookupConstructor
-   */
-  protected boolean canDefine_lookupConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public Collection<ConstructorDecl> Define_lookupSuperConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_lookupSuperConstructor(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_lookupSuperConstructor(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:45
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute lookupSuperConstructor
-   */
-  protected boolean canDefine_lookupSuperConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isAnonymous(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isAnonymous(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isAnonymous(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:234
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isAnonymous
-   */
-  protected boolean canDefine_isAnonymous(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public Variable Define_unknownField(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_unknownField(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_unknownField(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:249
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute unknownField
-   */
-  protected boolean canDefine_unknownField(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public MethodDecl Define_unknownMethod(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_unknownMethod(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_unknownMethod(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:255
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute unknownMethod
-   */
-  protected boolean canDefine_unknownMethod(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public ConstructorDecl Define_unknownConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_unknownConstructor(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_unknownConstructor(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:262
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute unknownConstructor
-   */
-  protected boolean canDefine_unknownConstructor(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_declType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_declType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_declType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:717
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute declType
-   */
-  protected boolean canDefine_declType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public BodyDecl Define_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_enclosingBodyDecl(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_enclosingBodyDecl(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:569
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute enclosingBodyDecl
-   */
-  protected boolean canDefine_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isMemberType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isMemberType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:582
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isMemberType
-   */
-  protected boolean canDefine_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_hostType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_hostType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_hostType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:643
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute hostType
-   */
-  protected boolean canDefine_hostType(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -2053,7 +1213,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:54
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:54
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isMethodParameter
    */
@@ -2073,7 +1233,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:55
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:55
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isConstructorParameter
    */
@@ -2093,551 +1253,11 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:56
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/MultiCatch.jrag:56
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isExceptionHandlerParameter
    */
   protected boolean canDefine_isExceptionHandlerParameter(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_switchType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_switchType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_switchType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:483
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute switchType
-   */
-  protected boolean canDefine_switchType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_returnType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_returnType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_returnType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:39
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute returnType
-   */
-  protected boolean canDefine_returnType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_enclosingInstance(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_enclosingInstance(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_enclosingInstance(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:688
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute enclosingInstance
-   */
-  protected boolean canDefine_enclosingInstance(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isDest(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isDest(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:62
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isDest
-   */
-  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isSource(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isSource(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:61
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isSource
-   */
-  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isIncOrDec(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isIncOrDec(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:69
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isIncOrDec
-   */
-  protected boolean canDefine_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_assignedBefore(self, _callerNode, v)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_assignedBefore(self, _callerNode, v);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:227
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute assignedBefore
-   */
-  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_unassignedBefore(self, _callerNode, v)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_unassignedBefore(self, _callerNode, v);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:210
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute unassignedBefore
-   */
-  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
-    return false;
-  }
-  /** @apilevel internal */
-  public LabeledStmt Define_lookupLabel(ASTNode _callerNode, ASTNode _childNode, String name) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_lookupLabel(self, _callerNode, name)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_lookupLabel(self, _callerNode, name);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:260
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute lookupLabel
-   */
-  protected boolean canDefine_lookupLabel(ASTNode _callerNode, ASTNode _childNode, String name) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeObject(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeObject(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeObject(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:41
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeObject
-   */
-  protected boolean canDefine_typeObject(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeCloneable(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeCloneable(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeCloneable(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:42
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeCloneable
-   */
-  protected boolean canDefine_typeCloneable(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeSerializable(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeSerializable(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeSerializable(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:43
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeSerializable
-   */
-  protected boolean canDefine_typeSerializable(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeBoolean(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeBoolean(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeBoolean(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:55
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeBoolean
-   */
-  protected boolean canDefine_typeBoolean(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeByte(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeByte(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeByte(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:56
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeByte
-   */
-  protected boolean canDefine_typeByte(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeShort(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeShort(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeShort(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:57
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeShort
-   */
-  protected boolean canDefine_typeShort(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeChar(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeChar(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeChar(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:58
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeChar
-   */
-  protected boolean canDefine_typeChar(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeInt(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeInt(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeInt(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:59
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeInt
-   */
-  protected boolean canDefine_typeInt(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeLong(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeLong(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeLong(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:60
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeLong
-   */
-  protected boolean canDefine_typeLong(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeFloat(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeFloat(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeFloat(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:61
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeFloat
-   */
-  protected boolean canDefine_typeFloat(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeDouble(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeDouble(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeDouble(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:62
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeDouble
-   */
-  protected boolean canDefine_typeDouble(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeString(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeString(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeString(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:63
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeString
-   */
-  protected boolean canDefine_typeString(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeVoid(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeVoid(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeVoid(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:66
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeVoid
-   */
-  protected boolean canDefine_typeVoid(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_typeNull(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeNull(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeNull(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:69
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeNull
-   */
-  protected boolean canDefine_typeNull(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_unknownType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_unknownType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_unknownType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:34
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute unknownType
-   */
-  protected boolean canDefine_unknownType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_hasPackage(self, _callerNode, packageName)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_hasPackage(self, _callerNode, packageName);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:124
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute hasPackage
-   */
-  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String packageName, String typeName) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_lookupType(self, _callerNode, packageName, typeName)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_lookupType(self, _callerNode, packageName, typeName);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:138
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute lookupType
-   */
-  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String packageName, String typeName) {
-    return false;
-  }
-  /** @apilevel internal */
-  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_lookupType(self, _callerNode, name)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_lookupType(self, _callerNode, name);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:335
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute lookupType
-   */
-  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
     return false;
   }
   /** @apilevel internal */
@@ -2653,7 +1273,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:40
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:40
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute blockIndex
    */
@@ -2673,11 +1293,1431 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:62
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DeclareBeforeUse.jrag:62
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute declaredBefore
    */
   protected boolean canDefine_declaredBefore(ASTNode _callerNode, ASTNode _childNode, Variable decl) {
+    return false;
+  }
+  /** @apilevel internal */
+  public ASTNode Define_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_enclosingBlock(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_enclosingBlock(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:357
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute enclosingBlock
+   */
+  protected boolean canDefine_enclosingBlock(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public VariableScope Define_outerScope(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_outerScope(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_outerScope(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/NameCheck.jrag:36
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute outerScope
+   */
+  protected boolean canDefine_outerScope(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_insideLoop(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_insideLoop(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:212
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute insideLoop
+   */
+  protected boolean canDefine_insideLoop(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_insideSwitch(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_insideSwitch(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_insideSwitch(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:515
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute insideSwitch
+   */
+  protected boolean canDefine_insideSwitch(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public Case Define_bind(ASTNode _callerNode, ASTNode _childNode, Case c) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_bind(self, _callerNode, c)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_bind(self, _callerNode, c);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:571
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute bind
+   */
+  protected boolean canDefine_bind(ASTNode _callerNode, ASTNode _childNode, Case c) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isDest(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isDest(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:62
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isDest
+   */
+  protected boolean canDefine_isDest(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isSource(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isSource(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:61
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isSource
+   */
+  protected boolean canDefine_isSource(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isIncOrDec(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isIncOrDec(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:69
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isIncOrDec
+   */
+  protected boolean canDefine_isIncOrDec(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_assignedBefore(self, _callerNode, v)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_assignedBefore(self, _callerNode, v);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:227
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute assignedBefore
+   */
+  protected boolean canDefine_assignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_unassignedBefore(self, _callerNode, v)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_unassignedBefore(self, _callerNode, v);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/EnhancedFor.jrag:210
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute unassignedBefore
+   */
+  protected boolean canDefine_unassignedBefore(ASTNode _callerNode, ASTNode _childNode, Variable v) {
+    return false;
+  }
+  /** @apilevel internal */
+  public LabeledStmt Define_lookupLabel(ASTNode _callerNode, ASTNode _childNode, String name) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_lookupLabel(self, _callerNode, name)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_lookupLabel(self, _callerNode, name);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:260
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute lookupLabel
+   */
+  protected boolean canDefine_lookupLabel(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return false;
+  }
+  /** @apilevel internal */
+  public NameType Define_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_nameType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_nameType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ConstructorReference.jrag:65
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute nameType
+   */
+  protected boolean canDefine_nameType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_reportUnreachable(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_reportUnreachable(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:281
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute reportUnreachable
+   */
+  protected boolean canDefine_reportUnreachable(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeObject(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeObject(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeObject(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:41
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeObject
+   */
+  protected boolean canDefine_typeObject(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeCloneable(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeCloneable(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeCloneable(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:42
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeCloneable
+   */
+  protected boolean canDefine_typeCloneable(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeSerializable(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeSerializable(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeSerializable(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:43
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeSerializable
+   */
+  protected boolean canDefine_typeSerializable(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeBoolean(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeBoolean(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeBoolean(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:55
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeBoolean
+   */
+  protected boolean canDefine_typeBoolean(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeByte(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeByte(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeByte(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:56
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeByte
+   */
+  protected boolean canDefine_typeByte(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeShort(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeShort(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeShort(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:57
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeShort
+   */
+  protected boolean canDefine_typeShort(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeChar(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeChar(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeChar(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:58
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeChar
+   */
+  protected boolean canDefine_typeChar(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeInt(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeInt(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeInt(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:59
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeInt
+   */
+  protected boolean canDefine_typeInt(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeLong(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeLong(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeLong(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:60
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeLong
+   */
+  protected boolean canDefine_typeLong(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeFloat(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeFloat(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeFloat(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:61
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeFloat
+   */
+  protected boolean canDefine_typeFloat(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeDouble(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeDouble(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeDouble(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:62
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeDouble
+   */
+  protected boolean canDefine_typeDouble(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeString(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeString(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeString(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:63
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeString
+   */
+  protected boolean canDefine_typeString(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeVoid(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeVoid(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeVoid(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:66
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeVoid
+   */
+  protected boolean canDefine_typeVoid(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeNull(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeNull(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeNull(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:69
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeNull
+   */
+  protected boolean canDefine_typeNull(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_unknownType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_unknownType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_unknownType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:34
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute unknownType
+   */
+  protected boolean canDefine_unknownType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_hasPackage(self, _callerNode, packageName)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_hasPackage(self, _callerNode, packageName);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:124
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute hasPackage
+   */
+  protected boolean canDefine_hasPackage(ASTNode _callerNode, ASTNode _childNode, String packageName) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String packageName, String typeName) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_lookupType(self, _callerNode, packageName, typeName)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_lookupType(self, _callerNode, packageName, typeName);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupType.jrag:138
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute lookupType
+   */
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String packageName, String typeName) {
+    return false;
+  }
+  /** @apilevel internal */
+  public SimpleSet<TypeDecl> Define_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_lookupType(self, _callerNode, name)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_lookupType(self, _callerNode, name);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericMethods.jrag:240
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute lookupType
+   */
+  protected boolean canDefine_lookupType(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_switchType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_switchType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_switchType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:483
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute switchType
+   */
+  protected boolean canDefine_switchType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_returnType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_returnType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_returnType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:39
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute returnType
+   */
+  protected boolean canDefine_returnType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_enclosingInstance(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_enclosingInstance(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_enclosingInstance(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeCheck.jrag:688
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute enclosingInstance
+   */
+  protected boolean canDefine_enclosingInstance(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public CompilationUnit Define_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_compilationUnit(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_compilationUnit(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ClassPath.jrag:107
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute compilationUnit
+   */
+  protected boolean canDefine_compilationUnit(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public Collection<ConstructorDecl> Define_lookupConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_lookupConstructor(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_lookupConstructor(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:39
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute lookupConstructor
+   */
+  protected boolean canDefine_lookupConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public Collection<ConstructorDecl> Define_lookupSuperConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_lookupSuperConstructor(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_lookupSuperConstructor(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/LookupConstructor.jrag:45
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute lookupSuperConstructor
+   */
+  protected boolean canDefine_lookupSuperConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBePublic(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBePublic(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:327
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBePublic
+   */
+  protected boolean canDefine_mayBePublic(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeProtected(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeProtected(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:328
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeProtected
+   */
+  protected boolean canDefine_mayBeProtected(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBePrivate(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBePrivate(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:329
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBePrivate
+   */
+  protected boolean canDefine_mayBePrivate(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeStatic(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeStatic(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:67
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeStatic
+   */
+  protected boolean canDefine_mayBeStatic(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeFinal(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeFinal(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:314
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeFinal
+   */
+  protected boolean canDefine_mayBeFinal(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeAbstract(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeAbstract(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:60
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeAbstract
+   */
+  protected boolean canDefine_mayBeAbstract(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeVolatile(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeVolatile(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeVolatile(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:324
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeVolatile
+   */
+  protected boolean canDefine_mayBeVolatile(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeTransient(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeTransient(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeTransient(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:320
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeTransient
+   */
+  protected boolean canDefine_mayBeTransient(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeStrictfp(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeStrictfp(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:335
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeStrictfp
+   */
+  protected boolean canDefine_mayBeStrictfp(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeSynchronized(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeSynchronized(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:333
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeSynchronized
+   */
+  protected boolean canDefine_mayBeSynchronized(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_mayBeNative(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_mayBeNative(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Modifiers.jrag:334
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute mayBeNative
+   */
+  protected boolean canDefine_mayBeNative(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeException(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeException(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeException(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:48
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeException
+   */
+  protected boolean canDefine_typeException(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeRuntimeException(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeRuntimeException(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeRuntimeException(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:51
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeRuntimeException
+   */
+  protected boolean canDefine_typeRuntimeException(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeError(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeError(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeError(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:54
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeError
+   */
+  protected boolean canDefine_typeError(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeNullPointerException(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeNullPointerException(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeNullPointerException(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:57
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeNullPointerException
+   */
+  protected boolean canDefine_typeNullPointerException(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_typeThrowable(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeThrowable(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeThrowable(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/ExceptionHandling.jrag:61
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeThrowable
+   */
+  protected boolean canDefine_typeThrowable(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_handlesException(self, _callerNode, exceptionType)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_handlesException(self, _callerNode, exceptionType);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/LambdaExpr.jrag:127
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute handlesException
+   */
+  protected boolean canDefine_handlesException(ASTNode _callerNode, ASTNode _childNode, TypeDecl exceptionType) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_superType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_superType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_superType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/LookupType.jrag:92
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute superType
+   */
+  protected boolean canDefine_superType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public ConstructorDecl Define_constructorDecl(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_constructorDecl(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_constructorDecl(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/MethodSignature.jrag:118
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute constructorDecl
+   */
+  protected boolean canDefine_constructorDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_componentType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_componentType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_componentType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/Arrays.jrag:54
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute componentType
+   */
+  protected boolean canDefine_componentType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public SimpleSet<Variable> Define_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_lookupVariable(self, _callerNode, name)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_lookupVariable(self, _callerNode, name);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/LookupVariable.jrag:33
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute lookupVariable
+   */
+  protected boolean canDefine_lookupVariable(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isAnonymous(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isAnonymous(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isAnonymous(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:234
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isAnonymous
+   */
+  protected boolean canDefine_isAnonymous(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public Variable Define_unknownField(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_unknownField(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_unknownField(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:249
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute unknownField
+   */
+  protected boolean canDefine_unknownField(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public MethodDecl Define_unknownMethod(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_unknownMethod(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_unknownMethod(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:255
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute unknownMethod
+   */
+  protected boolean canDefine_unknownMethod(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public ConstructorDecl Define_unknownConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_unknownConstructor(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_unknownConstructor(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:262
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute unknownConstructor
+   */
+  protected boolean canDefine_unknownConstructor(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_declType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_declType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_declType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:717
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute declType
+   */
+  protected boolean canDefine_declType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public BodyDecl Define_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_enclosingBodyDecl(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_enclosingBodyDecl(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:569
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute enclosingBodyDecl
+   */
+  protected boolean canDefine_enclosingBodyDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isMemberType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isMemberType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:582
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isMemberType
+   */
+  protected boolean canDefine_isMemberType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_hostType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_hostType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_hostType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:643
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute hostType
+   */
+  protected boolean canDefine_hostType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public String Define_methodHost(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_methodHost(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_methodHost(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:773
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute methodHost
+   */
+  protected boolean canDefine_methodHost(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_inExplicitConstructorInvocation(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_inExplicitConstructorInvocation(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:195
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute inExplicitConstructorInvocation
+   */
+  protected boolean canDefine_inExplicitConstructorInvocation(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_enclosingExplicitConstructorHostType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_enclosingExplicitConstructorHostType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeHierarchyCheck.jrag:205
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute enclosingExplicitConstructorHostType
+   */
+  protected boolean canDefine_enclosingExplicitConstructorHostType(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_inStaticContext(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_inStaticContext(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:210
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute inStaticContext
+   */
+  protected boolean canDefine_inStaticContext(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public TypeDecl Define_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_assignConvertedType(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_assignConvertedType(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:69
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute assignConvertedType
+   */
+  protected boolean canDefine_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -2693,7 +2733,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:134
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:134
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute mayUseAnnotationTarget
    */
@@ -2713,7 +2753,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:280
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:280
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupElementTypeValue
    */
@@ -2733,7 +2773,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:409
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:409
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute withinSuppressWarnings
    */
@@ -2753,7 +2793,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:538
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:538
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute withinDeprecatedAnnotation
    */
@@ -2773,7 +2813,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:610
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:610
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupAnnotation
    */
@@ -2793,7 +2833,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:650
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:650
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute enclosingAnnotationDecl
    */
@@ -2813,7 +2853,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/VariableArityParameters.jrag:30
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/VariableArityParameters.jrag:30
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute variableArityValid
    */
@@ -2833,7 +2873,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:90
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/GenericsParTypeDecl.jrag:90
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute genericDecl
    */
@@ -2853,7 +2893,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:340
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:340
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute inExtendsOrImplements
    */
@@ -2873,7 +2913,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1255
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1255
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute fieldDecl
    */
@@ -2893,7 +2933,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1593
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1593
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute typeWildcard
    */
@@ -2913,7 +2953,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1602
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1602
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupWildcardExtends
    */
@@ -2933,7 +2973,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1616
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1616
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupWildcardSuper
    */
@@ -2953,7 +2993,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1644
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1644
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupLUBType
    */
@@ -2973,111 +3013,11 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1685
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1685
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute lookupGLBType
    */
   protected boolean canDefine_lookupGLBType(ASTNode _callerNode, ASTNode _childNode, Collection<TypeDecl> bounds) {
-    return false;
-  }
-  /** @apilevel internal */
-  public TypeDecl Define_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_assignConvertedType(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_assignConvertedType(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/GenericMethodsInference.jrag:69
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute assignConvertedType
-   */
-  protected boolean canDefine_assignConvertedType(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public ClassInstanceExpr Define_getClassInstanceExpr(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_getClassInstanceExpr(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_getClassInstanceExpr(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:96
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute getClassInstanceExpr
-   */
-  protected boolean canDefine_getClassInstanceExpr(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isAnonymousDecl(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isAnonymousDecl(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isAnonymousDecl(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:414
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isAnonymousDecl
-   */
-  protected boolean canDefine_isAnonymousDecl(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_isExplicitGenericConstructorAccess(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_isExplicitGenericConstructorAccess(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:430
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute isExplicitGenericConstructorAccess
-   */
-  protected boolean canDefine_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_resourcePreviouslyDeclared(ASTNode _callerNode, ASTNode _childNode, String name) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_resourcePreviouslyDeclared(self, _callerNode, name)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_resourcePreviouslyDeclared(self, _callerNode, name);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:200
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute resourcePreviouslyDeclared
-   */
-  protected boolean canDefine_resourcePreviouslyDeclared(ASTNode _callerNode, ASTNode _childNode, String name) {
     return false;
   }
   /** @apilevel internal */
@@ -3093,7 +3033,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:206
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:206
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isCatchParam
    */
@@ -3113,11 +3053,91 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:215
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:215
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute catchClause
    */
   protected boolean canDefine_catchClause(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_resourcePreviouslyDeclared(ASTNode _callerNode, ASTNode _childNode, String name) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_resourcePreviouslyDeclared(self, _callerNode, name)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_resourcePreviouslyDeclared(self, _callerNode, name);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:200
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute resourcePreviouslyDeclared
+   */
+  protected boolean canDefine_resourcePreviouslyDeclared(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return false;
+  }
+  /** @apilevel internal */
+  public ClassInstanceExpr Define_getClassInstanceExpr(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_getClassInstanceExpr(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_getClassInstanceExpr(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:96
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute getClassInstanceExpr
+   */
+  protected boolean canDefine_getClassInstanceExpr(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isAnonymousDecl(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isAnonymousDecl(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isAnonymousDecl(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:414
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isAnonymousDecl
+   */
+  protected boolean canDefine_isAnonymousDecl(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public boolean Define_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_isExplicitGenericConstructorAccess(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_isExplicitGenericConstructorAccess(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/Diamond.jrag:430
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute isExplicitGenericConstructorAccess
+   */
+  protected boolean canDefine_isExplicitGenericConstructorAccess(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -3133,7 +3153,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:125
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:188
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute targetType
    */
@@ -3153,11 +3173,31 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:52
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/NameCheck.jrag:52
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute allImportedTypes
    */
   protected boolean canDefine_allImportedTypes(ASTNode _callerNode, ASTNode _childNode, String name) {
+    return false;
+  }
+  /** @apilevel internal */
+  public String Define_packageName(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_packageName(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_packageName(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:110
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute packageName
+   */
+  protected boolean canDefine_packageName(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -3173,7 +3213,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:704
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:704
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute enclosingType
    */
@@ -3193,7 +3233,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:703
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:703
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isNestedType
    */
@@ -3213,7 +3253,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:604
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/TypeAnalysis.jrag:604
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isLocalClass
    */
@@ -3233,71 +3273,11 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:770
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:770
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute hostPackage
    */
   protected boolean canDefine_hostPackage(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public String Define_packageName(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_packageName(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_packageName(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/QualifiedNames.jrag:110
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute packageName
-   */
-  protected boolean canDefine_packageName(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public boolean Define_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_inComplexAnnotation(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_inComplexAnnotation(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:97
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute inComplexAnnotation
-   */
-  protected boolean canDefine_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
-    return false;
-  }
-  /** @apilevel internal */
-  public String Define_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_typeVariableContext(self, _callerNode)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_typeVariableContext(self, _callerNode);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:791
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute typeVariableContext
-   */
-  protected boolean canDefine_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -3313,7 +3293,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:134
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:134
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isOriginalEnumConstructor
    */
@@ -3333,7 +3313,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:568
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Enums.jrag:568
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute inEnumInitializer
    */
@@ -3341,23 +3321,43 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
     return false;
   }
   /** @apilevel internal */
-  public LambdaExpr Define_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+  public boolean Define_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
     ASTNode self = this;
     ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_enclosingLambda(self, _callerNode)) {
+    while (parent != null && !parent.canDefine_inComplexAnnotation(self, _callerNode)) {
       _callerNode = self;
       self = parent;
       parent = self.getParent();
     }
-    return parent.Define_enclosingLambda(self, _callerNode);
+    return parent.Define_inComplexAnnotation(self, _callerNode);
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:42
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:97
    * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute enclosingLambda
+   * @return {@code true} if this node has an equation for the inherited attribute inComplexAnnotation
    */
-  protected boolean canDefine_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+  protected boolean canDefine_inComplexAnnotation(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public String Define_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_typeVariableContext(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_typeVariableContext(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:791
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute typeVariableContext
+   */
+  protected boolean canDefine_typeVariableContext(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -3373,7 +3373,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:46
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:40
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute typeVarPosition
    */
@@ -3393,7 +3393,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:47
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:41
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute typeVarInMethod
    */
@@ -3413,11 +3413,31 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:50
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeVariablePositions.jrag:50
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute genericMethodLevel
    */
   protected boolean canDefine_genericMethodLevel(ASTNode _callerNode, ASTNode _childNode) {
+    return false;
+  }
+  /** @apilevel internal */
+  public LambdaExpr Define_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
+    ASTNode self = this;
+    ASTNode parent = getParent();
+    while (parent != null && !parent.canDefine_enclosingLambda(self, _callerNode)) {
+      _callerNode = self;
+      self = parent;
+      parent = self.getParent();
+    }
+    return parent.Define_enclosingLambda(self, _callerNode);
+  }
+
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/EnclosingLambda.jrag:42
+   * @apilevel internal
+   * @return {@code true} if this node has an equation for the inherited attribute enclosingLambda
+   */
+  protected boolean canDefine_enclosingLambda(ASTNode _callerNode, ASTNode _childNode) {
     return false;
   }
   /** @apilevel internal */
@@ -3433,7 +3453,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:207
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:364
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute assignmentContext
    */
@@ -3453,7 +3473,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:208
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:365
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute invocationContext
    */
@@ -3473,7 +3493,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:209
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:366
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute castContext
    */
@@ -3493,7 +3513,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:210
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:367
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute stringContext
    */
@@ -3513,7 +3533,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:211
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TargetType.jrag:368
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute numericContext
    */
@@ -3533,7 +3553,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:33
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:33
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isLeftChildOfDot
    */
@@ -3553,7 +3573,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:35
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:35
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute isRightChildOfDot
    */
@@ -3573,7 +3593,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:37
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:37
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute prevExpr
    */
@@ -3593,7 +3613,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:39
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:39
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute nextAccess
    */
@@ -3613,7 +3633,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:292
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:292
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute assignedBefore
    */
@@ -3633,7 +3653,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:935
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/DefiniteAssignment.jrag:935
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute unassignedBefore
    */
@@ -3653,7 +3673,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ExtraInheritedEqs.jrag:33
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ExtraInheritedEqs.jrag:33
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute otherLocalClassDecls
    */
@@ -3673,31 +3693,11 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ExtraInheritedEqs.jrag:30
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/ExtraInheritedEqs.jrag:30
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute branchTarget
    */
   protected boolean canDefine_branchTarget(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
-    return false;
-  }
-  /** @apilevel internal */
-  public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
-    ASTNode self = this;
-    ASTNode parent = getParent();
-    while (parent != null && !parent.canDefine_enclosingFinally(self, _callerNode, branch)) {
-      _callerNode = self;
-      self = parent;
-      parent = self.getParent();
-    }
-    return parent.Define_enclosingFinally(self, _callerNode, branch);
-  }
-
-  /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/ExtraInheritedEqs.jrag:29
-   * @apilevel internal
-   * @return {@code true} if this node has an equation for the inherited attribute enclosingFinally
-   */
-  protected boolean canDefine_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
     return false;
   }
   /** @apilevel internal */
@@ -3713,7 +3713,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/UnreachableStatements.jrag:29
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/UnreachableStatements.jrag:29
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute reachable
    */
@@ -3733,7 +3733,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:35
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/EffectivelyFinal.jrag:35
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute inhModifiedInScope
    */
@@ -3753,7 +3753,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:308
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:308
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute declarationModifiers
    */
@@ -3773,7 +3773,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:311
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:311
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute declarationType
    */
@@ -3793,7 +3793,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1513
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Generics.jrag:1520
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute erasedField
    */
@@ -3813,7 +3813,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:144
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/TryWithResources.jrag:144
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute reachableCatchClause
    */
@@ -3833,7 +3833,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:219
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java7/frontend/PreciseRethrow.jrag:219
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute caughtExceptions
    */
@@ -3853,7 +3853,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/VariableDeclaration.jrag:79
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/VariableDeclaration.jrag:79
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute enclosingLambdaType
    */
@@ -3873,7 +3873,7 @@ public class ASTNode<T extends ASTNode> extends beaver.Symbol implements Cloneab
   }
 
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:478
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java8/frontend/TypeCheck.jrag:478
    * @apilevel internal
    * @return {@code true} if this node has an equation for the inherited attribute inferredType
    */

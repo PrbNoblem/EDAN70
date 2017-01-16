@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:8
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/grammar/Annotations.ast:8
  * @production ElementValuePair : {@link ASTNode} ::= <span class="component">&lt;Name:String&gt;</span> <span class="component">{@link ElementValue}</span>;
 
  */
 public class ElementValuePair extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @aspect Java5PrettyPrint
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:102
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/PrettyPrint.jadd:102
    */
   public void prettyPrint(PrettyPrinter out) {
     out.print(getName());
@@ -245,10 +245,10 @@ public class ElementValuePair extends ASTNode<ASTNode> implements Cloneable {
    * (\ufffd10.6), except that annotations are permitted in place of expressions.
    * @attribute syn
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:634
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:634
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:634")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:634")
   public TypeDecl type() {
     {
         Map<String, SimpleSet<MethodDecl>> methodMap = enclosingAnnotationDecl().localMethodsSignatureMap();
@@ -263,10 +263,10 @@ public class ElementValuePair extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:644
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:644
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:644")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:644")
   public TypeDecl unknownType() {
     TypeDecl unknownType_value = getParent().Define_unknownType(this, null);
     return unknownType_value;
@@ -274,16 +274,16 @@ public class ElementValuePair extends ASTNode<ASTNode> implements Cloneable {
   /**
    * @attribute inh
    * @aspect Annotations
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:646
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:646
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.INH)
-  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:646")
+  @ASTNodeAnnotation.Source(aspect="Annotations", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:646")
   public TypeDecl enclosingAnnotationDecl() {
     TypeDecl enclosingAnnotationDecl_value = getParent().Define_enclosingAnnotationDecl(this, null);
     return enclosingAnnotationDecl_value;
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:713
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:713
    * @apilevel internal
    */
   public TypeDecl Define_declType(ASTNode _callerNode, ASTNode _childNode) {
@@ -295,14 +295,14 @@ public class ElementValuePair extends ASTNode<ASTNode> implements Cloneable {
   }
   /** @apilevel internal */
   public ASTNode rewriteTo() {
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:741
+    // Declared at /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:741
     if (type().isArrayDecl() && getElementValue() instanceof ElementConstantValue) {
       return rewriteRule0();
     }
     return super.rewriteTo();
   }
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:741
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:741
    * @apilevel internal
    */
   private ElementValuePair rewriteRule0() {
@@ -312,14 +312,14 @@ public class ElementValuePair extends ASTNode<ASTNode> implements Cloneable {
     }  }
   /** @apilevel internal */
   public boolean canRewrite() {
-    // Declared at /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:741
+    // Declared at /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:741
     if (type().isArrayDecl() && getElementValue() instanceof ElementConstantValue) {
       return true;
     }
     return false;
   }
   protected void collect_contributors_CompilationUnit_problems(CompilationUnit _root, java.util.Map<ASTNode, java.util.Set<ASTNode>> _map) {
-    // @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:706
+    // @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java5/frontend/Annotations.jrag:706
     if (!type().commensurateWith(getElementValue())) {
       {
         java.util.Set<ASTNode> contributors = _map.get(_root);

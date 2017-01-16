@@ -50,7 +50,7 @@ targetCompatibility = '1.7'
 task sourceZip(type: Zip) {
 	description 'Builds a Zip file with the entire repisotory (including the ExtendJ submodule).'
 	destinationDir = projectDir
-	archiveName = "extension-base.zip"
+	archiveName = "CodeCleanUpExtension.zip"
 
 	from (projectDir) {
 		exclude '**/.git'
@@ -70,5 +70,5 @@ task sourceZip(type: Zip) {
 		exclude '**/*.swp'
 	}
 
-	into 'extension-base'
+	into 'CodeCleanUpExtension'
 }

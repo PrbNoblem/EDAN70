@@ -1,0 +1,11 @@
+#!/bin/bash
+# My first script
+
+./gradlew
+java -jar CodeCleanUpExtension.jar finishedtests/*.java
+
+for file in finishedtests/*.java; do
+    diff "$file.cleaned" "$file.expected"
+done
+
+mv extension-base.jar CodeCleanUpExtension.jar

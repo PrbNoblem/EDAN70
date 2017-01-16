@@ -5,33 +5,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.*;
+import org.jastadd.util.*;
+import java.util.zip.*;
+import java.io.*;
+import org.jastadd.util.PrettyPrintable;
+import org.jastadd.util.PrettyPrinter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.Set;
 import beaver.*;
-import org.jastadd.util.*;
-import org.jastadd.util.PrettyPrintable;
-import org.jastadd.util.PrettyPrinter;
-import java.util.zip.*;
-import java.io.*;
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 /**
  * @ast node
- * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/grammar/Java.ast:194
+ * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/grammar/Java.ast:194
  * @production BranchTargetStmt : {@link Stmt};
 
  */
 public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:112
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:112
    */
   public void collectBranches(Collection<Stmt> c) {
     c.addAll(escapedBranches());
@@ -69,13 +69,13 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
    */
   public void flushAttrCache() {
     super.flushAttrCache();
-    reachableBreak_reset();
-    reachableContinue_reset();
     targetBranches_reset();
     escapedBranches_reset();
     branches_reset();
     targetContinues_reset();
     targetBreaks_reset();
+    reachableBreak_reset();
+    reachableContinue_reset();
   }
   /** @apilevel internal 
    * @declaredat ASTNode:34
@@ -118,88 +118,6 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
    */
   public abstract BranchTargetStmt treeCopy();
   /** @apilevel internal */
-  private void reachableBreak_reset() {
-    reachableBreak_computed = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle reachableBreak_computed = null;
-
-  /** @apilevel internal */
-  protected boolean reachableBreak_value;
-
-  /**
-   * @attribute syn
-   * @aspect UnreachableStatements
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:85
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:85")
-  public boolean reachableBreak() {
-    ASTNode$State state = state();
-    if (reachableBreak_computed == ASTNode$State.NON_CYCLE || reachableBreak_computed == state().cycle()) {
-      return reachableBreak_value;
-    }
-    reachableBreak_value = reachableBreak_compute();
-    if (state().inCircle()) {
-      reachableBreak_computed = state().cycle();
-    
-    } else {
-      reachableBreak_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return reachableBreak_value;
-  }
-  /** @apilevel internal */
-  private boolean reachableBreak_compute() {
-      for (BreakStmt stmt : targetBreaks()) {
-        if (stmt.reachable()) {
-          return true;
-        }
-      }
-      return false;
-    }
-  /** @apilevel internal */
-  private void reachableContinue_reset() {
-    reachableContinue_computed = null;
-  }
-  /** @apilevel internal */
-  protected ASTNode$State.Cycle reachableContinue_computed = null;
-
-  /** @apilevel internal */
-  protected boolean reachableContinue_value;
-
-  /**
-   * @attribute syn
-   * @aspect UnreachableStatements
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:140
-   */
-  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:140")
-  public boolean reachableContinue() {
-    ASTNode$State state = state();
-    if (reachableContinue_computed == ASTNode$State.NON_CYCLE || reachableContinue_computed == state().cycle()) {
-      return reachableContinue_value;
-    }
-    reachableContinue_value = reachableContinue_compute();
-    if (state().inCircle()) {
-      reachableContinue_computed = state().cycle();
-    
-    } else {
-      reachableContinue_computed = ASTNode$State.NON_CYCLE;
-    
-    }
-    return reachableContinue_value;
-  }
-  /** @apilevel internal */
-  private boolean reachableContinue_compute() {
-      for (Stmt stmt : targetContinues()) {
-        if (stmt.reachable()) {
-          return true;
-        }
-      }
-      return false;
-    }
-  /** @apilevel internal */
   private void targetBranches_reset() {
     targetBranches_computed = null;
     targetBranches_value = null;
@@ -213,10 +131,10 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:88
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:88
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:88")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:88")
   public Collection<Stmt> targetBranches() {
     ASTNode$State state = state();
     if (targetBranches_computed == ASTNode$State.NON_CYCLE || targetBranches_computed == state().cycle()) {
@@ -256,10 +174,10 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:90
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:90
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:90")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:90")
   public Collection<Stmt> escapedBranches() {
     ASTNode$State state = state();
     if (escapedBranches_computed == ASTNode$State.NON_CYCLE || escapedBranches_computed == state().cycle()) {
@@ -301,10 +219,10 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:92
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:92
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:92")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:92")
   public Collection<Stmt> branches() {
     ASTNode$State state = state();
     if (branches_computed == ASTNode$State.NON_CYCLE || branches_computed == state().cycle()) {
@@ -331,10 +249,10 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
    * branch target of the given branch statement.
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:215")
   public boolean potentialTargetOf(Stmt branch) {
     boolean potentialTargetOf_Stmt_value = false;
     return potentialTargetOf_Stmt_value;
@@ -353,10 +271,10 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:84
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:84
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:84")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:84")
   public Collection<ContinueStmt> targetContinues() {
     ASTNode$State state = state();
     if (targetContinues_computed == ASTNode$State.NON_CYCLE || targetContinues_computed == state().cycle()) {
@@ -403,10 +321,10 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
   /**
    * @attribute syn
    * @aspect BranchTarget
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:86
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:86
    */
   @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
-  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:86")
+  @ASTNodeAnnotation.Source(aspect="BranchTarget", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:86")
   public Collection<BreakStmt> targetBreaks() {
     ASTNode$State state = state();
     if (targetBreaks_computed == ASTNode$State.NON_CYCLE || targetBreaks_computed == state().cycle()) {
@@ -432,8 +350,90 @@ public abstract class BranchTargetStmt extends Stmt implements Cloneable {
       }
       return set;
     }
+  /** @apilevel internal */
+  private void reachableBreak_reset() {
+    reachableBreak_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle reachableBreak_computed = null;
+
+  /** @apilevel internal */
+  protected boolean reachableBreak_value;
+
   /**
-   * @declaredat /h/dc/q/stv10hjo/Documents/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:273
+   * @attribute syn
+   * @aspect UnreachableStatements
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:85
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:85")
+  public boolean reachableBreak() {
+    ASTNode$State state = state();
+    if (reachableBreak_computed == ASTNode$State.NON_CYCLE || reachableBreak_computed == state().cycle()) {
+      return reachableBreak_value;
+    }
+    reachableBreak_value = reachableBreak_compute();
+    if (state().inCircle()) {
+      reachableBreak_computed = state().cycle();
+    
+    } else {
+      reachableBreak_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return reachableBreak_value;
+  }
+  /** @apilevel internal */
+  private boolean reachableBreak_compute() {
+      for (BreakStmt stmt : targetBreaks()) {
+        if (stmt.reachable()) {
+          return true;
+        }
+      }
+      return false;
+    }
+  /** @apilevel internal */
+  private void reachableContinue_reset() {
+    reachableContinue_computed = null;
+  }
+  /** @apilevel internal */
+  protected ASTNode$State.Cycle reachableContinue_computed = null;
+
+  /** @apilevel internal */
+  protected boolean reachableContinue_value;
+
+  /**
+   * @attribute syn
+   * @aspect UnreachableStatements
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:140
+   */
+  @ASTNodeAnnotation.Attribute(kind=ASTNodeAnnotation.Kind.SYN)
+  @ASTNodeAnnotation.Source(aspect="UnreachableStatements", declaredAt="/home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/UnreachableStatements.jrag:140")
+  public boolean reachableContinue() {
+    ASTNode$State state = state();
+    if (reachableContinue_computed == ASTNode$State.NON_CYCLE || reachableContinue_computed == state().cycle()) {
+      return reachableContinue_value;
+    }
+    reachableContinue_value = reachableContinue_compute();
+    if (state().inCircle()) {
+      reachableContinue_computed = state().cycle();
+    
+    } else {
+      reachableContinue_computed = ASTNode$State.NON_CYCLE;
+    
+    }
+    return reachableContinue_value;
+  }
+  /** @apilevel internal */
+  private boolean reachableContinue_compute() {
+      for (Stmt stmt : targetContinues()) {
+        if (stmt.reachable()) {
+          return true;
+        }
+      }
+      return false;
+    }
+  /**
+   * @declaredat /home/felix/edan70final/EDAN70/extension-base/extendj/java4/frontend/BranchTarget.jrag:273
    * @apilevel internal
    */
   public FinallyHost Define_enclosingFinally(ASTNode _callerNode, ASTNode _childNode, Stmt branch) {
